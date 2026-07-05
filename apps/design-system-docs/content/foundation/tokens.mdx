@@ -1,0 +1,336 @@
+---
+title: Tokens
+description: Semantic color tokens and CSS custom properties for consistent theming
+category: Foundation
+status: stable
+keywords:
+  - tokens
+  - colors
+  - css variables
+  - design tokens
+  - theming
+  - dark mode
+lastUpdated: 2026-06-07
+---
+
+<InfoCallout type="info" title="Figma source of truth">
+Palette values are imported from Figma Design Tokens (`packages/ui/src/tokens/light.tokens.json` and `dark.tokens.json`). Regenerate CSS with `pnpm --filter @marmoui/ui generate:tokens`.
+</InfoCallout>
+
+<InfoCallout type="info" title="Semantic Naming">
+Use semantic tokens (like `--color-primary-solid`) instead of raw color values. This ensures consistency and enables automatic theme switching.
+</InfoCallout>
+
+
+<ColorPalette
+	name="Background Colors (Surface)"
+	description="Background colors for the design system"
+	colors={[
+		{ name: 'Panel', variable: '--color-panel', textColor: 'dark', value: '#ffffff' },
+		{ name: 'Background', variable: '--color-bg', textColor: 'dark', value: 'var(--color-gray-50)' },
+		{ name: 'Secondary', variable: '--color-secondary', textColor: 'dark', value: 'var(--color-gray-100)' },
+		{ name: 'Muted', variable: '--color-muted', textColor: 'dark', value: 'var(--color-gray-200)' },
+		{ name: 'Solid', variable: '--color-solid', textColor: 'light', value: 'var(--color-gray-600)' },
+	]}
+	columns={5}
+/>
+
+
+<ColorPalette
+	name="Primary Background Tokens"
+	description="Primary brand colors for backgrounds"
+	colors={[
+		{ name: 'Primary Muted', variable: '--color-primary-muted', textColor: 'dark', value: 'var(--color-primary-50)' },
+		{ name: 'Primary Solid', variable: '--color-primary-solid', textColor: 'light', value: 'var(--color-primary-600)' },
+		{ name: 'Primary Hover', variable: '--color-primary-solid-hover', textColor: 'light', value: 'var(--color-primary-500)' },
+		{ name: 'Bright Primary', variable: '--color-primary-bright', textColor: 'dark', value: 'var(--color-primary-300)' },
+		{ name: 'Primary Contrast', variable: '--color-primary-contrast', textColor: 'dark', value: 'var(--color-white)' },
+	]}
+	columns={5}
+/>
+
+## Semantic Action Colors
+
+<ColorPalette
+	name="Solid State Colors"
+	description="Semantic action colors for buttons and states"
+	colors={[
+		{ name: 'Primary', variable: '--color-primary-solid', textColor: 'light', value: 'var(--color-primary-700)' },
+		{ name: 'Success', variable: '--color-success-solid', textColor: 'light', value: 'var(--color-green-600)' },
+		{ name: 'Warning', variable: '--color-warning-solid', textColor: 'dark', value: 'var(--color-yellow-400)' },
+		{ name: 'Destructive', variable: '--color-destructive-solid', textColor: 'light', value: 'var(--color-red-600)' },
+		{ name: 'Destructive Hover', variable: '--color-destructive-solid-hover', textColor: 'light', value: 'var(--color-red-500)' },
+		{ name: 'Info', variable: '--color-info-solid', textColor: 'light', value: 'var(--color-blue-500)' },
+	]}
+	columns={6}
+/>
+
+## Text Colors (Ink)
+
+
+<ColorPalette
+	name="Primary Text Hierarchy"
+	description="Text colors organized by importance and hierarchy"
+	colors={[
+		{ name: 'Dark', variable: '--color-ink-dark', textColor: 'light', value: 'oklch(0.33 0.04 258)' },
+		{ name: 'Default', variable: '--color-ink', textColor: 'light', value: 'oklch(0.37 0.03 259)' },
+		{ name: 'Light', variable: '--color-ink-light', textColor: 'dark', value: 'oklch(0.66 0.04 257)' },
+		{ name: 'Muted', variable: '--color-ink-muted', textColor: 'dark', value: 'oklch(0.79 0.02 252)' },
+	]}
+	columns={4}
+/>
+
+
+<ColorPalette
+	name="Semantic Text Colors"
+	description="Semantic text colors for different states and purposes"
+	colors={[
+		{ name: 'Primary', variable: '--color-ink-primary', textColor: 'light', value: 'var(--color-primary-700)' },
+		{ name: 'Primary Contrast', variable: '--color-ink-primary-contrast', textColor: 'dark', value: 'var(--color-white)' },
+		{ name: 'Success', variable: '--color-ink-success', textColor: 'light', value: 'var(--color-green-600)' },
+		{ name: 'Warning', variable: '--color-ink-warning', textColor: 'dark', value: 'oklch(0.51 0.1 92.1)' },
+		{ name: 'Destructive', variable: '--color-ink-destructive', textColor: 'light', value: 'var(--color-red-600)' },
+		{ name: 'Info', variable: '--color-ink-info', textColor: 'light', value: 'var(--color-blue-600)' },
+		{ name: 'Teal', variable: '--color-ink-teal', textColor: 'light', value: 'var(--color-teal-600)' },
+		{ name: 'Purple', variable: '--color-ink-purple', textColor: 'light', value: 'var(--color-purple-600)' },
+		{ name: 'Indigo', variable: '--color-ink-indigo', textColor: 'light', value: 'var(--color-indigo-600)' },
+		{ name: 'Orange', variable: '--color-ink-orange', textColor: 'light', value: 'var(--color-orange-700)' },
+		{ name: 'Pink', variable: '--color-ink-pink', textColor: 'light', value: 'var(--color-pink-600)' },
+		{ name: 'White', variable: '--color-ink-white', textColor: 'dark', value: 'var(--color-white)' },
+	]}
+	columns={6}
+/>
+
+## Border Colors
+
+
+<ColorPalette
+	name="Base Border Tokens"
+	description="Standard border colors for default states"
+	colors={[
+		{ name: 'Default', variable: '--color-border', textColor: 'dark', value: 'var(--color-gray-200)' },
+		{ name: 'Input', variable: '--color-border-input', textColor: 'dark', value: 'var(--color-gray-200)' },
+		{ name: 'Hover', variable: '--color-border-hover', textColor: 'dark', value: 'var(--color-gray-300)' },
+		{ name: 'Secondary', variable: '--color-border-secondary', textColor: 'dark', value: 'var(--color-gray-100)' },
+		{ name: 'Muted', variable: '--color-border-muted', textColor: 'dark', value: 'var(--color-gray-50)' },
+		{ name: 'Focus', variable: '--color-border-focus', textColor: 'dark', value: 'var(--color-primary-200)' },
+	]}
+	columns={6}
+/>
+
+
+<ColorPalette
+	name="Semantic Border Colors"
+	description="Semantic border colors for different states"
+	colors={[
+		{ name: 'Primary', variable: '--color-border-primary', textColor: 'light', value: 'var(--color-primary-600)' },
+		{ name: 'Success', variable: '--color-border-success', textColor: 'light', value: 'var(--color-green-600)' },
+		{ name: 'Warning', variable: '--color-border-warning', textColor: 'dark', value: 'oklch(0.51 0.1 92.1)' },
+		{ name: 'Destructive', variable: '--color-border-destructive', textColor: 'light', value: 'var(--color-red-300)' },
+		{ name: 'Info', variable: '--color-border-info', textColor: 'light', value: 'var(--color-blue-600)' },
+		{ name: 'Teal', variable: '--color-border-teal', textColor: 'light', value: 'var(--color-teal-600)' },
+		{ name: 'Purple', variable: '--color-border-purple', textColor: 'light', value: 'var(--color-purple-600)' },
+		{ name: 'Indigo', variable: '--color-border-indigo', textColor: 'light', value: 'var(--color-indigo-600)' },
+		{ name: 'Orange', variable: '--color-border-orange', textColor: 'light', value: 'var(--color-orange-700)' },
+		{ name: 'Pink', variable: '--color-border-pink', textColor: 'light', value: 'var(--color-pink-600)' },
+	]}
+	columns={5}
+/>
+
+
+<ColorPalette
+	name="Icon Colors"
+	description="Semantic icon colors for different purposes"
+	colors={[
+		{ name: 'Default', variable: '--color-icon-default', textColor: 'light', value: 'var(--color-ink)' },
+		{ name: 'Light', variable: '--color-icon-light', textColor: 'dark', value: 'var(--color-gray-200)' },
+		{ name: 'Primary', variable: '--color-icon-primary', textColor: 'light', value: 'var(--color-primary-solid)' },
+		{ name: 'Primary Bright', variable: '--color-icon-primary-bright', textColor: 'dark', value: 'var(--color-primary-bright)' },
+		{ name: 'Destructive', variable: '--color-icon-destructive', textColor: 'light', value: 'var(--color-ink-destructive)' },
+	]}
+	columns={5}
+/>
+
+## Sidebar Tokens
+
+```css
+{
+--sidebar: var(--color-bg);                         /* Sidebar background */
+--sidebar-foreground: var(--color-ink);             /* Sidebar text */
+--sidebar-primary: var(--color-ink-dark);           /* Sidebar primary */
+--sidebar-primary-foreground: var(--color-bg);      /* Sidebar primary text */
+--sidebar-accent: var(--color-secondary);           /* Sidebar accent */
+--sidebar-accent-foreground: var(--color-ink-dark); /* Sidebar accent text */
+--sidebar-border: var(--color-border);              /* Sidebar borders */
+--sidebar-ring: var(--color-gray-500);              /* Sidebar focus ring */
+}
+```
+
+## Spacing Tokens
+
+Spacing tokens provide consistent spacing throughout the design system. All spacing values are in pixels.
+
+<SpacingTokens
+	name="Spacing Tokens"
+	description="Consistent spacing values for margins, padding, and gaps"
+	spacings={[
+		{ name: 'space-0', variable: '--spacing-0', value: 0 },
+		{ name: 'space-4xs', variable: '--spacing-space-4xs', value: 1 },
+		{ name: 'space-3xs', variable: '--spacing-space-3xs', value: 2 },
+		{ name: 'space-2xs', variable: '--spacing-space-2xs', value: 4 },
+		{ name: 'space-xs', variable: '--spacing-space-xs', value: 8 },
+		{ name: 'space-sm', variable: '--spacing-space-sm', value: 12 },
+		{ name: 'space-md', variable: '--spacing-space-md', value: 16 },
+		{ name: 'space-lg', variable: '--spacing-space-lg', value: 20 },
+		{ name: 'space-xl', variable: '--spacing-space-xl', value: 24 },
+		{ name: 'space-2xl', variable: '--spacing-space-2xl', value: 32 },
+		{ name: 'space-supra-1', variable: '--spacing-space-supra-1', value: 40 },
+		{ name: 'space-supra-2', variable: '--spacing-space-supra-2', value: 48 },
+		{ name: 'space-supra-3', variable: '--spacing-space-supra-3', value: 64 },
+		{ name: 'space-supra-4', variable: '--spacing-space-supra-4', value: 80 },
+		{ name: 'space-ultra-1', variable: '--spacing-space-ultra-1', value: 96 },
+		{ name: 'space-ultra-2', variable: '--spacing-space-ultra-2', value: 128 },
+		{ name: 'space-ultra-3', variable: '--spacing-space-ultra-3', value: 256 },
+	]}
+/>
+
+## Dark Mode Tokens
+
+All tokens automatically adapt to dark mode. Key differences:
+
+```css
+.dark {
+  /* Backgrounds */
+  --color-panel: oklch(0.21 0.02 256);     /* Dark panels */
+  --color-bg: var(--color-gray-950);       /* Very dark background */
+  
+  /* Text */
+  --color-ink-dark: oklch(0.98 0 0);       /* White text */
+  --color-ink: oklch(0.95 0 248);          /* Light text */
+  --color-ink-light: oklch(0.71 0.02 259); /* Muted light */
+  --color-ink-muted: oklch(0.6 0.05 258);  /* Dark muted */
+  
+  /* Primary colors */
+  --color-primary-solid: var(--color-primary-400);
+  --color-primary-solid-hover: var(--color-primary-600);
+  
+  /* Semantic colors */
+  --color-ink-destructive: var(--color-red-400);
+  --color-ink-success: var(--color-green-400);
+  --color-ink-warning: var(--color-yellow-400);
+}
+```
+
+## Usage Examples
+
+### CSS
+
+```css
+.my-component {
+  background-color: var(--color-panel);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+}
+
+.my-component:hover {
+  border-color: var(--color-border-hover);
+}
+
+.my-component:focus {
+  border-color: var(--color-border-focus);
+  outline: 2px solid var(--color-primary-solid);
+}
+```
+
+### Tailwind CSS
+
+```html
+<div class="bg-panel text-ink border border-border">
+  <h2 class="text-ink-dark font-semibold">Heading</h2>
+  <p class="text-ink-light">Secondary text</p>
+</div>
+```
+
+### React Component
+
+```tsx
+<Card className="bg-panel border-border">
+  <CardHeader>
+    <CardTitle className="text-ink-dark">Title</CardTitle>
+    <CardDescription className="text-ink-light">Description</CardDescription>
+  </CardHeader>
+  <CardContent className="text-ink">
+    Content with semantic colors
+  </CardContent>
+</Card>
+```
+
+### Spacing Usage
+
+```css
+/* Using CSS custom properties */
+.my-component {
+  padding: var(--spacing-space-md);
+  margin-bottom: var(--spacing-space-lg);
+  gap: var(--spacing-space-sm);
+}
+```
+
+```tsx
+// Using Tailwind classes (when configured)
+<div className="p-md mb-lg gap-sm">
+  Content with spacing tokens
+</div>
+```
+
+```tsx
+// In React components with inline styles
+<div style={{ 
+  padding: 'var(--spacing-space-md)',
+  marginBottom: 'var(--spacing-space-xl)'
+}}>
+  Content
+</div>
+```
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Always use tokens">
+		Use semantic color tokens instead of hard-coded values. This ensures consistency and theme compatibility.
+	</Guideline>
+	
+	<Guideline type="do" title="Test in both themes">
+		Always test your components in both light and dark modes to ensure proper contrast and readability.
+	</Guideline>
+	
+	<Guideline type="do" title="Use semantic meanings">
+		Choose tokens based on semantic meaning (e.g., `--color-destructive-solid` for delete buttons).
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't create custom tokens">
+		Don't create new color tokens without consulting the design team. Use existing tokens.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use raw color values">
+		Avoid using hex, RGB, or HSL values directly. Always reference design tokens.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't override token values">
+		Don't override token values in your components. If a token doesn't work, discuss with the design team.
+	</Guideline>
+</GuidelinesGrid>
+
+## Accessibility
+
+<InfoCallout type="warning" title="Contrast Requirements">
+All color token combinations meet WCAG 2.1 AA standards. Ensure you maintain these standards when using tokens.
+</InfoCallout>
+
+- All tokens meet WCAG 2.1 AA contrast requirements
+- Normal text: minimum 4.5:1 contrast ratio
+- Large text: minimum 3:1 contrast ratio
+- Don't rely solely on color to convey information
+- Test with color blindness simulators
+- Provide additional visual cues (icons, text) for critical information
+

@@ -1,0 +1,183 @@
+---
+title: Pagination
+description: A navigation component for moving between pages of content in lists and tables. Mirrors the DataTable pagination — chevron-only Previous / Next buttons and compact numbered page buttons.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/pagination
+keywords:
+  - pagination
+  - paging
+  - page navigation
+  - next previous
+lastUpdated: 2026-05-14
+---
+
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Pagination provides page navigation controls for paginated content. `PaginationPrevious` and `PaginationNext` render as `IconButton` (secondary, chevron icon); `PaginationLink` renders as `Button` (secondary when active, ghost otherwise). The whole pager right-aligns inside its container. This is the same shape used by `DataTable` — drop it into a `Widget` footer and the pager will line up with every other paginated tile.
+
+    **When to Use:**
+    - Inside a `Widget` `footer` for paginated tables / lists
+    - Multi-page lists and search results
+    - Any content split across multiple pages
+
+    **When NOT to Use:**
+    - For infinite scroll patterns
+    - For very small datasets that fit on one page
+    - For sequential wizard navigation (use `Steps`)
+    - When you also need a page-size selector — use `DataTable`, which composes Pagination together with the size selector
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic pager
+
+`PaginationPrevious` / `PaginationNext` are button components (not anchors). They take the standard button props — `onClick`, `disabled`, `type`. Page links use `PaginationLink` with `isActive` to mark the current page.
+
+<CodeExample
+	title="Numbered page buttons + chevron prev/next"
+	description="The default rendering. Identical in style to the pager used inside DataTable."
+	code={`<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious onClick={() => goTo(page - 1)} disabled={page === 1} />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink isActive>1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink onClick={() => goTo(2)}>2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink onClick={() => goTo(3)}>3</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink onClick={() => goTo(10)}>10</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext onClick={() => goTo(page + 1)} disabled={page === 10} />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>`}
+	preview={
+		<Pagination>
+			<PaginationContent>
+				<PaginationItem>
+					<PaginationPrevious />
+				</PaginationItem>
+				<PaginationItem>
+					<PaginationLink isActive>1</PaginationLink>
+				</PaginationItem>
+				<PaginationItem>
+					<PaginationLink>2</PaginationLink>
+				</PaginationItem>
+				<PaginationItem>
+					<PaginationLink>3</PaginationLink>
+				</PaginationItem>
+				<PaginationItem>
+					<PaginationEllipsis />
+				</PaginationItem>
+				<PaginationItem>
+					<PaginationLink>10</PaginationLink>
+				</PaginationItem>
+				<PaginationItem>
+					<PaginationNext />
+				</PaginationItem>
+			</PaginationContent>
+		</Pagination>
+	}
+/>
+
+### Inside a Widget footer
+
+For paginated table or list tiles, pass `Pagination` into the `Widget` `footer` slot. The widget renders the pager on its own row with a top border, matching the DataTable pagination row.
+
+```tsx
+<Widget
+  title="Top Countries"
+  footer={
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            onClick={() => goTo(page - 1)}
+            disabled={page === 1}
+          />
+        </PaginationItem>
+        {pages.map((n) => (
+          <PaginationItem key={n}>
+            <PaginationLink
+              isActive={n === page}
+              onClick={() => goTo(n)}
+            >
+              {n}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+        <PaginationItem>
+          <PaginationNext
+            onClick={() => goTo(page + 1)}
+            disabled={page === pageCount}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  }
+>
+  <table>{/* … */}</table>
+</Widget>
+```
+
+The parent owns the page state and slices the data — the pager itself is presentational. For larger / sortable / filterable tables, prefer `DataTable`, which ships a page-size selector together with this same `Pagination`.
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Show current page">
+		Always set <code>isActive</code> on the current page link.
+	</Guideline>
+	<Guideline type="do" title="Disable at boundaries">
+		Pass <code>disabled</code> to <code>PaginationPrevious</code> on page 1 and to <code>PaginationNext</code> on the last page — the underlying <code>IconButton</code> handles the muted style.
+	</Guideline>
+	<Guideline type="dont" title="Don't show too many pages">
+		Use <code>PaginationEllipsis</code> for large page ranges. Show 5–7 page links maximum.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for single-page content">
+		Only render Pagination when there are at least two pages.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Pagination" />
+
+## Accessibility
+
+- Uses `nav` element with `aria-label="pagination"`.
+- Current page is indicated with `aria-current="page"`.
+- `PaginationPrevious` and `PaginationNext` are real `<button>` elements via `IconButton` with explicit `aria-label`s.
+- `disabled` removes pointer events and dims the trigger.
+- Keyboard navigable with Tab.

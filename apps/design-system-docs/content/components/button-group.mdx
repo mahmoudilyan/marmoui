@@ -1,0 +1,314 @@
+---
+title: ButtonGroup
+description: A container component for grouping related buttons together with attached or detached styles and horizontal or vertical orientations
+category: Components
+status: stable
+links:
+  github: https://github.com/mahmoudilyan/marmo-ui/tree/main/packages/ui/src/components/button-group
+keywords:
+  - button
+  - group
+  - toolbar
+  - toggle
+  - segmented
+  - control
+lastUpdated: 2025-01-27
+---
+
+import { ButtonGroup, Button, IconButton } from '@marmoui/ui';
+import { MdFormatBold, MdFormatItalic, MdFormatUnderlined, MdFormatAlignLeft, MdFormatAlignCenter, MdFormatAlignRight, MdViewList, MdViewModule, MdViewStream } from 'react-icons/md';
+import { TwoButtonTogglePreview, ToggleCombinedPreview, ViewSwitcherPreview } from '@/components/previews/button-group-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    ButtonGroup provides a way to group related buttons together, either visually connected (attached) or with consistent spacing (detached).
+
+    **When to Use:**
+    - Toolbar controls (text formatting, alignment)
+    - View switchers (list, grid, calendar)
+    - Toggle button sets
+    - Segmented controls for mutually exclusive options
+    - Form action groups (Save, Cancel)
+
+    The component supports both horizontal and vertical orientations. The `size` prop is propagated to all child `Button` and `IconButton` components via context, ensuring consistent sizing with full support for padding, border radius, icon spacing, and text size.
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+Import the ButtonGroup component from the package:
+
+```tsx
+import { ButtonGroup, Button, IconButton } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Attached Group
+
+<CodeExample
+	title="Attached Buttons"
+	description="Buttons visually connected with shared borders"
+	code={`<ButtonGroup attached>
+  <Button variant="secondary">Left</Button>
+  <Button variant="secondary">Center</Button>
+  <Button variant="secondary">Right</Button>
+</ButtonGroup>`}
+	preview={
+		<ButtonGroup attached>
+			<Button variant="secondary">Left</Button>
+			<Button variant="secondary">Center</Button>
+			<Button variant="secondary">Right</Button>
+		</ButtonGroup>
+	}
+/>
+
+### Two Button Toggle
+
+<CodeExample
+	title="Two Button Toggle"
+	description="A pair of attached buttons with toggle state"
+	src="@/components/previews/button-group-previews.tsx"
+	componentName="TwoButtonTogglePreview"
+	preview={<TwoButtonTogglePreview />}
+/>
+
+### Detached Group
+
+<CodeExample
+	title="Detached Buttons"
+	description="Buttons separated with consistent spacing"
+	code={`<ButtonGroup attached={false}>
+  <Button variant="primary">Save</Button>
+  <Button variant="secondary">Cancel</Button>
+</ButtonGroup>`}
+	preview={
+		<ButtonGroup attached={false}>
+			<Button variant="primary">Save</Button>
+			<Button variant="secondary">Cancel</Button>
+		</ButtonGroup>
+	}
+/>
+
+### Text Formatting Toolbar
+
+<CodeExample
+	title="Formatting Controls"
+	description="Common text formatting button group"
+	code={`<ButtonGroup attached>
+  <IconButton variant="secondary" icon={<MdFormatBold />} aria-label="Bold" />
+  <IconButton variant="secondary" icon={<MdFormatItalic />} aria-label="Italic" />
+  <IconButton variant="secondary" icon={<MdFormatUnderlined />} aria-label="Underline" />
+</ButtonGroup>`}
+	preview={
+		<ButtonGroup attached>
+			<IconButton variant="secondary" icon={<MdFormatBold />} aria-label="Bold" />
+			<IconButton variant="secondary" icon={<MdFormatItalic />} aria-label="Italic" />
+			<IconButton variant="secondary" icon={<MdFormatUnderlined />} aria-label="Underline" />
+		</ButtonGroup>
+	}
+/>
+
+### Alignment Controls
+
+<CodeExample
+	title="Text Alignment"
+	description="Alignment button group"
+	code={`<ButtonGroup attached>
+  <IconButton variant="secondary" icon={<MdFormatAlignLeft />} aria-label="Align left" />
+  <IconButton variant="secondary" icon={<MdFormatAlignCenter />} aria-label="Align center" />
+  <IconButton variant="secondary" icon={<MdFormatAlignRight />} aria-label="Align right" />
+</ButtonGroup>`}
+	preview={
+		<ButtonGroup attached>
+			<IconButton variant="secondary" icon={<MdFormatAlignLeft />} aria-label="Align left" />
+			<IconButton variant="secondary" icon={<MdFormatAlignCenter />} aria-label="Align center" />
+			<IconButton variant="secondary" icon={<MdFormatAlignRight />} aria-label="Align right" />
+		</ButtonGroup>
+	}
+/>
+
+### View Switcher
+
+<CodeExample
+	title="View Options"
+	description="Switch between different view modes with active state"
+	src="@/components/previews/button-group-previews.tsx"
+	componentName="ViewSwitcherPreview"
+	preview={<ViewSwitcherPreview />}
+/>
+
+### Vertical Orientation
+
+<CodeExample
+	title="Vertical Layout"
+	description="Stack buttons vertically"
+	code={`<div className="flex gap-8">
+  <ButtonGroup orientation="vertical" attached>
+    <Button variant="secondary">Top</Button>
+    <Button variant="secondary">Middle</Button>
+    <Button variant="secondary">Bottom</Button>
+  </ButtonGroup>
+  
+  <ButtonGroup orientation="vertical" attached={false}>
+    <Button variant="primary">Primary Action</Button>
+    <Button variant="secondary">Secondary Action</Button>
+    <Button variant="ghost">Tertiary Action</Button>
+  </ButtonGroup>
+</div>`}
+	preview={
+		<div className="flex gap-8">
+			<ButtonGroup orientation="vertical" attached>
+				<Button variant="secondary">Top</Button>
+				<Button variant="secondary">Middle</Button>
+				<Button variant="secondary">Bottom</Button>
+			</ButtonGroup>
+			<ButtonGroup orientation="vertical" attached={false}>
+				<Button variant="primary">Primary</Button>
+				<Button variant="secondary">Secondary</Button>
+				<Button variant="ghost">Tertiary</Button>
+			</ButtonGroup>
+		</div>
+	}
+/>
+
+### Size Variants
+
+<CodeExample
+	title="All Sizes"
+	description="Button groups in different sizes"
+	code={`<div className="flex flex-col gap-4 items-start">
+  <ButtonGroup size="xs">
+    <Button variant="secondary">XS</Button>
+    <Button variant="secondary">Size</Button>
+    <Button variant="secondary">Group</Button>
+  </ButtonGroup>
+  
+  <ButtonGroup size="sm">
+    <Button variant="secondary">Small</Button>
+    <Button variant="secondary">Size</Button>
+    <Button variant="secondary">Group</Button>
+  </ButtonGroup>
+  
+  <ButtonGroup size="md">
+    <Button variant="secondary">Default</Button>
+    <Button variant="secondary">Size</Button>
+    <Button variant="secondary">Group</Button>
+  </ButtonGroup>
+  
+  <ButtonGroup size="lg">
+    <Button variant="secondary">Large</Button>
+    <Button variant="secondary">Size</Button>
+    <Button variant="secondary">Group</Button>
+  </ButtonGroup>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-4 items-start">
+			<ButtonGroup size="xs">
+				<Button variant="secondary">XS</Button>
+				<Button variant="secondary">Size</Button>
+				<Button variant="secondary">Group</Button>
+			</ButtonGroup>
+			<ButtonGroup size="sm">
+				<Button variant="secondary">Small</Button>
+				<Button variant="secondary">Size</Button>
+				<Button variant="secondary">Group</Button>
+			</ButtonGroup>
+			<ButtonGroup size="md">
+				<Button variant="secondary">Default</Button>
+				<Button variant="secondary">Size</Button>
+				<Button variant="secondary">Group</Button>
+			</ButtonGroup>
+			<ButtonGroup size="lg">
+				<Button variant="secondary">Large</Button>
+				<Button variant="secondary">Size</Button>
+				<Button variant="secondary">Group</Button>
+			</ButtonGroup>
+		</div>
+	}
+/>
+
+### Overriding Size on Individual Children
+
+A child can override the group's `size` by setting its own `size` prop directly. This is useful when one button in the group needs to differ — though use this sparingly since mixed sizes break visual rhythm.
+
+<CodeExample
+	title="Size Override"
+	description="One child overrides the group size"
+	code={`<ButtonGroup size="sm" attached>
+  <Button variant="secondary">Normal</Button>
+  <Button variant="secondary" size="md">Overrideden</Button>
+  <Button variant="secondary">Normal</Button>
+</ButtonGroup>`}
+	preview={
+		<ButtonGroup size="sm" attached>
+			<Button variant="secondary">Normal</Button>
+			<Button variant="secondary" size="md">Overrideden</Button>
+			<Button variant="secondary">Normal</Button>
+		</ButtonGroup>
+	}
+/>
+
+### Toggle State
+
+<CodeExample
+	title="Interactive Toggle"
+	description="Single and multi-select toggle groups"
+	src="@/components/previews/button-group-previews.tsx"
+	componentName="ToggleCombinedPreview"
+	preview={<ToggleCombinedPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use attached for related actions">
+		Use attached mode when buttons represent related options in a single control (e.g., text alignment).
+	</Guideline>
+	
+	<Guideline type="do" title="Use detached for distinct actions">
+		Use detached mode for action pairs like Save/Cancel where actions are distinct but related.
+	</Guideline>
+	
+	<Guideline type="do" title="Provide clear active states">
+		When using as toggle buttons, clearly indicate the active state using the primary variant.
+	</Guideline>
+	
+	<Guideline type="do" title="Add aria-labels to icon buttons">
+		Always provide accessible labels for icon-only buttons in the group.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't mix attached and detached">
+		Use a consistent style within your application for similar use cases.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't group unrelated actions">
+		Only group buttons that are contextually related or form a cohesive control.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### ButtonGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `attached` | `boolean` | `true` | Whether buttons are visually connected |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout direction |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | `'md'` | Size propagated to all child buttons via context. Individual children can override with their own `size` prop. |
+| `children` | `ReactNode` | - | Button or IconButton components |
+| `className` | `string` | - | Additional className |
+
+## Accessibility
+
+<InfoCallout type="info" title="ARIA Roles">
+ButtonGroup uses `role="group"` to indicate that the buttons are related. For toggle groups, consider using `role="toolbar"` or implementing a proper ARIA pattern.
+</InfoCallout>
+
+- Uses semantic grouping with `role="group"`
+- Supports keyboard navigation between buttons
+- Individual buttons maintain their accessibility features
+- Always provide `aria-label` for icon-only buttons
+- For exclusive selection, consider using `aria-pressed` to indicate state

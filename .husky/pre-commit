@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+# Marmo UI design-system pre-commit hook
+#
+# Runs lightweight validators when the change touches design-system content.
+# Skipped entirely for unrelated commits (CI, docs, root tooling, etc.).
+
+set -e
+
+# Files staged for this commit (added/copied/modified/renamed).
+staged_files="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+if [ -z "$staged_files" ]; then
+	exit 0
+fi
+
+mdx_changed="$(printf '%s\n' "$staged_files" | grep -E '^apps/design-system-docs/content/.+\.mdx$' || true)"
+patterns_meta_changed="$(printf '%s\n' "$staged_files" | grep -E '^apps/design-system-docs/content/(patterns|components)/meta\.json$' || true)"
+component_changed="$(printf '%s\n' "$staged_files" | grep -E '^packages/ui/src/components/' || true)"
+
+if [ -z "$mdx_changed" ] && [ -z "$patterns_meta_changed" ] && [ -z "$component_changed" ] ]; then
+	# Nothing relevant to validate.
+	exit 0
+fi
+
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo " 🛡️  Marmo UI design-system pre-commit checks"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# 1. If component source changed, regenerate props.json and fail on drift.
+if [ -n "$component_changed" ]; then
+	echo ""
+	echo "📝  Component source changed — regenerating component-props.json…"
+	pnpm --filter @marmoui/design-system-docs generate:props
+	if ! git diff --exit-code apps/design-system-docs/src/data/component-props.json > /dev/null 2>&1; then
+		echo ""
+		echo "❌  component-props.json drifted after regeneration."
+		echo "    The regenerated file differs from what's committed."
+		echo "    Stage the regenerated file and commit again:"
+		echo ""
+		echo "      git add apps/design-system-docs/src/data/component-props.json"
+		echo ""
+		exit 1
+	fi
+	echo "✅  component-props.json is up to date."
+fi
+
+
+echo ""
+echo "✅  Pre-commit checks passed."
+echo ""

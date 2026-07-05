@@ -1,0 +1,421 @@
+---
+title: Avatar
+description: A flexible avatar component that supports multiple variants, sizes, status indicators, and badge notifications
+category: Components
+status: stable
+links:
+  github: https://github.com/mahmoudilyan/marmo-ui/tree/main/packages/ui/src/avatar
+keywords:
+  - avatar
+  - profile
+  - user
+  - image
+  - status
+  - badge
+lastUpdated: 2025-01-27
+---
+
+import { Avatar, AvatarImage, AvatarFallback, AvatarStack } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    A flexible avatar component perfect for user profiles, team members, and contact lists. Supports images, fallback initials, status indicators, and notification badges.
+
+    **When to Use:**
+    - User profiles and account interfaces
+    - Team member lists and directories
+    - Comment threads and social features
+    - Contact lists and messaging interfaces
+
+    The Avatar component provides graceful fallback from images to initials or icons, ensuring a consistent user experience even when images fail to load.
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+Import the Avatar components from the package:
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback, AvatarStack } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Avatar
+
+<CodeExample
+	title="Simple Avatar"
+	description="Avatar with initials fallback"
+	code={`<Avatar size="md">
+  <AvatarFallback>JL</AvatarFallback>
+</Avatar>`}
+	preview={
+		<Avatar size="md">
+			<AvatarFallback>JL</AvatarFallback>
+		</Avatar>
+	}
+/>
+
+### With Image
+
+<CodeExample
+	title="Avatar with Image"
+	description="Avatar using an image with fallback to initials"
+	code={`<Avatar size="lg">
+  <AvatarImage src="https://api.dicebear.com/9.x/lorelei/svg" alt="User Avatar" />
+  <AvatarFallback>CN</AvatarFallback>
+</Avatar>`}
+	preview={
+		<Avatar size="lg">
+			<AvatarImage src="https://api.dicebear.com/9.x/lorelei/svg" alt="User Avatar" />
+			<AvatarFallback>CN</AvatarFallback>
+		</Avatar>
+	}
+/>
+
+### Sizes
+
+<CodeExample
+	title="Avatar Sizes"
+	description="Five size options from xs to xl"
+	code={`<div className="flex items-end gap-4">
+  <Avatar size="xs">
+    <AvatarFallback>XS</AvatarFallback>
+  </Avatar>
+  <Avatar size="sm">
+    <AvatarFallback>SM</AvatarFallback>
+  </Avatar>
+  <Avatar size="md">
+    <AvatarFallback>MD</AvatarFallback>
+  </Avatar>
+  <Avatar size="lg">
+    <AvatarFallback>LG</AvatarFallback>
+  </Avatar>
+  <Avatar size="xl">
+    <AvatarFallback>XL</AvatarFallback>
+  </Avatar>
+</div>`}
+	preview={
+		<div className="flex items-end gap-4">
+			<Avatar size="xs"><AvatarFallback>XS</AvatarFallback></Avatar>
+			<Avatar size="sm"><AvatarFallback>SM</AvatarFallback></Avatar>
+			<Avatar size="md"><AvatarFallback>MD</AvatarFallback></Avatar>
+			<Avatar size="lg"><AvatarFallback>LG</AvatarFallback></Avatar>
+			<Avatar size="xl"><AvatarFallback>XL</AvatarFallback></Avatar>
+		</div>
+	}
+/>
+
+### Color Variants
+
+<CodeExample
+	title="Avatar Variants"
+	description="Use different color variants for visual distinction"
+	code={`<div className="flex items-center gap-4">
+  <Avatar size="md" variant="normal">
+    <AvatarFallback>N</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" variant="blue">
+    <AvatarFallback>B</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" variant="green">
+    <AvatarFallback>G</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" variant="yellow">
+    <AvatarFallback>Y</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" variant="red">
+    <AvatarFallback>R</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" variant="orange">
+    <AvatarFallback>O</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" variant="purple">
+    <AvatarFallback>P</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" variant="pink">
+    <AvatarFallback>P</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" variant="indigo">
+    <AvatarFallback>I</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" variant="teal">
+    <AvatarFallback>T</AvatarFallback>
+  </Avatar>
+</div>`}
+	preview={
+		<div className="flex items-center gap-4">
+			<Avatar size="md" variant="normal"><AvatarFallback>N</AvatarFallback></Avatar>
+			<Avatar size="md" variant="blue"><AvatarFallback>B</AvatarFallback></Avatar>
+			<Avatar size="md" variant="green"><AvatarFallback>G</AvatarFallback></Avatar>
+			<Avatar size="md" variant="yellow"><AvatarFallback>Y</AvatarFallback></Avatar>
+			<Avatar size="md" variant="red"><AvatarFallback>R</AvatarFallback></Avatar>
+			<Avatar size="md" variant="orange"><AvatarFallback>O</AvatarFallback></Avatar>
+			<Avatar size="md" variant="purple"><AvatarFallback>P</AvatarFallback></Avatar>
+			<Avatar size="md" variant="pink"><AvatarFallback>P</AvatarFallback></Avatar>
+			<Avatar size="md" variant="indigo"><AvatarFallback>I</AvatarFallback></Avatar>
+			<Avatar size="md" variant="teal"><AvatarFallback>T</AvatarFallback></Avatar>
+		</div>
+	}
+/>
+
+### Status Indicators
+
+<CodeExample
+	title="Status Colors"
+	description="Show user presence with status indicators"
+	code={`<div className="flex items-center gap-6">
+  <Avatar size="md" showStatus statusColor="success">
+    <AvatarFallback>JL</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" showStatus statusColor="warning">
+    <AvatarFallback>JL</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" showStatus statusColor="error">
+    <AvatarFallback>JL</AvatarFallback>
+  </Avatar>
+</div>`}
+	preview={
+		<div className="flex items-center gap-6">
+			<Avatar size="md" showStatus statusColor="success">
+				<AvatarFallback>JL</AvatarFallback>
+			</Avatar>
+			<Avatar size="md" showStatus statusColor="warning">
+				<AvatarFallback>JL</AvatarFallback>
+			</Avatar>
+			<Avatar size="md" showStatus statusColor="error">
+				<AvatarFallback>JL</AvatarFallback>
+			</Avatar>
+		</div>
+	}
+/>
+
+### Badge Notifications
+
+<CodeExample
+	title="Notification Badges"
+	description="Display notification count with automatic 99+ overflow"
+	code={`<div className="flex items-center gap-6">
+  <Avatar size="md" badgeCount={5}>
+    <AvatarFallback>JL</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" badgeCount={25}>
+    <AvatarFallback>JL</AvatarFallback>
+  </Avatar>
+  <Avatar size="md" badgeCount={100}>
+    <AvatarFallback>JL</AvatarFallback>
+  </Avatar>
+</div>`}
+	preview={
+		<div className="flex items-center gap-6">
+			<Avatar size="md" badgeCount={5}><AvatarFallback>JL</AvatarFallback></Avatar>
+			<Avatar size="md" badgeCount={25}><AvatarFallback>JL</AvatarFallback></Avatar>
+			<Avatar size="md" badgeCount={100}><AvatarFallback>JL</AvatarFallback></Avatar>
+		</div>
+	}
+/>
+
+### Combined Features
+
+<CodeExample
+	title="Status and Badge"
+	description="Combine status indicators with notification badges"
+	code={`<Avatar size="lg" showStatus statusColor="success" badgeCount={12}>
+  <AvatarImage src="https://api.dicebear.com/9.x/lorelei/svg" alt="User Avatar" />
+  <AvatarFallback>CN</AvatarFallback>
+</Avatar>`}
+	preview={
+		<Avatar size="lg" showStatus statusColor="success" badgeCount={12}>
+			<AvatarImage src="https://api.dicebear.com/9.x/lorelei/svg" alt="User Avatar" />
+			<AvatarFallback>CN</AvatarFallback>
+		</Avatar>
+	}
+/>
+
+### With Icon Fallback
+
+<CodeExample
+	title="Icon Fallback"
+	description="Use an icon when no image or initials are available"
+	code={`<Avatar size="md">
+  <AvatarFallback showIcon />
+</Avatar>`}
+	preview={
+		<Avatar size="md">
+			<AvatarFallback showIcon />
+		</Avatar>
+	}
+/>
+
+### Avatar Stack
+
+<CodeExample
+	title="Stacked Avatars"
+	description="Use AvatarStack to display multiple users in a compact overlapping layout with automatic overflow handling."
+	code={`<AvatarStack max={3} size="md">
+  <Avatar>
+    <AvatarImage src="https://api.dicebear.com/9.x/lorelei/svg?seed=user1" alt="User 1" />
+    <AvatarFallback>U1</AvatarFallback>
+  </Avatar>
+  <Avatar>
+    <AvatarFallback>U2</AvatarFallback>
+  </Avatar>
+  <Avatar>
+    <AvatarFallback>U3</AvatarFallback>
+  </Avatar>
+  <Avatar>
+    <AvatarFallback>U4</AvatarFallback>
+  </Avatar>
+  <Avatar>
+    <AvatarFallback>U5</AvatarFallback>
+  </Avatar>
+</AvatarStack>`}
+	preview={
+		<AvatarStack max={3} size="md">
+			<Avatar>
+				<AvatarImage src="https://api.dicebear.com/9.x/lorelei/svg?seed=user1" alt="User 1" />
+				<AvatarFallback>U1</AvatarFallback>
+			</Avatar>
+			<Avatar>
+				<AvatarFallback>U2</AvatarFallback>
+			</Avatar>
+			<Avatar>
+				<AvatarFallback>U3</AvatarFallback>
+			</Avatar>
+			<Avatar>
+				<AvatarFallback>U4</AvatarFallback>
+			</Avatar>
+			<Avatar>
+				<AvatarFallback>U5</AvatarFallback>
+			</Avatar>
+		</AvatarStack>
+	}
+/>
+
+### Avatar Stack Sizes
+
+<CodeExample
+	title="Stack Sizes"
+	description="AvatarStack supports all avatar sizes with appropriate overlap spacing."
+	code={`<div className="flex flex-col gap-4">
+  <AvatarStack max={4} size="xs">
+    <Avatar><AvatarFallback>A</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>B</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>C</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>D</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>E</AvatarFallback></Avatar>
+  </AvatarStack>
+  <AvatarStack max={4} size="sm">
+    <Avatar><AvatarFallback>A</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>B</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>C</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>D</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>E</AvatarFallback></Avatar>
+  </AvatarStack>
+  <AvatarStack max={4} size="md">
+    <Avatar><AvatarFallback>A</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>B</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>C</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>D</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>E</AvatarFallback></Avatar>
+  </AvatarStack>
+  <AvatarStack max={4} size="lg">
+    <Avatar><AvatarFallback>A</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>B</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>C</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>D</AvatarFallback></Avatar>
+    <Avatar><AvatarFallback>E</AvatarFallback></Avatar>
+  </AvatarStack>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-4">
+			<AvatarStack max={4} size="xs">
+				<Avatar><AvatarFallback>A</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>B</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>C</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>D</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>E</AvatarFallback></Avatar>
+			</AvatarStack>
+			<AvatarStack max={4} size="sm">
+				<Avatar><AvatarFallback>A</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>B</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>C</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>D</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>E</AvatarFallback></Avatar>
+			</AvatarStack>
+			<AvatarStack max={4} size="md">
+				<Avatar><AvatarFallback>A</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>B</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>C</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>D</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>E</AvatarFallback></Avatar>
+			</AvatarStack>
+			<AvatarStack max={4} size="lg">
+				<Avatar><AvatarFallback>A</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>B</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>C</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>D</AvatarFallback></Avatar>
+				<Avatar><AvatarFallback>E</AvatarFallback></Avatar>
+			</AvatarStack>
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Provide alt text">
+		Always provide descriptive alt text for avatar images to support screen readers.
+	</Guideline>
+	
+	<Guideline type="do" title="Use initials as fallback">
+		Provide initials as a fallback when images fail to load or aren't available.
+	</Guideline>
+	
+	<Guideline type="do" title="Choose appropriate sizes">
+		Use smaller sizes (xs, sm) for lists and larger sizes (lg, xl) for profile pages or detailed views.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't omit fallbacks">
+		Always provide a fallback (initials or icon) in case the image fails to load.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't overuse status indicators">
+		Only use status indicators when presence information is relevant to the context.
+	</Guideline>
+	
+	<Guideline type="do" title="Use AvatarStack for groups">
+		Use AvatarStack component for displaying multiple avatars - it handles overflow automatically.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### Avatar
+
+<Props componentName="Avatar" />
+
+### AvatarStack
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | - | Avatar elements to stack |
+| `max` | `number` | `4` | Maximum number of avatars to display before showing overflow |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Size of all avatars in the stack |
+| `borderColor` | `'panel' \| 'bg' \| 'transparent'` | `'panel'` | Border color for the ring (adapts to light/dark mode) |
+| `className` | `string` | - | Additional className for the container |
+
+## Accessibility
+
+<InfoCallout type="info" title="Image Accessibility">
+Always include alt text for avatar images. Use descriptive text like "John Doe's avatar" rather than just "avatar".
+</InfoCallout>
+
+- Provide meaningful alt text for all avatar images
+- Ensure status colors have sufficient contrast
+- Don't rely solely on color to convey status (status dots should be clearly visible)
+- Badge counts should be announced by screen readers
+- Use semantic HTML and ARIA attributes where appropriate
+

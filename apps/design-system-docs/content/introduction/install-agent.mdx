@@ -1,0 +1,158 @@
+---
+title: Install the agent
+description: Connect Claude Code, Codex, Cursor, or Gemini CLI to the Marmo MCP — one config block and your agent starts designing with real components.
+category: Introduction
+status: stable
+keywords:
+  - install
+  - agent
+  - mcp
+  - claude code
+  - codex
+  - cursor
+  - gemini
+  - windsurf
+  - setup
+lastUpdated: 2026-07-05
+---
+
+# Install the agent
+
+Marmo doesn't ship its own AI. It upgrades the agent you already use: connect it and it reads live component APIs, composition patterns, and generation rules instead of guessing.
+
+## 1. One command
+
+```bash
+npx marmoui init
+```
+
+Writes the config for every detected client — Claude Code (`.mcp.json`), Cursor (`.cursor/mcp.json`), VS Code (`.vscode/mcp.json`), Gemini CLI (`.gemini/settings.json`) — merging into existing files without touching anything else. `--global` adds user-level configs (Windsurf); `--token <token>` wires a [Pro](/pricing) token. Free tier needs no account and no token.
+
+**On Claude Code, install the plugin instead** — it bundles the MCP connection *plus* the `marmo-ui` skill and `/marmo-ui:*` commands (`init`, `design-md`, `build`) that enforce the find → generate → validate workflow:
+
+```
+/plugin marketplace add mahmoudilyan/marmo-ui
+/plugin install marmo-ui@marmoui-plugins
+```
+
+Everyone else: restart your agent and skip to [step 3](#3-install-the-package).
+
+## 2. Manual setup (alternative)
+
+Prefer to wire it yourself? Add this server entry:
+
+```json
+{
+	"mcpServers": {
+		"marmo-ui": {
+			"url": "https://mcp.marmoui.com/mcp"
+		}
+	}
+}
+```
+
+### Claude Code
+
+```bash
+claude mcp add --transport http marmo-ui https://mcp.marmoui.com/mcp
+```
+
+### Cursor
+
+Add the JSON block above to `.cursor/mcp.json` in your project (or `~/.cursor/mcp.json` globally).
+
+### Codex
+
+```bash
+codex mcp add marmo-ui --url https://mcp.marmoui.com/mcp
+```
+
+### Gemini CLI
+
+```bash
+gemini mcp add marmo-ui https://mcp.marmoui.com/mcp
+```
+
+### Windsurf
+
+Add the JSON block above to `~/.codeium/windsurf/mcp_config.json`.
+
+### Any platform (npx)
+
+Client only speaks stdio, or you want one command that works everywhere? Bridge with [`mcp-remote`](https://www.npmjs.com/package/mcp-remote):
+
+```bash
+npx -y mcp-remote https://mcp.marmoui.com/mcp
+```
+
+As an MCP server entry:
+
+```json
+{
+	"mcpServers": {
+		"marmo-ui": {
+			"command": "npx",
+			"args": ["-y", "mcp-remote", "https://mcp.marmoui.com/mcp"]
+		}
+	}
+}
+```
+
+## 3. Install the package
+
+Your agent will usually do this itself, but for reference:
+
+```bash
+npm install @marmoui/ui
+```
+
+```tsx
+// app entry
+import '@marmoui/ui/style.css';
+```
+
+## 4. (Claude Code) install the plugin
+
+The plugin adds the `marmo-ui` skill and `/marmoui:*` slash commands, and wires the required generation workflow (find the right primitive → generate → validate) so you don't have to prompt it manually:
+
+```
+/plugin marketplace add mahmoudilyan/marmo-ui
+/plugin install marmo-ui@marmoui-plugins
+```
+
+## 5. Try it
+
+Prompt your agent:
+
+> Build a billing dashboard with a data table, usage charts, and a filter toolbar using Marmo UI.
+
+The agent looks up real props via the MCP, composes `@marmoui/ui` components, and validates the output before reporting done. No invented props, no template defaults.
+
+## Pro: your own style
+
+Free Core MCP generates with the default Marmo look. [Pro](/pricing) adds on-brand generation — feed the MCP your [`DESIGN.md`](/tools/design-md) (brand color, type, tokens, component overrides) and every connected agent generates UI in your style. No `DESIGN.md` yet? Run `/marmo-ui:init` — it detects your existing tokens or interviews you for the basics (layout, primary color, fonts) and writes one. After purchase, generate your personal MCP token at [`/connect`](/connect) and add it as a Bearer header:
+
+```json
+{
+	"mcpServers": {
+		"marmo-ui": {
+			"url": "https://mcp.marmoui.com/mcp",
+			"headers": {
+				"Authorization": "Bearer <your-token>"
+			}
+		}
+	}
+}
+```
+
+## Troubleshooting
+
+- **Agent doesn't see the tools** — restart the client after editing MCP config; check the server list (`claude mcp list`, Cursor MCP settings).
+- **Stale knowledge** — the MCP re-indexes on deploy. Ask the agent to call `get_knowledge_version`; if the `gitSha` looks old, retry in a minute.
+- **Wrong imports in output** — make sure the agent used the MCP (the plugin enforces this on Claude Code). Imports must come from `@marmoui/ui`, never `@chakra-ui/react` or `@radix-ui/*`.
+
+## Next
+
+- [Get started](/introduction/get-started) — the full picture.
+- [Roadmap](/introduction/roadmap) — what's shipping next.
+- [Components](/components) — everything the agent can compose.

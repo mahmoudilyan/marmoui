@@ -1,0 +1,540 @@
+---
+title: Input
+description: A comprehensive collection of input components including text inputs, grouped inputs with addons, shortcode inputs, number inputs, and tag inputs
+category: Components
+status: stable
+links:
+  github: https://github.com/mahmoudilyan/marmo-ui/tree/main/packages/ui/src/components
+keywords:
+  - input
+  - text
+  - form
+  - field
+  - group
+  - addon
+  - shortcode
+  - number
+  - tags
+lastUpdated: 2025-01-27
+---
+
+import { Input, InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText, InputShortcode, NumberInput, TagsInput, TagsInputLabel, TagsInputList, TagsInputInput, TagsInputItem, Label } from '@marmoui/ui';
+import { MdSearch, MdVisibility, MdVisibilityOff, MdEmail, MdLock, MdPerson, MdLink, MdAttachMoney, MdSend, MdContentCopy } from 'react-icons/md';
+
+<Accordions>
+  <Accordion title="Overview">
+    A comprehensive collection of input components for forms, designed to handle various input scenarios from simple text entry to complex grouped inputs with actions.
+
+    **Components Included:**
+    - **Input**: Basic text input with variants and sizes
+    - **InputGroup**: Compound input with addons, buttons, and icons
+    - **InputShortcode**: Input with shortcode picker and emoji support
+    - **NumberInput**: Numeric input with increment/decrement controls
+    - **TagsInput**: Multi-value input for tags/chips
+  </Accordion>
+</Accordions>
+
+## When to use
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use for free-text single-line entry">
+		Names, emails, URLs, search queries, short answers. Anything that fits on one visible line.
+	</Guideline>
+	<Guideline type="do" title="Wrap in a Field component">
+		`Field` adds the label, helper text, and error display. Always pair `Input` with `Field` in forms — never render an Input bare with a separate `<label>`.
+	</Guideline>
+	<Guideline type="do" title="Use the right specialised variant when relevant">
+		`InputGroup` for addons (currency, units), `InputShortcode` for templating fields, `NumberInput` for numeric, `TagsInput` for multi-value.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for multi-line content">
+		Anything more than one line → **Textarea**.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for predefined option choice">
+		If the user picks from a known list → **Select** (short) or **SelectSearchable** (long). Never an Input with a datalist.
+	</Guideline>
+	<Guideline type="dont" title="Don't roll your own number inputs">
+		Use `NumberInput` (from `@marmoui/ui`) — it handles min/max, increment/decrement, and locale-aware formatting.
+	</Guideline>
+</GuidelinesGrid>
+
+## Choosing the right alternative
+
+| You want… | Use this |
+|---|---|
+| Multi-line free-text (descriptions, notes, body) | `Textarea` |
+| Pick one option from a short known list | `Select` |
+| Pick one option from a long searchable list | `SelectSearchable` |
+| Pick multiple options | `SelectSearchable` with `multiple` |
+| Multi-value tag/chip entry | `TagsInput` |
+| Numeric input with stepper | `NumberInput` |
+| Input with currency/unit prefix | `InputGroup` |
+| Input with template variable picker | `InputShortcode` |
+| On/off toggle | `Switch` |
+| Single yes/no opt-in | `Checkbox` |
+| Search bar | `Input` with `leftIcon={<MdSearch />}` |
+| Date / time | `DatePicker` |
+
+<Installation />
+
+## Usage
+
+Import the input components from the package:
+
+```tsx
+import { 
+  Input, 
+  InputGroup, 
+  InputGroupAddon, 
+  InputGroupInput,
+  InputGroupButton,
+  InputShortcode,
+  NumberInput,
+  TagsInput
+} from '@marmoui/ui';
+```
+
+## Basic Input
+
+### Default Input
+
+<CodeExample
+	title="Simple Input"
+	description="Basic text input"
+	code={`<Input placeholder="Enter text..." />`}
+	preview={<Input placeholder="Enter text..." className="w-64" />}
+/>
+
+### Input Variants
+
+<CodeExample
+	title="All Variants"
+	description="Different states for validation feedback"
+	code={`<div className="flex flex-col gap-4 w-72">
+  <Input variant="normal" placeholder="Normal input" />
+  <Input variant="destructive" placeholder="Error input" />
+  <Input variant="success" placeholder="Success input" />
+  <Input variant="warning" placeholder="Warning input" />
+</div>`}
+	preview={
+		<div className="flex flex-col gap-4 w-72">
+			<Input variant="normal" placeholder="Normal input" />
+			<Input variant="destructive" placeholder="Error input" />
+			<Input variant="success" placeholder="Success input" />
+			<Input variant="warning" placeholder="Warning input" />
+		</div>
+	}
+/>
+
+### Input Sizes
+
+<CodeExample
+	title="Size Variants"
+	description="Three size options"
+	code={`<div className="flex flex-col gap-4 w-72">
+  <Input size="sm" placeholder="Small input" />
+  <Input size="md" placeholder="Medium input (default)" />
+  <Input size="lg" placeholder="Large input" />
+</div>`}
+	preview={
+		<div className="flex flex-col gap-4 w-72">
+			<Input size="sm" placeholder="Small input" />
+			<Input size="md" placeholder="Medium input" />
+			<Input size="lg" placeholder="Large input" />
+		</div>
+	}
+/>
+
+### With Adornments
+
+<CodeExample
+	title="Start and End Adornments"
+	description="Icons or text before/after the input"
+	code={`<div className="flex flex-col gap-4 w-72">
+  <Input startAdornment={<MdSearch size={18} />} placeholder="Search..." />
+  <Input endAdornment={<MdEmail size={18} />} placeholder="Email address" />
+  <Input
+    startAdornment={<MdAttachMoney size={18} />}
+    endAdornment={<span className="text-xs text-ink-light">USD</span>}
+    placeholder="0.00"
+  />
+</div>`}
+	preview={
+		<div className="flex flex-col gap-4 w-72">
+			<Input startAdornment={<MdSearch size={18} />} placeholder="Search..." />
+			<Input endAdornment={<MdEmail size={18} />} placeholder="Email address" />
+			<Input
+				startAdornment={<MdAttachMoney size={18} />}
+				endAdornment={<span className="text-xs text-ink-light">USD</span>}
+				placeholder="0.00"
+			/>
+		</div>
+	}
+/>
+
+### Password Input
+
+<CodeExample
+	title="Password Toggle"
+	description="Password input with visibility toggle"
+	code={`function PasswordInput() {
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  return (
+    <Input
+      type={showPassword ? 'text' : 'password'}
+      startAdornment={<MdLock size={18} />}
+      endAdornment={
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="hover:text-ink transition-colors"
+        >
+          {showPassword ? <MdVisibilityOff size={18} /> : <MdVisibility size={18} />}
+        </button>
+      }
+      placeholder="Enter password"
+    />
+  );
+}`}
+	preview={
+		<Input
+			type="password"
+			endAdornment={<MdVisibility size={18} className="text-ink-light cursor-pointer" />}
+			placeholder="Enter password"
+			className="w-64"
+		/>
+	}
+/>
+
+## InputGroup
+
+InputGroup allows you to build complex inputs with addons, icons, and buttons.
+
+### Basic InputGroup
+
+<CodeExample
+	title="With Icon Addon"
+	description="Input with icon prefix"
+	code={`<InputGroup>
+  <InputGroupAddon>
+    <MdSearch size={16} />
+  </InputGroupAddon>
+  <InputGroupInput placeholder="Search..." />
+</InputGroup>`}
+	preview={
+		<InputGroup className="w-72">
+			<InputGroupAddon>
+				<MdSearch size={16} />
+			</InputGroupAddon>
+			<InputGroupInput placeholder="Search..." />
+		</InputGroup>
+	}
+/>
+
+### With Text Addon
+
+<CodeExample
+	title="URL Input"
+	description="Input with text prefix"
+	code={`<InputGroup>
+  <InputGroupAddon>
+    <InputGroupText>https://</InputGroupText>
+  </InputGroupAddon>
+  <InputGroupInput placeholder="example.com" />
+</InputGroup>`}
+	preview={
+		<InputGroup className="w-72">
+			<InputGroupAddon>
+				<InputGroupText>https://</InputGroupText>
+			</InputGroupAddon>
+			<InputGroupInput placeholder="example.com" />
+		</InputGroup>
+	}
+/>
+
+### With Button
+
+<CodeExample
+	title="Copy Link Input"
+	description="Input with action button"
+	code={`<InputGroup>
+  <InputGroupAddon>
+    <MdLink size={16} />
+  </InputGroupAddon>
+  <InputGroupInput value="https://example.com/share/abc123" readOnly />
+  <InputGroupAddon align="inline-end">
+    <InputGroupButton variant="ghost" size="xs">
+      <MdContentCopy size={14} />
+      Copy
+    </InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>`}
+	preview={
+		<InputGroup className="w-96">
+			<InputGroupAddon>
+				<MdLink size={16} />
+			</InputGroupAddon>
+			<InputGroupInput value="https://example.com/share/abc123" readOnly />
+			<InputGroupAddon align="inline-end">
+				<InputGroupButton variant="ghost" size="xs">
+					<MdContentCopy size={14} />
+					Copy
+				</InputGroupButton>
+			</InputGroupAddon>
+		</InputGroup>
+	}
+/>
+
+### InputGroup Sizes
+
+<CodeExample
+	title="Size Variants"
+	description="Match input size with your forms"
+	code={`<div className="flex flex-col gap-4 w-72">
+  <InputGroup size="sm">
+    <InputGroupAddon><MdSearch size={14} /></InputGroupAddon>
+    <InputGroupInput size="sm" placeholder="Small search..." />
+  </InputGroup>
+  <InputGroup size="md">
+    <InputGroupAddon><MdSearch size={16} /></InputGroupAddon>
+    <InputGroupInput size="md" placeholder="Medium search..." />
+  </InputGroup>
+  <InputGroup size="lg">
+    <InputGroupAddon><MdSearch size={18} /></InputGroupAddon>
+    <InputGroupInput size="lg" placeholder="Large search..." />
+  </InputGroup>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-4 w-72">
+			<InputGroup size="sm">
+				<InputGroupAddon><MdSearch size={14} /></InputGroupAddon>
+				<InputGroupInput size="sm" placeholder="Small search..." />
+			</InputGroup>
+			<InputGroup size="md">
+				<InputGroupAddon><MdSearch size={16} /></InputGroupAddon>
+				<InputGroupInput size="md" placeholder="Medium search..." />
+			</InputGroup>
+			<InputGroup size="lg">
+				<InputGroupAddon><MdSearch size={18} /></InputGroupAddon>
+				<InputGroupInput size="lg" placeholder="Large search..." />
+			</InputGroup>
+		</div>
+	}
+/>
+
+## InputShortcode
+
+InputShortcode provides an input with shortcode picker and optional emoji support, perfect for email subject lines and personalized content.
+
+<CodeExample
+	title="With Shortcodes"
+	description="Input with shortcode picker"
+	code={`function ShortcodeExample() {
+  const [value, setValue] = React.useState('');
+
+  const shortcodes = [
+    {
+      id: 'contact',
+      section: 'Contact',
+      text: 'Contact Fields',
+      menu: [
+        { text: 'First Name', value: '[first_name]' },
+        { text: 'Last Name', value: '[last_name]' },
+        { text: 'Email', value: '[email]' },
+      ],
+    },
+    {
+      id: 'company',
+      section: 'Company',
+      text: 'Company Fields',
+      menu: [
+        { text: 'Company Name', value: '[company_name]' },
+        { text: 'Website', value: '[website]' },
+      ],
+    },
+  ];
+
+  return (
+    <InputShortcode
+      value={value}
+      onChange={setValue}
+      shortcodes={shortcodes}
+      placeholder="Enter subject with personalization..."
+    />
+  );
+}`}
+	preview={
+		<Input placeholder="Enter subject with personalization..." className="w-80" />
+	}
+/>
+
+<CodeExample
+	title="With Emoji Support"
+	description="Shortcode input with emoji picker"
+	code={`<InputShortcode
+  value={value}
+  onChange={setValue}
+  shortcodes={shortcodes}
+  enableEmoji
+  placeholder="Type a message with emojis..."
+/>`}
+	preview={
+		<Input placeholder="Enter subject with personalization..." className="w-80" />
+	}
+/>
+
+## NumberInput
+
+NumberInput provides a numeric input with increment/decrement controls.
+
+<CodeExample
+	title="Basic Number Input"
+	description="Quantity selector"
+	code={`function QuantityInput() {
+  const [value, setValue] = React.useState(50);
+
+  return (
+    <NumberInput
+      value={value}
+      onValueChange={setValue}
+      min={0}
+      max={100}
+    />
+  );
+}`}
+	preview={
+		<NumberInput defaultValue={50} min={0} max={100} className="w-32" />
+	}
+/>
+
+<CodeExample
+	title="With Step and Precision"
+	description="Temperature input with decimal values"
+	code={`<NumberInput
+  value={value}
+  onValueChange={setValue}
+  min={-50}
+  max={50}
+  step={0.5}
+  precision={1}
+/>`}
+	preview={
+		<NumberInput defaultValue={23.5} min={-50} max={50} step={0.5} precision={1} className="w-32" />
+	}
+/>
+
+## TagsInput
+
+TagsInput allows users to enter multiple values as tags or chips.
+
+<CodeExample
+	title="Basic Tags Input"
+	description="Multi-value input for technologies"
+	code={`function TagsExample() {
+  const [values, setValues] = React.useState(['React', 'TypeScript']);
+
+  return (
+    <TagsInput value={values} onValueChange={setValues}>
+      <TagsInputLabel>Technologies</TagsInputLabel>
+      <TagsInputList>
+        {values.map(value => (
+          <TagsInputItem key={value} value={value}>
+            {value}
+          </TagsInputItem>
+        ))}
+        <TagsInputInput placeholder="Add technology..." />
+      </TagsInputList>
+    </TagsInput>
+  );
+}`}
+	preview={
+		<Input placeholder="Enter subject with personalization..." className="w-80" />
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use appropriate variants">
+		Use destructive variant for errors, success for valid states, and warning for cautions.
+	</Guideline>
+	
+	<Guideline type="do" title="Provide clear placeholders">
+		Use descriptive placeholder text that indicates the expected input format.
+	</Guideline>
+	
+	<Guideline type="do" title="Use icons meaningfully">
+		Icons in adornments should reinforce the input's purpose (search icon for search, lock for password).
+	</Guideline>
+	
+	<Guideline type="do" title="Match sizes consistently">
+		Use the same size for related form elements (inputs, buttons, selects).
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use too many adornments">
+		Limit adornments to avoid cluttering the input. Usually one start and one end is sufficient.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't hide essential information">
+		Don't use placeholder text for important labels or instructions.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### Input
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'normal' \| 'destructive' \| 'success' \| 'warning'` | `'normal'` | Visual variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Input size |
+| `startAdornment` | `ReactNode` | - | Content before input |
+| `endAdornment` | `ReactNode` | - | Content after input |
+| `className` | `string` | - | Additional className |
+
+### InputGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of the group |
+| `className` | `string` | - | Additional className |
+
+### InputGroupAddon
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `align` | `'inline-start' \| 'inline-end' \| 'block-start' \| 'block-end'` | `'inline-start'` | Position of addon |
+
+### InputShortcode
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Input value |
+| `onChange` | `(value: string) => void` | - | Change handler |
+| `shortcodes` | `ShortcodeGroup[]` | - | Shortcode definitions |
+| `enableEmoji` | `boolean` | `false` | Enable emoji picker |
+| `onLoadShortcodes` | `() => Promise<ShortcodeGroup[]>` | - | Async shortcode loader |
+
+### NumberInput
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number` | - | Current value |
+| `onValueChange` | `(value: number) => void` | - | Change handler |
+| `min` | `number` | - | Minimum value |
+| `max` | `number` | - | Maximum value |
+| `step` | `number` | `1` | Increment step |
+| `precision` | `number` | `0` | Decimal precision |
+| `variant` | `'normal' \| 'destructive' \| 'success'` | `'normal'` | Visual variant |
+
+## Accessibility
+
+<InfoCallout type="info" title="Form Labels">
+Always pair inputs with Label components for accessibility. Use `htmlFor` to associate labels with inputs.
+</InfoCallout>
+
+- All inputs support standard ARIA attributes
+- InputGroup maintains focus styling for the group
+- TagsInput supports keyboard navigation and deletion
+- NumberInput supports keyboard increment/decrement with arrow keys
+- Adornment buttons should have `aria-label` for screen readers

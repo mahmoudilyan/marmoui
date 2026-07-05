@@ -1,0 +1,367 @@
+---
+title: Checkbox
+description: A control that allows users to select one or more options from a set, with support for indeterminate states
+category: Components
+status: stable
+links:
+  github: https://github.com/mahmoudilyan/marmo-ui/tree/main/packages/ui/src/components/checkbox
+keywords:
+  - checkbox
+  - check
+  - toggle
+  - selection
+  - form
+  - boolean
+  - multiselect
+lastUpdated: 2025-01-27
+---
+
+import { Checkbox, Label } from '@marmoui/ui';
+import {
+	CheckboxCardBasicPreview,
+	CheckboxCardIconsPreview,
+	CheckboxCardAddonPreview,
+} from '@/components/previews/checkbox-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    Checkbox allows users to select one or more items from a set of options, or to turn an option on or off.
+
+    **Components Included:**
+    - **Checkbox**: Basic checkbox input
+    - **CheckboxCard**: Card-style checkbox for rich selection interfaces
+
+    **When to Use:**
+    - Selecting multiple items from a list
+    - Enabling or disabling settings
+    - Agreeing to terms and conditions
+    - Filtering options in search interfaces
+
+    **When NOT to Use:**
+    - For mutually exclusive choices (use Radio instead)
+    - For binary on/off settings where feedback is immediate (use Switch instead)
+    - For selecting a single item from many options (use Select instead)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+Import the Checkbox component from the package:
+
+```tsx
+import { Checkbox, Label } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Checkbox
+
+<CodeExample
+	title="Simple Checkbox"
+	description="Basic checkbox with label"
+	code={`<div className="flex items-center space-x-2">
+  <Checkbox id="terms" />
+  <Label htmlFor="terms" className='font-normal'>Accept terms and conditions</Label>
+</div>`}
+	preview={
+		<div className="flex items-center space-x-2">
+			<Checkbox id="terms-example" />
+			<Label htmlFor="terms-example" className='font-normal'>Accept terms and conditions</Label>
+		</div>
+	}
+/>
+
+### Checked State
+
+<CodeExample
+	title="Controlled Checkbox"
+	description="Checkbox with controlled state"
+	code={`function ControlledCheckbox() {
+  const [checked, setChecked] = React.useState(true);
+
+  return (
+    <div className="flex items-center space-x-2">
+      <Checkbox
+        id="controlled"
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+      <Label htmlFor="controlled" className='font-normal'>
+        Receive email notifications
+      </Label>
+    </div>
+  );
+}`}
+	preview={
+		<div className="flex items-center space-x-2">
+			<Checkbox id="controlled-ex" defaultChecked />
+			<Label htmlFor="controlled-ex" className='font-normal'>Receive email notifications</Label>
+		</div>
+	}
+/>
+
+### Checkbox Group
+
+<CodeExample
+	title="Multiple Checkboxes"
+	description="Group of related checkboxes"
+	code={`function CheckboxGroup() {
+  const [selected, setSelected] = React.useState(['email']);
+
+  const toggleOption = (option) => {
+    setSelected(prev =>
+      prev.includes(option)
+        ? prev.filter(o => o !== option)
+        : [...prev, option]
+    );
+  };
+
+  return (
+    <div className="space-y-3">
+      <Label className="text-base font-medium">Notification Preferences</Label>
+      <div className="space-y-2">
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="email"
+            checked={selected.includes('email')}
+            onCheckedChange={() => toggleOption('email')}
+          />
+          <Label htmlFor="email" className='font-normal'>Email notifications</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="sms"
+            checked={selected.includes('sms')}
+            onCheckedChange={() => toggleOption('sms')}
+          />
+          <Label htmlFor="sms" className='font-normal'>SMS notifications</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="push"
+            checked={selected.includes('push')}
+            onCheckedChange={() => toggleOption('push')}
+          />
+          <Label htmlFor="push" className='font-normal'>Push notifications</Label>
+        </div>
+      </div>
+    </div>
+  );
+}`}
+	preview={
+		<div className="space-y-3">
+			<Label className="text-base font-medium">Notification Preferences</Label>
+			<div className="space-y-2">
+				<div className="flex items-center space-x-2">
+					<Checkbox id="cb-email" defaultChecked />
+					<Label htmlFor="cb-email" className='font-normal'>Email notifications</Label>
+				</div>
+				<div className="flex items-center space-x-2">
+					<Checkbox id="cb-sms" />
+					<Label htmlFor="cb-sms" className='font-normal'>SMS notifications</Label>
+				</div>
+				<div className="flex items-center space-x-2">
+					<Checkbox id="cb-push" />
+					<Label htmlFor="cb-push" className='font-normal'>Push notifications</Label>
+				</div>
+			</div>
+		</div>
+	}
+/>
+
+### Indeterminate State
+
+<CodeExample
+	title="Parent/Child Selection"
+	description="Checkbox with indeterminate state for partial selection"
+	code={`function IndeterminateExample() {
+  const [items, setItems] = React.useState([
+    { id: '1', label: 'Item 1', checked: true },
+    { id: '2', label: 'Item 2', checked: false },
+    { id: '3', label: 'Item 3', checked: true },
+  ]);
+
+  const allChecked = items.every(item => item.checked);
+  const someChecked = items.some(item => item.checked) && !allChecked;
+
+  const toggleAll = () => {
+    const newValue = !allChecked;
+    setItems(items.map(item => ({ ...item, checked: newValue })));
+  };
+
+  const toggleItem = (id) => {
+    setItems(items.map(item =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    ));
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center space-x-2">
+        <Checkbox
+          id="select-all"
+          checked={someChecked ? 'indeterminate' : allChecked}
+          onCheckedChange={toggleAll}
+        />
+        <Label htmlFor="select-all" className="font-medium">
+          Select all items
+        </Label>
+      </div>
+      <div className="ml-6 space-y-2">
+        {items.map(item => (
+          <div key={item.id} className="flex items-center space-x-2">
+            <Checkbox
+              id={item.id}
+              checked={item.checked}
+              onCheckedChange={() => toggleItem(item.id)}
+            />
+            <Label htmlFor={item.id} className='font-normal'>{item.label}</Label>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}`}
+	preview={
+		<div className="space-y-3">
+			<div className="flex items-center space-x-2">
+				<Checkbox id="select-all-ex" checked="indeterminate" />
+				<Label htmlFor="select-all-ex" className='font-normal'>Select all items</Label>
+			</div>
+			<div className="ml-6 space-y-2">
+				<div className="flex items-center space-x-2">
+					<Checkbox id="item-1-ex" defaultChecked />
+					<Label htmlFor="item-1-ex"  className='font-normal'>Item 1</Label>
+				</div>
+				<div className="flex items-center space-x-2">
+					<Checkbox id="item-2-ex" />
+					<Label htmlFor="item-2-ex"  className='font-normal'>Item 2</Label>
+				</div>
+				<div className="flex items-center space-x-2">
+					<Checkbox id="item-3-ex" defaultChecked />
+					<Label htmlFor="item-3-ex"  className='font-normal'>Item 3</Label>
+				</div>
+			</div>
+		</div>
+	}
+/>
+
+### Disabled State
+
+<CodeExample
+	title="Disabled Checkbox"
+	description="Non-interactive checkbox"
+	code={`<div className="space-y-2">
+  <div className="flex items-center space-x-2">
+    <Checkbox id="disabled-unchecked" disabled />
+    <Label htmlFor="disabled-unchecked" className="font-normal text-ink-light">
+      Disabled unchecked
+    </Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <Checkbox id="disabled-checked" disabled checked />
+    <Label htmlFor="disabled-checked" className="font-normal text-ink-light">
+      Disabled checked
+    </Label>
+  </div>
+</div>`}
+	preview={
+		<div className="space-y-2">
+			<div className="flex items-center space-x-2">
+				<Checkbox id="disabled-unchecked-ex" disabled />
+				<Label htmlFor="disabled-unchecked-ex" className="font-normal text-ink-light">Disabled unchecked</Label>
+			</div>
+			<div className="flex items-center space-x-2">
+				<Checkbox id="disabled-checked-ex" disabled checked />
+				<Label htmlFor="disabled-checked-ex" className="font-normal text-ink-light">Disabled checked</Label>
+			</div>
+		</div>
+	}
+/>
+
+### With Description
+
+<CodeExample
+	title="Checkbox with Description"
+	description="Additional context for the option"
+	code={`<div className="flex items-start space-x-2">
+  <Checkbox id="marketing" className="mt-1" />
+  <div>
+    <Label htmlFor="marketing" className='font-normal'>Marketing emails</Label>
+    <p className="text-sm text-ink-light">
+      Receive tips, trends, and insights about email marketing.
+    </p>
+  </div>
+</div>`}
+	preview={
+		<div className="flex items-start space-x-2">
+			<Checkbox id="marketing-ex" className="mt-1" />
+			<div>
+				<Label htmlFor="marketing-ex" className='font-normal'>Marketing emails</Label>
+				<p className="text-sm text-ink-light">Receive tips, trends, and insights about email marketing.</p>
+			</div>
+		</div>
+	}
+/>
+
+
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use clear labels">
+		Labels should clearly describe what selecting the checkbox does. Use positive phrasing.
+	</Guideline>
+	
+	<Guideline type="do" title="Group related options">
+		Organize checkboxes logically and use a group label when presenting multiple related options.
+	</Guideline>
+	
+	<Guideline type="do" title="Use indeterminate for parent items">
+		When a parent checkbox controls child items, use the indeterminate state for partial selection.
+	</Guideline>
+	
+	<Guideline type="do" title="Align labels consistently">
+		Position labels consistently to the right of checkboxes for easy scanning.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use for single binary choices">
+		For immediate on/off toggles, use a Switch component instead.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use for mutually exclusive options">
+		When only one option can be selected, use Radio buttons instead.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### Checkbox
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `checked` | `boolean \| 'indeterminate'` | - | Controlled checked state |
+| `defaultChecked` | `boolean` | - | Default checked state |
+| `onCheckedChange` | `(checked: boolean \| 'indeterminate') => void` | - | Change handler |
+| `disabled` | `boolean` | `false` | Disable the checkbox |
+| `required` | `boolean` | `false` | Mark as required |
+| `name` | `string` | - | Form field name |
+| `value` | `string` | - | Form value when checked |
+| `id` | `string` | - | Element ID for label association |
+| `className` | `string` | - | Additional className |
+
+
+
+## Accessibility
+
+<InfoCallout type="info" title="Label Association">
+Always associate checkboxes with labels using the `htmlFor` attribute matching the checkbox `id`. This ensures proper accessibility and larger click targets.
+</InfoCallout>
+
+- Built on Radix UI Checkbox with full ARIA support
+- Supports keyboard activation with Space key
+- Communicates checked, unchecked, and indeterminate states to screen readers
+- Required state is announced by assistive technology
+- Focus ring provides clear visual feedback

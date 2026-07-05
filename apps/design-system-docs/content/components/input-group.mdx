@@ -1,0 +1,520 @@
+---
+title: Input Group
+description: A compound input component that combines text inputs with addons, buttons, or text elements for contextual input fields.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/input-group
+keywords:
+  - input group
+  - addon
+  - prefix
+  - suffix
+  - compound input
+lastUpdated: 2026-03-17
+---
+
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupInput, InputGroupTextarea, Kbd } from '@marmoui/ui';
+import { MdSearch, MdVisibility, MdVisibilityOff, MdContentCopy, MdSend, MdLink, MdAttachMoney, MdPercent, MdEmail, MdLock } from 'react-icons/md';
+
+<Accordions>
+  <Accordion title="Overview">
+    InputGroup combines text inputs with addons, buttons, or static text to create contextual input fields. Common patterns include search bars with icons, URL inputs with protocol prefixes, and currency fields.
+
+    **When to Use:**
+    - Adding a prefix or suffix to an input (currency symbols, units)
+    - Combining an input with a button (search, copy)
+    - Showing static context alongside an input (protocol, domain)
+    - Textarea with action buttons (send, format)
+
+    **When NOT to Use:**
+    - For standalone text input (use Input)
+    - For select + input combinations (use a custom composite)
+    - When the addon doesn't directly relate to the input's content
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from '@marmoui/ui';
+```
+
+## Align
+
+Use the `align` prop on `InputGroupAddon` to position the addon relative to the input.
+
+<InfoCallout type="info" title="DOM Order">
+  For proper focus management, `InputGroupAddon` should always be placed **after** `InputGroupInput` or `InputGroupTextarea` in the DOM. Use the `align` prop to visually position the addon.
+</InfoCallout>
+
+### inline-start
+
+Position the addon at the start of the input. This is the default.
+
+<CodeExample
+	title="Inline Start"
+	description="Addon at the start of the input"
+	code={`<InputGroup>
+  <InputGroupInput placeholder="Search contacts..." />
+  <InputGroupAddon align="inline-start">
+    <MdSearch />
+  </InputGroupAddon>
+</InputGroup>`}
+	preview={
+		<div className="max-w-sm">
+			<InputGroup>
+				<InputGroupInput placeholder="Search contacts..." />
+				<InputGroupAddon align="inline-start">
+					<MdSearch />
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+### inline-end
+
+Position the addon at the end of the input.
+
+<CodeExample
+	title="Inline End"
+	description="Addon at the end of the input"
+	code={`<InputGroup>
+  <InputGroupInput placeholder="Enter your email" />
+  <InputGroupAddon align="inline-end">
+    <MdEmail />
+  </InputGroupAddon>
+</InputGroup>`}
+	preview={
+		<div className="max-w-sm">
+			<InputGroup>
+				<InputGroupInput placeholder="Enter your email" />
+				<InputGroupAddon align="inline-end">
+					<MdEmail />
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+### block-start
+
+Position the addon above the input (useful for labels or helper content inside the group).
+
+<CodeExample
+	title="Block Start"
+	description="Addon above the textarea"
+	code={`<InputGroup>
+  <InputGroupTextarea placeholder="Write your message..." rows={3} />
+  <InputGroupAddon align="block-start">
+    <InputGroupText>Message</InputGroupText>
+  </InputGroupAddon>
+</InputGroup>`}
+	preview={
+		<div className="max-w-md">
+			<InputGroup>
+				<InputGroupTextarea placeholder="Write your message..." rows={3} />
+				<InputGroupAddon align="block-start">
+					<InputGroupText>Message</InputGroupText>
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+### block-end
+
+Position the addon below the input (common for textarea action bars).
+
+<CodeExample
+	title="Block End"
+	description="Addon below the textarea with action buttons"
+	code={`<InputGroup>
+  <InputGroupTextarea placeholder="Type a message..." rows={3} />
+  <InputGroupAddon align="block-end">
+    <InputGroupButton size="icon-xs" aria-label="Attach">
+      <MdLink />
+    </InputGroupButton>
+    <InputGroupButton>
+      <MdSend /> Send
+    </InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>`}
+	preview={
+		<div className="max-w-md">
+			<InputGroup>
+				<InputGroupTextarea placeholder="Type a message..." rows={3} />
+				<InputGroupAddon align="block-end">
+					<InputGroupButton size="icon-xs" aria-label="Attach">
+						<MdLink />
+					</InputGroupButton>
+					<InputGroupButton>
+						<MdSend /> Send
+					</InputGroupButton>
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+## Examples
+
+### Icon
+
+<CodeExample
+	title="Icon Addons"
+	description="Inputs with leading or trailing icons"
+	code={`<div className="flex flex-col gap-3">
+  <InputGroup>
+    <InputGroupInput placeholder="Search..." />
+    <InputGroupAddon align="inline-start">
+      <MdSearch />
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup>
+    <InputGroupInput placeholder="Enter password" type="password" />
+    <InputGroupAddon align="inline-start">
+      <MdLock />
+    </InputGroupAddon>
+    <InputGroupAddon align="inline-end">
+      <InputGroupButton size="icon-xs" variant="ghost" aria-label="Toggle visibility">
+        <MdVisibility />
+      </InputGroupButton>
+    </InputGroupAddon>
+  </InputGroup>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-3 max-w-sm">
+			<InputGroup>
+				<InputGroupInput placeholder="Search..." />
+				<InputGroupAddon align="inline-start">
+					<MdSearch />
+				</InputGroupAddon>
+			</InputGroup>
+			<InputGroup>
+				<InputGroupInput placeholder="Enter password" type="password" />
+				<InputGroupAddon align="inline-start">
+					<MdLock />
+				</InputGroupAddon>
+				<InputGroupAddon align="inline-end">
+					<InputGroupButton size="icon-xs" variant="ghost" aria-label="Toggle visibility">
+						<MdVisibility />
+					</InputGroupButton>
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+### Text
+
+<CodeExample
+	title="Text Addons"
+	description="Inputs with text prefixes and suffixes"
+	code={`<div className="flex flex-col gap-3">
+  <InputGroup>
+    <InputGroupInput placeholder="example.com" />
+    <InputGroupAddon align="inline-start">
+      <InputGroupText>https://</InputGroupText>
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup>
+    <InputGroupInput placeholder="0.00" />
+    <InputGroupAddon align="inline-start">
+      <InputGroupText>$</InputGroupText>
+    </InputGroupAddon>
+    <InputGroupAddon align="inline-end">
+      <InputGroupText>USD</InputGroupText>
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup>
+    <InputGroupInput placeholder="username" />
+    <InputGroupAddon align="inline-end">
+      <InputGroupText>@marmoui.com</InputGroupText>
+    </InputGroupAddon>
+  </InputGroup>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-3 max-w-sm">
+			<InputGroup>
+				<InputGroupInput placeholder="example.com" />
+				<InputGroupAddon align="inline-start">
+					<InputGroupText>https://</InputGroupText>
+				</InputGroupAddon>
+			</InputGroup>
+			<InputGroup>
+				<InputGroupInput placeholder="0.00" />
+				<InputGroupAddon align="inline-start">
+					<InputGroupText>$</InputGroupText>
+				</InputGroupAddon>
+				<InputGroupAddon align="inline-end">
+					<InputGroupText>USD</InputGroupText>
+				</InputGroupAddon>
+			</InputGroup>
+			<InputGroup>
+				<InputGroupInput placeholder="username" />
+				<InputGroupAddon align="inline-end">
+					<InputGroupText>@marmoui.com</InputGroupText>
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+### Button
+
+<CodeExample
+	title="Button Addons"
+	description="Inputs with action buttons"
+	code={`<div className="flex flex-col gap-3">
+  <InputGroup>
+    <InputGroupInput placeholder="Search products..." />
+    <InputGroupAddon align="inline-end">
+      <InputGroupButton>Search</InputGroupButton>
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup>
+    <InputGroupInput placeholder="https://marmoui.com/checkout/abc123" readOnly />
+    <InputGroupAddon align="inline-end">
+      <InputGroupButton size="icon-xs" aria-label="Copy link">
+        <MdContentCopy />
+      </InputGroupButton>
+    </InputGroupAddon>
+  </InputGroup>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-3 max-w-md">
+			<InputGroup>
+				<InputGroupInput placeholder="Search products..." />
+				<InputGroupAddon align="inline-end">
+					<InputGroupButton>Search</InputGroupButton>
+				</InputGroupAddon>
+			</InputGroup>
+			<InputGroup>
+				<InputGroupInput placeholder="https://marmoui.com/checkout/abc123" readOnly />
+				<InputGroupAddon align="inline-end">
+					<InputGroupButton size="icon-xs" aria-label="Copy link">
+						<MdContentCopy />
+					</InputGroupButton>
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+### Textarea
+
+<CodeExample
+	title="Textarea with Actions"
+	description="Textarea input with a bottom action bar"
+	code={`<InputGroup>
+  <InputGroupTextarea placeholder="Write a note..." rows={4} />
+  <InputGroupAddon align="block-end">
+    <InputGroupButton size="icon-xs" aria-label="Attach file">
+      <MdLink />
+    </InputGroupButton>
+    <InputGroupButton>
+      <MdSend /> Send
+    </InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>`}
+	preview={
+		<div className="max-w-md">
+			<InputGroup>
+				<InputGroupTextarea placeholder="Write a note..." rows={4} />
+				<InputGroupAddon align="block-end">
+					<InputGroupButton size="icon-xs" aria-label="Attach file">
+						<MdLink />
+					</InputGroupButton>
+					<InputGroupButton>
+						<MdSend /> Send
+					</InputGroupButton>
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+### Sizes
+
+<CodeExample
+	title="Input Group Sizes"
+	description="Available in small, medium, and large"
+	code={`<div className="flex flex-col gap-3">
+  <InputGroup size="sm">
+    <InputGroupInput placeholder="Small" />
+    <InputGroupAddon align="inline-start">
+      <MdSearch />
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup size="md">
+    <InputGroupInput placeholder="Medium (default)" />
+    <InputGroupAddon align="inline-start">
+      <MdSearch />
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup size="lg">
+    <InputGroupInput placeholder="Large" />
+    <InputGroupAddon align="inline-start">
+      <MdSearch />
+    </InputGroupAddon>
+  </InputGroup>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-3 max-w-sm">
+			<InputGroup size="sm">
+				<InputGroupInput placeholder="Small" />
+				<InputGroupAddon align="inline-start">
+					<MdSearch />
+				</InputGroupAddon>
+			</InputGroup>
+			<InputGroup size="md">
+				<InputGroupInput placeholder="Medium (default)" />
+				<InputGroupAddon align="inline-start">
+					<MdSearch />
+				</InputGroupAddon>
+			</InputGroup>
+			<InputGroup size="lg">
+				<InputGroupInput placeholder="Large" />
+				<InputGroupAddon align="inline-start">
+					<MdSearch />
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+### Combined
+
+<CodeExample
+	title="Combined Addons"
+	description="Input with both start and end addons"
+	code={`<div className="flex flex-col gap-3">
+  <InputGroup>
+    <InputGroupInput placeholder="0.00" />
+    <InputGroupAddon align="inline-start">
+      <MdAttachMoney />
+    </InputGroupAddon>
+    <InputGroupAddon align="inline-end">
+      <InputGroupButton>Apply</InputGroupButton>
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup>
+    <InputGroupInput placeholder="Enter discount" />
+    <InputGroupAddon align="inline-end">
+      <MdPercent />
+    </InputGroupAddon>
+  </InputGroup>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-3 max-w-sm">
+			<InputGroup>
+				<InputGroupInput placeholder="0.00" />
+				<InputGroupAddon align="inline-start">
+					<MdAttachMoney />
+				</InputGroupAddon>
+				<InputGroupAddon align="inline-end">
+					<InputGroupButton>Apply</InputGroupButton>
+				</InputGroupAddon>
+			</InputGroup>
+			<InputGroup>
+				<InputGroupInput placeholder="Enter discount" />
+				<InputGroupAddon align="inline-end">
+					<MdPercent />
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Keep addons concise">
+		Addons should be short labels, icons, or single buttons. Keep text brief.
+	</Guideline>
+	<Guideline type="do" title="Place addon after input in DOM">
+		Always place `InputGroupAddon` after the input element and use the `align` prop to position it visually. This ensures correct focus navigation.
+	</Guideline>
+	<Guideline type="do" title="Match sizes consistently">
+		Use the same size prop across all InputGroup children for visual consistency.
+	</Guideline>
+	<Guideline type="dont" title="Don't nest complex components">
+		Avoid placing dropdowns or multi-step interactions inside addons.
+	</Guideline>
+	<Guideline type="dont" title="Don't overload with buttons">
+		Limit to 1-2 buttons per addon to keep the UI clean and clear.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### InputGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Controls height and border radius |
+| `className` | `string` | - | Additional className |
+
+### InputGroupAddon
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `align` | `'inline-start' \| 'inline-end' \| 'block-start' \| 'block-end'` | `'inline-start'` | Position relative to the input |
+| `className` | `string` | - | Additional className |
+
+Use `inline-start` / `inline-end` for `InputGroupInput`. Use `block-start` / `block-end` for `InputGroupTextarea`.
+
+### InputGroupButton
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'xs' \| 'sm' \| 'icon-xs' \| 'icon-sm'` | `'xs'` | Button size |
+| `variant` | `'default' \| 'destructive' \| 'outline' \| 'secondary' \| 'ghost' \| 'link'` | `'ghost'` | Button variant |
+| `className` | `string` | - | Additional className |
+
+### InputGroupText
+
+Static text displayed inside an addon.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `string` | - | Additional className |
+
+### InputGroupInput
+
+Replacement for `Input` with input group styles pre-applied.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Input size |
+| `className` | `string` | - | Additional className |
+
+All other props are passed to the underlying `Input` component.
+
+### InputGroupTextarea
+
+Replacement for `Textarea` with input group styles pre-applied.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `string` | - | Additional className |
+
+All other props are passed to the underlying `Textarea` component.
+
+## Accessibility
+
+- The input within the group receives focus, not the addons.
+- Clicking an addon focuses the associated input automatically.
+- Keyboard navigation works as expected for the inner input and buttons.
+- Use `aria-label` on icon-only `InputGroupButton` elements.

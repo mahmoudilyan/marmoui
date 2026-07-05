@@ -1,0 +1,511 @@
+---
+title: SidebarPanel
+description: A collapsible sidebar navigation system with provider-based state management, nested items, cookie persistence, and responsive mobile support.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/sidebar
+keywords:
+  - sidebar
+  - panel
+  - navigation
+  - menu
+  - collapsible
+  - nested
+  - layout
+  - useSidebar
+lastUpdated: 2026-03-11
+---
+
+import { SidebarPanel, SidebarPanelHeader, SidebarPanelContent, SidebarPanelFooter, SidebarPanelTitle, SidebarItem, SidebarSubItem, SidebarProvider, PageSection, PageSectionWizard, IconButton } from '@marmoui/ui';
+import { MdOutlineDashboard, MdDashboard, MdPeopleOutline, MdPeople, MdOutlineCampaign, MdCampaign, MdOutlineSettings, MdSettings, MdOutlineFolder, MdFolder, MdHelpOutline } from 'react-icons/md';
+import {
+  SidebarBasicPreview,
+  SidebarWithIconsPreview,
+  SidebarNestedPreview,
+  SidebarDashboardPreview,
+  SidebarCollapsiblePreview,
+  SidebarScrollablePreview,
+} from '@/components/previews/sidebar-previews';
+import {
+  SidebarFullLayoutPreview,
+  SidebarBreadcrumbLayoutPreview,
+  SidebarCollapsedLayoutPreview,
+  SidebarWizardLayoutPreview,
+  SidebarPanelOnlyLayoutPreview,
+  UseSidebarHookPreview,
+} from '@/components/previews/sidebar-layout-previews';
+
+
+<Accordions>
+  <Accordion title="Overview">
+    The Sidebar system provides a complete navigation solution for Marmo applications. It consists of a **primary navigation rail** (64px icon bar) and a **secondary panel** (224px collapsible side panel) that together form the `SideNavigation` component.
+
+    **Architecture:**
+    - `SidebarProvider` wraps your layout and manages all sidebar state via React Context
+    - `SideNavigation` renders the full sidebar (primary rail + secondary panel)
+    - `SidebarPanel` is the secondary panel alone — use it when you only need a simple side panel
+    - `useSidebar()` hook lets any child component read/update sidebar state
+    - `PageSection` and `PageSectionWizard` integrate with the sidebar to show a toggle button when collapsed
+
+    **Components:**
+    - **SidebarProvider** — Context provider for sidebar state
+    - **SideNavigation** — Full sidebar (primary icon rail + secondary panel)
+    - **SidebarPanel** — Secondary panel container
+    - **SidebarPanelHeader / SidebarPanelTitle** — Panel title with collapse toggle
+    - **SidebarPanelContent** — Scrollable navigation area
+    - **SidebarPanelFooter** — Pinned footer area
+    - **SidebarItem** — Top-level item with icon and optional children
+    - **SidebarSubItem** — Nested item with visual connectors
+
+    **When to Use:**
+    - Application shells with multi-level navigation
+    - Dashboard layouts (Contacts, Campaigns, Settings)
+    - Admin panels with section-based navigation
+
+    **When NOT to Use:**
+    - Horizontal navigation bars (use NavigationMenu)
+    - Temporary overlays (use Drawer or Sheet)
+    - Simple single-level navigation (use Tabs)
+  </Accordion>
+</Accordions>
+
+
+## Usage
+
+```tsx
+import {
+  SidebarProvider,
+  SideNavigation,
+  SidebarPanel,
+  SidebarPanelHeader,
+  SidebarPanelContent,
+  SidebarPanelFooter,
+  SidebarPanelTitle,
+  SidebarItem,
+  SidebarSubItem,
+  useSidebar,
+  PageSection,
+} from '@marmoui/ui';
+import type { NavigationItem } from '@marmoui/ui';
+```
+
+## Full Layout Examples
+
+These examples show the complete sidebar system as used in production.
+
+### Dashboard Layout
+
+The standard app shell: `SidebarProvider` wrapping `SideNavigation` + `PageSection` + content area.
+
+<CodeExample
+	title="Full App Shell"
+	description="SidebarPanel with PageSection and content area"
+	code={`<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: true }}>
+			<div className="flex h-[400px] w-full border border-secondary overflow-hidden">
+				<SidebarPanel>
+					<SidebarPanelHeader>
+						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+					</SidebarPanelHeader>
+					<SidebarPanelContent>
+						<SidebarItem
+							label="Dashboard"
+							iconOutlined={MdOutlineDashboard}
+							iconFilled={MdDashboard}
+							isActive
+						/>
+						<SidebarItem label="Contacts" iconOutlined={MdOutlinePeople} iconFilled={MdPeople}>
+							<SidebarSubItem label="All Contacts" />
+							<SidebarSubItem label="Segments" />
+						</SidebarItem>
+						<SidebarItem label="Campaigns" iconOutlined={MdOutlineCampaign} iconFilled={MdCampaign}>
+							<SidebarSubItem label="All Campaigns" />
+							<SidebarSubItem label="Templates" />
+						</SidebarItem>
+						<SidebarItem
+							label="Settings"
+							iconOutlined={MdOutlineSettings}
+							iconFilled={MdSettings}
+						/>
+					</SidebarPanelContent>
+				</SidebarPanel>
+				<div className="flex-1 flex flex-col overflow-hidden">
+					<PageSection pageTitle="Dashboard" showSidebarToggle />
+					<main className="flex-1 p-6 overflow-y-auto"></main>
+				</div>
+			</div>
+		</SidebarProvider>`}
+	preview={<SidebarFullLayoutPreview />}
+/>
+
+### With Breadcrumbs and Actions
+
+<CodeExample
+	title="Breadcrumb Navigation"
+	description="Sidebar with PageSection breadcrumbs and action buttons"
+	code={`<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: true }}>
+  <div className="flex h-screen">
+    <SidebarPanel>
+      <SidebarPanelHeader>
+        <SidebarPanelTitle>Navigation</SidebarPanelTitle>
+      </SidebarPanelHeader>
+      <SidebarPanelContent>
+        <SidebarItem label="Dashboard" iconOutlined={MdOutlineDashboard} iconFilled={MdDashboard} />
+        <SidebarItem label="Campaigns" iconOutlined={MdOutlineCampaign} iconFilled={MdCampaign} isActive>
+          <SidebarSubItem label="All Campaigns" />
+          <SidebarSubItem label="Email Campaigns" isActive />
+        </SidebarItem>
+        <SidebarItem label="Contacts" iconOutlined={MdOutlinePeople} iconFilled={MdPeople} />
+      </SidebarPanelContent>
+    </SidebarPanel>
+    <div className="flex-1 flex flex-col">
+      <PageSection
+        breadcrumbs={[
+          { label: 'Campaigns', href: '/campaigns' },
+          { label: 'Email Campaigns', href: '/campaigns/email' },
+          { label: 'Summer Sale' },
+        ]}
+        showSidebarToggle
+        primaryAction={{ label: 'Save Changes' }}
+        secondaryActions={[{ label: 'Preview' }]}
+      />
+      <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+    </div>
+  </div>
+</SidebarProvider>`}
+	preview={<SidebarBreadcrumbLayoutPreview />}
+/>
+
+### Collapsed Sidebar
+
+When the secondary panel is collapsed, `PageSection` automatically shows a toggle button so users can re-open it.
+
+<CodeExample
+	title="Collapsed State"
+	description="Secondary panel collapsed — toggle visible in PageSection"
+	code={`<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: false }}>
+			<div className="flex h-[300px] w-full border border-secondary overflow-hidden">
+				<SidebarPanel>
+					<SidebarPanelHeader>
+						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+					</SidebarPanelHeader>
+					<SidebarPanelContent>
+						<SidebarItem
+							label="Dashboard"
+							iconOutlined={MdOutlineDashboard}
+							iconFilled={MdDashboard}
+							isActive
+						/>
+						<SidebarItem label="Contacts" iconOutlined={MdOutlinePeople} iconFilled={MdPeople} />
+					</SidebarPanelContent>
+				</SidebarPanel>
+				<div className="flex-1 flex flex-col overflow-hidden">
+					<PageSection pageTitle="Dashboard" showSidebarToggle />
+					<main className="flex-1 p-6 overflow-y-auto">
+						<p className="text-ink text-sm">
+							The sidebar is collapsed. Click the toggle icon in the page header to expand it.
+						</p>
+					</main>
+				</div>
+			</div>
+		</SidebarProvider>`}
+	preview={<SidebarCollapsedLayoutPreview />}
+/>
+
+### Wizard Layout
+
+Use `PageSectionWizard` instead of `PageSection` for multi-step flows.
+
+<CodeExample
+	title="Wizard with Sidebar"
+	description="Step indicators in the page header alongside sidebar navigation"
+  src='src/components/previews/sidebar-layout-previews.tsx'
+  componentName='SidebarWizardLayoutPreview'
+	preview={<SidebarWizardLayoutPreview />}
+/>
+
+### Icon States
+
+SidebarItem supports `iconOutlined` (default) and `iconFilled` (active/hover). The icon swaps automatically.
+
+<CodeExample
+	title="Outlined / Filled Icons"
+	description="Icons swap between outlined and filled on active state"
+	code={`<SidebarItem
+  label="Dashboard"
+  iconOutlined={MdOutlineDashboard}
+  iconFilled={MdDashboard}
+  isActive={true}
+/>`}
+	preview={<SidebarWithIconsPreview />}
+/>
+
+## useSidebar Hook
+
+The `useSidebar()` hook provides access to all sidebar state and actions from any component inside a `SidebarProvider`.
+
+```tsx
+'use client';
+import { useSidebar } from '@marmoui/ui';
+
+function MyComponent() {
+  const {
+    // State
+    secondaryIsOpen,           // boolean — is the panel open?
+    activeMainItem,            // string | null — active primary nav item ID
+    activeSecondaryItem,       // string | null — active secondary nav item ID
+    activeSubItem,             // string | null — active sub-item ID
+    expandedSecondaryItems,    // string[] — IDs of expanded accordion items
+    mainNavItems,              // NavigationItem[] — all navigation items
+    config,                    // SidebarConfig — current configuration
+
+    // Actions
+    setSecondaryIsOpen,        // (open: boolean) => void
+    toggleSecondary,           // () => void
+    setActiveMainItem,         // (id: string) => void — resets secondary + sub
+    setActiveSecondaryItem,    // (id: string) => void
+    setActiveSubItem,          // (id: string | null) => void
+    toggleSecondaryExpanded,   // (id: string) => void — single accordion behavior
+    setExpandedSecondaryItems, // (ids: string[]) => void
+  } = useSidebar();
+
+  return (
+    <div>
+      <p>Sidebar is {secondaryIsOpen ? 'open' : 'closed'}</p>
+      <p>Active: {activeMainItem}</p>
+      <button onClick={toggleSecondary}>Toggle Sidebar</button>
+    </div>
+  );
+}
+```
+
+### Real-World Usage
+
+Components like `PageSection` and `PageSectionWizard` use `useSidebar` internally to show a toggle button when the sidebar is collapsed:
+
+```tsx
+// Inside PageSection (simplified)
+function PageSection({ showSidebarToggle, ...props }) {
+  const { secondaryIsOpen, toggleSecondary } = useSidebar();
+
+  return (
+    <header>
+      {showSidebarToggle && !secondaryIsOpen && (
+        <IconButton
+          icon={<MdOutlineChromeReaderMode />}
+          onClick={toggleSecondary}
+          aria-label="Open sidebar"
+        />
+      )}
+      {/* ... breadcrumbs and actions */}
+    </header>
+  );
+}
+```
+
+You can build custom components that respond to sidebar state the same way:
+
+```tsx
+// Custom breadcrumb that adjusts when sidebar closes
+function AdaptiveBreadcrumb() {
+  const { secondaryIsOpen } = useSidebar();
+
+  return (
+    <nav className={secondaryIsOpen ? 'pl-0' : 'pl-4'}>
+      {/* breadcrumb items */}
+    </nav>
+  );
+}
+```
+
+## SidebarProvider
+
+`SidebarProvider` wraps your layout and provides state to all sidebar components via React Context.
+
+```tsx
+import { SidebarProvider } from '@marmoui/ui';
+import type { NavigationItem } from '@marmoui/ui';
+
+<SidebarProvider
+  mainNavItems={navItems}   // Required: navigation tree
+  config={{
+    defaultMainItem: 'dashboard',   // Initially active item
+    defaultSecondaryOpen: true,     // Panel starts open
+    animationDuration: 300,         // Transition duration (ms)
+    persistState: true,             // Save open/closed to cookie
+  }}
+>
+  {children}
+</SidebarProvider>
+```
+
+### Cookie Persistence
+
+When `persistState: true`, the sidebar writes its open/closed state to a cookie. Read it server-side for SSR:
+
+```tsx
+// layout.tsx (Server Component)
+import { cookies } from 'next/headers';
+import { SIDEBAR_COOKIE_NAME, SidebarProvider } from '@marmoui/ui';
+
+export default async function Layout({ children }) {
+  const cookieStore = await cookies();
+  const sidebarOpen = cookieStore.get(SIDEBAR_COOKIE_NAME)?.value !== 'false';
+
+  return (
+    <SidebarProvider
+      mainNavItems={navItems}
+      config={{ defaultSecondaryOpen: sidebarOpen, persistState: true }}
+    >
+      {children}
+    </SidebarProvider>
+  );
+}
+```
+
+The cookie `sidebar_state` is set with a 7-day max-age and updates on every toggle.
+
+### Navigation Item Types
+
+```tsx
+interface NavigationItem {
+  id: string;
+  label: string;
+  icon: ElementType | string;          // Primary rail icon (filled)
+  iconOutlined?: ElementType | string; // Primary rail icon (default)
+  iconDuotone?: ElementType | string;  // Primary rail icon (active)
+  onClick: () => void;
+  children?: SecondaryNavigationItem[];
+}
+
+interface SecondaryNavigationItem {
+  id: string;
+  label: string;
+  iconOutlined?: ElementType | string;
+  iconFilled?: ElementType | string;
+  onClick: () => void;
+  subItems?: SubNavigationItem[];
+}
+
+interface SubNavigationItem {
+  id: string;
+  label: string;
+  onClick: () => void;
+}
+```
+
+## Mobile Behavior
+
+- **Desktop (768px+):** Panel animates width open/closed with a smooth transition
+- **Mobile (below 768px):** Panel content renders inside a Sheet (slide-in overlay)
+- Set `mobileMode="hidden"` to completely hide the panel on mobile instead of using a Sheet
+
+```tsx
+<SidebarPanel mobileMode="sheet" />   {/* Default: Sheet overlay on mobile */}
+<SidebarPanel mobileMode="hidden" />  {/* Hide completely on mobile */}
+```
+
+## useSideBar (Zustand Alternative)
+
+For simpler setups without a provider, use the `useSideBar` Zustand store. It provides the same state globally without React Context.
+
+```tsx
+import { useSideBar } from '@marmoui/ui';
+
+function Navigation() {
+  const { secondaryIsOpen, toggleSecondary, activeMainItem, setActiveMainItem } = useSideBar();
+  // Same API, no provider needed
+}
+```
+
+There is also `useSideBarState` which uses plain React `useState` — useful for isolated components.
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Always wrap with SidebarProvider">
+		SidebarPanel, SidebarPanelTitle, PageSection, and PageSectionWizard all depend on the SidebarProvider context. Without it they will throw or lose functionality.
+	</Guideline>
+
+	<Guideline type="do" title="Set showSidebarToggle on PageSection">
+		When the sidebar is collapsed, users need a way to re-open it. The toggle button in PageSection handles this.
+	</Guideline>
+
+	<Guideline type="do" title="Persist sidebar state with cookies">
+		Set `persistState: true` and read the cookie server-side so the sidebar state survives page reloads.
+	</Guideline>
+
+	<Guideline type="do" title="Use outlined/filled icon pairs">
+		The icon swap on hover/active gives clear visual feedback. Use Material Design outlined + filled pairs.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't nest more than 3 levels">
+		Primary rail > Secondary item > Sub-item is the maximum. Deeper nesting is confusing.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't forget the footer">
+		Use SidebarPanelFooter for secondary actions (Help, Settings). Don't leave the bottom of the panel empty.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### SidebarProvider
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `mainNavItems` | `NavigationItem[]` | — | Navigation tree (required) |
+| `config.defaultMainItem` | `string` | First item ID | Initially active main item |
+| `config.defaultSecondaryOpen` | `boolean` | `true` | Whether panel starts open |
+| `config.animationDuration` | `number` | `300` | Animation duration (ms) |
+| `config.persistState` | `boolean` | `false` | Write state to cookie |
+
+### SidebarPanel
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `width` | `number` | `224` | Panel width when open (px) |
+| `animationDuration` | `number` | `300` | Transition duration (ms) |
+| `mobileMode` | `'sheet' \| 'hidden'` | `'sheet'` | Mobile behavior |
+| `className` | `string` | — | Additional className |
+| `children` | `ReactNode` | — | Header, content, footer |
+
+### SidebarPanelTitle
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | Title text |
+| `hideToggle` | `boolean` | `false` | Hide collapse/expand toggle |
+
+### SidebarItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | — | Item label |
+| `iconOutlined` | `ElementType \| string` | — | Default icon |
+| `iconFilled` | `ElementType \| string` | — | Active/hover icon |
+| `isActive` | `boolean` | `false` | Active state |
+| `onClick` | `() => void` | — | Click handler |
+| `children` | `ReactNode` | — | Nested SidebarSubItems |
+
+### SidebarSubItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | — | Sub-item label |
+| `isActive` | `boolean` | `false` | Active state |
+| `onClick` | `() => void` | — | Click handler |
+
+## Accessibility
+
+<InfoCallout type="info" title="Navigation Landmarks">
+SidebarPanel renders a `nav` element with `aria-label="Secondary navigation"`, making it a recognized navigation landmark for screen readers. The primary rail has a separate `nav` with `aria-label="Main navigation"`.
+</InfoCallout>
+
+- Primary rail and secondary panel each have their own `<nav>` landmark
+- All interactive items are keyboard accessible (Tab, Enter, Space)
+- Expandable items communicate state via `aria-expanded`
+- Active items use `aria-current="page"` or visual indicators
+- Collapse/expand toggle has `aria-label` ("Collapse sidebar" / "Expand sidebar")
+- Mobile Sheet includes proper focus trapping and Escape-to-close
+- Animations respect `prefers-reduced-motion`

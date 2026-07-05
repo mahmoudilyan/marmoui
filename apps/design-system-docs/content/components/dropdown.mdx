@@ -1,0 +1,221 @@
+---
+title: Dropdown Menu
+description: A versatile dropdown menu component for displaying contextual actions and options
+category: Components
+status: stable
+keywords:
+  - dropdown
+  - menu
+  - context menu
+  - actions
+  - options
+  - popover
+lastUpdated: 2025-01-27
+---
+
+import {
+	DropdownBasicPreview,
+	DropdownWithIconsPreview,
+	DropdownWithLabelsPreview,
+	DropdownCheckboxPreview,
+	DropdownRadioPreview,
+	DropdownDisabledPreview,
+	DropdownRowActionsPreview,
+	DropdownShortcutsPreview,
+	DropdownSubMenuPreview,
+	ProfileDropdownMenuPreview,
+} from '@/components/previews/dropdown-menu-previews';
+
+<ComponentPageHeader
+	title="Dropdown Menu"
+	description="A versatile dropdown menu component for displaying contextual actions and options"
+	status="stable"
+	category="Components"
+/>
+
+## Overview
+
+A versatile dropdown menu component built on Radix UI. Perfect for action menus, context menus, and option selectors.
+
+<InfoCallout type="info" title="When to Use">
+Use dropdown menus to provide a list of actions or options in a compact space. They're ideal for row actions in tables, toolbar menus, and settings panels.
+</InfoCallout>
+
+## Basic Usage
+
+<CodeExample
+	title="Simple Dropdown"
+	description="Basic dropdown with menu items"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="DropdownBasicPreview"
+	preview={<DropdownBasicPreview />}
+/>
+
+## With Icons
+
+<CodeExample
+	title="Icon Menu Items"
+	description="Menu items with leading icons and a destructive variant"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="DropdownWithIconsPreview"
+	preview={<DropdownWithIconsPreview />}
+/>
+
+## With Labels
+
+<CodeExample
+	title="Labeled Sections"
+	description="Group menu items with labels and separators"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="DropdownWithLabelsPreview"
+	preview={<DropdownWithLabelsPreview />}
+/>
+
+## Keyboard Shortcuts
+
+<CodeExample
+	title="Shortcut Hints"
+	description="Display keyboard shortcuts alongside menu items"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="DropdownShortcutsPreview"
+	preview={<DropdownShortcutsPreview />}
+/>
+
+## Checkbox Items
+
+<CodeExample
+	title="Multi-Select Options"
+	description="Checkbox items for toggling multiple options"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="DropdownCheckboxPreview"
+	preview={<DropdownCheckboxPreview />}
+/>
+
+## Radio Group
+
+<CodeExample
+	title="Single Select Options"
+	description="Radio items for exclusive selection"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="DropdownRadioPreview"
+	preview={<DropdownRadioPreview />}
+/>
+
+## Sub Menus
+
+<CodeExample
+	title="Nested Menus"
+	description="Sub-menus for organizing related actions"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="DropdownSubMenuPreview"
+	preview={<DropdownSubMenuPreview />}
+/>
+
+## Disabled Items
+
+<CodeExample
+	title="Disabled Menu Items"
+	description="Disable specific menu options"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="DropdownDisabledPreview"
+	preview={<DropdownDisabledPreview />}
+/>
+
+## Table Row Actions
+
+<CodeExample
+	title="Row Action Menu"
+	description="Common pattern for table row actions with icon trigger"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="DropdownRowActionsPreview"
+	preview={<DropdownRowActionsPreview />}
+/>
+
+## Profile Menu
+
+<CodeExample
+	title="Profile dropdown menu"
+	description="User profile menu with integration status, account links, and log out"
+	src="src/components/previews/dropdown-menu-previews.tsx"
+	componentName="ProfileDropdownMenuPreview"
+	preview={<ProfileDropdownMenuPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Group related items">
+		Use separators to group related menu items logically. This improves scannability.
+	</Guideline>
+
+	<Guideline type="do" title="Use clear labels">
+		Menu item labels should be clear and action-oriented. Use verbs like "Edit", "Delete", "Download".
+	</Guideline>
+
+	<Guideline type="do" title="Place destructive actions last">
+		Put destructive actions (like Delete) at the bottom of the menu, separated by a divider.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't overload menus">
+		Keep dropdown menus to 5-8 items. For more options, consider using nested menus or a different pattern.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't use for navigation">
+		Dropdown menus are for actions, not primary navigation. Use proper navigation components for that.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't hide critical actions">
+		Primary actions should be visible as buttons. Use dropdowns for secondary or overflow actions.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### DropdownMenuItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'default' \| 'destructive'` | `'default'` | Visual style variant |
+| `inset` | `boolean` | - | Add left padding to align with items that have icons |
+| `disabled` | `boolean` | - | Disable the menu item |
+| `onSelect` | `(event: Event) => void` | - | Called when the item is selected |
+| `className` | `string` | - | Additional className |
+
+### DropdownMenuCheckboxItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `checked` | `boolean` | - | Whether the checkbox is checked |
+| `onCheckedChange` | `(checked: boolean) => void` | - | Called when checked state changes |
+| `disabled` | `boolean` | - | Disable the checkbox item |
+
+### DropdownMenuRadioGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | The currently selected value |
+| `onValueChange` | `(value: string) => void` | - | Called when selection changes |
+
+### DropdownMenuContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `align` | `'start' \| 'center' \| 'end'` | `'center'` | Alignment relative to trigger |
+| `side` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Preferred side to render |
+| `sideOffset` | `number` | `4` | Distance from trigger in pixels |
+| `className` | `string` | - | Additional className |
+
+## Accessibility
+
+<InfoCallout type="info" title="Keyboard Navigation">
+Dropdown menus support full keyboard navigation. Use Arrow keys to navigate items, Enter to select, and Escape to close.
+</InfoCallout>
+
+- Keyboard navigation: Arrow keys to navigate, Enter to select
+- Press Escape to close the menu
+- Focus returns to trigger element when closed
+- Use proper ARIA roles and attributes
+- Provide clear labels for icon-only triggers
+- Ensure sufficient color contrast for menu items
+- Support screen readers with proper announcements
+- Make disabled items clearly visually distinct

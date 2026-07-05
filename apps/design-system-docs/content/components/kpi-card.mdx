@@ -1,0 +1,42 @@
+---
+title: KpiCard
+description: Dashboard KPI scorecard — label, headline value, delta badge, and optional hint. Not sortable; pair with Widget for chart tiles.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/kpi-card.tsx
+keywords:
+  - kpi
+  - scorecard
+  - metric
+  - dashboard
+  - delta
+lastUpdated: 2026-06-07
+---
+
+import { MarmoKpiStrip } from '@/components/previews/marmo-dashboard-widgets-previews';
+
+## Overview
+
+`KpiCard` renders a single dashboard metric: caps label, tabular headline value, optional delta pill with arrow, and optional hint text. It composes `Card` internally.
+
+Use `KpiCard` for KPI **strips** above a widget grid. Use [`Widget`](/components/widget) for chart, list, and table tiles.
+
+## Usage
+
+```tsx
+import { KpiCard } from '@marmoui/ui';
+
+<KpiCard label="Revenue" value={24800} prefix="$" delta={8.4} deltaLabel="vs last month" />
+```
+
+<CodeExample
+	title="Four-up KPI strip"
+	showCode={false}
+	preview={<MarmoKpiStrip />}
+/>
+
+## Related
+
+- [Marmo dashboard widgets](/patterns/marmo-dashboard-widgets) — full Figma widget board
+- [Widget](/components/widget) — chart/list tile chrome

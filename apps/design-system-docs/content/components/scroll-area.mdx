@@ -1,0 +1,98 @@
+---
+title: Scroll Area
+description: A styled scrollable container with custom scrollbars that maintains consistent appearance across browsers.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/scroll-area
+keywords:
+  - scroll area
+  - scrollbar
+  - overflow
+  - scrollable
+lastUpdated: 2026-03-10
+---
+
+import { ScrollArea, ScrollBar } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    ScrollArea provides a scrollable container with custom-styled scrollbars that look consistent across all browsers. It supports both vertical and horizontal scrolling.
+
+    **When to Use:**
+    - Long lists or content that needs scrollable containment
+    - Dropdown content areas
+    - Sidebars with overflow content
+    - Any constrained area with potentially overflowing content
+
+    **When NOT to Use:**
+    - For full-page scroll (use native scroll)
+    - When content always fits (no need for scroll)
+    - For horizontal carousels (use dedicated carousel patterns)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { ScrollArea, ScrollBar } from '@marmoui/ui';
+```
+
+## Examples
+
+### Vertical Scroll
+
+<CodeExample
+	title="Scrollable List"
+	description="Vertical scroll area with content"
+	code={`<ScrollArea className="h-48 w-full rounded-lg border p-4">
+  {Array.from({ length: 20 }, (_, i) => (
+    <div key={i} className="py-2 border-b last:border-0">
+      Item {i + 1}
+    </div>
+  ))}
+</ScrollArea>`}
+	preview={
+		<ScrollArea className="h-48 w-full rounded-lg border p-4">
+			<div className="py-2 border-b">Item 1</div>
+			<div className="py-2 border-b">Item 2</div>
+			<div className="py-2 border-b">Item 3</div>
+			<div className="py-2 border-b">Item 4</div>
+			<div className="py-2 border-b">Item 5</div>
+			<div className="py-2 border-b">Item 6</div>
+			<div className="py-2 border-b">Item 7</div>
+			<div className="py-2 border-b">Item 8</div>
+			<div className="py-2 border-b">Item 9</div>
+			<div className="py-2">Item 10</div>
+		</ScrollArea>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Set a clear height constraint">
+		Always define a max-height or height for the scroll area so scrolling activates.
+	</Guideline>
+	<Guideline type="do" title="Indicate scrollable content">
+		Use visual cues (shadows, fade) to hint that content extends beyond the visible area.
+	</Guideline>
+	<Guideline type="dont" title="Don't nest scroll areas">
+		Multiple nested scrollable areas create confusing interaction patterns.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for small content">
+		If content always fits, don't wrap it in a scroll area.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="ScrollArea" />
+
+## Accessibility
+
+- Scrollbar is keyboard accessible with Arrow keys when focused.
+- Works with native browser scroll behavior for assistive technologies.
+- Custom scrollbar is visible for mouse users without affecting keyboard behavior.

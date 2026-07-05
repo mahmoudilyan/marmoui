@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "marmoui-plugins",
+  "description": "Claude Code plugins for Marmo UI \u2014 the AI agentic designer. Install marmo-ui to give Claude a real design system: live component APIs, patterns, and validated generation.",
+  "owner": {
+    "name": "Marmo UI Team",
+    "email": "design-system@marmoui.com"
+  },
+  "plugins": [
+    {
+      "name": "marmo-ui",
+      "source": "./tools/claude-plugin/plugins/marmo-ui",
+      "description": "Build production UI with @marmoui/ui. Bundles the marmo-ui skill, /marmo-ui:* commands (init, design-md, build), and the Marmo MCP server so Claude reads real component props instead of guessing. Free tier needs no token.",
+      "category": "frontend",
+      "tags": [
+        "marmo",
+        "design-system",
+        "ui",
+        "mcp"
+      ]
+    }
+  ]
+}

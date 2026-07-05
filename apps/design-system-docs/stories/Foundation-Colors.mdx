@@ -1,0 +1,652 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundation/Color Tokens" />
+
+# Color Tokens
+
+Our color system is built using OKLCH color space for perceptually uniform colors and consistent accessibility. The system includes comprehensive color palettes with semantic naming conventions.
+
+## Color System Overview
+
+### OKLCH Color Space
+We use OKLCH (Oklch Lightness Chroma Hue) for all our color definitions because it provides:
+- **Perceptual uniformity**: Colors with the same lightness appear equally bright
+- **Better accessibility**: More predictable contrast ratios
+- **Consistent saturation**: Colors maintain consistent vibrancy across hues
+
+## Color Palettes
+
+### Base Colors
+Essential black and white colors:
+
+<div style={{ display: 'flex', gap: '0.5rem', marginBottom: '2rem' }}>
+  <div style={{ 
+    background: 'var(--color-white)',
+    color: '#000',
+    padding: '1rem',
+    borderRadius: '8px',
+    textAlign: 'center',
+    fontSize: '0.875rem',
+    fontWeight: '500',
+    border: '1px solid #e5e5e5'
+  }}>
+    white
+  </div>
+  <div style={{ 
+    background: 'var(--color-black)',
+    color: '#fff',
+    padding: '1rem',
+    borderRadius: '8px',
+    textAlign: 'center',
+    fontSize: '0.875rem',
+    fontWeight: '500'
+  }}>
+    black
+  </div>
+</div>
+
+### Primary Colors
+Our primary color palette uses teal/cyan tones for the brand identity:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-primary-${shade})`,
+      color: shade <= 300 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '8px',
+      textAlign: 'center',
+      fontSize: '0.875rem',
+      fontWeight: '500'
+    }}>
+      primary-{shade}
+    </div>
+  ))}
+</div>
+
+```css
+--color-primary-500: oklch(0.66 0.11 198);
+--color-primary-600: oklch(0.56 0.1 200);
+--color-primary-700: oklch(0.48 0.08 200);
+```
+
+### Gray Scale
+Our neutral colors for backgrounds, borders, and subtle elements:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-gray-${shade})`,
+      color: shade <= 400 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      gray-{shade}
+    </div>
+  ))}
+</div>
+
+### Red Palette
+For errors, warnings, and destructive actions:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-red-${shade})`,
+      color: shade <= 300 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      red-{shade}
+    </div>
+  ))}
+</div>
+
+### Orange Palette
+Warm accent colors for highlights and notifications:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-orange-${shade})`,
+      color: shade <= 400 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      orange-{shade}
+    </div>
+  ))}
+</div>
+
+### Yellow Palette
+Warning states and attention-grabbing elements:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-yellow-${shade})`,
+      color: shade <= 600 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      yellow-{shade}
+    </div>
+  ))}
+</div>
+
+### Green Palette
+Success states, positive feedback, and nature themes:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-green-${shade})`,
+      color: shade <= 300 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      green-{shade}
+    </div>
+  ))}
+</div>
+
+### Teal Palette
+Cool accent colors and secondary brand elements:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-teal-${shade})`,
+      color: shade <= 300 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      teal-{shade}
+    </div>
+  ))}
+</div>
+
+### Blue Palette
+Information states, links, and professional themes:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-blue-${shade})`,
+      color: shade <= 300 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      blue-{shade}
+    </div>
+  ))}
+</div>
+
+### Indigo Palette
+Deep blue tones for sophisticated interfaces:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-indigo-${shade})`,
+      color: shade <= 300 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      indigo-{shade}
+    </div>
+  ))}
+</div>
+
+### Purple Palette
+Creative and premium brand elements:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-purple-${shade})`,
+      color: shade <= 300 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      purple-{shade}
+    </div>
+  ))}
+</div>
+
+### Pink Palette
+Playful accents and feminine brand elements:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem', marginBottom: '2rem' }}>
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(shade => (
+    <div key={shade} style={{ 
+      background: `var(--color-pink-${shade})`,
+      color: shade <= 300 ? '#000' : '#fff',
+      padding: '1rem',
+      borderRadius: '6px',
+      textAlign: 'center',
+      fontSize: '0.75rem',
+      fontWeight: '500'
+    }}>
+      pink-{shade}
+    </div>
+  ))}
+</div>
+
+## Semantic Color Palette
+
+These are the key semantic colors used throughout the design system, organized by purpose and usage:
+
+### Background Semantic Colors
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+  {[
+    { name: 'Panel', token: '--color-panel', usage: 'Card/panel backgrounds' },
+    { name: 'Background', token: '--color-bg', usage: 'Main page background' },
+    { name: 'Secondary', token: '--color-secondary', usage: 'Secondary backgrounds' },
+    { name: 'Muted', token: '--color-muted', usage: 'Subtle backgrounds' },
+    { name: 'Primary Muted', token: '--color-primary-muted', usage: 'Light primary backgrounds' }
+  ].map(color => (
+    <div key={color.name} style={{ 
+      background: `var(${color.token})`,
+      border: '1px solid var(--color-border)',
+      padding: '1rem',
+      borderRadius: '8px',
+      textAlign: 'center'
+    }}>
+      <div style={{ fontWeight: '500', fontSize: '0.875rem', color: 'var(--color-ink-dark)' }}>
+        {color.name}
+      </div>
+      <div style={{ fontSize: '0.75rem', color: 'var(--color-ink-light)', margin: '0.25rem 0' }}>
+        {color.usage}
+      </div>
+      <div style={{ fontSize: '0.6875rem', fontFamily: 'monospace', color: 'var(--color-ink-muted)' }}>
+        var({color.token})
+      </div>
+    </div>
+  ))}
+</div>
+
+### Action & State Colors (Solid)
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+  {[
+    { name: 'Primary Solid', token: '--color-primary-solid', usage: 'Primary buttons & actions', textColor: 'var(--color-primary-contrast)' },
+    { name: 'Success Solid', token: '--color-success-solid', usage: 'Success states & confirmations', textColor: '#fff' },
+    { name: 'Warning Solid', token: '--color-warning-solid', usage: 'Warning states & cautions', textColor: '#000' },
+    { name: 'Destructive Solid', token: '--color-destructive-solid', usage: 'Destructive actions & errors', textColor: '#fff' },
+    { name: 'Info Solid', token: '--color-info-solid', usage: 'Information & notifications', textColor: '#fff' }
+  ].map(color => (
+    <div key={color.name} style={{ 
+      background: `var(${color.token})`,
+      color: color.textColor,
+      padding: '1rem',
+      borderRadius: '8px',
+      textAlign: 'center'
+    }}>
+      <div style={{ fontWeight: '500', fontSize: '0.875rem' }}>
+        {color.name}
+      </div>
+      <div style={{ fontSize: '0.75rem', opacity: '0.9', margin: '0.25rem 0' }}>
+        {color.usage}
+      </div>
+      <div style={{ fontSize: '0.6875rem', fontFamily: 'monospace', opacity: '0.8' }}>
+        var({color.token})
+      </div>
+    </div>
+  ))}
+</div>
+
+### Text Colors (Ink)
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+  {[
+    { name: 'Ink Dark', token: '--color-ink-dark', usage: 'Primary headings & emphasis' },
+    { name: 'Ink', token: '--color-ink', usage: 'Body text & default content' },
+    { name: 'Ink Light', token: '--color-ink-light', usage: 'Secondary text & metadata' },
+    { name: 'Ink Muted', token: '--color-ink-muted', usage: 'Placeholder & disabled text' }
+  ].map(color => (
+    <div key={color.name} style={{ 
+      background: 'var(--color-panel)',
+      border: '1px solid var(--color-border)',
+      padding: '1rem',
+      borderRadius: '8px',
+      textAlign: 'center'
+    }}>
+      <div style={{ fontWeight: '500', fontSize: '0.875rem', color: `var(${color.token})` }}>
+        {color.name}
+      </div>
+      <div style={{ fontSize: '0.75rem', color: 'var(--color-ink-light)', margin: '0.25rem 0' }}>
+        {color.usage}
+      </div>
+      <div style={{ fontSize: '0.6875rem', fontFamily: 'monospace', color: 'var(--color-ink-muted)' }}>
+        var({color.token})
+      </div>
+    </div>
+  ))}
+</div>
+
+### Semantic Text Colors
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+  {[
+    { name: 'Primary', token: '--color-ink-primary', usage: 'Primary brand text' },
+    { name: 'Success', token: '--color-ink-success', usage: 'Success messages' },
+    { name: 'Warning', token: '--color-ink-warning', usage: 'Warning text' },
+    { name: 'Destructive', token: '--color-ink-destructive', usage: 'Error messages' },
+    { name: 'Info', token: '--color-ink-info', usage: 'Information text' },
+    { name: 'Teal', token: '--color-ink-teal', usage: 'Teal accent text' },
+    { name: 'Purple', token: '--color-ink-purple', usage: 'Purple accent text' },
+    { name: 'Orange', token: '--color-ink-orange', usage: 'Orange accent text' }
+  ].map(color => (
+    <div key={color.name} style={{ 
+      background: 'var(--color-panel)',
+      border: '1px solid var(--color-border)',
+      padding: '1rem',
+      borderRadius: '8px',
+      textAlign: 'center'
+    }}>
+      <div style={{ fontWeight: '500', fontSize: '0.875rem', color: `var(${color.token})` }}>
+        {color.name}
+      </div>
+      <div style={{ fontSize: '0.75rem', color: 'var(--color-ink-light)', margin: '0.25rem 0' }}>
+        {color.usage}
+      </div>
+      <div style={{ fontSize: '0.6875rem', fontFamily: 'monospace', color: 'var(--color-ink-muted)' }}>
+        var({color.token})
+      </div>
+    </div>
+  ))}
+</div>
+
+### Border Colors
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+  {[
+    { name: 'Default', token: '--color-border', usage: 'Standard borders' },
+    { name: 'Input', token: '--color-border-input', usage: 'Form input borders' },
+    { name: 'Hover', token: '--color-border-hover', usage: 'Hover state borders' },
+    { name: 'Focus', token: '--color-border-focus', usage: 'Focus state borders' },
+    { name: 'Primary', token: '--color-border-primary', usage: 'Primary element borders' },
+    { name: 'Success', token: '--color-border-success', usage: 'Success state borders' },
+    { name: 'Warning', token: '--color-border-warning', usage: 'Warning state borders' },
+    { name: 'Destructive', token: '--color-border-destructive', usage: 'Error state borders' }
+  ].map(color => (
+    <div key={color.name} style={{ 
+      background: 'var(--color-panel)',
+      border: `2px solid var(${color.token})`,
+      padding: '1rem',
+      borderRadius: '8px',
+      textAlign: 'center'
+    }}>
+      <div style={{ fontWeight: '500', fontSize: '0.875rem', color: 'var(--color-ink-dark)' }}>
+        {color.name}
+      </div>
+      <div style={{ fontSize: '0.75rem', color: 'var(--color-ink-light)', margin: '0.25rem 0' }}>
+        {color.usage}
+      </div>
+      <div style={{ fontSize: '0.6875rem', fontFamily: 'monospace', color: 'var(--color-ink-muted)' }}>
+        var({color.token})
+      </div>
+    </div>
+  ))}
+</div>
+
+### Icon Colors
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+  {[
+    { name: 'Default Icon', token: '--color-icon', usage: 'Standard icon color' },
+    { name: 'Light Icon', token: '--color-icon-light', usage: 'Subtle icon color' },
+    { name: 'Primary Icon', token: '--color-icon-primary', usage: 'Primary brand icons' },
+    { name: 'Destructive Icon', token: '--color-icon-destructive', usage: 'Error/warning icons' }
+  ].map(color => (
+    <div key={color.name} style={{ 
+      background: 'var(--color-panel)',
+      border: '1px solid var(--color-border)',
+      padding: '1rem',
+      borderRadius: '8px',
+      textAlign: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '0.5rem'
+    }}>
+      <div style={{ 
+        width: '24px', 
+        height: '24px', 
+        backgroundColor: `var(${color.token})`,
+        borderRadius: '4px'
+      }}></div>
+      <div style={{ fontWeight: '500', fontSize: '0.875rem', color: 'var(--color-ink-dark)' }}>
+        {color.name}
+      </div>
+      <div style={{ fontSize: '0.75rem', color: 'var(--color-ink-light)' }}>
+        {color.usage}
+      </div>
+      <div style={{ fontSize: '0.6875rem', fontFamily: 'monospace', color: 'var(--color-ink-muted)' }}>
+        var({color.token})
+      </div>
+    </div>
+  ))}
+</div>
+
+## Semantic Color Tokens
+
+### Background Colors
+```css
+--color-panel: #ffffff;                          /* Card/panel background */
+--color-bg: var(--color-gray-50);                /* Main background */
+--color-secondary: var(--color-gray-100);         /* Secondary background */
+--color-muted: var(--color-gray-200);             /* Muted background */
+--color-solid: var(--color-gray-600);             /* Solid backgrounds */
+--color-primary-muted: var(--color-primary-50);  /* Primary light background */
+--color-primary-solid: var(--color-primary-700); /* Primary solid background */
+--color-primary-solid-hover: var(--color-primary-600); /* Primary hover background */
+--color-primary-bright: var(--color-primary-300); /* Bright primary background */
+--color-primary-contrast: var(--color-white);     /* Primary contrast text */
+```
+
+### Semantic Solid Colors
+```css
+--color-warning-solid: var(--color-yellow-400);      /* Warning backgrounds */
+--color-destructive-solid: var(--color-red-600);     /* Error/destructive backgrounds */
+--color-destructive-solid-hover: var(--color-red-500); /* Destructive hover */
+--color-success-solid: var(--color-green-600);       /* Success backgrounds */
+--color-info-solid: var(--color-blue-500);          /* Information backgrounds */
+```
+
+### Text Colors (Ink)
+```css
+--color-ink-dark: oklch(0.33 0.04 258);        /* Primary text */
+--color-ink: oklch(0.37 0.03 259);             /* Body text */
+--color-ink-light: oklch(0.66 0.04 257);       /* Secondary text */
+--color-ink-muted: oklch(0.79 0.02 252);       /* Muted text */
+--color-ink-destructive: var(--color-red-600); /* Error text */
+--color-ink-success: var(--color-green-600);   /* Success text */
+--color-ink-primary: var(--color-primary-700); /* Primary text */
+--color-ink-primary-contrast: var(--color-white); /* Primary contrast text */
+--color-ink-info: var(--color-blue-600);       /* Information text */
+--color-ink-warning: oklch(0.51 0.1 92.1);     /* Warning text */
+--color-ink-teal: var(--color-teal-600);       /* Teal text */
+--color-ink-purple: var(--color-purple-600);   /* Purple text */
+--color-ink-indigo: var(--color-indigo-600);   /* Indigo text */
+--color-ink-orange: var(--color-orange-700);   /* Orange text */
+--color-ink-pink: var(--color-pink-600);       /* Pink text */
+```
+
+### Icon Colors
+```css
+--color-icon: oklch(0.38 0.03 259 / 0.89);           /* Default icon color */
+--color-icon-light: var(--color-gray-200);            /* Light icon color */
+--color-icon-destructive: var(--color-ink-destructive); /* Destructive icon color */
+--color-icon-primary: var(--color-primary-solid);      /* Primary icon color */
+--color-icon-primary-bright: var(--color-primary-bright); /* Bright primary icon */
+```
+
+### Border Colors
+```css
+--color-border: var(--color-gray-200);              /* Default borders */
+--color-border-input: var(--color-gray-200);        /* Input borders */
+--color-border-hover: var(--color-gray-300);        /* Hover state borders */
+--color-border-secondary: var(--color-gray-100);    /* Secondary borders */
+--color-border-muted: var(--color-gray-50);         /* Muted borders */
+--color-border-focus: var(--color-primary-200);     /* Focus state borders */
+--color-border-destructive: var(--color-red-300);   /* Destructive borders */
+--color-border-success: var(--color-green-600);     /* Success borders */
+--color-border-primary: var(--color-primary-600);   /* Primary borders */
+--color-border-info: var(--color-blue-600);         /* Information borders */
+--color-border-warning: oklch(0.51 0.1 92.1);       /* Warning borders */
+--color-border-teal: var(--color-teal-600);         /* Teal borders */
+--color-border-purple: var(--color-purple-600);     /* Purple borders */
+--color-border-indigo: var(--color-indigo-600);     /* Indigo borders */
+--color-border-orange: var(--color-orange-700);     /* Orange borders */
+--color-border-pink: var(--color-pink-600);         /* Pink borders */
+```
+
+### Sidebar Colors
+```css
+--sidebar: var(--color-bg);                         /* Sidebar background */
+--sidebar-foreground: var(--color-ink);             /* Sidebar text */
+--sidebar-primary: var(--color-ink-dark);           /* Sidebar primary */
+--sidebar-primary-foreground: var(--color-bg);      /* Sidebar primary text */
+--sidebar-accent: var(--color-secondary);           /* Sidebar accent */
+--sidebar-accent-foreground: var(--color-ink-dark); /* Sidebar accent text */
+--sidebar-border: var(--color-border);              /* Sidebar borders */
+--sidebar-ring: var(--color-gray-500);              /* Sidebar focus ring */
+```
+
+## Dark Mode Support
+
+All colors automatically adapt to dark mode using CSS custom properties. The dark mode theme inverts and adjusts colors for optimal readability in low-light conditions.
+
+### Key Dark Mode Changes
+
+```css
+.dark {
+  /* Backgrounds become dark */
+  --color-panel: oklch(0.21 0.02 256);     /* Dark panels */
+  --color-bg: var(--color-gray-50);        /* Very dark background */
+  
+  /* Text becomes light */
+  --color-ink-dark: oklch(0.98 0 0);       /* White text */
+  --color-ink: oklch(0.95 0 248);          /* Light text */
+  --color-ink-light: oklch(0.71 0.02 259); /* Muted light text */
+  --color-ink-muted: oklch(0.6 0.05 258);  /* Dark mode muted */
+  
+  /* Primary colors adjust for better contrast */
+  --color-primary-solid: var(--color-primary-400);
+  --color-primary-solid-hover: var(--color-primary-600);
+  
+  /* Semantic colors use lighter variants */
+  --color-ink-destructive: var(--color-red-900);
+  --color-ink-success: var(--color-green-900);
+  --color-ink-warning: var(--color-yellow-900);
+}
+```
+
+### Dark Mode Interactive Preview
+
+<div style={{ 
+  padding: '1rem', 
+  marginBottom: '2rem',
+  border: '1px solid var(--color-border)',
+  borderRadius: '8px',
+  backgroundColor: 'var(--color-panel)'
+}}>
+  <p style={{ color: 'var(--color-ink)', marginBottom: '0.5rem' }}>
+    This preview shows how colors adapt to the current theme:
+  </p>
+  <div style={{ 
+    padding: '0.75rem',
+    backgroundColor: 'var(--color-bg)',
+    border: '1px solid var(--color-border)',
+    borderRadius: '6px',
+    color: 'var(--color-ink-light)'
+  }}>
+    Background: var(--color-bg) • Border: var(--color-border) • Text: var(--color-ink-light)
+  </div>
+</div>
+
+### Testing Dark Mode
+
+To test dark mode functionality:
+1. **In Storybook**: Use the theme toggle in the toolbar
+2. **In your app**: Add `class="dark"` to the `<html>` or `<body>` element
+3. **URL parameter**: Add `?theme=dark` to test specific scenarios
+
+> **Note**: If dark mode is not working in Storybook, ensure the globals.css file is properly imported and the `.dark` class is being applied to the document root.
+
+## Usage Guidelines
+
+### Do's
+- Use semantic color tokens for consistent theming
+- Test color combinations for accessibility compliance
+- Use the OKLCH values provided in design tokens
+- Consider both light and dark mode appearances
+
+### Don'ts
+- Don't use hard-coded hex colors in components
+- Don't create custom colors outside the design system
+- Don't use colors that don't meet contrast requirements
+- Don't use primary colors for large background areas
+
+## Accessibility
+
+All color combinations meet WCAG 2.1 AA standards:
+- **Normal text**: 4.5:1 contrast ratio minimum
+- **Large text**: 3:1 contrast ratio minimum
+- **Interactive elements**: Clear focus indicators
+- **Color-blind friendly**: Not relying on color alone to convey meaning
+
+## Implementation
+
+### CSS Custom Properties
+```css
+.my-component {
+  background-color: var(--color-panel);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+}
+```
+
+### Tailwind Classes
+```html
+<div class="bg-panel text-ink border border-border">
+  Content with semantic colors
+</div>
+```
+
+### React Component
+```tsx
+<Card className="bg-panel text-ink border-border">
+  <Text color="text-ink-light">Secondary text</Text>
+</Card>
+```

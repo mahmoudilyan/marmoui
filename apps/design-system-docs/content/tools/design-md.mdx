@@ -1,0 +1,119 @@
+---
+title: DESIGN.md
+description: The portable design brief — one agent-readable file carrying your brand colors, typography, tokens, and component overrides, so any AI agent generates on-brand UI.
+category: Tools
+status: beta
+keywords:
+  - design.md
+  - design tokens
+  - brand
+  - on-brand generation
+  - stitch
+  - init
+  - component overrides
+lastUpdated: 2026-07-05
+---
+
+# DESIGN.md
+
+`DESIGN.md` is one file at your project root that tells **any** AI agent — Claude Code, Codex, Cursor, Gemini — how your product should look: colors, typography, radius, spacing, and per-component token overrides. Marmo reads and writes the same structure as [Stitch's DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview/), so the brief is portable across tools.
+
+Two ways to get one:
+
+- **`/marmo-ui:init`** (free, local) — the plugin detects what your codebase already answers (Tailwind config, CSS custom properties, fonts) and interviews you for the rest: brand name, primary color, fonts, layout, rounding, spacing density, dark mode. Writes `DESIGN.md` if none exists — it never overwrites one.
+- **`/marmo-ui:design-md`** (Pro) — pulls your tenant's canonical brief from the MCP, so the file always matches what the server serves to every connected agent.
+
+## Structure
+
+YAML frontmatter carries the tokens; the prose body carries usage rules.
+
+```markdown
+---
+version: alpha
+name: Daylight Prestige
+colors:
+  primary: "#1A1C1E"
+  secondary: "#6C7278"
+  tertiary: "#B8422E"
+typography:
+  h1:
+    fontFamily: Public Sans
+    fontSize: 48px
+    fontWeight: 600
+    lineHeight: 1.1
+    letterSpacing: -0.02em
+rounded:
+  sm: 4px
+  md: 8px
+spacing:
+  sm: 8px
+  md: 16px
+components:
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.paper}"
+    rounded: "{rounded.md}"
+    padding: 12px
+---
+
+# Daylight Prestige — design brief
+
+Voice, layout family, dark-mode stance, do/don't list…
+```
+
+## Schema
+
+```yaml
+version: <string>          # optional, current version: "alpha"
+name: <string>
+description: <string>      # optional
+colors:
+  <token-name>: <Color>
+typography:
+  <token-name>: <Typography>
+rounded:
+  <scale-level>: <Dimension>
+spacing:
+  <scale-level>: <Dimension | number>
+components:
+  <component-name>:
+    <token-name>: <string | token reference>
+```
+
+`<scale-level>` is a named level in a sizing or spacing scale — `xs`, `sm`, `md`, `lg`, `xl`, `full`, or any descriptive string key.
+
+### Token types
+
+| Type            | Format                          | Example              |
+| --------------- | ------------------------------- | -------------------- |
+| Color           | `#` + hex code (sRGB)           | `"#1A1C1E"`          |
+| Dimension       | number + unit (`px`, `em`, `rem`) | `48px`, `-0.02em`  |
+| Token reference | `{path.to.token}`               | `{colors.primary}`   |
+| Typography      | composite object                | see below            |
+
+Typography objects take `fontFamily`, `fontSize`, `fontWeight`, `lineHeight`, `letterSpacing`.
+
+## Component token overrides
+
+Every `@marmoui/ui` component exposes its visual decisions as tokens. The `components:` block overrides **only what differs** from the Marmo defaults — an entry like:
+
+```yaml
+components:
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    rounded: "{rounded.full}"
+```
+
+means "primary buttons use my brand color and pill corners; everything else stays stock." Prefer token references (`{colors.primary}`) over repeated hex literals so a single color change ripples through every override.
+
+## How Pro uses it
+
+Free tier: agents in your repo read `DESIGN.md` directly — local, portable, works today.
+
+[Pro](/pricing): upload the file at [`/connect`](/connect) (workspace ingestion). The MCP then serves your brief to **every** connected agent on your account — your teammate's Cursor and your CI agent generate the same brand without copying files around. Your tenant gets a hosted design-system page (like this site, themed to your tokens) you can share with your team.
+
+## Related
+
+- [Install the agent](/introduction/install-agent)
+- [Tokens](/foundation/colors) — the Marmo defaults your overrides sit on
+- [Roadmap](/introduction/roadmap) — on-brand generation status

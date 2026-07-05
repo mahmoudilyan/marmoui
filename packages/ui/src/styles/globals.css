@@ -1,0 +1,1129 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+/* Marmo UI design tokens — seeded from Figma Marmo - UI (Indigo primary) */
+
+/* Tell Tailwind where to scan for classes (paths relative to this CSS file) */
+@source "../**/*.{ts,tsx,js,jsx}";
+
+/* Define dark mode variant */
+@custom-variant dark (&:is(.dark *));
+
+@theme static {
+	/* Clear defaults first */
+	--color-*: initial;
+	/* --spacing-*: initial; */
+	--radius-*: initial;
+	--text-*: initial;
+
+	/* Standard Tailwind text sizes (required for text-xs, text-sm, etc.) */
+	--text-xs: 0.75rem;
+	--text-xs--line-height: 1rem;
+	--text-sm: 0.875rem;
+	--text-sm--line-height: 1.25rem;
+	--text-base: 1rem;
+	--text-base--line-height: 1.5rem;
+	--text-lg: 1.125rem;
+	--text-lg--line-height: 1.75rem;
+	--text-xl: 1.25rem;
+	--text-xl--line-height: 1.75rem;
+	--text-2xl: 1.5rem;
+	--text-2xl--line-height: 2rem;
+	--text-3xl: 1.875rem;
+	--text-3xl--line-height: 2.25rem;
+	--text-4xl: 2.25rem;
+	--text-4xl--line-height: 2.5rem;
+	--text-5xl: 3rem;
+	--text-5xl--line-height: 1;
+	--text-6xl: 3.75rem;
+	--text-6xl--line-height: 1;
+	--text-7xl: 4.5rem;
+	--text-7xl--line-height: 1;
+	--text-8xl: 6rem;
+	--text-8xl--line-height: 1;
+	--text-9xl: 8rem;
+	--text-9xl--line-height: 1;
+
+	/* Base colors - Black & White */
+	--color-white: oklch(1 0 0);
+	--color-black: oklch(0.16 0 0);
+
+	/* @generated-palettes-light-start */
+		/* Color Palettes - Red */
+		--color-red-50: #fff5f5;
+		--color-red-100: #ffd5d5;
+		--color-red-200: #feb0b0;
+		--color-red-300: #f68c89;
+		--color-red-400: #e8675f;
+		--color-red-500: #d13f36;
+		--color-red-600: #b30606;
+		--color-red-700: #9f0505;
+		--color-red-800: #910505;
+		--color-red-900: #7f0404;
+	
+		/* Color Palettes - Gray */
+		--color-gray-50: #f6f8f9;
+		--color-gray-100: #e8ecef;
+		--color-gray-200: #d1d7de;
+		--color-gray-300: #b1bac7;
+		--color-gray-400: #8493a8;
+		--color-gray-500: #697c94;
+		--color-gray-600: #495d78;
+		--color-gray-700: #41536b;
+		--color-gray-800: #3b4b61;
+		--color-gray-900: #344255;
+	
+		/* Color Palettes - Orange */
+		--color-orange-50: #fef5ee;
+		--color-orange-100: #fee9da;
+		--color-orange-200: #fdd2b5;
+		--color-orange-300: #fbb484;
+		--color-orange-400: #faa46b;
+		--color-orange-500: #f98639;
+		--color-orange-600: #f76808;
+		--color-orange-700: #da5c07;
+		--color-orange-800: #c55306;
+		--color-orange-900: #ac4806;
+	
+		/* Color Palettes - Yellow */
+		--color-yellow-50: #fffff0;
+		--color-yellow-100: #fefcbf;
+		--color-yellow-200: #faf089;
+		--color-yellow-300: #f7e765;
+		--color-yellow-400: #f6e24f;
+		--color-yellow-500: #f4de36;
+		--color-yellow-600: #efd030;
+		--color-yellow-700: #dcb800;
+		--color-yellow-800: #c8a700;
+		--color-yellow-900: #af9200;
+	
+		/* Color Palettes - Green */
+		--color-green-50: #f0fff4;
+		--color-green-100: #c6f6d5;
+		--color-green-200: #9ae6b4;
+		--color-green-300: #68d391;
+		--color-green-400: #48bb78;
+		--color-green-500: #38a169;
+		--color-green-600: #2f855a;
+		--color-green-700: #2a7650;
+		--color-green-800: #266b48;
+		--color-green-900: #215d3f;
+	
+		/* Color Palettes - Teal */
+		--color-teal-50: #e6fffa;
+		--color-teal-100: #b2f5ea;
+		--color-teal-200: #81e6d9;
+		--color-teal-300: #4fd1c5;
+		--color-teal-400: #38b2ac;
+		--color-teal-500: #319795;
+		--color-teal-600: #2c7a7b;
+		--color-teal-700: #2a7475;
+		--color-teal-800: #236263;
+		--color-teal-900: #1f5656;
+	
+		/* Color Palettes - Blue */
+		--color-blue-50: #ebf8ff;
+		--color-blue-100: #bee3f8;
+		--color-blue-200: #86ccf8;
+		--color-blue-300: #52a2db;
+		--color-blue-400: #388acd;
+		--color-blue-500: #2a76bd;
+		--color-blue-600: #1f5895;
+		--color-blue-700: #1c4e85;
+		--color-blue-800: #194779;
+		--color-blue-900: #163f6a;
+	
+		/* Color Palettes - Indigo */
+		--color-indigo-50: #ebf4ff;
+		--color-indigo-100: #c3dafe;
+		--color-indigo-200: #a3bffa;
+		--color-indigo-300: #7f9cf5;
+		--color-indigo-400: #667eea;
+		--color-indigo-500: #5a67d8;
+		--color-indigo-600: #4c51bf;
+		--color-indigo-700: #4448aa;
+		--color-indigo-800: #3e429b;
+		--color-indigo-900: #313585;
+	
+		/* Color Palettes - Purple */
+		--color-purple-50: #faf5ff;
+		--color-purple-100: #e9d8fd;
+		--color-purple-200: #d6bcfa;
+		--color-purple-300: #b794f4;
+		--color-purple-400: #9f7aea;
+		--color-purple-500: #805ad5;
+		--color-purple-600: #6b46c1;
+		--color-purple-700: #5f3eac;
+		--color-purple-800: #57399c;
+		--color-purple-900: #4c3188;
+	
+		/* Color Palettes - Primary */
+		--color-primary-50: #edeefa;
+		--color-primary-100: #dbddf6;
+		--color-primary-200: #b7bbed;
+		--color-primary-300: #9399e4;
+		--color-primary-400: #6f77db;
+		--color-primary-500: #4b56d2;
+		--color-primary-600: #3c44a8;
+		--color-primary-700: #363d96;
+		--color-primary-800: #313789;
+		--color-primary-900: #2b3179;
+	
+		/* Color Palettes - Pink */
+		--color-pink-50: #fff5f7;
+		--color-pink-100: #fed7e2;
+		--color-pink-200: #fbb6ce;
+		--color-pink-300: #f687b3;
+		--color-pink-400: #ed64a6;
+		--color-pink-500: #d53f8c;
+		--color-pink-600: #b83280;
+		--color-pink-700: #a42d72;
+		--color-pink-800: #952868;
+		--color-pink-900: #83235b;
+	/* @generated-palettes-light-end */
+
+	/* Semantic Background Colors */
+	--color-panel: #ffffff;
+	--color-bg: var(--color-gray-50);
+	--color-secondary: var(--color-gray-100);
+	--color-muted: var(--color-gray-200);
+	--color-solid: var(--color-gray-600);
+	--color-primary-muted: var(--color-primary-50);
+	--color-primary-solid: var(--color-primary-600);
+	--color-primary-solid-hover: var(--color-primary-500);
+	--color-primary-bright: var(--color-primary-300);
+	--color-primary-contrast: var(--color-white);
+	--color-warning-solid: var(--color-yellow-400);
+	--color-destructive-solid: var(--color-red-600);
+	--color-destructive-solid-hover: var(--color-red-500);
+	--color-success-solid: var(--color-green-600);
+	--color-info-solid: var(--color-teal-400);
+
+	/* Semantic Text Colors */
+	--color-ink-dark: #2a3648;
+	--color-ink: #364152;
+	--color-ink-light: #8493a8;
+	--color-ink-muted: #afbbc9;
+	--color-ink-destructive: var(--color-red-600);
+	--color-ink-success: var(--color-green-600);
+	--color-ink-primary: var(--color-primary-600);
+	--color-ink-primary-contrast: var(--color-white);
+	--color-ink-info: var(--color-blue-600);
+	--color-ink-warning: oklch(0.51 0.1 92.1);
+	--color-ink-teal: var(--color-teal-600);
+	--color-ink-purple: var(--color-purple-600);
+	--color-ink-indigo: var(--color-indigo-600);
+	--color-ink-orange: var(--color-orange-700);
+	--color-ink-pink: var(--color-pink-600);
+	--color-ink-white: var(--color-white);
+
+	/* Semantic Icon Colors */
+	--color-icon: oklch(0.38 0.03 259 / 0.89);
+	--color-icon-default: var(--color-ink);
+	--color-icon-light: var(--color-gray-200);
+	--color-icon-destructive: var(--color-ink-destructive);
+	--color-icon-primary: var(--color-primary-solid-hover);
+	--color-icon-destructive: var(--color-red-500);
+	--color-icon-success: var(--color-green-500);
+	--color-icon-warning: var(--color-orange-500);
+	--color-icon-primary-bright: var(--color-primary-bright);
+
+	/* Sidebar Colors */
+	--sidebar: var(--color-bg);
+	--sidebar-foreground: var(--color-ink);
+	--sidebar-primary: var(--color-ink-dark);
+	--sidebar-primary-foreground: var(--color-bg);
+	--sidebar-accent: var(--color-secondary);
+	--sidebar-accent-foreground: var(--color-ink-dark);
+	--sidebar-border: var(--color-border);
+	--sidebar-ring: var(--color-gray-500);
+
+	/* Semantic Border Colors */
+	--color-border: var(--color-gray-200);
+	--color-border-input: var(--color-gray-200);
+	--color-border-hover: var(--color-gray-300);
+	--color-border-secondary: var(--color-gray-100);
+	--color-border-sidebar-arrows: var(--color-gray-300);
+	--color-border-muted: var(--color-gray-50);
+	--color-border-focus: var(--color-primary-200);
+	--color-border-destructive: var(--color-red-300);
+	--color-border-success: var(--color-green-600);
+	--color-border-primary: var(--color-primary-600);
+	--color-border-info: var(--color-blue-600);
+	--color-border-warning: oklch(0.51 0.1 92.1);
+	--color-border-teal: var(--color-teal-600);
+	--color-border-purple: var(--color-purple-600);
+	--color-border-indigo: var(--color-indigo-600);
+	--color-border-orange: var(--color-orange-700);
+	--color-border-pink: var(--color-pink-600);
+
+	/* Toast surfaces — Figma Toasts (2624:114500) */
+	--color-toast-info-bg: var(--color-blue-50);
+	--color-toast-success-bg: var(--color-green-50);
+	--color-toast-warning-bg: var(--color-yellow-50);
+	--color-toast-error-bg: var(--color-destructive-solid);
+	--color-toast-neutral-bg: var(--color-bg);
+	--color-toast-inverse-bg: var(--color-black);
+	--color-toast-on-error: var(--color-white);
+	--color-toast-on-inverse: var(--color-white);
+
+	/* Chart palette — categorical (≤ 6 hues), sequential, diverging.
+	   Foundation guide: apps/design-system-docs/content/foundation/charts.mdx.
+	   Hue ordering tuned so every adjacent pair is ≥ ~60° apart on the colour
+	   wheel — readers can tell neighbouring series apart without the legend.
+	   Indigo primary (~260°). */
+	--color-chart-1: var(--color-primary-500);
+	--color-chart-2: var(--color-purple-500);  /* ~294° */
+	--color-chart-3: var(--color-pink-500);    /* ~353° */
+	--color-chart-4: var(--color-blue-500);    /* ~250° */
+	--color-chart-5: var(--color-orange-500);  /* ~51°  */
+	--color-chart-6: var(--color-green-500);   /* ~156° */
+
+	/* Bright counterparts — paler tone of each chart hue, used for striped/dropout
+	   fills (e.g. funnel chart's "did-not-convert" portion). */
+	--color-chart-1-bright: var(--color-primary-200);
+	--color-chart-2-bright: var(--color-purple-200);
+	--color-chart-3-bright: var(--color-pink-200);
+	--color-chart-4-bright: var(--color-blue-200);
+	--color-chart-5-bright: var(--color-orange-200);
+	--color-chart-6-bright: var(--color-green-200);
+
+	/* Categorical chart palette — distinct hues for many-category charts
+	   (referral sources, browsers, regions, etc.). When a SAME variable needs
+	   multiple emphasis bands (new vs returning, active vs inactive, current vs
+	   compare), reuse the same hue at its `-bright` step rather than swapping
+	   to a different hue — that keeps the category's identity stable across
+	   states. */
+	--color-chart-cat-teal: var(--color-primary-600);
+	--color-chart-cat-violet: var(--color-purple-400);
+	--color-chart-cat-blue: var(--color-blue-400);
+	--color-chart-cat-orange: var(--color-orange-500);
+	--color-chart-cat-pink: var(--color-pink-400);
+	--color-chart-cat-amber: var(--color-yellow-800);
+	--color-chart-cat-green: var(--color-green-400);
+	--color-chart-cat-indigo: var(--color-indigo-400);
+	--color-chart-cat-mint: var(--color-teal-400);
+	--color-chart-cat-red: var(--color-red-400);
+
+	--color-chart-cat-teal-bright: var(--color-primary-300);
+	--color-chart-cat-violet-bright: var(--color-purple-200);
+	--color-chart-cat-blue-bright: var(--color-blue-200);
+	--color-chart-cat-orange-bright: var(--color-orange-200);
+	--color-chart-cat-pink-bright: var(--color-pink-200);
+	--color-chart-cat-amber-bright: var(--color-yellow-400);
+	--color-chart-cat-green-bright: var(--color-green-200);
+	--color-chart-cat-indigo-bright: var(--color-indigo-200);
+	--color-chart-cat-mint-bright: var(--color-teal-200);
+	--color-chart-cat-red-bright: var(--color-red-200);
+
+	--color-chart-sequential-1: var(--color-primary-200);
+	--color-chart-sequential-2: var(--color-primary-400);
+	--color-chart-sequential-3: var(--color-primary-600);
+	--color-chart-sequential-4: var(--color-primary-800);
+	--color-chart-sequential-5: var(--color-primary-900);
+
+	--color-chart-diverging-negative: var(--color-red-600);
+	--color-chart-diverging-neutral: var(--color-gray-200);
+	--color-chart-diverging-positive: var(--color-green-600);
+
+	--color-chart-grid: var(--color-gray-100);
+	--color-chart-axis: var(--color-ink-muted);
+	--color-chart-tooltip-bg: var(--color-panel);
+	--color-chart-tooltip-border: var(--color-border);
+
+	/* Custom Radius Scale */
+	--radius-2xs: 2px;
+	--radius-xs: 4px;
+	--radius-sm: 6px;
+	--radius: 8px; /* Default rounded class */
+	--radius-md: 8px;
+	--radius-lg: 12px;
+	--radius-xl: 16px;
+	--radius-full: 9999px;
+	--radius-none: 0px;
+
+	/* Shadows */
+	--shadow-card: 0 1px 2px 0 rgb(0 0 0 / 5%);
+
+	/* Custom Spacing Scale */
+	--spacing: 0.25rem; /* Base spacing unit */
+	--spacing-0: 0px;
+	--spacing-space-4xs: 1px;
+	--spacing-space-3xs: 2px;
+	--spacing-space-2xs: 4px;
+	--spacing-space-xs: 8px;
+	--spacing-space-sm: 12px;
+	--spacing-space-md: 16px;
+	--spacing-space-lg: 20px;
+	--spacing-space-xl: 24px;
+	--spacing-space-2xl: 32px;
+	--spacing-space-supra-1: 40px;
+	--spacing-space-supra-2: 48px;
+	--spacing-space-supra-3: 64px;
+	--spacing-space-supra-4: 80px;
+	--spacing-space-ultra-1: 96px;
+	--spacing-space-ultra-2: 128px;
+	--spacing-space-ultra-3: 256px;
+
+	/* Typography */
+	--font-sans:
+		ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+		'Noto Color Emoji';
+	--font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+	--font-mono:
+		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+		monospace;
+	--font-heading: 'Inter', sans-serif;
+	--font-display: 'Manrope', sans-serif;
+	--font-body: 'Inter', sans-serif;
+
+	/* Breakpoints */
+	--breakpoint-sm: 40rem;
+	--breakpoint-md: 48rem;
+	--breakpoint-lg: 64rem;
+	--breakpoint-xl: 80rem;
+	--breakpoint-2xl: 96rem;
+
+	/* Container Sizes */
+	--container-3xs: 16rem;
+	--container-2xs: 18rem;
+	--container-xs: 20rem;
+	--container-sm: 24rem;
+	--container-md: 28rem;
+	--container-lg: 32rem;
+	--container-xl: 36rem;
+	--container-2xl: 42rem;
+	--container-3xl: 48rem;
+	--container-4xl: 56rem;
+	--container-5xl: 64rem;
+	--container-6xl: 72rem;
+	--container-7xl: 80rem;
+
+	/* Heading sizes */
+	--text-heading-xs: 0.875rem;
+	--leading-heading-xs: 1.25rem;
+	--tracking-heading-xs: 0;
+
+	--text-heading-sm: 1rem;
+	--leading-heading-sm: 1.5rem;
+	--tracking-heading-sm: 0;
+
+	--text-heading-md: 1.125rem;
+	--leading-heading-md: 1.75rem;
+	--tracking-heading-md: 0;
+
+	--text-heading-lg: 1.25rem;
+	--leading-heading-lg: 1.75rem;
+	--tracking-heading-lg: -0.01em;
+
+	--text-heading-xl: 1.5rem;
+	--leading-heading-xl: 2rem;
+	--tracking-heading-xl: -0.01em;
+
+	--text-heading-2xl: 1.875rem;
+	--leading-heading-2xl: 2.25rem;
+	--tracking-heading-2xl: -0.015em;
+
+	--text-heading-3xl: 2.25rem;
+	--leading-heading-3xl: 2.5rem;
+	--tracking-heading-3xl: -0.02em;
+
+	/* Body */
+	--text-body-xs: 0.75rem;
+	--leading-body-xs: 1rem;
+	--tracking-body-xs: 0;
+
+	--text-body-sm: 0.875rem;
+	--leading-body-sm: 1.25rem;
+	--tracking-body-sm: 0;
+
+	--text-body-md: 1rem;
+	--leading-body-md: 1.5rem;
+	--tracking-body-md: 0;
+
+	--text-body-lg: 1.125rem;
+	--leading-body-lg: 1.75rem;
+	--tracking-body-lg: 0;
+
+	/* Caps */
+	--text-caps-lg: 0.875rem;
+	--leading-caps-lg: 1.25rem;
+	--tracking-caps-lg: 0.08em;
+
+	--text-caps-md: 0.75rem;
+	--leading-caps-md: 1rem;
+	--tracking-caps-md: 0.08em;
+
+	--text-caps-sm: 0.625rem;
+	--leading-caps-sm: 0.75rem;
+	--tracking-caps-sm: 0.08em;
+}
+
+/* Semantic color aliases */
+@layer base {
+	:root {
+		--background: var(--color-bg);
+		--foreground: var(--color-ink);
+		--primary: var(--color-primary-solid);
+		--primary-foreground: var(--color-primary-contrast);
+		--secondary: var(--color-secondary);
+		--secondary-foreground: var(--color-ink-dark);
+		--muted: var(--color-muted);
+		--muted-foreground: var(--color-ink-muted);
+		--accent: var(--color-primary-bright);
+		--accent-foreground: var(--color-ink-primary);
+		--destructive: var(--color-destructive-solid);
+		--destructive-foreground: var(--color-ink-primary-contrast);
+		--border: var(--color-border);
+		--ring: var(--color-primary-solid);
+		--card: var(--color-panel);
+		--card-foreground: var(--color-ink);
+		--popover: var(--color-panel);
+		--popover-foreground: var(--color-ink);
+		--input: var(--color-border-input);
+	}
+}
+
+/* Dark mode variables - always included (outside @layer base) */
+.dark {
+	/* Dark Mode Color Overrides */
+
+	/* @generated-palettes-dark-start */
+	/* Color Palettes - Red */
+	--color-red-50: #370202;
+	--color-red-100: #510303;
+	--color-red-200: #690404;
+	--color-red-300: #7f0404;
+	--color-red-400: #910505;
+	--color-red-500: #9f0505;
+	--color-red-600: #b30606;
+	--color-red-700: #d13f36;
+	--color-red-800: #e8675f;
+	--color-red-900: #f68c89;
+
+	/* Color Palettes - Gray */
+	--color-gray-50: #192029;
+	--color-gray-100: #232c39;
+	--color-gray-200: #2c3748;
+	--color-gray-300: #344255;
+	--color-gray-400: #3b4b61;
+	--color-gray-500: #41536b;
+	--color-gray-600: #455872;
+	--color-gray-700: #697c94;
+	--color-gray-800: #8493a8;
+	--color-gray-900: #b1bac7;
+
+	/* Color Palettes - Orange */
+	--color-orange-50: #4f2103;
+	--color-orange-100: #6f2f04;
+	--color-orange-200: #8f3c05;
+	--color-orange-300: #ac4806;
+	--color-orange-400: #c55306;
+	--color-orange-500: #da5c07;
+	--color-orange-600: #ea6308;
+	--color-orange-700: #f98639;
+	--color-orange-800: #faa46b;
+	--color-orange-900: #fbb484;
+
+	/* Color Palettes - Yellow */
+	--color-yellow-50: #4c4000;
+	--color-yellow-100: #705e00;
+	--color-yellow-200: #917900;
+	--color-yellow-300: #af9200;
+	--color-yellow-400: #c8a700;
+	--color-yellow-500: #dcb800;
+	--color-yellow-600: #efd030;
+	--color-yellow-700: #f4de36;
+	--color-yellow-800: #f6e24f;
+	--color-yellow-900: #f7e765;
+
+	/* Color Palettes - Green */
+	--color-green-50: #0f2c1e;
+	--color-green-100: #163d29;
+	--color-green-200: #1b4e35;
+	--color-green-300: #215d3f;
+	--color-green-400: #266b48;
+	--color-green-500: #2a7650;
+	--color-green-600: #2f855a;
+	--color-green-700: #38a169;
+	--color-green-800: #48bb78;
+	--color-green-900: #68d391;
+
+	/* Color Palettes - Teal */
+	--color-teal-50: #0f2929;
+	--color-teal-100: #143839;
+	--color-teal-200: #1a4848;
+	--color-teal-300: #1f5656;
+	--color-teal-400: #236263;
+	--color-teal-500: #276c6d;
+	--color-teal-600: #2a7475;
+	--color-teal-700: #319795;
+	--color-teal-800: #38b2ac;
+	--color-teal-900: #4fd1c5;
+
+	/* Color Palettes - Blue */
+	--color-blue-50: #0e2640;
+	--color-blue-100: #0f2a48;
+	--color-blue-200: #13355a;
+	--color-blue-300: #163f6a;
+	--color-blue-400: #194779;
+	--color-blue-500: #1c4e85;
+	--color-blue-600: #1f5895;
+	--color-blue-700: #2a76bd;
+	--color-blue-800: #388acd;
+	--color-blue-900: #52a2db;
+
+	/* Color Palettes - Indigo */
+	--color-indigo-50: #1a1c42;
+	--color-indigo-100: #24265b;
+	--color-indigo-200: #2d3072;
+	--color-indigo-300: #363a88;
+	--color-indigo-400: #3e429b;
+	--color-indigo-500: #4448aa;
+	--color-indigo-600: #4c51bf;
+	--color-indigo-700: #5a67d8;
+	--color-indigo-800: #667eea;
+	--color-indigo-900: #7f9cf5;
+
+	/* Color Palettes - Purple */
+	--color-purple-50: #21163c;
+	--color-purple-100: #312058;
+	--color-purple-200: #4c3188;
+	--color-purple-300: #57399c;
+	--color-purple-400: #57399c;
+	--color-purple-500: #5f3eac;
+	--color-purple-600: #6b46c0;
+	--color-purple-700: #805ad5;
+	--color-purple-800: #9f7aea;
+	--color-purple-900: #b794f4;
+
+	/* Color Palettes - Primary */
+	--color-primary-50: #16193d;
+	--color-primary-100: #1d2152;
+	--color-primary-200: #252966;
+	--color-primary-300: #2b3179;
+	--color-primary-400: #313789;
+	--color-primary-500: #363d96;
+	--color-primary-600: #3c44a8;
+	--color-primary-700: #4b56d2;
+	--color-primary-800: #6f77db;
+	--color-primary-900: #9399e4;
+
+	/* Color Palettes - Pink */
+	--color-pink-50: #40112c;
+	--color-pink-100: #57183d;
+	--color-pink-200: #6e1e4c;
+	--color-pink-300: #83235b;
+	--color-pink-400: #952868;
+	--color-pink-500: #a42d72;
+	--color-pink-600: #b83280;
+	--color-pink-700: #d53f8c;
+	--color-pink-800: #ed64a6;
+	--color-pink-900: #f687b3;
+	/* @generated-palettes-dark-end */
+
+	/* Dark mode semantic color adjustments */
+	--color-panel: oklch(0.21 0.02 256);
+	--color-bg: var(--color-gray-50);
+	--color-secondary: var(--color-gray-100);
+	--color-muted: var(--color-gray-200);
+	--color-solid: var(--color-gray-500);
+
+	--color-primary-solid: var(--color-primary-400);
+	--color-primary-solid-hover: var(--color-primary-600);
+	--color-primary-bright: var(--color-primary-300);
+
+	/* Dark mode text colors */
+	--color-ink-dark: oklch(0.98 0 0);
+	--color-ink: oklch(0.95 0 248);
+	--color-ink-light: oklch(0.71 0.02 259);
+	--color-ink-muted: oklch(0.6 0.05 258);
+	--color-ink-destructive: var(--color-red-900);
+	--color-ink-success: var(--color-green-900);
+	--color-ink-primary: var(--color-primary-700);
+	--color-ink-info: var(--color-blue-900);
+	--color-ink-warning: var(--color-yellow-900);
+	--color-ink-teal: var(--color-teal-900);
+	--color-ink-purple: var(--color-purple-800);
+	--color-ink-indigo: var(--color-indigo-900);
+	--color-ink-orange: var(--color-orange-900);
+	--color-ink-pink: var(--color-pink-900);
+
+	/* Semantic Icon Colors */
+	--color-icon: var(--color-ink);
+	--color-icon-default: var(--color-ink);
+	--color-icon-light: var(--color-gray-200);
+	--color-icon-destructive: var(--color-ink-destructive);
+	--color-icon-primary: var(--color-primary-solid-hover);
+	--color-icon-destructive: var(--color-red-500);
+	--color-icon-primary-bright: var(--color-primary-bright);
+
+	/* Dark mode border colors */
+	--color-border: var(--color-gray-300);
+	--color-border-input: var(--color-gray-400);
+	--color-border-hover: var(--color-gray-500);
+	--color-border-secondary: var(--color-gray-100);
+	--color-border-muted: var(--color-gray-50);
+	--color-border-focus: var(--color-primary-300);
+	--color-border-destructive: var(--color-red-900);
+	--color-border-success: var(--color-green-900);
+	--color-border-primary: var(--color-primary-900);
+	--color-border-info: var(--color-blue-900);
+	--color-border-warning: var(--color-yellow-900);
+	--color-border-teal: var(--color-teal-900);
+	--color-border-purple: var(--color-purple-800);
+	--color-border-indigo: var(--color-indigo-900);
+	--color-border-orange: var(--color-orange-900);
+	--color-border-pink: var(--color-pink-900);
+
+	/* Toast surfaces (dark) */
+	--color-toast-info-bg: var(--color-blue-50);
+	--color-toast-success-bg: var(--color-green-50);
+	--color-toast-warning-bg: var(--color-yellow-50);
+	--color-toast-error-bg: var(--color-destructive-solid);
+	--color-toast-neutral-bg: var(--color-bg);
+	--color-toast-inverse-bg: var(--color-black);
+	--color-toast-on-error: var(--color-white);
+	--color-toast-on-inverse: var(--color-white);
+
+	/* Chart palette (Dark) — same hue ordering as Light, biased to the 400 step
+	   for contrast on dark panels. */
+	--color-chart-1: var(--color-primary-400);
+	--color-chart-2: var(--color-purple-400);
+	--color-chart-3: var(--color-pink-400);
+	--color-chart-4: var(--color-blue-400);
+	--color-chart-5: var(--color-orange-400);
+	--color-chart-6: var(--color-green-400);
+
+	/* Bright counterparts (Dark) — slightly lighter than the chart hue */
+	--color-chart-1-bright: var(--color-primary-700);
+	--color-chart-2-bright: var(--color-purple-700);
+	--color-chart-3-bright: var(--color-pink-700);
+	--color-chart-4-bright: var(--color-blue-700);
+	--color-chart-5-bright: var(--color-orange-700);
+	--color-chart-6-bright: var(--color-green-700);
+
+	/* Categorical chart palette (Dark) — see light-mode block for naming intent. */
+	--color-chart-cat-teal: var(--color-primary-400);
+	--color-chart-cat-violet: var(--color-purple-400);
+	--color-chart-cat-blue: var(--color-blue-400);
+	--color-chart-cat-orange: var(--color-orange-400);
+	--color-chart-cat-pink: var(--color-pink-400);
+	--color-chart-cat-amber: var(--color-yellow-600);
+	--color-chart-cat-green: var(--color-green-400);
+	--color-chart-cat-indigo: var(--color-indigo-400);
+	--color-chart-cat-mint: var(--color-teal-400);
+	--color-chart-cat-red: var(--color-red-400);
+
+	--color-chart-cat-teal-bright: var(--color-primary-700);
+	--color-chart-cat-violet-bright: var(--color-purple-700);
+	--color-chart-cat-blue-bright: var(--color-blue-700);
+	--color-chart-cat-orange-bright: var(--color-orange-700);
+	--color-chart-cat-pink-bright: var(--color-pink-700);
+	--color-chart-cat-amber-bright: var(--color-yellow-800);
+	--color-chart-cat-green-bright: var(--color-green-700);
+	--color-chart-cat-indigo-bright: var(--color-indigo-700);
+	--color-chart-cat-mint-bright: var(--color-teal-700);
+	--color-chart-cat-red-bright: var(--color-red-700);
+
+	--color-chart-sequential-1: var(--color-primary-800);
+	--color-chart-sequential-2: var(--color-primary-600);
+	--color-chart-sequential-3: var(--color-primary-400);
+	--color-chart-sequential-4: var(--color-primary-300);
+	--color-chart-sequential-5: var(--color-primary-200);
+
+	--color-chart-diverging-negative: var(--color-red-400);
+	--color-chart-diverging-neutral: var(--color-gray-300);
+	--color-chart-diverging-positive: var(--color-green-400);
+
+	--color-chart-grid: var(--color-gray-200);
+	--color-chart-axis: var(--color-ink-muted);
+	--color-chart-tooltip-bg: var(--color-panel);
+	--color-chart-tooltip-border: var(--color-border);
+
+	/* Dark mode sidebar colors */
+	--sidebar: var(--color-gray-50);
+	--sidebar-foreground: var(--color-ink);
+	--sidebar-primary: var(--color-white);
+	--sidebar-primary-foreground: var(--color-gray-50);
+	--sidebar-accent: var(--color-gray-100);
+	--sidebar-accent-foreground: var(--color-ink);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-ring: var(--color-gray-400);
+
+	--background: var(--color-bg);
+	--foreground: var(--color-ink);
+	--primary: var(--color-primary-solid);
+	--primary-foreground: var(--color-primary-contrast);
+	--secondary: var(--color-secondary);
+	--secondary-foreground: var(--color-ink);
+	--muted: var(--color-muted);
+	--muted-foreground: var(--color-ink-muted);
+	--accent: var(--color-primary-bright);
+	--accent-foreground: var(--color-ink-primary);
+	--destructive: var(--color-destructive-solid);
+	--destructive-foreground: var(--color-ink-primary-contrast);
+	--border: var(--color-border);
+	--ring: var(--color-primary-solid);
+	--card: var(--color-panel);
+	--card-foreground: var(--color-ink);
+	--popover: var(--color-panel);
+	--popover-foreground: var(--color-ink);
+	--input: var(--color-border-input);
+}
+
+/* Custom Typography Utilities */
+@layer utilities {
+	/* Heading utilities */
+	.heading-xs {
+		font-size: var(--text-heading-xs);
+		line-height: var(--leading-heading-xs);
+		letter-spacing: var(--tracking-heading-xs);
+		font-weight: 600;
+	}
+
+	.heading-sm {
+		font-size: var(--text-heading-sm);
+		line-height: var(--leading-heading-sm);
+		letter-spacing: var(--tracking-heading-sm);
+		font-weight: 600;
+	}
+
+	.heading-md {
+		font-size: var(--text-heading-md);
+		line-height: var(--leading-heading-md);
+		letter-spacing: var(--tracking-heading-md);
+		font-weight: 600;
+	}
+
+	.heading-lg {
+		font-size: var(--text-heading-lg);
+		line-height: var(--leading-heading-lg);
+		letter-spacing: var(--tracking-heading-lg);
+		font-weight: 600;
+	}
+
+	.heading-xl {
+		font-size: var(--text-heading-xl);
+		line-height: var(--leading-heading-xl);
+		letter-spacing: var(--tracking-heading-xl);
+		font-weight: 600;
+	}
+
+	.heading-2xl {
+		font-size: var(--text-heading-2xl);
+		line-height: var(--leading-heading-2xl);
+		letter-spacing: var(--tracking-heading-2xl);
+		font-weight: 700;
+	}
+
+	.heading-3xl {
+		font-size: var(--text-heading-3xl);
+		line-height: var(--leading-heading-3xl);
+		letter-spacing: var(--tracking-heading-3xl);
+		font-weight: 700;
+	}
+
+	/* Body utilities */
+	.body-xs {
+		font-size: var(--text-body-xs);
+		line-height: var(--leading-body-xs);
+		letter-spacing: var(--tracking-body-xs);
+	}
+
+	.body-sm {
+		font-size: var(--text-body-sm);
+		line-height: var(--leading-body-sm);
+		letter-spacing: var(--tracking-body-sm);
+	}
+
+	.body-md {
+		font-size: var(--text-body-md);
+		line-height: var(--leading-body-md);
+		letter-spacing: var(--tracking-body-md);
+	}
+
+	.body-lg {
+		font-size: var(--text-body-lg);
+		line-height: var(--leading-body-lg);
+		letter-spacing: var(--tracking-body-lg);
+	}
+
+	/* Caps utilities */
+	.caps-sm {
+		font-size: var(--text-caps-sm);
+		line-height: var(--leading-caps-sm);
+		letter-spacing: var(--tracking-caps-sm);
+		text-transform: uppercase;
+		font-weight: 600;
+	}
+
+	.caps-md {
+		font-size: var(--text-caps-md);
+		line-height: var(--leading-caps-md);
+		letter-spacing: var(--tracking-caps-md);
+		text-transform: uppercase;
+		font-weight: 600;
+	}
+
+	.caps-lg {
+		font-size: var(--text-caps-lg);
+		line-height: var(--leading-caps-lg);
+		letter-spacing: var(--tracking-caps-lg);
+		text-transform: uppercase;
+		font-weight: 600;
+	}
+}
+
+/* Base styles */
+@layer base {
+	* {
+		border-color: var(--color-border);
+	}
+
+	body {
+		color: var(--color-ink);
+		font-family: var(--font-body);
+		-webkit-font-smoothing: antialiased;
+	}
+}
+
+/* Custom Scrollbar Styles */
+@layer utilities {
+	.scrollbar-custom {
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-border) transparent;
+	}
+
+	.scrollbar-custom::-webkit-scrollbar {
+		width: 10px;
+		height: 10px;
+	}
+
+	.scrollbar-custom::-webkit-scrollbar-track {
+		background: transparent;
+		border-radius: var(--radius-md);
+	}
+
+	.scrollbar-custom::-webkit-scrollbar-thumb {
+		background: var(--color-border);
+		border-radius: var(--radius-md);
+		/* border: 2px solid var(--color-panel); */
+		background-clip: border-box;
+	}
+
+	.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+		background: var(--color-border-hover);
+		border: 2px solid var(--color-panel);
+		background-clip: content-box;
+	}
+
+	.scrollbar-custom::-webkit-scrollbar-corner {
+		background: transparent;
+	}
+}
+
+[data-radix-scroll-area-viewport] {
+	position: relative;
+}
+
+[data-radix-scroll-area-scrollbar] {
+	z-index: 30 !important;
+}
+
+/* Custom ring utilities with dark mode support @utility ring-ring-panel { */
+/* --tw-ring-color: oklch(1 0 0);
+	&:is(.dark *) {
+		--tw-ring-color: oklch(0.21 0.02 256);
+	}
+}
+
+@utility ring-ring-bg {
+	--tw-ring-color: oklch(0.98 0 229);
+	&:is(.dark *) {
+		--tw-ring-color: oklch(0.16 0 0);
+	}
+}
+
+@utility ring-ring-secondary {
+	--tw-ring-color: oklch(0.94 0.01 240);
+	&:is(.dark *) {
+		--tw-ring-color: oklch(0.24 0.02 255);
+	}
+} */
+
+/* Safelist for dynamically generated classes */
+/* These classes are generated dynamically via buttonSizeClasses and need to be explicitly included */
+@source inline("px-[8px] px-[12px] px-[18px] px-[20px] h-7 h-8 h-9 h-12 rounded-sm rounded-md py-2 text-xs text-sm text-base text-lg text-xl text-2xl text-3xl leading-3 leading-4 leading-5 leading-6 leading-7 leading-8 leading-none leading-tight leading-snug leading-normal leading-relaxed leading-loose size-7 size-8 size-9 size-12 first:rounded-l-sm first:rounded-l-md last:rounded-r-sm last:rounded-r-md last:rounded-r-lg");
+/* Ring transparent is a standard Tailwind class */
+@source inline("ring-transparent");
+@source inline("[&[data-left-icon]]:pl-[6px] [&[data-left-icon]]:pl-[8px] [&[data-left-icon]]:pl-[12px] [&[data-right-icon]]:pr-[6px] [&[data-right-icon]]:pr-[8px] [&[data-right-icon]]:pr-[12px]");
+@source inline("[&[data-left-icon]_.icon-left]:mr-[2px] [&[data-left-icon]_.icon-left]:mr-[4px] [&[data-left-icon]_.icon-left]:mr-[6px] [&[data-left-icon]_.icon-left]:mr-[8px]");
+@source inline("[&[data-right-icon]_.icon-right]:ml-[2px] [&[data-right-icon]_.icon-right]:ml-[4px] [&[data-right-icon]_.icon-right]:ml-[6px] [&[data-right-icon]_.icon-right]:ml-[8px]");
+@source inline("[&_svg]:p-[1px] [&_svg]:p-[2px]");
+@source inline("bg-primary-bright");
+@source inline("bg-primary-muted");
+@source inline("bg-toast-info-bg bg-toast-success-bg bg-toast-warning-bg bg-toast-error-bg bg-toast-neutral-bg");
+@source inline("ring-panel");
+@source inline("ring-bg");
+@source inline("py-space-sm py-space-md py-space-lg py-space-xl py-space-2xl");
+@source inline("px-space-sm px-space-md px-space-lg px-space-xl px-space-2xl");
+@source inline("h-space-sm h-space-md h-space-lg h-space-xl h-space-2xl");
+@source inline("outline-none outline-border-primary outline-1 outline-offset-[-1px] outline-border-secondary -outline-offset-1");
+@source inline("tracking-heading-xs tracking-heading-sm tracking-heading-md tracking-heading-lg tracking-heading-xl tracking-heading-2xl tracking-heading-3xl");
+@source inline("text-heading-xs text-heading-sm text-heading-md text-heading-lg text-heading-xl text-heading-2xl text-heading-3xl");
+@source inline("w-16 w-24 w-32 w-40 w-48 w-56 w-64 w-72 w-80 min-w-16 min-w-24 min-w-32 min-w-40 min-w-48 min-w-56 min-w-64 min-w-72 min-w-80");
+/* Sheet / Dialog animation classes (tailwindcss-animate) */
+@source inline("animate-in animate-out fade-in-0 fade-out-0 zoom-in-95 zoom-out-95 slide-in-from-left slide-in-from-right slide-in-from-top slide-in-from-bottom slide-out-to-left slide-out-to-right slide-out-to-top slide-out-to-bottom duration-300");
+
+/* Tabs Override Classes */
+[role='tab'] {
+	border-bottom: 0;
+}
+
+/* Marmo toast styling — Figma Toasts (2624:114500). Static bars use data-marmo-toast-bar
+   to avoid Sonner's opacity:0 / position:absolute on [data-sonner-toast]. */
+[data-sonner-toast],
+[data-marmo-toast-bar] {
+	display: flex !important;
+	flex-direction: row !important;
+	min-height: var(--spacing-space-supra-3) !important;
+	padding: var(--spacing-space-md) !important;
+	gap: var(--spacing-space-sm) !important;
+	align-items: center !important;
+	border: none !important;
+	border-radius: var(--radius-xs) !important;
+	box-shadow: none !important;
+	background: var(--color-toast-neutral-bg) !important;
+	color: var(--color-ink-dark) !important;
+}
+
+[data-marmo-toast-bar] {
+	position: relative !important;
+	opacity: 1 !important;
+	transform: none !important;
+}
+
+[data-sonner-toast][data-type='info'],
+[data-marmo-toast-bar][data-type='info'] {
+	background: var(--color-toast-info-bg) !important;
+}
+
+[data-sonner-toast][data-type='success'],
+[data-marmo-toast-bar][data-type='success'] {
+	background: var(--color-toast-success-bg) !important;
+}
+
+[data-sonner-toast][data-type='warning'],
+[data-marmo-toast-bar][data-type='warning'] {
+	background: var(--color-toast-warning-bg) !important;
+}
+
+[data-sonner-toast][data-type='error'],
+[data-marmo-toast-bar][data-type='error'] {
+	background: var(--color-toast-error-bg) !important;
+	color: var(--color-toast-on-error) !important;
+}
+
+[data-sonner-toast][data-type='error'] [data-title],
+[data-sonner-toast][data-type='error'] [data-description],
+[data-sonner-toast][data-type='error'] [data-button],
+[data-sonner-toast][data-type='error'] [data-close-button],
+[data-marmo-toast-bar][data-type='error'] [data-title],
+[data-marmo-toast-bar][data-type='error'] [data-description],
+[data-marmo-toast-bar][data-type='error'] [data-button],
+[data-marmo-toast-bar][data-type='error'] [data-close-button] {
+	color: var(--color-toast-on-error) !important;
+}
+
+/* Figma toast has no leading type icon */
+[data-sonner-toast] [data-icon],
+[data-marmo-toast-bar] [data-icon] {
+	display: none !important;
+}
+
+[data-sonner-toast] [data-content],
+[data-marmo-toast-bar] [data-content] {
+	flex: 1 !important;
+	min-width: 0 !important;
+	gap: var(--spacing-space-3xs) !important;
+}
+
+[data-sonner-toast] [data-title],
+[data-marmo-toast-bar] [data-title] {
+	font-size: var(--text-base) !important;
+	font-weight: 500 !important;
+	line-height: var(--text-base--line-height) !important;
+	color: inherit !important;
+}
+
+[data-sonner-toast] [data-description],
+[data-marmo-toast-bar] [data-description] {
+	font-size: 15px !important;
+	font-weight: 400 !important;
+	line-height: var(--spacing-space-lg) !important;
+	color: var(--color-ink) !important;
+}
+
+[data-sonner-toast][data-type='error'] [data-description],
+[data-marmo-toast-bar][data-type='error'] [data-description] {
+	color: var(--color-toast-on-error) !important;
+	opacity: 0.9;
+}
+
+/* Inline action (e.g. Undo) — transparent, underlined, grouped with close on the right */
+[data-sonner-toast] [data-button],
+[data-marmo-toast-bar] [data-button] {
+	flex-shrink: 0 !important;
+	align-self: center !important;
+	font-size: 15px !important;
+	font-weight: 400 !important;
+	line-height: var(--spacing-space-lg) !important;
+	color: var(--color-ink) !important;
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	height: auto !important;
+	text-decoration: underline !important;
+	cursor: pointer !important;
+}
+
+[data-sonner-toast] [data-button]:hover,
+[data-marmo-toast-bar] [data-button]:hover {
+	text-decoration: underline !important;
+	background: transparent !important;
+	color: var(--color-ink-dark) !important;
+}
+
+/* Close — 32×32, vertically centered on the right */
+[data-sonner-toast] [data-close-button],
+[data-marmo-toast-bar] [data-close-button] {
+	position: static !important;
+	top: unset !important;
+	right: unset !important;
+	left: unset !important;
+	transform: none !important;
+	flex-shrink: 0 !important;
+	width: var(--spacing-space-2xl) !important;
+	height: var(--spacing-space-2xl) !important;
+	border: none !important;
+	background: transparent !important;
+	color: var(--color-icon) !important;
+	opacity: 1 !important;
+	padding: var(--spacing-space-xs) !important;
+	border-radius: var(--radius-xs) !important;
+}
+
+[data-sonner-toast] [data-close-button]:hover,
+[data-marmo-toast-bar] [data-close-button]:hover {
+	background: color-mix(in oklab, var(--color-ink) 5%, transparent) !important;
+	color: var(--color-ink) !important;
+}
+
+[data-sonner-toast] [data-close-button] svg,
+[data-marmo-toast-bar] [data-close-button] svg {
+	width: var(--spacing-space-md) !important;
+	height: var(--spacing-space-md) !important;
+}

@@ -1,0 +1,203 @@
+---
+title: Tag
+description: A compact label element for categorizing, filtering, or displaying metadata with optional close functionality.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/tag
+keywords:
+  - tag
+  - chip
+  - label
+  - category
+  - filter
+lastUpdated: 2026-03-16
+---
+
+import { Tag, Avatar, AvatarImage, AvatarFallback } from '@marmoui/ui';
+import { MdStar, MdLabel, MdPerson } from 'react-icons/md';
+
+<Accordions>
+  <Accordion title="Overview">
+    Tags are compact elements used to label, categorize, or group content. They support optional avatars, icons, and a close/delete button. Tags are **not clickable** — they display information and can optionally be removed.
+
+    **When to Use:**
+    - Displaying categories or labels on content items
+    - Showing applied filters that can be removed
+    - Grouping items (contacts, products, categories)
+    - Tagging items in lists and tables
+
+    **When NOT to Use:**
+    - For status indicators (use Badge)
+    - For navigation (use links)
+    - For actions (use Button)
+    - For clickable pills (use SegmentedControl or ToggleGroup)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Tag } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic
+
+<CodeExample
+	title="Basic Tags"
+	description="Simple text tags"
+	code={`<div className="flex flex-wrap gap-2">
+	<Tag size="sm">Small</Tag>
+  <Tag size="md">Medium - Default</Tag>
+  <Tag size="lg">Large</Tag>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Tag size="sm">Small</Tag>
+			<Tag size="md">Medium - Default</Tag>
+			<Tag size="lg">Large</Tag>
+		</div>
+	}
+/>
+
+### With Icons
+
+<CodeExample
+	title="Tags with Icons"
+	description="Tags with start or end icon elements"
+	code={`<div className="flex flex-wrap gap-2">
+	<Tag startElement={<MdPerson className="size-4" />} size="sm">Contact</Tag>
+  <Tag startElement={<MdStar className="size-5" />}>Featured</Tag>
+  <Tag startElement={<MdLabel className="size-5" />} size="lg">Category</Tag>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Tag startElement={<MdPerson className="size-4" />} size="md">Contact</Tag>
+			<Tag startElement={<MdStar className="size-5" />}>Featured</Tag>
+			<Tag startElement={<MdLabel className="size-5" />} size="lg">Category</Tag>
+		</div>
+	}
+/>
+
+### With Avatar
+
+Use `startElement` to pass an avatar or any custom element before the text.
+
+<CodeExample
+	title="Avatar Tags"
+	description="Tags with user avatars via startElement"
+	code={`<div className="flex flex-wrap gap-2">
+  <Tag size="lg" startElement={
+    <Avatar size="sm">
+      <AvatarImage src="https://i.pravatar.cc/48?img=1" alt="John Doe" />
+      <AvatarFallback>JD</AvatarFallback>
+    </Avatar>
+  }>
+    John Doe
+  </Tag>
+  <Tag size="md" startElement={
+    <Avatar size="sm">
+      <AvatarImage src="https://i.pravatar.cc/48?img=2" alt="Jane Smith" />
+      <AvatarFallback>JS</AvatarFallback>
+    </Avatar>
+  }>
+    Jane Smith
+  </Tag>
+  <Tag size="sm" startElement={
+    <Avatar size="xs">
+      <AvatarImage src="https://i.pravatar.cc/48?img=3" alt="Alex" />
+      <AvatarFallback>AL</AvatarFallback>
+    </Avatar>
+  }>
+    Alex
+  </Tag>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Tag size="lg" startElement={<Avatar size="sm"><AvatarImage src="https://i.pravatar.cc/48?img=1" alt="John Doe" /><AvatarFallback>JD</AvatarFallback></Avatar>}>John Doe</Tag>
+			<Tag size="md" startElement={<Avatar size="sm"><AvatarImage src="https://i.pravatar.cc/48?img=2" alt="Jane Smith" /><AvatarFallback>JS</AvatarFallback></Avatar>}>Jane Smith</Tag>
+			<Tag size="sm" startElement={<Avatar size="xs"><AvatarImage src="https://i.pravatar.cc/48?img=3" alt="Alex" /><AvatarFallback>AL</AvatarFallback></Avatar>}>Alex</Tag>
+		</div>
+	}
+/>
+
+### Closable
+
+<CodeExample
+	title="Removable Tags"
+	description="Tags with a close button for filter removal"
+	code={`<div className="flex flex-wrap gap-2">
+  <Tag closable>Removable</Tag>
+  <Tag closable size="lg">Large Tag</Tag>
+  <Tag closable size="sm">Small Tag</Tag>
+  <Tag closable startElement={<MdLabel className="size-5" />}>With Icon</Tag>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Tag closable>Removable</Tag>
+			<Tag closable size="lg">Large Tag</Tag>
+			<Tag closable size="sm">Small Tag</Tag>
+			<Tag closable startElement={<MdLabel className="size-5" />}>With Icon</Tag>
+		</div>
+	}
+/>
+
+### Disabled
+
+<CodeExample
+	title="Disabled Tags"
+	description="Tags in a non-interactive disabled state"
+	code={`<div className="flex flex-wrap gap-2">
+  <Tag disabled>Disabled</Tag>
+  <Tag disabled closable>Disabled Closable</Tag>
+  <Tag disabled startElement={<MdStar className="size-5" />}>Disabled Icon</Tag>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Tag disabled>Disabled</Tag>
+			<Tag disabled closable>Disabled Closable</Tag>
+			<Tag disabled startElement={<MdStar className="size-5" />}>Disabled Icon</Tag>
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Keep labels short">
+		Tag text should be 1-3 words. Long text defeats the compact purpose.
+	</Guideline>
+	<Guideline type="do" title="Use closable for filters">
+		When tags represent applied filters or selections, make them closable so users can remove them.
+	</Guideline>
+	<Guideline type="dont" title="Don't use as buttons">
+		Tags display information. For clickable actions, use Button or Link.
+	</Guideline>
+	<Guideline type="dont" title="Don't overload a view with tags">
+		Limit visible tags per item to 3-5. Show a "+N more" overflow for additional tags.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'sm' \| 'md' \| 'lg'` | `'lg'` | Tag size |
+| `startElement` | <TypeInfo>ReactNode</TypeInfo> | - | Icon, avatar, or element before the text |
+| `endElement` | <TypeInfo>ReactNode</TypeInfo> | - | Icon or element after the text (hidden when closable) |
+| `closable` | `boolean` | `false` | Show a close/remove button |
+| `onClose` | `() => void` | - | Callback when close button is clicked |
+| `disabled` | `boolean` | `false` | Disable the tag and close button |
+| `children` | <TypeInfo>ReactNode</TypeInfo> | - | Tag text content |
+| `className` | `string` | - | Additional className |
+
+## Accessibility
+
+- Close button has `aria-label="Remove"` for screen readers.
+- Close button is keyboard accessible with Enter/Space.
+- Disabled state prevents interaction on the close button.
+- Use descriptive text that makes sense without visual context.

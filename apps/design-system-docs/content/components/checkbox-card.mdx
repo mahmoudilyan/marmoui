@@ -1,0 +1,276 @@
+---
+title: Checkbox Card
+description: A card-style checkbox that provides a larger, more visual selection target with icon, label, and description support.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/checkbox-card
+keywords:
+  - checkbox card
+  - selection card
+  - choice card
+  - multi select card
+lastUpdated: 2026-03-17
+---
+
+import { CheckboxCardGroup, CheckboxCardItem } from '@marmoui/ui';
+import {
+	CheckboxCardBasicPreview,
+	CheckboxCardWithIndicatorPreview,
+	CheckboxCardNotificationPreview,
+	CheckboxCardPaymentMethodsPreview,
+	CheckboxCardFeaturesPreview,
+	CheckboxCardIntegrationsPreview,
+	CheckboxCardDisabledPreview,
+} from '@/components/previews/checkbox-card-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    CheckboxCard presents selection options as visually rich cards with icons, titles, and descriptions. They provide a larger click target and clearer visual distinction than standard checkboxes.
+
+    **When to Use:**
+    - Feature or plan selection where visual context helps
+    - Multi-select options that benefit from descriptions
+    - Settings pages with complex option descriptions
+    - Onboarding flows with feature selection
+
+    **When NOT to Use:**
+    - Simple yes/no toggles (use Checkbox or Switch)
+    - Long lists of options (use standard Checkbox list)
+    - When screen space is limited
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { CheckboxCardGroup, CheckboxCardItem } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic
+
+<CodeExample
+	title="Basic Checkbox Cards"
+	description="A group of card-style checkboxes for multi-select"
+	code={`<CheckboxCardGroup className="max-w-md">
+  <CheckboxCardItem
+    label="Email Notifications"
+    description="Receive email updates about your campaigns"
+  />
+  <CheckboxCardItem
+    label="SMS Notifications"
+    description="Get text messages for urgent alerts"
+  />
+  <CheckboxCardItem
+    label="Push Notifications"
+    description="Browser push notifications for real-time updates"
+  />
+</CheckboxCardGroup>`}
+	preview={<CheckboxCardBasicPreview />}
+/>
+
+### With Indicator
+
+The `indicator` renders a checkbox visual inside the card. Control its position with `indicatorPlacement` (`'start'`, `'end'`), or hide it with `indicator={null}`.
+
+<CodeExample
+	title="Indicator Placement"
+	description="Checkbox indicator at different positions, or hidden"
+	code={`{/* End (default) */}
+<CheckboxCardItem label="Option" description="..." />
+
+{/* Start */}
+<CheckboxCardItem indicatorPlacement="start" label="Option" description="..." />
+
+{/* Hidden */}
+<CheckboxCardItem indicator={null} label="Option" description="..." />`}
+	preview={<CheckboxCardWithIndicatorPreview />}
+/>
+
+### Notification Preferences
+
+<CodeExample
+	title="Notification Preferences"
+	description="Select which notification channels to enable"
+	code={`<CheckboxCardGroup className="max-w-md">
+  <CheckboxCardItem
+    icon={<MdEmail className="size-5 text-icon" />}
+    label="Email Digest"
+    description="Daily summary of sales, refunds, and new subscribers"
+    defaultChecked
+  />
+  <CheckboxCardItem
+    icon={<MdSms className="size-5 text-icon" />}
+    label="SMS Alerts"
+    description="Instant text for high-value orders and failed payments"
+  />
+  <CheckboxCardItem
+    icon={<MdNotifications className="size-5 text-icon" />}
+    label="Browser Push"
+    description="Real-time notifications for new orders"
+  />
+</CheckboxCardGroup>`}
+	preview={<CheckboxCardNotificationPreview />}
+/>
+
+### Accepted Payment Methods
+
+<CodeExample
+	title="Payment Methods"
+	description="Select which payment methods to accept on checkout"
+	code={`<CheckboxCardGroup className="grid-cols-3 max-w-2xl">
+  <CheckboxCardItem
+    icon={<MdCreditCard className="size-5 text-icon" />}
+    label="Credit Card"
+    description="Visa, Mastercard, Amex"
+    defaultChecked
+  />
+  <CheckboxCardItem
+    icon={<MdAccountBalance className="size-5 text-icon" />}
+    label="Bank Transfer"
+    description="Direct ACH payments"
+    defaultChecked
+  />
+  <CheckboxCardItem
+    icon={<MdPayment className="size-5 text-icon" />}
+    label="PayPal"
+    description="Pay with PayPal balance"
+  />
+</CheckboxCardGroup>`}
+	preview={<CheckboxCardPaymentMethodsPreview />}
+/>
+
+### Add-on Features
+
+<CodeExample
+	title="Feature Add-ons"
+	description="Select optional paid features to add to a plan"
+	code={`<CheckboxCardGroup className="max-w-lg">
+  <CheckboxCardItem
+    icon={<MdInsights className="size-5 text-icon" />}
+    label="Advanced Analytics"
+    description="Conversion funnels, cohort analysis, and revenue attribution"
+    addon={<span className="text-xs font-medium text-primary-solid">+ $19/mo</span>}
+    defaultChecked
+  />
+  <CheckboxCardItem
+    icon={<MdPeople className="size-5 text-icon" />}
+    label="Team Collaboration"
+    description="Invite up to 10 team members with role-based permissions"
+    addon={<span className="text-xs font-medium text-primary-solid">+ $29/mo</span>}
+  />
+  <CheckboxCardItem
+    icon={<MdShoppingCart className="size-5 text-icon" />}
+    label="Order Bump & Upsells"
+    description="Post-purchase upsells and one-click order bumps on checkout"
+    addon={<span className="text-xs font-medium text-primary-solid">+ $9/mo</span>}
+    defaultChecked
+  />
+</CheckboxCardGroup>`}
+	preview={<CheckboxCardFeaturesPreview />}
+/>
+
+### Integrations
+
+<CodeExample
+	title="Enable Integrations"
+	description="Select integrations to connect with indicator at start"
+	code={`<CheckboxCardGroup className="grid-cols-2 max-w-xl">
+  <CheckboxCardItem
+    indicatorPlacement="start"
+    icon={<MdIntegrationInstructions className="size-5 text-icon" />}
+    label="Zapier"
+    description="Connect to 5,000+ apps"
+    defaultChecked
+  />
+  <CheckboxCardItem
+    indicatorPlacement="start"
+    icon={<MdWebhook className="size-5 text-icon" />}
+    label="Webhooks"
+    description="Custom HTTP event callbacks"
+    defaultChecked
+  />
+  <CheckboxCardItem
+    indicatorPlacement="start"
+    icon={<MdCloud className="size-5 text-icon" />}
+    label="Google Sheets"
+    description="Sync orders to spreadsheets"
+  />
+  <CheckboxCardItem
+    indicatorPlacement="start"
+    icon={<MdStorage className="size-5 text-icon" />}
+    label="Airtable"
+    description="Push data to Airtable bases"
+  />
+</CheckboxCardGroup>`}
+	preview={<CheckboxCardIntegrationsPreview />}
+/>
+
+### Disabled
+
+<CodeExample
+	title="Disabled State"
+	description="Cards in disabled and checked-disabled states"
+	code={`<CheckboxCardGroup className="max-w-md">
+  <CheckboxCardItem
+    label="Available Option"
+    description="This option can be selected"
+  />
+  <CheckboxCardItem
+    label="Disabled Option"
+    description="This option is not available"
+    disabled
+  />
+  <CheckboxCardItem
+    label="Checked & Disabled"
+    description="This option is locked in"
+    disabled
+    defaultChecked
+  />
+</CheckboxCardGroup>`}
+	preview={<CheckboxCardDisabledPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Provide clear descriptions">
+		Each card should have a concise label and a helpful description explaining the option.
+	</Guideline>
+	<Guideline type="do" title="Use consistent card sizes">
+		Keep all cards in a group the same size for visual alignment.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for binary choices">
+		A single checkbox card for a yes/no question is overkill. Use a standard Checkbox.
+	</Guideline>
+	<Guideline type="dont" title="Don't mix with standard checkboxes">
+		Use either card checkboxes or standard checkboxes within the same form section.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `ReactNode` | - | Card title text |
+| `description` | `ReactNode` | - | Card description text |
+| `icon` | `ReactElement` | - | Leading icon element |
+| `addon` | `ReactNode` | - | Additional content below the description |
+| `indicator` | `ReactNode \| null` | Default checkbox | Custom indicator element, or `null` to hide |
+| `indicatorPlacement` | `'start' \| 'end'` | `'end'` | Position of the indicator |
+| `disabled` | `boolean` | `false` | Disable the checkbox card |
+| `defaultChecked` | `boolean` | `false` | Initial checked state (uncontrolled) |
+| `checked` | `boolean` | - | Controlled checked state |
+| `onCheckedChange` | `(checked: boolean) => void` | - | Callback when checked state changes |
+| `className` | `string` | - | Additional className for the card wrapper |
+
+## Accessibility
+
+- Card click area acts as the checkbox label for keyboard and mouse users.
+- Supports Space key to toggle selection when focused.
+- Selected state is communicated via `aria-checked`.
+- Works with standard form submission and react-hook-form.

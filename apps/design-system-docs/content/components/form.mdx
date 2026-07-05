@@ -1,0 +1,134 @@
+---
+title: Form
+description: A form management system with integrated validation, error handling, and accessible field composition using react-hook-form.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/form
+keywords:
+  - form
+  - validation
+  - react-hook-form
+  - submit
+  - form field
+lastUpdated: 2026-03-10
+---
+
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Input, Button } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    The Form component system integrates with `react-hook-form` to provide type-safe form management with automatic validation, error handling, and accessible field composition.
+
+    **When to Use:**
+    - Building forms with validation requirements
+    - Forms that need controlled state management
+    - Complex forms with multiple fields and dependencies
+    - Any form that benefits from centralized error handling
+
+    **When NOT to Use:**
+    - Simple, single-field forms without validation (use Field directly)
+    - Non-form data display
+    - When not using react-hook-form in your project
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@marmoui/ui';
+import { useForm } from 'react-hook-form';
+```
+
+## Examples
+
+### Basic Form
+
+<CodeExample
+	title="Simple Form"
+	description="Form with validation and submission"
+	code={`function MyForm() {
+  const form = useForm({
+    defaultValues: { name: '', email: '' }
+  });
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel required>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel required>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="you@example.com" {...field} />
+              </FormControl>
+              <FormDescription>We'll send a confirmation to this address.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+  );
+}`}
+	preview={
+		<div className="space-y-4 w-full max-w-sm">
+			<div className="space-y-1.5">
+				<label className="text-sm font-medium">Name <span className="text-red-500">*</span></label>
+				<Input placeholder="Enter your name" />
+			</div>
+			<div className="space-y-1.5">
+				<label className="text-sm font-medium">Email <span className="text-red-500">*</span></label>
+				<Input type="email" placeholder="you@example.com" />
+				<p className="text-xs text-ink-light">We'll send a confirmation to this address.</p>
+			</div>
+			<Button type="submit">Submit</Button>
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Validate on blur and submit">
+		Validate fields when the user leaves the field and again on form submission for the best user experience.
+	</Guideline>
+	<Guideline type="do" title="Show errors inline">
+		Display error messages directly below the relevant field using FormMessage.
+	</Guideline>
+	<Guideline type="dont" title="Don't clear the form on error">
+		Preserve user input when validation fails so they can correct specific fields.
+	</Guideline>
+	<Guideline type="dont" title="Don't skip FormControl">
+		Always wrap inputs in FormControl to ensure proper aria attributes are applied.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Form" />
+
+## Accessibility
+
+- FormControl automatically applies `aria-describedby` linking to description and error messages.
+- FormLabel uses the `required` prop to add both visual and ARIA required indicators.
+- FormMessage announces validation errors to screen readers.
+- Form submission respects keyboard interaction (Enter key).

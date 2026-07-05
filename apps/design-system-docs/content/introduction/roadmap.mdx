@@ -1,0 +1,149 @@
+---
+title: Roadmap
+description: Where Marmo is headed — from open-source components to the free Core MCP to on-brand generation — plus a board you can vote on.
+category: Introduction
+status: beta
+keywords:
+  - roadmap
+  - kanban
+  - voting
+  - releases
+  - mcp
+  - agent
+lastUpdated: 2026-07-05
+wideLayout: true
+---
+
+import {
+	MdCheckCircle,
+	MdFlag,
+	MdInbox,
+	MdSearch,
+} from 'react-icons/md';
+import { RoadmapVotingProvider } from '@/components/mdx/roadmap-voting';
+import {
+	RoadmapAddIssueCallout,
+	RoadmapColumn,
+	RoadmapKanbanCard,
+} from '@/components/mdx/roadmap-board';
+
+# Roadmap
+
+Marmo's goal is simple: **the agent you already use should design like it knows your product.** Everything below serves that — open components as the foundation, the MCP as the brain, your brand as the output.
+
+## The path
+
+| Phase | What ships | Status |
+| ----- | ---------- | ------ |
+| 1 | **`@marmoui/ui` public on npm** — every core component, MIT. | In progress |
+| 2 | **Public docs site** — components, foundation, agent setup. | In progress |
+| 3 | **Free Core MCP** — connect any agent, no account needed. | Next |
+| 4 | **Accounts + Pro** — checkout, entitlements, personal MCP tokens. | Planned |
+| 5 | **On-brand generation** — your `DESIGN.md` drives every generated screen. | Planned |
+| 6 | **Prototypes** — shareable generated apps with inline review comments. | Planned |
+
+Quality climbs with the phases: docs and MCP knowledge stay in lockstep (same source, re-indexed on deploy), and component docs keep gaining `## Patterns` / `## Common Mistakes` sections so agent output keeps getting better without you changing anything.
+
+---
+
+## Vote on what ships next
+
+Upvote cards to signal what hurts most — one input alongside team capacity. **To add new work**, use **Open GitHub issue** below; we can link or clone it onto this board when it's accepted.
+
+**Status labels**
+
+| Status | Meaning |
+| ------ | ------- |
+| **Not started** | No active effort; may still be prioritized. |
+| **In progress** | Someone is actively working or it's partially landed. |
+| **Blocked** | Waiting on dependency, decision, or capacity. |
+| **Done** | Shipped for this roadmap slice. |
+| **Ongoing** | Maintained as the system evolves. |
+
+<RoadmapAddIssueCallout />
+
+<RoadmapVotingProvider>
+	<div
+		className="not-prose mt-2"
+		role="region"
+		aria-label="Roadmap Kanban board"
+	>
+	<div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
+		<RoadmapColumn icon={<MdInbox className="size-5" />} title="Backlog" subtitle="Captured, not committed">
+			<RoadmapKanbanCard cardId="iconography-semantics" status="Not started" title="Iconography semantics">
+				When to use which icon metaphor; avoid misleading decorative icons.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="internationalization-localization" status="Not started" title="Internationalization and localization">
+				Pluralization, truncation, RTL callouts, and locale-aware formatting in docs examples.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="prototypes-product" status="Not started" title="Prototypes">
+				Shareable agent-generated apps reviewers can open, sign into, and comment on inline.
+			</RoadmapKanbanCard>
+		</RoadmapColumn>
+
+		<RoadmapColumn icon={<MdSearch className="size-5" />} title="Discovery" subtitle="Shaping the work">
+			<RoadmapKanbanCard cardId="patterns-mistakes-sweep" status="In progress" statusVariant="info" title="## Patterns / ## Common Mistakes sweep">
+				Better MCP knowledge = better agent output. High-traffic component MDX first.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="component-descriptions-props-json" status="Not started" title="Component descriptions in props JSON">
+				JSDoc on *Props or hand-edited JSON for MCP summaries on subcomponents.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="when-to-use-decision-trees" status="Not started" title="&quot;When to use&quot; decision trees">
+				Dialog vs Drawer vs Popover; Select variants — so agents (and humans) pick the right primitive first try.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="onbrand-generation" status="In progress" statusVariant="info" title="On-brand generation (Pro)">
+				<a className="font-medium text-ink underline" href="/tools/design-md">DESIGN.md</a> schema + /marmo-ui:init shipped; workspace ingestion next — your tokens drive every connected agent.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="component-token-overrides" status="Not started" title="Per-component token overrides">
+				Every component exposes its visual tokens so a DESIGN.md components: block can override them tenant-wide.
+			</RoadmapKanbanCard>
+		</RoadmapColumn>
+
+		<RoadmapColumn icon={<MdFlag className="size-5" />} title="Target release" subtitle="The AI-native wedge">
+			<RoadmapKanbanCard cardId="public-npm-package" status="In progress" statusVariant="info" title="@marmoui/ui public on npm">
+				MIT license, public registry, clean install in any React 19 app.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="free-core-mcp" status="In progress" statusVariant="info" title="Free Core MCP">
+				Public knowledge tier, no auth — connect Claude Code, Codex, Cursor, Gemini CLI and generate.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="priority-component-mdx" status="In progress" statusVariant="info" title="Priority component MDX">
+				Text, DatePicker, Dialog, Select, Field, Badge — patterns + mistakes; knowledge audit trending up.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="audit-knowledge-in-ci" status="Not started" title="audit:knowledge in CI">
+				Optional gate: warn/fail on regression vs agreed floors.
+			</RoadmapKanbanCard>
+		</RoadmapColumn>
+
+		<RoadmapColumn icon={<MdCheckCircle className="size-5" />} title="Shipped / ongoing" subtitle="Live or continuous">
+			<RoadmapKanbanCard cardId="design-system-mcp-plugin" status="Ongoing" statusVariant="info" title="MCP server + Claude Code plugin">
+				Streamable HTTP, get_pattern, review_generated_code, /marmoui:* commands.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="voice-tone-feedback-patterns" status="Done" statusVariant="success" title="Voice &amp; tone + feedback patterns">
+				Shipped — see <a className="font-medium text-ink underline" href="/foundation/voice-and-tone">Voice &amp; Tone</a>. Alert, Dialog, Toast, Field structures.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="pnpm-audit-knowledge" status="Ongoing" statusVariant="info" title="pnpm audit:knowledge">
+				Continuous audit of docs → MCP knowledge quality.
+			</RoadmapKanbanCard>
+			<RoadmapKanbanCard cardId="this-roadmap-ux-framing" status="Done" statusVariant="success" title="This roadmap">
+				Living doc — bump lastUpdated when cards or statuses change.
+			</RoadmapKanbanCard>
+		</RoadmapColumn>
+	</div>
+	</div>
+</RoadmapVotingProvider>
+
+---
+
+## Principles that don't move
+
+1. **Components stay free.** Anything shipped free is never moved behind the paywall.
+2. **The MCP is context, not a generator.** Your agent does the generation with your own tokens; the MCP supplies the knowledge.
+3. **Docs = MCP knowledge.** One source; if the docs are wrong the agent is wrong, so docs accuracy is a release gate.
+4. **No slop.** Validation (`review_generated_code`) ships with every knowledge tier, including free.
+
+## Related links
+
+- [Install the agent](/introduction/install-agent) — connect and generate today.
+- [Voice & Tone](/foundation/voice-and-tone) — principles + feedback structures.
+
+When this roadmap moves, update **cards** (status badges and copy) and bump `lastUpdated` in the frontmatter.

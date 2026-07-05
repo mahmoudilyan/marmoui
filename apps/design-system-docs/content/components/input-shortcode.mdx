@@ -1,0 +1,194 @@
+---
+title: Input Shortcode
+description: A specialized text input with shortcode insertion and optional emoji picker for rich content composition.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/input-shortcode
+keywords:
+  - shortcode
+  - merge fields
+  - personalization
+  - dynamic content
+  - emoji
+lastUpdated: 2026-03-10
+---
+
+import { InputShortcode } from '@marmoui/ui';
+import {
+	InputShortcodeBasicPreview,
+	InputShortcodeMultiGroupPreview,
+	InputShortcodeEmojiOnlyPreview,
+	InputShortcodeWithEmojiPreview,
+	InputShortcodeDisabledPreview,
+	InputShortcodePlaceholderPreview,
+	InputShortcodeAsyncPreview,
+} from '@/components/previews/input-shortcode-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    InputShortcode is a specialized text input that supports inserting dynamic shortcodes (merge fields) and optional emoji. It provides a dropdown interface for browsing and inserting shortcodes organized by category.
+
+    **When to Use:**
+    - Email subject lines with personalization tokens
+    - Message templates with dynamic fields
+    - Any text input that supports merge field insertion
+
+    **When NOT to Use:**
+    - For standard text input (use Input)
+    - For rich text editing (use a Rich Text Editor)
+    - When personalization tokens are not needed
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { InputShortcode } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Shortcode Input
+
+<CodeExample
+	title="Default"
+	description="Input with a single shortcode group"
+	code={`<InputShortcode
+  value={value}
+  onChange={setValue}
+  shortcodes={[
+    { id: 'contact', section: 'contact', text: 'Contact', menu: [
+      { text: 'First Name', value: '{{first_name}}' },
+      { text: 'Last Name', value: '{{last_name}}' },
+      { text: 'Email', value: '{{email}}' },
+    ]},
+  ]}
+/>`}
+	preview={<InputShortcodeBasicPreview />}
+/>
+
+### Multiple Shortcode Groups
+
+<CodeExample
+	title="Multi-Group"
+	description="Input with Contact, Order, Account, Affiliate, and Links shortcode groups"
+	code={`<InputShortcode
+  value={value}
+  onChange={setValue}
+  shortcodes={[
+    { id: 'contact', section: 'contact', text: 'Contact', menu: [...] },
+    { id: 'order', section: 'order', text: 'Order', menu: [...] },
+    { id: 'account', section: 'account', text: 'Account', menu: [...] },
+    { id: 'affiliate', section: 'affiliate', text: 'Affiliate', menu: [...] },
+    { id: 'links', section: 'links', text: 'Links', menu: [...] },
+  ]}
+  placeholder="Compose with merge fields..."
+/>`}
+	preview={<InputShortcodeMultiGroupPreview />}
+/>
+
+### Emoji Only
+
+<CodeExample
+	title="Emoji Picker"
+	description="Input with only the emoji picker enabled, no shortcodes"
+	code={`<InputShortcode
+  value={value}
+  onChange={setValue}
+  enableEmoji
+  placeholder="Type and add emoji..."
+/>`}
+	preview={<InputShortcodeEmojiOnlyPreview />}
+/>
+
+### Shortcodes with Emoji
+
+<CodeExample
+	title="Combined"
+	description="Input with both shortcode insertion and emoji picker"
+	code={`<InputShortcode
+  value={value}
+  onChange={setValue}
+  shortcodes={shortcodes}
+  enableEmoji
+  placeholder="Hey {{first_name}}, your order is ready! 🎉"
+/>`}
+	preview={<InputShortcodeWithEmojiPreview />}
+/>
+
+### With Placeholder
+
+<CodeExample
+	title="Placeholder"
+	description="Input with a descriptive placeholder"
+	code={`<InputShortcode
+  value={value}
+  onChange={setValue}
+  shortcodes={shortcodes}
+  placeholder="Enter email subject line..."
+/>`}
+	preview={<InputShortcodePlaceholderPreview />}
+/>
+
+### Async Loading from Backend
+
+<CodeExample
+	title="Async Shortcodes"
+	description="Shortcodes loaded on demand when the popover opens. Shows a spinner while fetching."
+	code={`const loadShortcodes = async () => {
+  const response = await fetch('/api/shortcodes');
+  return await response.json();
+};
+
+<InputShortcode
+  value={value}
+  onChange={setValue}
+  onLoadShortcodes={loadShortcodes}
+  placeholder="Click the shortcode button to load from API..."
+/>`}
+	preview={<InputShortcodeAsyncPreview />}
+/>
+
+### Disabled
+
+<CodeExample
+	title="Disabled"
+	description="Disabled state with pre-filled value"
+	code={`<InputShortcode
+  value="Hello {{first_name}}"
+  onChange={setValue}
+  shortcodes={shortcodes}
+  disabled
+/>`}
+	preview={<InputShortcodeDisabledPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Organize shortcodes by category">
+		Group shortcodes logically (Contact, Order, Account) for easy discovery.
+	</Guideline>
+	<Guideline type="do" title="Show shortcode previews">
+		Display a readable label for each shortcode, not just the raw merge field syntax.
+	</Guideline>
+	<Guideline type="dont" title="Don't overload with options">
+		Limit shortcode categories to keep the dropdown manageable.
+	</Guideline>
+	<Guideline type="dont" title="Don't use without fallback guidance">
+		Inform users what happens when a shortcode can't resolve (e.g., empty contact field).
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="InputShortcode" />
+
+## Accessibility
+
+- Shortcode dropdown is navigable via keyboard.
+- Inserted shortcodes are part of the input's text value for screen readers.
+- Emoji picker (when enabled) supports keyboard navigation.

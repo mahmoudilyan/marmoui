@@ -1,0 +1,179 @@
+---
+title: Text
+description: A polymorphic typography component that renders text with consistent styling from the design system's type scale.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/text
+keywords:
+  - text
+  - typography
+  - heading
+  - body
+  - caps
+  - paragraph
+lastUpdated: 2026-03-10
+---
+
+import { Text } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Text is a polymorphic typography component that maps the design system's type scale to semantic HTML elements. It supports headings, body text, and caps styles with weight, alignment, and truncation controls.
+
+    **When to Use:**
+    - Rendering any text content with design system typography
+    - Headings, body text, captions, and labels
+    - When you need consistent text styling with semantic HTML
+
+    **When NOT to Use:**
+    - For interactive text (use Button or Link)
+    - For form labels (use Label)
+    - For raw HTML when custom styling is required
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Text } from '@marmoui/ui';
+```
+
+## Examples
+
+### Headings
+
+<CodeExample
+	title="Heading Scale"
+	description="All heading variants from 3xl to xs"
+	code={`<div className="flex flex-col gap-2">
+  <Text variant="heading-3xl">Heading 3XL</Text>
+  <Text variant="heading-2xl">Heading 2XL</Text>
+  <Text variant="heading-xl">Heading XL</Text>
+  <Text variant="heading-lg">Heading LG</Text>
+  <Text variant="heading-md">Heading MD</Text>
+  <Text variant="heading-sm">Heading SM</Text>
+  <Text variant="heading-xs">Heading XS</Text>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-2">
+			<Text variant="heading-3xl">Heading 3XL</Text>
+			<Text variant="heading-2xl">Heading 2XL</Text>
+			<Text variant="heading-xl">Heading XL</Text>
+			<Text variant="heading-lg">Heading LG</Text>
+			<Text variant="heading-md">Heading MD</Text>
+			<Text variant="heading-sm">Heading SM</Text>
+			<Text variant="heading-xs">Heading XS</Text>
+		</div>
+	}
+/>
+
+### Body Text
+
+<CodeExample
+	title="Body Scale"
+	description="Body text sizes for content"
+	code={`<div className="flex flex-col gap-2">
+  <Text variant="body-lg">Body Large - For introductory text and emphasis.</Text>
+  <Text variant="body-md">Body Medium - Default body text for most content.</Text>
+  <Text variant="body-sm">Body Small - Secondary information and captions.</Text>
+  <Text variant="body-xs">Body Extra Small - Fine print and metadata.</Text>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-2">
+			<Text variant="body-lg">Body Large - For introductory text and emphasis.</Text>
+			<Text variant="body-md">Body Medium - Default body text for most content.</Text>
+			<Text variant="body-sm">Body Small - Secondary information and captions.</Text>
+			<Text variant="body-xs">Body Extra Small - Fine print and metadata.</Text>
+		</div>
+	}
+/>
+
+### Caps
+
+<CodeExample
+	title="Caps Scale"
+	description="All-caps text for labels and section headers"
+	code={`<div className="flex flex-col gap-2">
+  <Text variant="caps-lg">Caps Large</Text>
+  <Text variant="caps-md">Caps Medium</Text>
+  <Text variant="caps-sm">Caps Small</Text>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-2">
+			<Text variant="caps-lg">Caps Large</Text>
+			<Text variant="caps-md">Caps Medium</Text>
+			<Text variant="caps-sm">Caps Small</Text>
+		</div>
+	}
+/>
+
+### Semantic Elements
+
+<CodeExample
+	title="Polymorphic Rendering"
+	description="Render as different HTML elements"
+	code={`<div className="flex flex-col gap-2">
+  <Text as="h1" variant="heading-xl">This renders as an h1</Text>
+  <Text as="p" variant="body-md">This renders as a paragraph</Text>
+  <Text as="span" variant="body-sm">This renders as a span</Text>
+  <Text as="label" variant="body-sm" fontWeight="medium">This renders as a label</Text>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-2">
+			<Text as="h1" variant="heading-xl">This renders as an h1</Text>
+			<Text as="p" variant="body-md">This renders as a paragraph</Text>
+			<Text as="span" variant="body-sm">This renders as a span</Text>
+			<Text as="label" variant="body-sm" fontWeight="medium">This renders as a label</Text>
+		</div>
+	}
+/>
+
+### Truncation
+
+<CodeExample
+	title="Truncated Text"
+	description="Text that truncates with ellipsis when too long"
+	code={`<div className="w-48">
+  <Text as="p" variant="body-md" truncate>
+    This is a very long piece of text that will be truncated
+  </Text>
+</div>`}
+	preview={
+		<div className="w-48">
+			<Text as="p" variant="body-md" truncate>
+				This is a very long piece of text that will be truncated
+			</Text>
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use semantic elements">
+		Use the `as` prop to render appropriate HTML elements (h1-h6, p, span).
+	</Guideline>
+	<Guideline type="do" title="Follow the type hierarchy">
+		Use the heading scale in order. Don't skip levels (h1 to h3) for accessibility.
+	</Guideline>
+	<Guideline type="dont" title="Don't style text with raw classes">
+		Use the Text component variants instead of applying typography classes directly.
+	</Guideline>
+	<Guideline type="dont" title="Don't use headings for visual size only">
+		Choose heading levels based on document structure, not visual appearance.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Text" />
+
+## Accessibility
+
+- Use semantic HTML elements via the `as` prop for proper document structure.
+- Maintain heading hierarchy (h1 > h2 > h3) for screen reader navigation.
+- Ensure sufficient color contrast for all text color variants.
+- Use `visuallyHidden` for screen-reader-only text.

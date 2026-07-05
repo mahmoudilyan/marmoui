@@ -1,0 +1,31 @@
+{
+	"name": "marmoui",
+	"version": "0.1.0",
+	"description": "Set up Marmo UI for your AI agent — one command connects Claude Code, Codex, Cursor, Gemini CLI, Windsurf, and more.",
+	"license": "MIT",
+	"bin": {
+		"marmoui": "bin/marmoui.js"
+	},
+	"files": [
+		"bin"
+	],
+	"engines": {
+		"node": ">=18"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mahmoudilyan/marmo-ui.git",
+		"directory": "packages/cli"
+	},
+	"keywords": [
+		"marmo",
+		"design-system",
+		"mcp",
+		"ai",
+		"agent",
+		"claude",
+		"codex",
+		"cursor",
+		"gemini"
+	]
+}

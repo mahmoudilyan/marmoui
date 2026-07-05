@@ -1,0 +1,6 @@
+{
+  "title": "Tools",
+  "description": "Design and development tooling",
+  "defaultOpen": true,
+  "pages": ["index", "claude-plugin", "design-md"]
+}

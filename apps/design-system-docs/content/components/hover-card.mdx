@@ -1,0 +1,109 @@
+---
+title: Hover Card
+description: A floating card that appears on hover, showing a preview or summary of linked content.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/hover-card
+keywords:
+  - hover card
+  - preview card
+  - hover popup
+  - link preview
+lastUpdated: 2026-03-10
+---
+
+import { HoverCard, HoverCardTrigger, HoverCardContent, Avatar, AvatarFallback } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    HoverCard shows a floating card with preview content when the user hovers over a trigger element. It is useful for providing additional context about links, users, or entities.
+
+    **When to Use:**
+    - User profile previews on hover over names or avatars
+    - Link previews showing destination content
+    - Entity summaries in lists and tables
+
+    **When NOT to Use:**
+    - For interactive content (use Popover)
+    - For short text hints (use Tooltip)
+    - On mobile or touch devices (hover isn't available)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@marmoui/ui';
+```
+
+## Examples
+
+### User Preview
+
+<CodeExample
+	title="User Hover Card"
+	description="Preview card showing user details"
+	code={`<HoverCard>
+			<HoverCardTrigger asChild>
+				<a href="#" className="text-sm font-medium text-ink-primary underline">@johndoe</a>
+			</HoverCardTrigger>
+			<HoverCardContent className="w-64">
+				<div className="flex gap-3">
+					<Avatar size="md"><AvatarFallback>JD</AvatarFallback></Avatar>
+					<div className="flex flex-col gap-1">
+						<Text variant="body-sm" fontWeight="semibold" color="text-ink-dark">John Doe</Text>
+						<Text variant="body-xs" color="text-ink">Marketing Manager</Text>
+						<Text variant="body-xs" color="text-ink-light" className="mt-1">Joined March 2024</Text>
+					</div>
+				</div>
+			</HoverCardContent>
+		</HoverCard>`}
+	preview={
+		<HoverCard>
+			<HoverCardTrigger asChild>
+				<a href="#" className="text-sm font-medium text-ink-primary underline">@johndoe</a>
+			</HoverCardTrigger>
+			<HoverCardContent className="w-64">
+				<div className="flex gap-3">
+					<Avatar size="md"><AvatarFallback>JD</AvatarFallback></Avatar>
+					<div className="flex flex-col gap-1">
+						<Text variant="body-sm" fontWeight="semibold" color="text-ink-dark">John Doe</Text>
+						<Text variant="body-xs" color="text-ink">Marketing Manager</Text>
+						<Text variant="body-xs" color="text-ink-light" className="mt-1">Joined March 2024</Text>
+					</div>
+				</div>
+			</HoverCardContent>
+		</HoverCard>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Keep previews concise">
+		Show only the most relevant summary information in the hover card.
+	</Guideline>
+	<Guideline type="do" title="Provide open delays">
+		Use a delay before showing the card to prevent accidental triggers.
+	</Guideline>
+	<Guideline type="dont" title="Don't put forms in hover cards">
+		Hover cards should be informational. Use Popover for interactive content.
+	</Guideline>
+	<Guideline type="dont" title="Don't rely on hover cards for essential info">
+		Not all devices support hover. Ensure content is accessible via other means.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="HoverCardContent" />
+
+## Accessibility
+
+- Content is accessible via keyboard focus on the trigger.
+- Hover card remains visible while hovering over the card itself.
+- Escape key dismisses the hover card.
+- Content is announced to screen readers when shown.

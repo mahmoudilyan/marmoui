@@ -1,0 +1,457 @@
+@theme static {
+	/* Clear defaults first */
+	--color-*: initial;
+	--spacing-*: initial;
+	--radius-*: initial;
+
+	/* Base colors - Black & White */
+	--color-white: oklch(1 0 0);
+	--color-black: oklch(0.16 0 0);
+
+	/* Color Palettes - Red */
+	--color-red-50: oklch(0.98 0.01 17.3);
+	--color-red-100: oklch(0.91 0.05 18.1);
+	--color-red-200: oklch(0.83 0.09 19.2);
+	--color-red-300: oklch(0.75 0.13 22.3);
+	--color-red-400: oklch(0.67 0.16 25.9);
+	--color-red-500: oklch(0.58 0.18 27.9);
+	--color-red-600: oklch(0.48 0.2 28.9);
+	--color-red-700: oklch(0.44 0.18 28.9);
+	--color-red-800: oklch(0.41 0.17 28.8);
+	--color-red-900: oklch(0.38 0.15 28.8);
+
+	/* Color Palettes - Gray */
+	--color-gray-50: oklch(0.98 0 229);
+	--color-gray-100: oklch(0.94 0.01 240);
+	--color-gray-200: oklch(0.88 0.01 252);
+	--color-gray-300: oklch(0.79 0.02 257);
+	--color-gray-400: oklch(0.66 0.04 257);
+	--color-gray-500: oklch(0.58 0.04 254);
+	--color-gray-600: oklch(0.47 0.05 256);
+	--color-gray-700: oklch(0.44 0.05 256);
+	--color-gray-800: oklch(0.41 0.04 256);
+	--color-gray-900: oklch(0.37 0.04 256);
+	--color-gray-950: oklch(0.16 0 0);
+
+	/* Color Palettes - Orange */
+	--color-orange-50: oklch(0.98 0.01 60.6);
+	--color-orange-100: oklch(0.95 0.03 57.9);
+	--color-orange-200: oklch(0.89 0.06 55.8);
+	--color-orange-300: oklch(0.83 0.1 54.8);
+	--color-orange-400: oklch(0.79 0.13 53.5);
+	--color-orange-500: oklch(0.74 0.17 50.7);
+	--color-orange-600: oklch(0.69 0.19 44.9);
+	--color-orange-700: oklch(0.63 0.18 45.2);
+	--color-orange-800: oklch(0.58 0.16 45.5);
+	--color-orange-900: oklch(0.53 0.15 45.5);
+
+	/* Color Palettes - Yellow */
+	--color-yellow-50: oklch(1 0.02 107);
+	--color-yellow-100: oklch(0.98 0.08 106);
+	--color-yellow-200: oklch(0.94 0.13 104);
+	--color-yellow-300: oklch(0.92 0.15 102);
+	--color-yellow-400: oklch(0.9 0.16 101);
+	--color-yellow-500: oklch(0.89 0.17 101);
+	--color-yellow-600: oklch(0.86 0.17 97.3);
+	--color-yellow-700: oklch(0.79 0.16 94.7);
+	--color-yellow-800: oklch(0.74 0.15 94.7);
+	--color-yellow-900: oklch(0.67 0.14 94.8);
+
+	/* Color Palettes - Green */
+	--color-green-50: oklch(0.99 0.02 154);
+	--color-green-100: oklch(0.93 0.07 155);
+	--color-green-200: oklch(0.86 0.1 155);
+	--color-green-300: oklch(0.79 0.14 155);
+	--color-green-400: oklch(0.71 0.14 155);
+	--color-green-500: oklch(0.63 0.13 156);
+	--color-green-600: oklch(0.55 0.11 158);
+	--color-green-700: oklch(0.51 0.1 158);
+	--color-green-800: oklch(0.47 0.09 158);
+	--color-green-900: oklch(0.43 0.08 158);
+
+	/* Color Palettes - Teal */
+	--color-teal-50: oklch(0.98 0.03 182);
+	--color-teal-100: oklch(0.92 0.07 184);
+	--color-teal-200: oklch(0.86 0.1 185);
+	--color-teal-300: oklch(0.79 0.11 187);
+	--color-teal-400: oklch(0.7 0.11 190);
+	--color-teal-500: oklch(0.62 0.09 193);
+	--color-teal-600: oklch(0.53 0.07 196);
+	--color-teal-700: oklch(0.51 0.07 196);
+	--color-teal-800: oklch(0.46 0.06 197);
+	--color-teal-900: oklch(0.42 0.06 195);
+
+	/* Color Palettes - Blue */
+	--color-blue-50: oklch(0.97 0.02 231);
+	--color-blue-100: oklch(0.9 0.05 233);
+	--color-blue-200: oklch(0.81 0.09 237);
+	--color-blue-300: oklch(0.69 0.12 242);
+	--color-blue-400: oklch(0.61 0.13 247);
+	--color-blue-500: oklch(0.55 0.13 250);
+	--color-blue-600: oklch(0.46 0.12 253);
+	--color-blue-700: oklch(0.42 0.11 253);
+	--color-blue-800: oklch(0.39 0.1 253);
+	--color-blue-900: oklch(0.36 0.09 252);
+
+	/* Color Palettes - Indigo */
+	--color-indigo-50: oklch(0.96 0.02 253);
+	--color-indigo-100: oklch(0.88 0.06 259);
+	--color-indigo-200: oklch(0.81 0.09 265);
+	--color-indigo-300: oklch(0.71 0.13 269);
+	--color-indigo-400: oklch(0.63 0.16 272);
+	--color-indigo-500: oklch(0.56 0.17 275);
+	--color-indigo-600: oklch(0.49 0.17 276);
+	--color-indigo-700: oklch(0.46 0.15 277);
+	--color-indigo-800: oklch(0.43 0.14 277);
+	--color-indigo-900: oklch(0.38 0.13 276);
+
+	/* Color Palettes - Pink */
+	--color-pink-50: oklch(0.98 0.01 3.49);
+	--color-pink-100: oklch(0.92 0.05 359);
+	--color-pink-200: oklch(0.85 0.09 356);
+	--color-pink-300: oklch(0.76 0.14 356);
+	--color-pink-400: oklch(0.69 0.18 353);
+	--color-pink-500: oklch(0.61 0.2 353);
+	--color-pink-600: oklch(0.54 0.19 349);
+	--color-pink-700: oklch(0.5 0.17 349);
+	--color-pink-800: oklch(0.47 0.16 349);
+	--color-pink-900: oklch(0.43 0.14 349);
+
+	/* Color Palettes - Purple */
+	--color-purple-50: oklch(0.98 0.01 308);
+	--color-purple-100: oklch(0.91 0.05 306);
+	--color-purple-200: oklch(0.84 0.09 304);
+	--color-purple-300: oklch(0.74 0.14 300);
+	--color-purple-400: oklch(0.66 0.16 297);
+	--color-purple-500: oklch(0.57 0.18 294);
+	--color-purple-600: oklch(0.5 0.18 292);
+	--color-purple-700: oklch(0.46 0.17 292);
+	--color-purple-800: oklch(0.43 0.15 293);
+	--color-purple-900: oklch(0.39 0.14 293);
+
+	/* Primary Color Palette */
+	--color-primary-50: oklch(0.98 0.02 193);
+	--color-primary-100: oklch(0.96 0.03 191);
+	--color-primary-200: oklch(0.91 0.05 191);
+	--color-primary-300: oklch(0.84 0.08 192);
+	--color-primary-400: oklch(0.75 0.13 195);
+	--color-primary-500: oklch(0.66 0.11 198);
+	--color-primary-600: oklch(0.56 0.1 200);
+	--color-primary-700: oklch(0.48 0.08 200);
+	--color-primary-800: oklch(0.41 0.07 200);
+	--color-primary-900: oklch(0.38 0.06 199);
+	--color-primary-950: oklch(0.3 0.05 199);
+
+	/* Semantic Background Colors */
+	--color-panel: var(--color-white);
+	--color-bg: var(--color-gray-50);
+	--color-secondary: var(--color-gray-100);
+	--color-muted: var(--color-gray-200);
+	--color-solid: var(--color-gray-600);
+	--color-primary-muted: var(--color-primary-50);
+	--color-primary-solid: var(--color-primary-700);
+	--color-primary-solid-hover: var(--color-primary-600);
+	--color-primary-bright: var(--color-primary-300);
+	--color-primary-contrast: var(--color-white);
+	--color-warning-solid: var(--color-yellow-400);
+	--color-destructive-solid: var(--color-red-600);
+	--color-destructive-solid-hover: var(--color-red-500);
+	--color-success-solid: var(--color-green-600);
+	--color-info-solid: var(--color-blue-500);
+
+	/* Toast surfaces — Figma Toasts (2624:114500) */
+	--color-toast-info-bg: var(--color-blue-50);
+	--color-toast-success-bg: var(--color-green-50);
+	--color-toast-warning-bg: var(--color-yellow-50);
+	--color-toast-error-bg: var(--color-destructive-solid);
+	--color-toast-neutral-bg: var(--color-bg);
+	--color-toast-inverse-bg: var(--color-black);
+	--color-toast-on-error: var(--color-white);
+	--color-toast-on-inverse: var(--color-white);
+
+	/* Semantic Text Colors */
+	--color-ink-dark: oklch(0.33 0.04 258);
+	--color-ink: oklch(0.37 0.03 259);
+	--color-ink-light: oklch(0.66 0.04 257);
+	--color-ink-muted: oklch(0.79 0.02 252);
+	--color-ink-destructive: var(--color-red-600);
+	--color-ink-success: var(--color-green-600);
+	--color-ink-primary: var(--color-primary-700);
+	--color-ink-primary-contrast: var(--color-white);
+	--color-ink-info: var(--color-blue-600);
+	--color-ink-warning: oklch(0.51 0.1 92.1);
+	--color-ink-teal: var(--color-teal-600);
+	--color-ink-purple: var(--color-purple-600);
+	--color-ink-indigo: var(--color-indigo-600);
+	--color-ink-orange: var(--color-orange-700);
+	--color-ink-pink: var(--color-pink-600);
+
+	/* Semantic Icon Colors */
+	--color-icon: oklch(0.38 0.03 259 / 0.89);
+	--color-icon-light: var(--color-gray-200);
+	--color-icon-destructive: var(--color-ink-destructive);
+	--color-icon-primary: var(--color-primary-solid);
+	--color-icon-primary-bright: var(--color-primary-bright);
+
+	/* Sidebar Colors */
+	--sidebar: var(--color-bg);
+	--sidebar-foreground: var(--color-ink);
+	--sidebar-primary: var(--color-ink-dark);
+	--sidebar-primary-foreground: var(--color-bg);
+	--sidebar-accent: var(--color-secondary);
+	--sidebar-accent-foreground: var(--color-ink-dark);
+	--sidebar-border: var(--color-border);
+	--sidebar-ring: var(--color-gray-500);
+
+	/* Semantic Border Colors */
+	--color-border: var(--color-gray-200);
+	--color-border-hover: var(--color-gray-300);
+	--color-border-secondary: var(--color-gray-100);
+	--color-border-muted: var(--color-gray-50);
+	--color-border-focus: var(--color-primary-200);
+	--color-border-destructive: var(--color-red-300);
+	--color-border-success: var(--color-green-600);
+	--color-border-primary: var(--color-primary-600);
+	--color-border-info: var(--color-blue-600);
+	--color-border-warning: oklch(0.51 0.1 92.1);
+	--color-border-teal: var(--color-teal-600);
+	--color-border-purple: var(--color-purple-600);
+	--color-border-indigo: var(--color-indigo-600);
+	--color-border-orange: var(--color-orange-700);
+	--color-border-pink: var(--color-pink-600);
+
+	/* Chart palette — sourced from Figma Marmo UI design tokens.
+	   Defaults map to existing OKLCH palette; replace with Figma hex once
+	   available. Foundation guide enforces ≤ 6 categorical hues. */
+
+	/* Categorical (one-hue-per-series, max 6). Ordered so EACH neighbouring pair
+	   sits ≥ ~60° apart on the colour wheel — readers can tell adjacent series
+	   apart without referring to the legend. Teal dropped: too close to primary. */
+	--color-chart-1: var(--color-primary-500); /* ~198° cyan-teal */
+	--color-chart-2: var(--color-purple-500);  /* ~294° */
+	--color-chart-3: var(--color-pink-500);    /* ~353° */
+	--color-chart-4: var(--color-blue-500);    /* ~250° (away from pink) */
+	--color-chart-5: var(--color-orange-500);  /* ~51°  (away from blue) */
+	--color-chart-6: var(--color-green-500);   /* ~156° */
+
+	/* Sequential (one hue, varying lightness — heatmaps, density) */
+	--color-chart-sequential-1: var(--color-primary-200);
+	--color-chart-sequential-2: var(--color-primary-400);
+	--color-chart-sequential-3: var(--color-primary-600);
+	--color-chart-sequential-4: var(--color-primary-800);
+	--color-chart-sequential-5: var(--color-primary-900);
+
+	/* Diverging (two hues meeting at neutral — YoY, target deltas) */
+	--color-chart-diverging-negative: var(--color-red-600);
+	--color-chart-diverging-neutral: var(--color-gray-200);
+	--color-chart-diverging-positive: var(--color-green-600);
+
+	/* Chart chrome */
+	--color-chart-grid: var(--color-gray-100);
+	--color-chart-axis: var(--color-ink-muted);
+	--color-chart-tooltip-bg: var(--color-panel);
+	--color-chart-tooltip-border: var(--color-border);
+
+	/* Custom Radius Scale */
+	--radius-2xs: 2px;
+	--radius-xs: 4px;
+	--radius-sm: 6px;
+	--radius: 8px; /* Default rounded class */
+	--radius-lg: 8px;
+	--radius-xl: 12px;
+	--radius-full: 9999px;
+	--radius-none: 0px;
+
+	/* Shadows */
+	--shadow-card: 0 1px 2px 0 rgb(0 0 0 / 5%);
+
+	/* Custom Spacing Scale */
+	--spacing: 0.25rem; /* Base spacing unit */
+	--spacing-0: 0px;
+	--spacing-4xs: 1px;
+	--spacing-3xs: 2px;
+	--spacing-2xs: 4px;
+	--spacing-xs: 8px;
+	--spacing-s: 12px;
+	--spacing-default: 16px;
+	--spacing-lg: 20px;
+	--spacing-xl: 24px;
+	--spacing-2xl: 32px;
+	--spacing-supra-1: 40px;
+	--spacing-supra-2: 48px;
+	--spacing-supra-3: 64px;
+	--spacing-supra-4: 80px;
+	--spacing-ultra-1: 96px;
+	--spacing-ultra-2: 128px;
+	--spacing-ultra-3: 256px;
+
+	/* Typography */
+	--font-sans:
+		ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+		'Noto Color Emoji';
+	--font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+	--font-mono:
+		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+		monospace;
+	--font-heading: 'Inter', sans-serif;
+	--font-display: 'Manrope', sans-serif;
+	--font-body: 'Inter', sans-serif;
+
+	/* Breakpoints */
+	--breakpoint-sm: 40rem;
+	--breakpoint-md: 48rem;
+	--breakpoint-lg: 64rem;
+	--breakpoint-xl: 80rem;
+	--breakpoint-2xl: 96rem;
+
+	/* Container Sizes */
+	--container-3xs: 16rem;
+	--container-2xs: 18rem;
+	--container-xs: 20rem;
+	--container-sm: 24rem;
+	--container-md: 28rem;
+	--container-lg: 32rem;
+	--container-xl: 36rem;
+	--container-2xl: 42rem;
+	--container-3xl: 48rem;
+	--container-4xl: 56rem;
+	--container-5xl: 64rem;
+	--container-6xl: 72rem;
+	--container-7xl: 80rem;
+}
+
+/* Dark mode overrides */
+@layer base {
+	.dark {
+		/* Dark Mode Color Overrides */
+
+		/* Primitive Colors - Red (Dark) */
+		--color-red-50: oklch(0.21 0.08 28);
+		--color-red-100: oklch(0.28 0.11 28.4);
+		--color-red-200: oklch(0.33 0.13 28.6);
+		--color-red-300: oklch(0.38 0.15 28.8);
+		--color-red-400: oklch(0.41 0.17 28.8);
+		--color-red-500: oklch(0.44 0.18 28.9);
+		--color-red-600: oklch(0.48 0.2 28.9);
+		--color-red-700: oklch(0.58 0.18 27.9);
+		--color-red-800: oklch(0.67 0.16 25.9);
+		--color-red-900: oklch(0.75 0.13 22.3);
+
+		/* Primitive Colors - Gray (Dark) */
+		--color-gray-50: oklch(0.16 0 0);
+		--color-gray-100: oklch(0.24 0.02 255);
+		--color-gray-200: oklch(0.29 0.03 258);
+		--color-gray-300: oklch(0.33 0.03 259);
+		--color-gray-400: oklch(0.37 0.04 256);
+		--color-gray-500: oklch(0.41 0.04 256);
+		--color-gray-600: oklch(0.44 0.05 256);
+		--color-gray-700: oklch(0.46 0.05 256);
+		--color-gray-800: oklch(0.46 0.05 256);
+		--color-gray-900: oklch(0.66 0.04 257);
+		--color-gray-950: oklch(0.79 0.02 257);
+
+		/* Primary Colors (Dark) */
+		--color-primary-50: oklch(0.28 0.05 199);
+		--color-primary-100: oklch(0.31 0.05 199);
+		--color-primary-200: oklch(0.38 0.06 199);
+		--color-primary-300: oklch(0.44 0.07 196);
+		--color-primary-400: oklch(0.5 0.09 196);
+		--color-primary-500: oklch(0.56 0.1 196);
+		--color-primary-600: oklch(0.63 0.11 196);
+		--color-primary-700: oklch(0.69 0.12 195);
+		--color-primary-800: oklch(0.75 0.13 195);
+		--color-primary-900: oklch(0.8 0.11 195);
+		--color-primary-950: oklch(0.81 0.1 195);
+
+		/* Dark mode semantic color adjustments */
+		--color-panel: oklch(0.21 0.02 256);
+		--color-bg: var(--color-gray-50);
+		--color-secondary: var(--color-gray-100);
+		--color-muted: var(--color-gray-200);
+		--color-solid: var(--color-gray-500);
+
+		--color-primary-solid: var(--color-primary-400);
+		--color-primary-solid-hover: var(--color-primary-600);
+		--color-primary-bright: var(--color-primary-300);
+
+		/* Dark mode text colors */
+		--color-ink-dark: oklch(0.98 0 0);
+		--color-ink: oklch(0.95 0 248);
+		--color-ink-light: oklch(0.71 0.02 259);
+		--color-ink-muted: oklch(0.6 0.05 258);
+		--color-ink-destructive: var(--color-red-900);
+		--color-ink-success: var(--color-green-900);
+		--color-ink-primary: var(--color-primary-700);
+		--color-ink-info: var(--color-blue-900);
+		--color-ink-warning: var(--color-yellow-900);
+		--color-ink-teal: var(--color-teal-900);
+		--color-ink-purple: var(--color-purple-800);
+		--color-ink-indigo: var(--color-indigo-900);
+		--color-ink-orange: var(--color-orange-900);
+		--color-ink-pink: var(--color-pink-900);
+
+		/* Dark mode border colors */
+		--color-border: var(--color-gray-200);
+		--color-border-hover: var(--color-gray-300);
+		--color-border-secondary: var(--color-gray-100);
+		--color-border-muted: var(--color-gray-50);
+		--color-border-focus: var(--color-primary-300);
+		--color-border-destructive: var(--color-red-900);
+		--color-border-success: var(--color-green-900);
+		--color-border-primary: var(--color-primary-900);
+		--color-border-info: var(--color-blue-900);
+		--color-border-warning: var(--color-yellow-900);
+		--color-border-teal: var(--color-teal-900);
+		--color-border-purple: var(--color-purple-800);
+		--color-border-indigo: var(--color-indigo-900);
+		--color-border-orange: var(--color-orange-900);
+		--color-border-pink: var(--color-pink-900);
+
+		/* Chart palette (Dark) — same hue ordering as Light, biased to the 400 step
+		   for contrast on dark panels. */
+		--color-chart-1: var(--color-primary-400);
+		--color-chart-2: var(--color-purple-400);
+		--color-chart-3: var(--color-pink-400);
+		--color-chart-4: var(--color-blue-400);
+		--color-chart-5: var(--color-orange-400);
+		--color-chart-6: var(--color-green-400);
+
+		--color-chart-sequential-1: var(--color-primary-800);
+		--color-chart-sequential-2: var(--color-primary-600);
+		--color-chart-sequential-3: var(--color-primary-400);
+		--color-chart-sequential-4: var(--color-primary-300);
+		--color-chart-sequential-5: var(--color-primary-200);
+
+		--color-chart-diverging-negative: var(--color-red-400);
+		--color-chart-diverging-neutral: var(--color-gray-300);
+		--color-chart-diverging-positive: var(--color-green-400);
+
+		--color-chart-grid: var(--color-gray-200);
+		--color-chart-axis: var(--color-ink-muted);
+		--color-chart-tooltip-bg: var(--color-panel);
+		--color-chart-tooltip-border: var(--color-border);
+
+		/* Dark mode sidebar colors */
+		--sidebar: var(--color-gray-50);
+		--sidebar-foreground: var(--color-ink);
+		--sidebar-primary: var(--color-white);
+		--sidebar-primary-foreground: var(--color-gray-50);
+		--sidebar-accent: var(--color-gray-100);
+		--sidebar-accent-foreground: var(--color-ink);
+		--sidebar-border: oklch(1 0 0 / 10%);
+		--sidebar-ring: var(--color-gray-400);
+	}
+}
+
+/* Base styles */
+@layer base {
+	* {
+		border-color: var(--color-border);
+	}
+
+	body {
+		background-color: var(--color-bg);
+		color: var(--color-ink);
+		font-family: var(--font-body);
+	}
+}

@@ -1,0 +1,256 @@
+---
+title: Typography
+description: Our typography system provides a consistent and scalable approach to text styling
+category: Foundation
+status: stable
+keywords:
+  - typography
+  - fonts
+  - text
+  - type scale
+  - font weights
+lastUpdated: 2025-01-27
+---
+
+<ComponentPageHeader
+	title="Typography"
+	description="Our typography system provides a consistent and scalable approach to text styling"
+	status="stable"
+	category="Foundation"
+/>
+
+## Overview
+
+Our typography system provides a consistent and scalable approach to text styling. Built on Inter for headings and body text, with Manrope for display purposes.
+
+## Font Families
+
+- **Heading**: Inter - Clean, readable, professional
+- **Body**: Inter - Optimized for reading at all sizes  
+- **Display**: Manrope - Geometric sans-serif for impact
+
+Our type scale follows a systematic approach with consistent line heights and letter spacing for optimal readability.
+
+## Type Scale
+
+### Heading Scale
+
+<CodeExample
+	title="Heading Sizes"
+	description="From 3XL to XS, use headings to establish hierarchy"
+	code={`<Text variant="heading-3xl" fontWeight="bold">The quick brown fox</Text>
+<Text variant="heading-2xl" fontWeight="bold">The quick brown fox jumps</Text>
+<Text variant="heading-xl" fontWeight="semibold">The quick brown fox jumps over</Text>
+<Text variant="heading-lg" fontWeight="semibold">The quick brown fox jumps over the lazy dog</Text>
+<Text variant="heading-md" fontWeight="medium">The quick brown fox jumps over the lazy dog</Text>
+<Text variant="heading-sm" fontWeight="medium">The quick brown fox jumps over the lazy dog</Text>
+<Text variant="heading-xs" fontWeight="medium">The quick brown fox jumps over the lazy dog</Text>`}
+/>
+
+**Heading variants:**
+- `heading-3xl`: Largest heading for hero sections and major page titles
+- `heading-2xl`: Large headings for page sections
+- `heading-xl`: Section headings
+- `heading-lg`: Subsection headings
+- `heading-md`: Card titles and smaller headings
+- `heading-sm`: Label-like headings
+- `heading-xs`: Smallest heading variant
+
+### Body Text Scale
+
+<CodeExample
+	title="Body Text Sizes"
+	description="Four body text sizes for various content types"
+	code={`<Text variant="body-lg">
+  Body LG - Used for emphasized paragraph text, introductions, or important content that needs to stand out.
+</Text>
+<Text variant="body-md">
+  Body MD - The default body text size for most content, articles, and general reading material.
+</Text>
+<Text variant="body-sm">
+  Body SM - Used for secondary information, captions, metadata, and supporting details.
+</Text>
+<Text variant="body-xs">
+  Body XS - Smallest body text for fine print, legal text, or minimal space situations.
+</Text>`}
+/>
+
+**Body variants:**
+- `body-lg`: Emphasized paragraphs and introductions
+- `body-md`: Default body text (most common)
+- `body-sm`: Secondary information and captions
+- `body-xs`: Fine print and legal text
+
+### Caps (Uppercase) Scale
+
+<CodeExample
+	title="Caps Text"
+	description="Uppercase text for labels and section headers"
+	code={`<Text variant="caps-lg">Section Headers</Text>
+<Text variant="caps-md">Form Labels</Text>
+<Text variant="caps-sm">Small Metadata</Text>`}
+/>
+
+**Caps variants:**
+- `caps-lg`: Large section headers
+- `caps-md`: Form labels and metadata
+- `caps-sm`: Small labels and tags
+
+## Text Colors
+
+### Primary Text Colors
+
+<CodeExample
+	title="Text Color Hierarchy"
+	description="Four levels of text emphasis"
+	code={`<Text color="text-ink-dark">Ink Dark - Primary headings and high emphasis text</Text>
+<Text color="text-ink">Ink - Default body text and standard content</Text>
+<Text color="text-ink-light">Ink Light - Secondary text and metadata</Text>
+<Text color="text-ink-muted">Ink Muted - Subtle text and placeholders</Text>`}
+/>
+
+### Semantic Text Colors
+
+<CodeExample
+	title="Semantic Colors"
+	description="Colors for different states and meanings"
+	code={`<Text color="text-ink-primary">Primary - Brand and primary actions</Text>
+<Text color="text-ink-success">Success - Positive feedback and confirmations</Text>
+<Text color="text-ink-warning">Warning - Caution and attention-grabbing content</Text>
+<Text color="text-ink-destructive">Destructive - Errors and critical information</Text>
+<Text color="text-ink-info">Info - Informational content and tips</Text>`}
+/>
+
+## Font Weights
+
+<CodeExample
+	title="Font Weight Variations"
+	description="Four weight options for emphasis"
+	code={`<Text fontWeight="regular">Regular (400) - Standard text weight</Text>
+<Text fontWeight="medium">Medium (500) - Slight emphasis</Text>
+<Text fontWeight="semibold">Semibold (600) - Strong emphasis</Text>
+<Text fontWeight="bold">Bold (700) - Maximum emphasis</Text>`}
+/>
+
+**Available weights:**
+- `regular` (400): Standard text
+- `medium` (500): Slight emphasis
+- `semibold` (600): Strong emphasis
+- `bold` (700): Maximum emphasis
+
+## Typography in Context
+
+<CodeExample
+	title="Article Layout"
+	description="How typography works together in real content"
+	code={`<article className="bg-panel border border-border rounded-lg p-6">
+  <Text as="h1" variant="heading-2xl" fontWeight="bold" className="mb-2">
+    Getting Started with Design Systems
+  </Text>
+  <Text variant="body-sm" color="text-ink-light" className="mb-6">
+    Published on March 15, 2024 • 5 min read
+  </Text>
+
+  <Text as="p" variant="body-lg" className="mb-4">
+    A design system is a collection of reusable components, guidelines, and standards.
+  </Text>
+
+  <Text as="h2" variant="heading-lg" fontWeight="semibold" className="mb-3 mt-6">
+    Why Use a Design System?
+  </Text>
+
+  <Text as="p" variant="body-md" className="mb-4">
+    Design systems provide numerous benefits for both designers and developers.
+  </Text>
+
+  <div className="bg-secondary rounded-lg p-4 mb-4">
+    <Text variant="caps-sm" color="text-ink-primary" className="mb-2">
+      Quick Tip
+    </Text>
+    <Text variant="body-sm">
+      Start small with your most commonly used components.
+    </Text>
+  </div>
+</article>`}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use appropriate hierarchy">
+		Establish clear visual hierarchy using heading variants. Start with larger headings for main sections and progressively smaller headings for subsections.
+	</Guideline>
+	
+	<Guideline type="do" title="Choose readable line lengths">
+		Keep line lengths between 45-75 characters for optimal readability. Use body-md or body-lg for main content.
+	</Guideline>
+	
+	<Guideline type="do" title="Use semantic HTML">
+		Use the 'as' prop to render semantic HTML (h1, h2, p, etc.) while maintaining visual styles.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't skip heading levels">
+		Don't skip heading levels in the document structure (e.g., don't go from h1 to h3). This confuses screen readers.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use too many weights">
+		Don't use more than 2-3 font weights in a single component or section. This creates visual noise.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use all caps excessively">
+		Don't use caps variants for large blocks of text. They're harder to read and can be perceived as shouting.
+	</Guideline>
+</GuidelinesGrid>
+
+## Accessibility
+
+<InfoCallout type="info" title="Semantic HTML">
+Always use semantic HTML elements (h1-h6, p, etc.) for proper document structure and screen reader support.
+</InfoCallout>
+
+- Use semantic HTML elements for headings and paragraphs
+- Maintain proper heading hierarchy (h1 → h2 → h3)
+- Ensure sufficient color contrast (4.5:1 for body text, 3:1 for large text)
+- Don't rely solely on color to convey meaning
+- Use appropriate font sizes for readability (minimum 16px for body text)
+
+## Implementation
+
+### Basic Usage
+
+import { Text } from '@marmoui/ui';
+
+```tsx
+<Text variant="heading-lg" fontWeight="semibold">
+  Page Title
+</Text>
+
+<Text variant="body-md" color="text-ink-light">
+  Secondary information
+</Text>
+```
+
+### With Semantic HTML
+
+```tsx
+<Text as="h1" variant="heading-2xl" fontWeight="bold">
+  Main Page Heading
+</Text>
+
+<Text as="p" variant="body-md">
+  Paragraph content with semantic markup
+</Text>
+```
+
+### Custom Styling
+
+```tsx
+<Text 
+  variant="heading-lg" 
+  fontWeight="semibold"
+  className="mb-4 text-center"
+>
+  Centered Title
+</Text>
+```
+

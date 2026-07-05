@@ -1,0 +1,379 @@
+---
+title: Select
+description: A native single-selection dropdown built on Radix UI. For searchable or multi-select, use SelectSearchable.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/select
+keywords:
+  - select
+  - dropdown
+  - picker
+  - single select
+lastUpdated: 2026-03-18
+---
+
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue, SelectSeparator } from '@marmoui/ui';
+import { MdPerson, MdWork, MdLocationOn, MdStar, MdCreditCard, MdAccountBalance } from 'react-icons/md';
+
+<Accordions>
+  <Accordion title="Overview">
+    Select is a basic single-selection dropdown built on Radix UI primitives. It renders natively and does not include search or multi-select.
+  </Accordion>
+</Accordions>
+
+## When to use
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use for short single-choice lists (3–10 options)">
+		Status, priority, role, billing cycle, currency. Options the user already knows the meaning of.
+	</Guideline>
+	<Guideline type="do" title="Use for form fields where exactly one value is needed">
+		Required dropdowns inside a form. Pair with `Field` for label + error.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for long lists">
+		10+ options become unscannable in a Select. Use **SelectSearchable** so the user can type to filter.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for multi-select">
+		Multiple selectable options → **SelectSearchable** with `multiple`. Or **CheckboxGroup** if the list is short and always visible.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for action menus">
+		"More actions" / "Open in new tab" / etc. → **Dropdown** (which is a menu, not a value picker).
+	</Guideline>
+</GuidelinesGrid>
+
+## Choosing the right alternative
+
+| You want… | Use this |
+|---|---|
+| Long searchable single-select | `SelectSearchable` |
+| Searchable multi-select | `SelectSearchable` with `multiple` |
+| Searchable checkbox list | `SelectCheckboxSearchable` |
+| Multi-category pickers (e.g. tags + segments) | `SelectMultiCategory` |
+| 2–4 mutually exclusive options always visible | `RadioGroup` (or `SegmentedControl` for compact) |
+| 2 mutually exclusive options always visible | `Switch` if it's an on/off — otherwise `RadioGroup` |
+| "More actions" menu (Edit / Delete / Archive…) | `Dropdown` |
+| Combobox / autocomplete from free text | `SelectSearchable` with `creatable` |
+
+<Installation />
+
+## Usage
+
+```tsx
+import {
+  Select, SelectContent, SelectItem,
+  SelectTrigger, SelectValue,
+  SelectGroup, SelectLabel, SelectSeparator,
+} from '@marmoui/ui';
+```
+
+## Examples
+
+### Order Status
+
+<CodeExample
+	title="Order Status"
+	description="Change the status of a customer order"
+	code={`<Select>
+  <SelectTrigger className="w-60">
+    <SelectValue placeholder="Set order status..." />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="pending">Pending</SelectItem>
+    <SelectItem value="processing">Processing</SelectItem>
+    <SelectItem value="shipped">Shipped</SelectItem>
+    <SelectItem value="delivered">Delivered</SelectItem>
+    <SelectItem value="cancelled">Cancelled</SelectItem>
+  </SelectContent>
+</Select>`}
+	preview={
+		<Select>
+			<SelectTrigger className="w-60">
+				<SelectValue placeholder="Set order status..." />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="pending">Pending</SelectItem>
+				<SelectItem value="processing">Processing</SelectItem>
+				<SelectItem value="shipped">Shipped</SelectItem>
+				<SelectItem value="delivered">Delivered</SelectItem>
+				<SelectItem value="cancelled">Cancelled</SelectItem>
+			</SelectContent>
+		</Select>
+	}
+/>
+
+### Priority Level
+
+<CodeExample
+	title="Task Priority"
+	description="Assign a priority level to a support ticket"
+	code={`<Select>
+  <SelectTrigger className="w-60">
+    <SelectValue placeholder="Set priority..." />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="low">Low</SelectItem>
+    <SelectItem value="medium">Medium</SelectItem>
+    <SelectItem value="high">High</SelectItem>
+    <SelectItem value="urgent">Urgent</SelectItem>
+  </SelectContent>
+</Select>`}
+	preview={
+		<Select>
+			<SelectTrigger className="w-60">
+				<SelectValue placeholder="Set priority..." />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="low">Low</SelectItem>
+				<SelectItem value="medium">Medium</SelectItem>
+				<SelectItem value="high">High</SelectItem>
+				<SelectItem value="urgent">Urgent</SelectItem>
+			</SelectContent>
+		</Select>
+	}
+/>
+
+### Grouped Options
+
+<CodeExample
+	title="Team Roles"
+	description="Organize roles into departments with labeled groups"
+	code={`<Select>
+  <SelectTrigger className="w-60">
+    <SelectValue placeholder="Assign role..." />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <SelectLabel>Management</SelectLabel>
+      <SelectItem value="ceo">CEO</SelectItem>
+      <SelectItem value="cto">CTO</SelectItem>
+      <SelectItem value="cfo">CFO</SelectItem>
+    </SelectGroup>
+    <SelectSeparator />
+    <SelectGroup>
+      <SelectLabel>Engineering</SelectLabel>
+      <SelectItem value="frontend">Frontend Developer</SelectItem>
+      <SelectItem value="backend">Backend Developer</SelectItem>
+      <SelectItem value="fullstack">Full Stack Developer</SelectItem>
+    </SelectGroup>
+    <SelectSeparator />
+    <SelectGroup>
+      <SelectLabel>Design</SelectLabel>
+      <SelectItem value="ui">UI Designer</SelectItem>
+      <SelectItem value="ux">UX Researcher</SelectItem>
+    </SelectGroup>
+  </SelectContent>
+</Select>`}
+	preview={
+		<Select>
+			<SelectTrigger className="w-60">
+				<SelectValue placeholder="Assign role..." />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectGroup>
+					<SelectLabel>Management</SelectLabel>
+					<SelectItem value="ceo">CEO</SelectItem>
+					<SelectItem value="cto">CTO</SelectItem>
+				</SelectGroup>
+				<SelectSeparator />
+				<SelectGroup>
+					<SelectLabel>Engineering</SelectLabel>
+					<SelectItem value="frontend">Frontend Developer</SelectItem>
+					<SelectItem value="backend">Backend Developer</SelectItem>
+				</SelectGroup>
+				<SelectSeparator />
+				<SelectGroup>
+					<SelectLabel>Design</SelectLabel>
+					<SelectItem value="ui">UI Designer</SelectItem>
+					<SelectItem value="ux">UX Researcher</SelectItem>
+				</SelectGroup>
+			</SelectContent>
+		</Select>
+	}
+/>
+
+### Payment Method
+
+<CodeExample
+	title="Payment Method"
+	description="Select a payment method with icons"
+	code={`<Select>
+  <SelectTrigger className="w-60">
+    <SelectValue placeholder="Payment method..." />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="card">
+      <MdCreditCard className="inline mr-2" />
+      Credit Card
+    </SelectItem>
+    <SelectItem value="bank">
+      <MdAccountBalance className="inline mr-2" />
+      Bank Transfer
+    </SelectItem>
+    <SelectItem value="paypal">
+      PayPal
+    </SelectItem>
+    <SelectItem value="crypto">
+      Cryptocurrency
+    </SelectItem>
+  </SelectContent>
+</Select>`}
+	preview={
+		<Select>
+			<SelectTrigger className="w-60">
+				<SelectValue placeholder="Payment method..." />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="card"><MdCreditCard className="inline mr-2" />Credit Card</SelectItem>
+				<SelectItem value="bank"><MdAccountBalance className="inline mr-2" />Bank Transfer</SelectItem>
+				<SelectItem value="paypal">PayPal</SelectItem>
+				<SelectItem value="crypto">Cryptocurrency</SelectItem>
+			</SelectContent>
+		</Select>
+	}
+/>
+
+### Size Variants
+
+<CodeExample
+	title="Small and Default"
+	description="Use size='sm' for compact layouts like table headers or toolbars"
+	code={`<div className="flex flex-col gap-4">
+  <Select>
+    <SelectTrigger className="w-60" size="sm">
+      <SelectValue placeholder="Small — filter by status..." />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="active">Active</SelectItem>
+      <SelectItem value="inactive">Inactive</SelectItem>
+    </SelectContent>
+  </Select>
+
+  <Select>
+    <SelectTrigger className="w-60">
+      <SelectValue placeholder="Default — select status..." />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="active">Active</SelectItem>
+      <SelectItem value="inactive">Inactive</SelectItem>
+    </SelectContent>
+  </Select>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-4">
+			<Select>
+				<SelectTrigger className="w-60" size="sm">
+					<SelectValue placeholder="Small — filter by status..." />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="active">Active</SelectItem>
+					<SelectItem value="inactive">Inactive</SelectItem>
+				</SelectContent>
+			</Select>
+			<Select>
+				<SelectTrigger className="w-60">
+					<SelectValue placeholder="Default — select status..." />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="active">Active</SelectItem>
+					<SelectItem value="inactive">Inactive</SelectItem>
+				</SelectContent>
+			</Select>
+		</div>
+	}
+/>
+
+### Disabled
+
+<CodeExample
+	title="Disabled"
+	description="Non-interactive select for read-only contexts"
+	code={`<Select disabled>
+  <SelectTrigger className="w-60">
+    <SelectValue placeholder="Disabled..." />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="1">Option 1</SelectItem>
+  </SelectContent>
+</Select>`}
+	preview={
+		<Select disabled>
+			<SelectTrigger className="w-60">
+				<SelectValue placeholder="Disabled..." />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="1">Option 1</SelectItem>
+			</SelectContent>
+		</Select>
+	}
+/>
+
+## Choosing the Right Select
+
+| Component | Search | Multi-select | Indicator | Best for |
+|-----------|--------|-------------|-----------|----------|
+| **Select** | No | No | Checkmark (right) | Short lists (3–10 items), form fields |
+| **SelectSearchable** | Yes | Optional | Checkmark (right) | Long lists, tagging, team assignment |
+| **SelectSearchable** `indicator="checkbox"` | Yes | Optional | Checkbox (left) | Column toggles, permissions, settings |
+| **SelectMultiCategory** | Yes | Yes | Checkbox | Categorized multi-select (recipients, segments) |
+
+**Indicator guidance:**
+- Use **checkmark on the right** (`indicator="check"`, default) for standard selection — the user picks a value and the check confirms it.
+- Use **checkbox on the left** (`indicator="checkbox"`) when items represent toggleable states — the user mentally models each item as enabled/disabled, like toggling table columns or permissions.
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use for short, known lists">
+		Select works best for 3–10 options the user already knows (status, priority, role). For longer lists, use SelectSearchable.
+	</Guideline>
+	<Guideline type="do" title="Use groups for related options">
+		Group related options with SelectGroup and SelectLabel when you have distinct categories.
+	</Guideline>
+	<Guideline type="do" title="Provide clear placeholders">
+		Use descriptive placeholder text that indicates what type of selection is expected.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for binary choices">
+		Use a Switch or Checkbox instead of a select with only two options.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for long lists">
+		If users need to search or scroll through many items, use SelectSearchable instead.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for actions">
+		This is for selecting values, not triggering actions. Use DropdownMenu for action menus.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### Select (Root)
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Controlled selected value |
+| `defaultValue` | `string` | - | Uncontrolled default value |
+| `onValueChange` | `(value: string) => void` | - | Callback when selection changes |
+| `disabled` | `boolean` | `false` | Disable the entire select |
+| `name` | `string` | - | Form field name for native submission |
+
+### SelectTrigger
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'sm' \| 'md'` | `'md'` | Trigger height — `sm` for toolbars, `md` for forms |
+| `className` | `string` | - | Additional className |
+
+### SelectItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Item value (required) |
+| `disabled` | `boolean` | `false` | Disable this option |
+
+## Accessibility
+
+- Built on Radix UI Select primitives with full ARIA support.
+- Keyboard navigation: arrow keys to navigate, Enter to select, Escape to close.
+- Type-ahead: typing characters jumps to matching items.
+- Focus is managed automatically when the dropdown opens and closes.
+- Screen readers announce the selected value and available options.

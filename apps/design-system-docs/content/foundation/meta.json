@@ -1,0 +1,6 @@
+{
+  "title": "Foundation",
+  "description": "Core design tokens and system fundamentals",
+  "defaultOpen": true,
+  "pages": ["colors", "tokens", "typography", "icons", "shadows", "spacing", "borders-and-radius", "illustration", "voice-and-tone", "charts"]
+}

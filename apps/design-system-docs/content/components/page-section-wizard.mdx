@@ -1,0 +1,264 @@
+---
+title: PageSectionWizard
+description: A specialized page header for multi-step wizard flows with editable titles, step indicators, and sidebar integration.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/layout/page-section-wizard.tsx
+keywords:
+  - page section
+  - wizard
+  - stepper
+  - multi-step
+  - header
+  - editable title
+  - steps
+lastUpdated: 2026-03-11
+---
+
+import {
+	WizardBasicPreview,
+	WizardEditableTitlePreview,
+	WizardStepNavigationPreview,
+	WizardStepCounterPreview,
+	WizardCustomStepsPreview,
+} from '@/components/previews/page-section-previews';
+import { SidebarWizardLayoutPreview } from '@/components/previews/sidebar-layout-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    PageSectionWizard is a page header variant designed for multi-step form flows. It replaces the standard breadcrumb-based `PageSection` with an editable title on the left and step indicators on the right.
+
+    **Key Features:**
+    - Inline-editable title (click to edit, Enter to save, Escape to cancel)
+    - Step indicators showing progress through the wizard
+    - Integrates with `Stepper` context for automatic step management
+    - Sidebar toggle button when sidebar is collapsed
+    - Works inside `SidebarProvider` for full layout integration
+    - Pairs with a full-height page body where the wizard footer stays at the bottom
+
+    **When to Use:**
+    - Multi-step campaign creation flows
+    - Multi-step form builders
+    - Sequential setup wizards
+    - Any flow where users need to see their progress
+
+    **When NOT to Use:**
+    - Standard content pages (use PageSection)
+    - Single-step forms (use PageSection with actions)
+    - Non-sequential processes (use Tabs or SegmentedControl)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { PageSectionWizard } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Wizard Header
+
+<CodeExample
+	title="Step Indicators"
+	description="Wizard header with title and step progress"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardBasicPreview"
+	preview={<WizardBasicPreview />}
+/>
+
+### Editable Title
+
+When `onTitleChange` is provided, the title becomes inline-editable. Click the title or the pencil icon to edit. Press Enter to save or Escape to cancel.
+
+<CodeExample
+	title="Editable Title"
+	description="Click the title to rename the wizard"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardEditableTitlePreview"
+	preview={<WizardEditableTitlePreview />}
+/>
+
+### With Step Navigation
+
+<CodeExample
+	title="Clickable Steps"
+	description="Click completed steps to navigate back"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardStepNavigationPreview"
+	preview={<WizardStepNavigationPreview />}
+/>
+
+### With Stepper Context
+
+When used inside a `Stepper` component, `PageSectionWizard` automatically reads the current step and navigation from context. No need to pass `currentStep`, `totalSteps`, or `onStepClick`.
+
+<CodeExample
+	title="Stepper Integration"
+	description="Automatic step management via Stepper context"
+	code={`import { Stepper, StepperContent, PageSectionWizard } from '@marmoui/ui';
+
+function CampaignWizard() {
+  const [activeStep, setActiveStep] = useState('details');
+
+  return (
+    <Stepper value={activeStep} onValueChange={setActiveStep}>
+      <PageSectionWizard
+        title="Campaign Builder"
+        onTitleChange={(title) => updateCampaignName(title)}
+        steps={[
+          { id: 'details', label: 'Campaign Details' },
+          { id: 'content', label: 'Email Content' },
+          { id: 'audience', label: 'Select Audience' },
+          { id: 'review', label: 'Review & Send' },
+        ]}
+      />
+      <StepperContent value="details">
+        <CampaignDetailsForm />
+      </StepperContent>
+    </Stepper>
+  );
+}`}
+	preview={<WizardStepNavigationPreview />}
+/>
+
+### Full-Height Wizard Layout
+
+Wizard content should fill the available page height. Keep the step content in a
+scrollable flex child and place the footer after it with `mt-auto` (or sticky
+bottom styling for long forms). Do not wrap the entire wizard step in `Card` by
+default.
+
+<CodeExample
+	title="Wizard content with bottom footer"
+	description="A wizard page structure that keeps navigation actions pinned to the bottom."
+	code={`<div className="flex min-h-screen flex-col bg-bg">
+  <PageSectionWizard
+    title="Create campaign"
+    steps={[
+      { id: 'setup', label: 'Setup' },
+      { id: 'audience', label: 'Audience' },
+      { id: 'review', label: 'Review' },
+    ]}
+    currentStep={0}
+    totalSteps={3}
+  />
+
+  <main className="flex min-h-0 flex-1 flex-col">
+    <div className="min-h-0 flex-1 overflow-auto px-space-2xl py-space-xl">
+      <form className="mx-auto w-full max-w-3xl space-y-4">
+        {/* Step fields go here. Use Card only for widgets inside the step. */}
+      </form>
+    </div>
+
+    <footer className="mt-auto flex items-center justify-between border-t border-border-secondary bg-panel px-space-2xl py-space-md">
+      <Button variant="secondary">Back</Button>
+      <div className="flex gap-2">
+        <Button variant="secondary">Save draft</Button>
+        <Button>Continue</Button>
+      </div>
+    </footer>
+  </main>
+</div>`}
+/>
+
+### Full Layout with Sidebar
+
+In a real application, `PageSectionWizard` sits inside a `SidebarProvider` alongside `SideNavigation`. The sidebar toggle button appears when the sidebar is collapsed.
+
+<CodeExample
+	title="Wizard in Full Layout"
+	description="PageSectionWizard inside a SidebarProvider with SideNavigation"
+	src="src/components/previews/sidebar-layout-previews.tsx"
+	componentName="SidebarWizardLayoutPreview"
+	preview={<SidebarWizardLayoutPreview />}
+/>
+
+### Simple Step Counter
+
+If you don't provide `steps`, the wizard shows a simple "Step X of Y" text.
+
+<CodeExample
+	title="Step Counter"
+	description="Minimal step indicator without labels"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardStepCounterPreview"
+	preview={<WizardStepCounterPreview />}
+/>
+
+### Custom Steps Content
+
+Use `stepsContent` to render custom content in the steps area instead of the default step indicators.
+
+<CodeExample
+	title="Custom Steps Area"
+	description="Replace step indicators with custom content"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardCustomStepsPreview"
+	preview={<WizardCustomStepsPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use descriptive step labels">
+		Step labels should clearly describe what happens in each step (e.g., "Campaign Details" not "Step 1").
+	</Guideline>
+
+	<Guideline type="do" title="Enable editable titles">
+		When the wizard creates a named entity (campaign, template), let users name it inline rather than in a separate field.
+	</Guideline>
+
+	<Guideline type="do" title="Keep steps to 3-5">
+		More than 5 steps feels overwhelming. Group related steps or use sub-steps.
+	</Guideline>
+
+	<Guideline type="do" title="Keep the footer at the bottom">
+		Use a flex column page body. The wizard content scrolls, and the footer sits after the content with `mt-auto` or sticky bottom styling.
+	</Guideline>
+
+	<Guideline type="do" title="Enable showSidebarToggle">
+		Always set `showSidebarToggle` when using inside a `SidebarProvider` so users can re-open a collapsed sidebar.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't use for non-sequential flows">
+		If users can complete sections in any order, use Tabs instead.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't mix with PageSection">
+		Use one header type per page. Don't combine PageSection and PageSectionWizard.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't wrap steps in Card by default">
+		Wizard steps are page content. Use `Card` only for bounded widgets or summaries inside a step.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### PageSectionWizard
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | — | Wizard title text |
+| `onTitleChange` | `(newTitle: string) => void` | — | Makes title editable; called on each keystroke |
+| `onTitleChangeEnd` | `(newTitle: string) => void` | — | Called when editing ends (blur or Enter) |
+| `titlePlaceholder` | `string` | `'Untitled'` | Placeholder text when title is empty |
+| `currentStep` | `number` | — | Current step index (0-based). Auto-detected from Stepper context if omitted. |
+| `totalSteps` | `number` | — | Total steps. Auto-detected from Stepper context if omitted. |
+| `steps` | <TypeInfo>WizardStepItem[]</TypeInfo> | — | Step definitions for indicators. Uses Stepper context if omitted. |
+| `onStepClick` | `(stepIndex: number) => void` | — | Called when a step indicator is clicked |
+| `showSidebarToggle` | `boolean` | `true` | Show sidebar toggle when sidebar is collapsed |
+| `stepsContent` | <TypeInfo>ReactNode</TypeInfo> | — | Custom content replacing the default step indicators |
+| `className` | `string` | — | Additional className |
+
+## Accessibility
+
+- Title input supports keyboard editing (Enter to save, Escape to cancel)
+- Step indicators are keyboard navigable when `onStepClick` is provided
+- Current step is communicated to screen readers
+- Sidebar toggle button has proper `aria-label`
+- Editable title has an edit button with tooltip for discoverability

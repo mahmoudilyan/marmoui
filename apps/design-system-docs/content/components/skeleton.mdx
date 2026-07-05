@@ -1,0 +1,139 @@
+---
+title: Skeleton
+description: A placeholder loading animation that mimics the shape of content while data is being fetched.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/skeleton
+keywords:
+  - skeleton
+  - loading
+  - placeholder
+  - shimmer
+  - content loader
+lastUpdated: 2026-03-10
+---
+
+import { Skeleton } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Skeleton displays animated placeholder shapes that match the layout of the content being loaded. This approach gives users a sense of the page structure before data arrives.
+
+    **When to Use:**
+    - Loading states for cards, lists, and page sections
+    - Initial data fetch before content renders
+    - When the content layout is predictable
+
+    **When NOT to Use:**
+    - For unknown content shapes (use Spinner)
+    - For very fast loads (under 300ms)
+    - For error states (use EmptyState or Alert)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Skeleton } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Skeleton
+
+<CodeExample
+	title="Default"
+	description="Simple skeleton shapes"
+	code={`<div className="flex flex-col gap-3">
+  <Skeleton className="h-4 w-3/4" />
+  <Skeleton className="h-4 w-1/2" />
+  <Skeleton className="h-4 w-5/6" />
+</div>`}
+	preview={
+		<div className="flex flex-col gap-3">
+			<Skeleton className="h-4 w-3/4" />
+			<Skeleton className="h-4 w-1/2" />
+			<Skeleton className="h-4 w-5/6" />
+		</div>
+	}
+/>
+
+### Card Skeleton
+
+<CodeExample
+	title="Card Loading State"
+	description="Skeleton mimicking a card layout"
+	code={`<div className="border rounded-lg p-4 space-y-3">
+  <Skeleton className="h-6 w-1/3" />
+  <Skeleton className="h-4 w-full" />
+  <Skeleton className="h-4 w-4/5" />
+  <div className="flex gap-2 pt-2">
+    <Skeleton className="h-8 w-20 rounded" />
+    <Skeleton className="h-8 w-20 rounded" />
+  </div>
+</div>`}
+	preview={
+		<div className="border rounded-lg p-4 space-y-3">
+			<Skeleton className="h-6 w-1/3" />
+			<Skeleton className="h-4 w-full" />
+			<Skeleton className="h-4 w-4/5" />
+			<div className="flex gap-2 pt-2">
+				<Skeleton className="h-8 w-20 rounded" />
+				<Skeleton className="h-8 w-20 rounded" />
+			</div>
+		</div>
+	}
+/>
+
+### Avatar Skeleton
+
+<CodeExample
+	title="Avatar with Text"
+	description="Skeleton for a user profile row"
+	code={`<div className="flex items-center gap-3">
+  <Skeleton className="h-10 w-10 rounded-full" />
+  <div className="flex flex-col gap-1.5">
+    <Skeleton className="h-4 w-32" />
+    <Skeleton className="h-3 w-24" />
+  </div>
+</div>`}
+	preview={
+		<div className="flex items-center gap-3">
+			<Skeleton className="h-10 w-10 rounded-full" />
+			<div className="flex flex-col gap-1.5">
+				<Skeleton className="h-4 w-32" />
+				<Skeleton className="h-3 w-24" />
+			</div>
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Match content layout">
+		Skeletons should closely match the shape and size of the final content.
+	</Guideline>
+	<Guideline type="do" title="Use for predictable layouts">
+		Skeleton works best when you know the structure of the incoming content.
+	</Guideline>
+	<Guideline type="dont" title="Don't show for fast loads">
+		If content loads in under 300ms, skip the skeleton to avoid flickering.
+	</Guideline>
+	<Guideline type="dont" title="Don't animate too aggressively">
+		The pulse animation should be subtle and calming, not distracting.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Skeleton" />
+
+## Accessibility
+
+- Skeleton elements have `aria-hidden="true"` as they are purely decorative.
+- Provide an `aria-busy="true"` on the container element while loading.
+- Announce loading state to screen readers with `aria-live` regions.

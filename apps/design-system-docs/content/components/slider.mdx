@@ -1,0 +1,108 @@
+---
+title: Slider
+description: A range input control for selecting a numeric value or range within a defined minimum and maximum.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/slider
+keywords:
+  - slider
+  - range
+  - input
+  - numeric
+  - value selector
+lastUpdated: 2026-03-10
+---
+
+import { Slider } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Slider allows users to select a value or range by dragging a thumb along a track. It is ideal for settings where users need to choose from a continuous range of values.
+
+    **When to Use:**
+    - Adjusting volume, brightness, or opacity
+    - Setting price ranges or filter thresholds
+    - Configuring numerical settings with a visual range
+
+    **When NOT to Use:**
+    - For precise numeric entry (use NumberInput)
+    - For very small ranges (1-3 options, use RadioGroup)
+    - When exact values matter more than relative position
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Slider } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Slider
+
+<CodeExample
+	title="Default"
+	description="Simple value slider"
+	code={`<Slider defaultValue={[50]} max={100} step={1} />`}
+	preview={<Slider defaultValue={[50]} max={100} step={1} />}
+/>
+
+### With Label and Value
+
+<CodeExample
+	title="Labeled Slider"
+	description="Slider showing the current value"
+	code={`<Slider defaultValue={[75]} max={100} step={1} label="Volume" showValue />`}
+	preview={<Slider defaultValue={[75]} max={100} step={1} label="Volume" showValue />}
+/>
+
+### Sizes
+
+<CodeExample
+	title="Slider Sizes"
+	description="Available in small, medium, and large"
+	code={`<div className="flex flex-col gap-6">
+  <Slider defaultValue={[30]} max={100} size="sm" label="Small" />
+  <Slider defaultValue={[50]} max={100} size="md" label="Medium" />
+  <Slider defaultValue={[70]} max={100} size="lg" label="Large" />
+</div>`}
+	preview={
+		<div className="flex flex-col gap-6">
+			<Slider defaultValue={[30]} max={100} size="sm" label="Small" />
+			<Slider defaultValue={[50]} max={100} size="md" label="Medium" />
+			<Slider defaultValue={[70]} max={100} size="lg" label="Large" />
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Show the current value">
+		Display the numeric value near the slider so users know the exact selection.
+	</Guideline>
+	<Guideline type="do" title="Define meaningful bounds">
+		Set min and max to logical limits. Don't use 0-100 if the range is 50-200.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for precise entry">
+		If users need to type exact numbers, provide a NumberInput alongside or instead.
+	</Guideline>
+	<Guideline type="dont" title="Don't use very small step values">
+		Steps too small (e.g., 0.001) make the slider hard to control.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Slider" />
+
+## Accessibility
+
+- Keyboard controlled with Arrow keys (Left/Right for horizontal, Up/Down for vertical).
+- Home/End keys jump to min/max values.
+- Uses `role="slider"` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow`.
+- Label is associated via `aria-label` or `aria-labelledby`.

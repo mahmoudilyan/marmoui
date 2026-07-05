@@ -1,0 +1,135 @@
+---
+title: Field
+description: A form field wrapper that provides label, helper text, and error messaging for form inputs.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/field
+keywords:
+  - field
+  - form field
+  - label
+  - helper text
+  - error
+  - validation
+lastUpdated: 2026-03-10
+---
+{/* 
+import { Field, Input, Select, Textarea } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Field is a form layout wrapper that consistently handles label placement, helper text, error messages, and optional indicators for any form input. It creates a standardized structure across all form elements.
+
+    **When to Use:**
+    - Wrapping any form input that needs a label
+    - Displaying validation error messages
+    - Showing helper text or character counts
+    - Indicating required or optional fields
+
+    **When NOT to Use:**
+    - For inputs that don't need labels (search bars with placeholders)
+    - When using react-hook-form integration (use Form components instead)
+    - For non-form display elements
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Field } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Field
+
+<CodeExample
+	title="Default Field"
+	description="Input with label and helper text"
+	code={`<Field label="Email address" helperText="We'll never share your email">
+  <Input type="email" placeholder="you@example.com" />
+</Field>`}
+	preview={
+		<Field label="Email address" helperText="We'll never share your email">
+			<Input type="email" placeholder="you@example.com" />
+		</Field>
+	}
+/>
+
+### Required Field
+
+<CodeExample
+	title="Required"
+	description="Field with required indicator"
+	code={`<Field label="Full name" required>
+  <Input placeholder="Enter your name" />
+</Field>`}
+	preview={
+		<Field label="Full name" required>
+			<Input placeholder="Enter your name" />
+		</Field>
+	}
+/>
+
+### With Error
+
+<CodeExample
+	title="Error State"
+	description="Field showing a validation error"
+	code={`<Field label="Password" errorText="Password must be at least 8 characters">
+  <Input type="password" placeholder="Enter password" />
+</Field>`}
+	preview={
+		<Field label="Password" errorText="Password must be at least 8 characters">
+			<Input type="password" placeholder="Enter password" />
+		</Field>
+	}
+/>
+
+### Optional Field
+
+<CodeExample
+	title="Optional"
+	description="Field marked as optional"
+	code={`<Field label="Phone number" optionalText="Optional">
+  <Input type="tel" placeholder="+1 (555) 000-0000" />
+</Field>`}
+	preview={
+		<Field label="Phone number" optionalText="Optional">
+			<Input type="tel" placeholder="+1 (555) 000-0000" />
+		</Field>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Always provide labels">
+		Every form field should have a visible label. Labels are essential for usability and accessibility.
+	</Guideline>
+	<Guideline type="do" title="Write helpful error messages">
+		Error text should explain what went wrong and how to fix it.
+	</Guideline>
+	<Guideline type="dont" title="Don't use placeholder as label">
+		Placeholders disappear when typing. Always use a visible label above the input.
+	</Guideline>
+	<Guideline type="dont" title="Don't show errors prematurely">
+		Only display error messages after the user has interacted with the field.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Field" />
+
+## Accessibility
+
+- Automatically associates labels with inputs using generated IDs.
+- Error text is linked via `aria-describedby` for screen reader announcements.
+- Required fields are indicated both visually and via the `aria-required` attribute.
+- Helper text is accessible to screen readers through `aria-describedby`. */}
+
+Under construction...

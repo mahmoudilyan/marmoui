@@ -1,0 +1,82 @@
+---
+title: Select Checkbox Searchable
+description: A multi-select dropdown with search filtering and checkbox items for selecting multiple options from a large list.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/select-checkbox-searchable
+keywords:
+  - select
+  - multi select
+  - searchable
+  - checkbox
+  - filter
+lastUpdated: 2026-03-10
+---
+
+import { SelectCheckboxSearchable } from '@marmoui/ui';
+import { SelectCheckboxSearchableBasicPreview } from '@/components/previews/select-checkbox-searchable-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    SelectCheckboxSearchable combines a dropdown, search input, and checkbox items for selecting multiple options from a potentially large list. Users can search to filter items and toggle checkboxes to make selections.
+
+    **When to Use:**
+    - Selecting multiple tags, categories, or filters
+    - Assigning multiple users or teams
+    - Any multi-select from a list of 10+ items
+
+    **When NOT to Use:**
+    - For single selection (use Select)
+    - For small option lists (use CheckboxGroup)
+    - For free-text multi-value input (use TagsInput)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { SelectCheckboxSearchable } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Searchable Multi-Select
+
+<CodeExample
+	title="Default"
+	description="Multi-select with search and checkboxes"
+	src="src/components/previews/select-checkbox-searchable-previews.tsx"
+	componentName="SelectCheckboxSearchableBasicPreview"
+	preview={<SelectCheckboxSearchableBasicPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Include search for large lists">
+		Search is essential when there are more than 7-10 items.
+	</Guideline>
+	<Guideline type="do" title="Show selected count">
+		Display how many items are selected in the trigger when the dropdown is closed.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for single selection">
+		For single-value selection, use the standard Select component.
+	</Guideline>
+	<Guideline type="dont" title="Don't hide selection state">
+		Make it clear which items are checked, even after scrolling.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="SelectCheckboxSearchable" />
+
+## Accessibility
+
+- Search input is focused when the dropdown opens.
+- Checkbox items are navigable with Arrow keys.
+- Selected state is announced by screen readers.
+- Escape closes the dropdown.

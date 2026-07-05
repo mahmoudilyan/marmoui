@@ -1,0 +1,200 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Reference/Component Index" />
+
+# Component Reference for Marmo UI
+
+A comprehensive list of all available components in the Marmo UI.
+
+<div style={{ overflowX: 'auto' }}>
+
+## Campaign Components
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+      <th>Path</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>CampaignsList</code></td>
+      <td>Data table component for displaying campaigns with filtering and pagination</td>
+      <td><code>apps/design-system-docs/content/patterns/components/campaigns/campaigns-list.tsx</code></td>
+      <td>Campaign management interface</td>
+    </tr>
+    <tr>
+      <td><code>CampaignDetails</code></td>
+      <td>Component for displaying detailed campaign information</td>
+      <td><code>apps/design-system-docs/content/patterns/components/campaigns/campaign-details.tsx</code></td>
+      <td>Campaign detail views</td>
+    </tr>
+    <tr>
+      <td><code>CampaignActions</code></td>
+      <td>Action buttons and menu for campaign operations</td>
+      <td><code>apps/design-system-docs/content/patterns/components/campaigns/campaign-actions.tsx</code></td>
+      <td>Campaign row actions</td>
+    </tr>
+    <tr>
+      <td><code>CampaignStats</code></td>
+      <td>Statistics and metrics display for campaigns</td>
+      <td><code>apps/design-system-docs/content/patterns/components/campaigns/campaign-stats.tsx</code></td>
+      <td>Campaign performance data</td>
+    </tr>
+  </tbody>
+</table>
+
+## UI Components
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+      <th>Path</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Button</code></td>
+      <td>Primary button component with variants</td>
+      <td><code>packages/ui/src/components/button.tsx</code></td>
+      <td>Interactive elements</td>
+    </tr>
+    <tr>
+      <td><code>DataTable</code></td>
+      <td>Reusable data table with sorting and pagination</td>
+      <td><code>packages/ui/src/components/data-table.tsx</code></td>
+      <td>Displaying tabular data</td>
+    </tr>
+    <tr>
+      <td><code>Dialog</code></td>
+      <td>Modal dialog component</td>
+      <td><code>packages/ui/src/components/dialog.tsx</code></td>
+      <td>Modal interactions</td>
+    </tr>
+    <tr>
+      <td><code>Card</code></td>
+      <td>Container component for content grouping</td>
+      <td><code>packages/ui/src/components/card.tsx</code></td>
+      <td>Content organization</td>
+    </tr>
+  </tbody>
+</table>
+
+## Contact Components
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+      <th>Path</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ContactsList</code></td>
+      <td>Data table for contact management</td>
+      <td><code>apps/design-system-docs/content/patterns/components/contacts/contacts-table.tsx</code></td>
+      <td>Contact management</td>
+    </tr>
+    <tr>
+      <td><code>ContactActions</code></td>
+      <td>Action menu for contact operations</td>
+      <td><code>apps/design-system-docs/content/patterns/components/contacts/contact-actions.tsx</code></td>
+      <td>Contact row actions</td>
+    </tr>
+  </tbody>
+</table>
+
+## Social Components
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+      <th>Path</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>SocialStreamView</code></td>
+      <td>Social media stream display</td>
+      <td><code>apps/design-system-docs/content/patterns/components/social/social-stream-view.tsx</code></td>
+      <td>Social media monitoring</td>
+    </tr>
+    <tr>
+      <td><code>StreamItemCard</code></td>
+      <td>Individual social media item card</td>
+      <td><code>apps/design-system-docs/content/patterns/components/social/stream-item-card/index.tsx</code></td>
+      <td>Social content display</td>
+    </tr>
+  </tbody>
+</table>
+
+## Layout Components
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+      <th>Path</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>SideNav</code></td>
+      <td>Main navigation sidebar</td>
+      <td><code>packages/ui/src/components/layout/side-nav.tsx</code></td>
+      <td>App navigation</td>
+    </tr>
+    <tr>
+      <td><code>Topbar</code></td>
+      <td>Top navigation bar</td>
+      <td><code>packages/ui/src/components/layout/topbar.tsx</code></td>
+      <td>Header navigation</td>
+    </tr>
+    <tr>
+      <td><code>PageSection</code></td>
+      <td>Page layout wrapper</td>
+      <td><code>packages/ui/src/components/layout/page-section.tsx</code></td>
+      <td>Page structure</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+## Usage Guidelines
+
+### Importing Components
+
+```typescript
+// From the UI package
+import { Button, DataTable, Dialog } from '@marmoui/ui';
+
+// From feature components
+import { CampaignsList } from '../campaigns/campaigns-list';
+import { ContactsList } from '../contacts/contacts-table';
+```
+
+### Component Props
+
+All components are fully typed with TypeScript interfaces. Refer to the individual story files for detailed prop documentation.
+
+### Best Practices
+
+- Use semantic component names that reflect their purpose
+- Follow the established naming conventions (PascalCase for components)
+- Ensure components are accessible and follow WCAG guidelines
+- Test components in both light and dark themes

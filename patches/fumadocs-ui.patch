@@ -1,0 +1,138 @@
+diff --git a/dist/contexts/search.js b/dist/contexts/search.js
+index 349a7c443b52bc9b7aa107a3ba6973b75807b3b6..b97dba1a709a207ff3f24faf485245725b7faac9 100644
+--- a/dist/contexts/search.js
++++ b/dist/contexts/search.js
+@@ -1,6 +1,6 @@
+ 'use client';
+ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+-import { createContext, use, useEffect, useEffectEvent, useMemo, useState, } from 'react';
++import { createContext, use, useEffect, useRef, useCallback, useMemo, useState, } from 'react';
+ const SearchContext = createContext({
+     enabled: false,
+     hotKey: [],
+@@ -29,18 +29,20 @@ export function SearchProvider({ SearchDialog, children, preload = true, options
+     },
+ ], links, }) {
+     const [isOpen, setIsOpen] = useState(preload ? false : undefined);
+-    const onKeyDown = useEffectEvent((e) => {
+-        if (hotKey.every((v) => typeof v.key === 'string' ? e.key === v.key : v.key(e))) {
++    const hotKeyRef = useRef(hotKey);
++    hotKeyRef.current = hotKey;
++    const onKeyDown = useCallback((e) => {
++        if (hotKeyRef.current.every((v) => typeof v.key === 'string' ? e.key === v.key : v.key(e))) {
+             setIsOpen((open) => !open);
+             e.preventDefault();
+         }
+-    });
++    }, []);
+     useEffect(() => {
+         window.addEventListener('keydown', onKeyDown);
+         return () => {
+             window.removeEventListener('keydown', onKeyDown);
+         };
+-    }, [hotKey]);
++    }, [onKeyDown]);
+     return (_jsxs(SearchContext, { value: useMemo(() => ({
+             enabled: true,
+             hotKey,
+diff --git a/dist/components/dialog/search.js b/dist/components/dialog/search.js
+index a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0..c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0 100644
+--- a/dist/components/dialog/search.js
++++ b/dist/components/dialog/search.js
+@@ -1,7 +1,7 @@
+ 'use client';
+ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+ import { ChevronRight, Hash, Search as SearchIcon } from '@fumadocs/ui/icons';
+-import { createContext, Fragment, use, useCallback, useEffect, useEffectEvent, useMemo, useRef, useState, } from 'react';
++import { createContext, Fragment, use, useCallback, useEffect, useMemo, useRef, useState, } from 'react';
+ import { I18nLabel, useI18n } from '../../contexts/i18n.js';
+ import { cn } from '@fumadocs/ui/cn';
+ import { Dialog, DialogContent, DialogOverlay, DialogTitle, } from '@radix-ui/react-dialog';
+@@ -14,16 +14,18 @@ const TagsListContext = createContext(null);
+ export function SearchDialog({ open, onOpenChange, search, onSearchChange, isLoading = false, onSelect: onSelectProp, children, }) {
+     const router = useRouter();
+-    const onSelect = useEffectEvent((item) => {
+-        if (item.type === 'action') {
+-            item.onSelect();
++    const onSelectPropRef = useRef(onSelectProp);
++    onSelectPropRef.current = onSelectProp;
++    const onSelect = useCallback((item) => {
++        if (item.type === 'action' && typeof item.onSelect === 'function') {
++            item.onSelect?.();
+         }
+         else if (item.external) {
+             window.open(item.url, '_blank')?.focus();
+         }
+         else {
+             router.push(item.url);
+         }
+         onOpenChange(false);
+-        onSelectProp?.(item);
+-    });
++        onSelectPropRef.current?.(item);
++    }, [router, onOpenChange]);
+     return (_jsx(Dialog, { open: open, onOpenChange: onOpenChange, children: _jsx(Context.Provider, { value: useMemo(() => ({
+@@ -68,21 +70,24 @@ export function SearchDialogList({ items = null, Empty = () => (_jsx("div", { cl
+     const ref = useRef(null);
+     const { onSelect } = useSearch();
+     const [active, setActive] = useState(() => items && items.length > 0 ? items[0].id : null);
+-    const onKey = useEffectEvent((e) => {
+-        if (!items || e.isComposing)
++    const itemsRef = useRef(items);
++    itemsRef.current = items;
++    const activeRef = useRef(active);
++    activeRef.current = active;
++    const onKey = useCallback((e) => {
++        if (!itemsRef.current || e.isComposing)
+             return;
+         if (e.key === 'ArrowDown' || e.key == 'ArrowUp') {
+-            let idx = items.findIndex((item) => item.id === active);
++            let idx = itemsRef.current.findIndex((item) => item.id === activeRef.current);
+             if (idx === -1)
+                 idx = 0;
+             else if (e.key === 'ArrowDown')
+                 idx++;
+             else
+                 idx--;
+-            setActive(items.at(idx % items.length)?.id ?? null);
++            setActive(itemsRef.current.at(idx % itemsRef.current.length)?.id ?? null);
+             e.preventDefault();
+         }
+         if (e.key === 'Enter') {
+-            const selected = items.find((item) => item.id === active);
++            const selected = itemsRef.current.find((item) => item.id === activeRef.current);
+             if (selected)
+                 onSelect(selected);
+             e.preventDefault();
+         }
+-    });
++    }, [onSelect]);
+     useEffect(() => {
+diff --git a/dist/components/ui/tabs.js b/dist/components/ui/tabs.js
+index e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0..f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0 100644
+--- a/dist/components/ui/tabs.js
++++ b/dist/components/ui/tabs.js
+@@ -1,6 +1,6 @@
+ 'use client';
+ import { jsx as _jsx } from "react/jsx-runtime";
+-import { createContext, use, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, } from 'react';
++import { createContext, use, useCallback, useLayoutEffect, useMemo, useRef, useState, } from 'react';
+ import * as Primitive from '@radix-ui/react-tabs';
+ import { mergeRefs } from '@fumadocs/ui/merge-refs';
+ const listeners = new Map();
+@@ -15,11 +15,14 @@ export const TabsTrigger = Primitive.TabsTrigger;
+ export function Tabs({ ref, groupId, persist = false, updateAnchor = false, defaultValue, value: _value, onValueChange: _onValueChange, ...props }) {
+     const tabsRef = useRef(null);
+     const valueToIdMap = useMemo(() => new Map(), []);
++    const onValueChangeRef = useRef(_onValueChange);
++    onValueChangeRef.current = _onValueChange;
++    const stableOnValueChange = useCallback((v) => onValueChangeRef.current?.(v), []);
+     const [value, setValue] = _value === undefined
+         ? // eslint-disable-next-line react-hooks/rules-of-hooks -- not supposed to change controlled/uncontrolled
+             useState(defaultValue)
+         : // eslint-disable-next-line react-hooks/rules-of-hooks -- not supposed to change controlled/uncontrolled
+-            [_value, useEffectEvent((v) => _onValueChange?.(v))];
++            [_value, stableOnValueChange];
+     useLayoutEffect(() => {
+         if (!groupId)
+             return;

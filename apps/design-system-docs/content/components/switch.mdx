@@ -1,0 +1,106 @@
+---
+title: Switch
+description: A toggle control for switching between two mutually exclusive states like on/off or enabled/disabled.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/switch
+keywords:
+  - switch
+  - toggle
+  - on off
+  - boolean
+  - enabled
+  - disabled
+lastUpdated: 2026-03-10
+---
+
+import { Switch, Label } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Switch provides a toggle control for binary states. Unlike checkboxes, switches take effect immediately and are best for settings that toggle between enabled and disabled.
+
+    **When to Use:**
+    - Toggling feature settings on/off
+    - Enabling or disabling preferences
+    - Any binary state that should take effect immediately
+
+    **When NOT to Use:**
+    - For form selections that require a submit action (use Checkbox)
+    - For choosing between non-binary options (use RadioGroup or Select)
+    - In long forms with many toggleable fields
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Switch } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Switch
+
+<CodeExample
+	title="Default"
+	description="Simple on/off toggle"
+	code={`<div className="flex items-center gap-2">
+  <Switch id="airplane-mode" />
+  <Label htmlFor="airplane-mode" className="font-normal">Airplane Mode</Label>
+</div>`}
+	preview={
+		<div className="flex items-center gap-2">
+			<Switch id="airplane-mode-demo" />
+			<Label htmlFor="airplane-mode-demo" className="font-normal">Airplane Mode</Label>
+		</div>
+	}
+/>
+
+### Disabled
+
+<CodeExample
+	title="Disabled"
+	description="Non-interactive switch"
+	code={`<div className="flex items-center gap-2">
+  <Switch disabled checked />
+  <Label className="font-normal text-ink-light">Feature locked</Label>
+</div>`}
+	preview={
+		<div className="flex items-center gap-2">
+			<Switch disabled checked />
+			<Label className="font-normal text-ink-light">Feature locked</Label>
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Pair with a label">
+		Always include a visible label that describes what the switch controls.
+	</Guideline>
+	<Guideline type="do" title="Use for immediate effects">
+		Switches should apply changes immediately without requiring a save action.
+	</Guideline>
+	<Guideline type="dont" title="Don't use in forms">
+		For form fields that get submitted, use Checkbox instead of Switch.
+	</Guideline>
+	<Guideline type="dont" title="Don't use negative labels">
+		Avoid labels like "Disable notifications." Use positive framing: "Enable notifications."
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Switch" />
+
+## Accessibility
+
+- Toggled with Space key when focused.
+- Uses `role="switch"` with `aria-checked` for state.
+- Label association via `id` and `htmlFor`.
+- Focus indicator is clearly visible.

@@ -1,0 +1,70 @@
+---
+title: TableCellAvatarWithCheckbox
+description: A generic TanStack Table row-selection avatar cell built on AvatarCheckbox.
+category: Components
+status: stable
+keywords:
+  - table
+  - avatar
+  - checkbox
+  - selection
+  - row
+lastUpdated: 2026-04-29
+---
+
+<ComponentPageHeader
+	title="TableCellAvatarWithCheckbox"
+	description="A generic TanStack Table row-selection avatar cell built on AvatarCheckbox."
+	status="stable"
+	category="Components"
+/>
+
+## Overview
+
+`TableCellAvatarWithCheckbox` connects TanStack Table row selection to
+`AvatarCheckbox`. It listens for hover on the nearest table row, shows the
+checkbox on hover or selected rows, and keeps the avatar palette stable with a
+deterministic fallback.
+
+Use accessors like `getName`, `getSrc`, and `getId` so the component stays
+generic instead of depending on a specific `Contact` type.
+
+## Usage
+
+```tsx
+import { TableCellAvatarWithCheckbox } from '@marmoui/ui';
+import type { ColumnDef } from '@tanstack/react-table';
+
+interface Contact {
+  id: string;
+  name: string;
+  email: string;
+  picture?: string;
+}
+
+const columns: ColumnDef<Contact>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <TableCellAvatarWithCheckbox<Contact>
+          row={row}
+          getId={(contact) => contact.id}
+          getName={(contact) => contact.name}
+          getSrc={(contact) => contact.picture}
+        />
+        <span>{row.original.name}</span>
+      </div>
+    ),
+  },
+];
+```
+
+## Common mistakes
+
+- Passing app-specific contact types into the component itself. Keep it generic and use accessor props.
+- Recomputing a random avatar palette in the table cell. The component already provides a deterministic palette fallback based on the row id.
+- Managing row selection separately. The component calls `row.toggleSelected` and reads `row.getIsSelected()`.
+
+<Props componentName="TableCellAvatarWithCheckbox" />

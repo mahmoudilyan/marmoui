@@ -1,0 +1,282 @@
+---
+title: Voice & Tone
+description: Writing guidelines and reusable structural formulas for product copy across alerts, dialogs, toasts, fields, empty states, and permission errors.
+category: Foundation
+keywords:
+  - voice
+  - tone
+  - writing
+  - copy
+  - microcopy
+  - UX writing
+  - feedback
+  - errors
+  - confirmation dialog
+  - empty state
+lastUpdated: 2026-05-03
+---
+
+# Voice & Tone
+
+Marmo products should sound **direct, respectful, and confident** — like a knowledgeable colleague, not a bureaucracy or a chatbot. This page defines:
+
+1. **Voice** (who we always are) and **Tone** (how we adjust by context).
+2. **Reusable structural formulas** for every feedback surface, written in the form `[part] + [part] + [part]` so designers and engineers compose copy the same way each time.
+3. **Confirmation dialog anatomy** distilled from Apple HIG, Microsoft, Polaris, Atlassian, Carbon, Material, and Nielsen heuristics.
+
+---
+
+## Voice (constant)
+
+| Principle | Do | Avoid |
+| --------- | -- | ----- |
+| **Plain language** | Use words your customer would use for their work. | Jargon, internal codenames, or clever metaphors. |
+| **Forward-looking** | Say what happens next or what the user can do. | Dead-end errors with no action. |
+| **Respectful** | Assume good intent; describe the situation, not the user. | Blaming ("You forgot…", "Invalid input"). |
+| **Concise** | Front-load the point; trim filler. | Long preambles, stacked synonyms. |
+| **Specific** | Name the object, limit, or reason when it helps recovery. | "Something went wrong" with no follow-up. |
+
+---
+
+## Tone (by context)
+
+| Context | Tone shift | Example posture |
+| ------- | ---------- | ---------------- |
+| **Success** | Warm, minimal | Acknowledge outcome; optional next step. |
+| **Neutral / info** | Calm, instructive | State fact; link or button if they should learn more. |
+| **Warning** | Serious, not alarmist | What is at risk; what to do before proceeding. |
+| **Error** | Steady, actionable | What failed; how to fix or who to contact; never panic copy. |
+| **Destructive confirm** | Clear, sober | Consequence in plain language; primary button matches severity. |
+
+---
+
+## Feedback surfaces — when to use which
+
+| Surface | Use for | Don't use for |
+| ------- | ------- | ------------- |
+| **Inline / Field error** | One or a few fields on a form. | Whole-page or system failures. |
+| **Alert** | Persistent contextual message *on the page* (region, form top, settings). | Transient "saved" confirmations. |
+| **Toast** | Short, time-bound confirmation or background completion. | Long explanations; required reading before continuing. |
+| **Dialog** | Blocking decision, review step, or multi-field sub-task that needs focus. | Passive info that could be an inline Alert. |
+| **Empty state** | Container with no data yet (table, list, dashboard widget). | Loading states; permission errors. |
+| **Permission denied** | User lacks rights for the resource they reached. | Generic auth errors — use Alert. |
+
+---
+
+## Universal formulas (cheat sheet)
+
+Every Marmo copy block resolves to one of these. Pick the surface, fill the parts.
+
+| Surface | Formula |
+| ------- | ------- |
+| **Alert (page-level)** | `[What happened] + [Why it matters] + [Action verb]` |
+| **Error message** | `[Problem] + [Cause if known] + [Solution / next step]` (Nielsen heuristic #9) |
+| **Confirm dialog (non-destructive)** | `[Decision question with action verb] + [Context if needed] + [Primary verb] + [Context-named secondary]` |
+| **Confirm dialog (destructive)** | `[Verb + object]?` + `[Scope] + [Consequence] + [Reversibility]` + `[Destructive verb + object]` + `[Keep / Don't X]` |
+| **Critical destructive** | Above + **friction** (type-to-confirm, hold-to-confirm, or checkbox) + visual emphasis |
+| **Toast (success)** | `[Verb past-tense] + [object]` (+ optional `Undo` for reversible actions) |
+| **Toast (error)** | `[What failed] + [Retry / fix link]` |
+| **Field error** | `[What's wrong] + [How to fix]` — no blame, no "Invalid" |
+| **Empty state** | `[What's missing] + [Why it matters] + [First action]` |
+| **Permission denied** | `[What's blocked] + [Who can grant access] + [How to request]` |
+| **Loading / progress** | `[Action verb -ing] + [object]` (+ ETA if known) |
+
+---
+
+## Confirmation dialog anatomy (7 parts)
+
+Every confirmation dialog can be broken into seven elements. Required ones must be present; optional ones unlock for higher-risk actions.
+
+| # | Part | Required? | Rule |
+| - | ---- | --------- | ---- |
+| 1 | **Icon** | Optional | Severity cue. Match the variant. Skip if redundant with the title. |
+| 2 | **Title** | Required | A direct question that names the action. Sentence case. **Not** "Are you sure?" |
+| 3 | **Description** | Required | Consequence + scope + reversibility, in ≤ 2 sentences. No jargon. No legalese. |
+| 4 | **Primary button** | Required | Verb that **matches the title verb**. "Delete account" → "Delete account", never "OK". |
+| 5 | **Secondary button** | Required | Context-named safe exit. Use "Keep editing", "Don't delete", "Cancel changes" — **not** bare "Cancel" when a clearer label exists. |
+| 6 | **Friction** | High-risk only | Type-to-confirm (`type "DELETE" to confirm`), hold-to-confirm, or required checkbox. |
+| 7 | **Visual emphasis** | High-risk only | Destructive color on primary; optional emphasis ring or icon. |
+
+### When to confirm — and when **not** to
+
+| Confirm | Don't confirm — use Undo / inline error instead |
+| ------- | ----------------------------------------------- |
+| Irreversible action (delete account, send invoice) | Reversible action — show **Undo toast** for ~6s |
+| Serious consequences (billing, data loss, public publish) | Low-risk, frequent action (save, mark read) |
+| Domino effect (cascading deletes, role downgrade) | Validation problem — show **inline field error** |
+| Rare action (export all, transfer ownership) | Auto-saved drafts |
+| Explicit consent (legal, sharing, sending) | Cosmetic toggles |
+
+> **Rule of thumb:** If a confirmation appears more than ~3× per session for the same user, it is friction, not safety. Replace with **Undo**.
+
+### Apply the formulas — destructive dialog example
+
+```text
+Title:       Delete campaign "Spring launch"?
+Description: This removes 1,240 contacts and 3 scheduled emails. This action can't be undone.
+Primary:     Delete campaign
+Secondary:   Keep campaign
+Friction:    Type the campaign name to confirm.   ← only if scope is large
+```
+
+### Apply the formulas — non-destructive dialog example
+
+```text
+Title:       Send invoice to Acme Inc.?
+Description: They will receive a PDF and a payment link by email today.
+Primary:     Send invoice
+Secondary:   Keep editing
+```
+
+### Do / Don't (button labels)
+
+| Do | Don't |
+| -- | ----- |
+| `Delete campaign` / `Keep campaign` | `OK` / `Cancel` |
+| `Discard changes` / `Keep editing` | `Yes` / `No` |
+| `Remove access` / `Keep access` | `Confirm` / `Dismiss` |
+| `Send invoice` / `Keep editing` | `Submit` / `Back` |
+
+---
+
+## Structures — Alert (page-level)
+
+**Formula:** `[variant] + [title] + [body] + [optional action]`
+
+Title is **sentence case**. Body is one or two sentences max. If you need three, you need a Dialog.
+
+**Information / default**
+
+```text
+Title:  [What the user should know in ~4–8 words]
+Body:   [Implication or context + optional "Learn more" link]
+Action: [Verb + object] — e.g., "Review changes"
+```
+
+**Success**
+
+```text
+Title: [Outcome]
+Body:  [Optional detail or what happens next]
+```
+
+**Warning**
+
+```text
+Title: [Risk or limitation in plain language]
+Body:  [What to do before continuing / who is affected]
+```
+
+**Error / destructive**
+
+```text
+Title:  [What didn't work or what can't continue]
+Body:   [Specific cause if known, else bucket: network, permissions, validation, unknown]
+Action: [Strongest recovery: retry, fix in settings, contact support with reference id]
+```
+
+**Do / Don't (Alert)**
+
+| Do | Don't |
+| -- | ----- |
+| "We couldn't save your campaign. Check your connection and try again." | "Error 500 — failure." |
+| "This integration will stop receiving events on July 12." | "Warning!!! Bad things!!!" |
+| "Your trial ends in 3 days. Add a payment method to keep your team's data." | "Trial expiring." |
+
+---
+
+## Structures — Toast (transient)
+
+**Formula (success):** `[Verb past-tense] + [object]` (+ optional `Undo`)
+**Formula (error):**   `[What failed] + [Retry link]`
+
+```text
+Single line (preferred): [Outcome or status]
+Optional second line:    [Tiny detail — e.g., "We'll email you when it's done"]
+```
+
+- No essays. If it needs paragraphs, use **Alert** or **Dialog**.
+- Reversible actions ship with **Undo** instead of a confirmation dialog.
+
+| Do | Don't |
+| -- | ----- |
+| "Campaign saved." | "The campaign you were editing has been saved successfully to the database." |
+| "Invitation sent. Undo" | "Invitation sent successfully!" (no recovery for accidents) |
+| "Couldn't load report. Retry" | "Network error" |
+
+---
+
+## Structures — Field & form errors
+
+**Formula:** `[What's wrong] + [How to fix]` — no blame, no "Invalid".
+
+```text
+Single field:   "Enter an email address."  /  "Use at least 8 characters."
+Form-level:     Title  — "There's a problem with your submission"
+                Body   — Bulleted list OR "Fix the highlighted fields below."
+```
+
+- Map raw API errors to **one** user-facing bucket if codes would confuse: "We couldn't verify that. Try again or contact support."
+- Pick **one** form-summary pattern per product and keep it.
+
+---
+
+## Structures — Empty state
+
+**Formula:** `[What's missing] + [Why it matters] + [First action]`
+
+```text
+Heading:     [Plain noun phrase — "No campaigns yet"]
+Description: [Why this matters or what they unlock — 1 sentence]
+Primary:     [Verb + object — "Create your first campaign"]
+Secondary:   [Optional learn-more link]
+```
+
+| Do | Don't |
+| -- | ----- |
+| "No campaigns yet. Create one to start tracking sign-ups." | "There is no data to display." |
+| "No teammates yet. Invite someone to share access." | "Empty list." |
+
+---
+
+## Structures — Permission denied
+
+**Formula:** `[What's blocked] + [Who can grant access] + [How to request]`
+
+```text
+Title: You don't have access to this report.
+Body:  Workspace owners can grant the "Reports — view" permission.
+Action: Request access  /  Contact <Owner name>
+```
+
+---
+
+## Accessibility (mandatory for every dialog)
+
+- `role="alertdialog"`, `aria-labelledby` (title), `aria-describedby` (description).
+- Default focus = **safe option** (secondary button) for destructive dialogs.
+- Tab traps focus inside the dialog. **Escape** closes. **Enter** activates focused button.
+- Icon **plus** label — never color alone — to signal severity.
+- Toast announcements use `role="status"` (success/info) or `role="alert"` (error).
+
+---
+
+## Numbers, dates, and names
+
+- Use the **same date/number format** as the rest of the app (locale-aware when shipped).
+- When citing a **record**, prefer **name + id in secondary text** if support needs the id:
+  `Campaign "Spring launch" (id: 48291)` in description or support copy, not in the title.
+
+---
+
+## Relationship to components
+
+**Implementation** lives in `@marmoui/ui` (`Alert`, `Dialog`, `Field`, `Toaster`, `EmptyState`, etc.). This page governs **words and structure** inside those shells. For composition patterns, see [Patterns](/patterns) and component MDX for each primitive.
+
+---
+
+## Maintenance
+
+- When you add a **new feedback mechanism** (e.g., banner, inline banner), extend this page with a **structure block** (formula + parts table + do/don't) and update the "when to use" table.
+- Product marketing or legal review may add layers — link out instead of duplicating full compliance copy here.
+- Sources for current structures: Apple HIG (alerts), Microsoft Writing Style Guide (4-part anatomy), Shopify Polaris (banners + buttons), Atlassian Design System (modal patterns), IBM Carbon (notifications), Google Material (dialogs + snackbars), Nielsen Norman heuristic #9 (error messages).

@@ -1,0 +1,621 @@
+---
+title: DatePicker
+description: A date and date range picker component with calendar popover, presets, and multiple trigger styles
+category: Components
+status: stable
+links:
+  github: https://github.com/mahmoudilyan/marmo-ui/tree/main/packages/ui/src/components/date-picker
+keywords:
+  - date
+  - calendar
+  - picker
+  - range
+  - time
+  - schedule
+  - datepicker
+lastUpdated: 2025-01-27
+---
+
+import { DatePicker, Calendar, MonthPicker, Label, Field, Button, Input } from '@marmoui/ui';
+import {
+  DatePickerBasicPreview,
+  DatePickerTriggerTypesPreview,
+  DatePickerPresetsPreview,
+  DatePickerRangePreview,
+  DatePickerRangePresetsPreview,
+  DatePickerCustomPresetsPreview,
+  DatePickerConstraintsPreview,
+  DatePickerFormatsPreview,
+  DatePickerDisabledPreview,
+  DatePickerDropdownPreview,
+  CalendarDropdownPreview,
+  DatePickerTimePreview,
+  DatePickerTimeRangePreview,
+  DatePickerDropdownTimePreview,
+  MonthPickerBasicPreview,
+  MonthPickerConstrainedPreview,
+  CalendarStandalonePreview,
+  CalendarRangePreview,
+  DatePickerFormPreview,
+} from '@/components/previews/date-picker-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    DatePicker provides an intuitive way to select dates or date ranges using a calendar popover. It supports presets for common selections and multiple trigger styles.
+
+    **Components Included:**
+    - **DatePicker**: Complete date picker with popover and triggers
+    - **Calendar**: Standalone calendar component
+
+    **When to Use:**
+    - Selecting a specific date (birthday, deadline, event)
+    - Choosing a date range (reporting period, vacation dates)
+    - Scheduling events or appointments
+    - Filtering data by date
+
+    **Key Features:**
+    - Single date or date range selection
+    - Built-in presets for quick selection (Today, Yesterday, This Week, Last Month, etc.)
+    - Custom preset definitions
+    - Button or input trigger styles
+    - Date constraints (min/max dates, disabled days)
+    - Customizable date format
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { DatePicker } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Date Picker
+
+<CodeExample
+	title="Single Date Selection"
+	description="Select a single date using the default button trigger"
+	code={`function BasicDatePicker() {
+  const [date, setDate] = React.useState();
+
+  return (
+    <div className="w-72">
+      <Label className="mb-1 block">Select Date</Label>
+      <DatePicker
+        value={date}
+        onChange={setDate}
+        placeholder="Pick a date"
+      />
+    </div>
+  );
+}`}
+	preview={<DatePickerBasicPreview />}
+/>
+
+### Trigger Types
+
+<CodeExample
+	title="Button vs Input Trigger"
+	description="Use triggerType to switch between a button-style and an input-style trigger"
+	code={`<div className="flex flex-col gap-6 w-72">
+  <div>
+    <Label className="mb-1 block">Button Trigger (Default)</Label>
+    <DatePicker
+      value={date1}
+      onChange={setDate1}
+      placeholder="Pick a date"
+      triggerType="button"
+    />
+  </div>
+  <div>
+    <Label className="mb-1 block">Input Trigger</Label>
+    <DatePicker
+      value={date2}
+      onChange={setDate2}
+      placeholder="Pick a date"
+      triggerType="input"
+    />
+  </div>
+</div>`}
+	preview={<DatePickerTriggerTypesPreview />}
+/>
+
+
+
+### Range with Presets
+**Built-in presets:**
+- Today
+- Yesterday
+- This Week
+- Last Week
+- This Month
+- Last Month
+- Custom (opens calendar for free selection)
+
+<CodeExample
+	title="Reporting Period"
+	description="Combine isRange and hasPresets for a full reporting-period picker"
+	code={`<div className="w-96">
+  <Label className="mb-1 block">Report Period</Label>
+  <DatePicker
+    value={range}
+    onChange={setRange}
+    placeholder="Select period"
+    isRange
+    hasPresets
+  />
+</div>`}
+	preview={<DatePickerRangePresetsPreview />}
+/>
+
+### Custom Presets
+
+<CodeExample
+	title="Custom Preset Options"
+	description="Pass a presets array to replace the default options with your own"
+	code={`const customPresets = [
+  {
+    label: 'Last 7 Days',
+    value: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(start.getDate() - 6);
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 59, 999);
+      return [start, end];
+    },
+  },
+  {
+    label: 'Last 30 Days',
+    value: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(start.getDate() - 29);
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 59, 999);
+      return [start, end];
+    },
+  },
+  {
+    label: 'Last 90 Days',
+    value: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(start.getDate() - 89);
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 59, 999);
+      return [start, end];
+    },
+  },
+  {
+    label: 'Last 12 Months',
+    value: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setFullYear(start.getFullYear() - 1);
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 59, 999);
+      return [start, end];
+    },
+  },
+  {
+    label: 'Year to Date',
+    value: () => {
+      const end = new Date();
+      const start = new Date(end.getFullYear(), 0, 1);
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 59, 999);
+      return [start, end];
+    },
+  },
+  { label: 'Custom', value: () => new Date() },
+];
+
+<DatePicker
+  value={range}
+  onChange={setRange}
+  placeholder="Select period"
+  isRange
+  hasPresets
+  presets={customPresets}
+/>`}
+	preview={<DatePickerCustomPresetsPreview />}
+/>
+
+### Date Constraints
+
+<CodeExample
+	title="Future Dates Only"
+	description="Use disabledDays to prevent selection of invalid dates and endMonth to cap the visible range"
+	code={`function AppointmentPicker() {
+  const [date, setDate] = React.useState();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+
+  return (
+    <div className="w-72">
+      <Label className="mb-1 block">Appointment Date</Label>
+      <DatePicker
+        value={date}
+        onChange={setDate}
+        placeholder="Select appointment"
+        disabledDays={(date) => date < today}
+        endMonth={nextMonth}
+      />
+      <p className="text-xs text-muted-foreground mt-1">
+        Only future dates within the next month are available
+      </p>
+    </div>
+  );
+}`}
+	preview={<DatePickerConstraintsPreview />}
+/>
+
+### Custom Date Format
+
+<CodeExample
+	title="Different Date Formats"
+	description="Control how selected dates are displayed using dateFormat (date-fns format strings)"
+	code={`const [date, setDate] = React.useState(new Date());
+
+<div className="flex flex-col gap-4 w-72">
+  <div>
+    <Label className="mb-1 block">Default (MMM dd, yyyy)</Label>
+    <DatePicker value={date} onChange={setDate} dateFormat="MMM dd, yyyy" />
+  </div>
+  <div>
+    <Label className="mb-1 block">Short (MM/dd/yyyy)</Label>
+    <DatePicker value={date} onChange={setDate} dateFormat="MM/dd/yyyy" />
+  </div>
+  <div>
+    <Label className="mb-1 block">Long (EEEE, MMMM do, yyyy)</Label>
+    <DatePicker value={date} onChange={setDate} dateFormat="EEEE, MMMM do, yyyy" />
+  </div>
+</div>`}
+	preview={<DatePickerFormatsPreview />}
+/>
+
+### Month / Year Dropdown
+
+<CodeExample
+	title="Dropdown Caption Layout"
+	description="Use captionLayout to replace the static month label with clickable dropdowns. Requires startMonth and endMonth to define the navigable range."
+	code={`const startMonth = new Date(2020, 0, 1);
+const endMonth = new Date(2030, 11, 31);
+
+// Month + year dropdowns
+<DatePicker
+  value={date}
+  onChange={setDate}
+  placeholder="Pick a date"
+  captionLayout="dropdown"
+  startMonth={startMonth}
+  endMonth={endMonth}
+/>
+
+// Month dropdown only
+<DatePicker
+  captionLayout="dropdown-months"
+  startMonth={startMonth}
+  endMonth={endMonth}
+/>
+
+// Year dropdown only
+<DatePicker
+  captionLayout="dropdown-years"
+  startMonth={startMonth}
+  endMonth={endMonth}
+/>`}
+	preview={<DatePickerDropdownPreview />}
+/>
+
+**captionLayout options:**
+| Value | Description |
+|---|---|
+| `label` | Static "Month Year" label (default) |
+| `dropdown` | Both month and year dropdowns |
+| `dropdown-months` | Month dropdown, static year label |
+| `dropdown-years` | Year dropdown, static month label |
+| `buttons` | Navigation arrows only |
+
+<CodeExample
+	title="Standalone Calendar with Dropdown"
+	description="Pass captionLayout directly to the Calendar component"
+	code={`<Calendar
+  mode="single"
+  selected={date}
+  onSelect={setDate}
+  captionLayout="dropdown"
+  startMonth={new Date(2020, 0, 1)}
+  endMonth={new Date(2030, 11, 31)}
+/>`}
+	preview={<CalendarDropdownPreview />}
+/>
+
+### With Time Picker
+
+<CodeExample
+	title="Date & Time Selection"
+	description="Add showTime to display an hour / minute / AM-PM picker below the calendar. The time is merged into the date value on Apply."
+	code={`function DateTimePicker() {
+  const [date, setDate] = React.useState();
+
+  return (
+    <div className="w-72">
+      <Label className="mb-1 block">Date & Time</Label>
+      <DatePicker
+        value={date}
+        onChange={setDate}
+        placeholder="Pick date and time"
+        showTime
+      />
+    </div>
+  );
+}`}
+	preview={<DatePickerTimePreview />}
+/>
+
+<CodeExample
+	title="Date Range with Time"
+	description="Combine isRange and showTime for a range picker that also captures a time component"
+	code={`<DatePicker
+  value={range}
+  onChange={setRange}
+  placeholder="Select range with time"
+  isRange
+  showTime
+/>`}
+	preview={<DatePickerTimeRangePreview />}
+/>
+
+<CodeExample
+	title="Dropdown Navigation + Time"
+	description="All three features together: month/year dropdowns, date range, and time picker"
+	code={`<DatePicker
+  value={date}
+  onChange={setDate}
+  placeholder="Pick date and time"
+  captionLayout="dropdown"
+  startMonth={new Date(2020, 0, 1)}
+  endMonth={new Date(2030, 11, 31)}
+  showTime
+/>`}
+	preview={<DatePickerDropdownTimePreview />}
+/>
+
+### Disabled State
+
+<CodeExample
+	title="Disabled DatePicker"
+	description="The disabled prop prevents interaction on both trigger types"
+	code={`<div className="flex flex-col gap-4 w-72">
+  <div>
+    <Label className="mb-1 block">Disabled (button trigger)</Label>
+    <DatePicker value={new Date()} disabled placeholder="Cannot change" />
+  </div>
+  <div>
+    <Label className="mb-1 block">Disabled (input trigger)</Label>
+    <DatePicker value={new Date()} disabled triggerType="input" placeholder="Cannot change" />
+  </div>
+</div>`}
+	preview={<DatePickerDisabledPreview />}
+/>
+
+### In Form Context
+
+<CodeExample
+	title="Event Scheduling Form"
+	description="DatePicker inside a Field component with label and helper text"
+	code={`function EventForm() {
+  const [eventData, setEventData] = React.useState({
+    title: '',
+    dateRange: undefined,
+  });
+
+  return (
+    <form className="w-96 p-6 border border-border rounded-lg space-y-4">
+      <h3 className="text-lg font-semibold">Schedule Event</h3>
+
+      <Field label="Event Title" required>
+        <Input
+          value={eventData.title}
+          onChange={(e) =>
+            setEventData(prev => ({ ...prev, title: e.target.value }))
+          }
+          placeholder="Team Offsite Meeting"
+        />
+      </Field>
+
+      <Field label="Event Dates" required helperText="Select start and end dates">
+        <DatePicker
+          value={eventData.dateRange}
+          onChange={(d) =>
+            setEventData(prev => ({ ...prev, dateRange: d }))
+          }
+          placeholder="Select date range"
+          isRange
+          hasPresets
+        />
+      </Field>
+
+      <Button type="submit" className="w-full">Schedule Event</Button>
+    </form>
+  );
+}`}
+	preview={<DatePickerFormPreview />}
+/>
+
+## Month Picker
+
+The `MonthPicker` component shows a year navigation header and a 3×4 grid of months. Use it when the user needs to select a month and year without a specific day.
+
+<CodeExample
+	title="Basic Month Picker"
+	description="Select a month from the 3×4 grid; navigate years with the arrows"
+	code={`function BasicMonthPicker() {
+  const [value, setValue] = React.useState(new Date());
+
+  return (
+    <MonthPicker value={value} onChange={setValue} />
+  );
+}`}
+	preview={<MonthPickerBasicPreview />}
+/>
+
+<CodeExample
+	title="With Year Constraints"
+	description="Use minYear and maxYear to restrict navigation range"
+	code={`<MonthPicker
+  value={value}
+  onChange={setValue}
+  minYear={2020}
+  maxYear={2030}
+/>`}
+	preview={<MonthPickerConstrainedPreview />}
+/>
+
+### MonthPicker Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Date` | — | Currently selected date (month + year only) |
+| `onChange` | `(date: Date) => void` | — | Called with a Date set to the 1st of the selected month |
+| `minYear` | `number` | — | Minimum navigable year |
+| `maxYear` | `number` | — | Maximum navigable year |
+| `className` | `string` | — | Additional className |
+
+## Calendar Component
+
+The `Calendar` component can be used standalone for embedded date selection without a popover.
+
+### Single Month
+
+<CodeExample
+	title="Standalone Calendar"
+	description="Embedded calendar for single date selection"
+	code={`function StandaloneCalendar() {
+  const [date, setDate] = React.useState(new Date());
+
+  return (
+    <Calendar
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+    />
+  );
+}`}
+	preview={<CalendarStandalonePreview />}
+/>
+
+### Range Calendar
+
+<CodeExample
+	title="Two-Month Range Calendar"
+	description="Embedded calendar showing two months side-by-side for range selection"
+	code={`function RangeCalendar() {
+  const [range, setRange] = React.useState({});
+
+  return (
+    <Calendar
+      mode="range"
+      selected={range}
+      onSelect={(r) => setRange(r ?? {})}
+      numberOfMonths={2}
+    />
+  );
+}`}
+	preview={<CalendarRangePreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Provide presets for common selections">
+		Use hasPresets when users frequently select common ranges like "This Week" or "Last Month". Define custom presets for domain-specific periods like "Last 30 Days" or "Year to Date".
+	</Guideline>
+	
+	<Guideline type="do" title="Use appropriate constraints">
+		Disable dates that are not valid selections — past dates for scheduling, future dates for historical reports, weekends for business-only selections.
+	</Guideline>
+	
+	<Guideline type="do" title="Choose the right trigger type">
+		Use input trigger (triggerType="input") in forms alongside other inputs for visual consistency. Use button trigger for standalone or toolbar date selections.
+	</Guideline>
+	
+	<Guideline type="do" title="Show clear placeholders">
+		Use descriptive placeholders that indicate what date is expected, e.g. "Select report period" or "Choose appointment date".
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't allow impossible ranges">
+		For date ranges, ensure end date cannot be before start date. The component handles this automatically when using isRange.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't hide the date format">
+		Users should always see the selected date in a clear, readable format. Avoid overly technical format strings like ISO 8601 in the display value.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### DatePicker
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Date \| [Date, Date]` | — | Selected date or date range |
+| `onChange` | `(date: Date \| [Date, Date] \| undefined) => void` | — | Called when selection is applied |
+| `placeholder` | `string` | `'Select date'` | Trigger placeholder text |
+| `isRange` | `boolean` | `false` | Enable date range selection |
+| `hasPresets` | `boolean` | `false` | Show preset options sidebar |
+| `presets` | `DatePreset[]` | built-in | Custom preset definitions; replaces defaults |
+| `triggerType` | `'button' \| 'input'` | `'button'` | Trigger visual style |
+| `disabled` | `boolean` | `false` | Disable the picker entirely |
+| `dateFormat` | `string` | `'MMM dd, yyyy'` | date-fns format string for display |
+| `disabledDays` | `(date: Date) => boolean` | — | Return true to disable a specific date |
+| `startMonth` | `Date` | — | Earliest month that can be navigated to |
+| `endMonth` | `Date` | — | Latest month that can be navigated to |
+| `captionLayout` | `'label' \| 'dropdown' \| 'dropdown-months' \| 'dropdown-years' \| 'buttons'` | `'label'` | Calendar header style; dropdown options require `startMonth` + `endMonth` |
+| `showTime` | `boolean` | `false` | Show hour / minute / AM-PM picker beside the calendar (single-date mode only) |
+| `onClose` | `() => void` | — | Called when the popover closes |
+| `className` | `string` | — | Additional className on the trigger |
+
+### Calendar
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `mode` | `'single' \| 'range' \| 'multiple'` | — | Selection mode |
+| `selected` | `Date \| DateRange \| Date[]` | — | Currently selected value(s) |
+| `onSelect` | `(date) => void` | — | Called when a date is selected |
+| `disabled` | `(date: Date) => boolean` | — | Return true to disable a date |
+| `captionLayout` | `'label' \| 'dropdown' \| 'dropdown-months' \| 'dropdown-years' \| 'buttons'` | `'label'` | Header style; dropdown options require `startMonth` + `endMonth` |
+| `showOutsideDays` | `boolean` | `true` | Show days from adjacent months |
+| `numberOfMonths` | `number` | `1` | Number of months to display side by side |
+| `className` | `string` | — | Additional className |
+
+### DatePreset
+
+```tsx
+interface DatePreset {
+  label: string;
+  value: Date | [Date, Date] | (() => Date | [Date, Date]);
+}
+```
+
+The `value` can be a static date, a static range tuple, or a factory function (recommended for relative dates like "Last 30 Days" so they are always computed fresh at selection time).
+
+## Accessibility
+
+<InfoCallout type="info" title="Keyboard Navigation">
+The DatePicker calendar supports full keyboard navigation. Use arrow keys to navigate dates, Enter to select, and Escape to close the popover.
+</InfoCallout>
+
+- Built on react-day-picker with full ARIA support
+- Arrow keys navigate between dates within the calendar
+- Enter selects the focused date
+- Escape closes the popover
+- Focus is trapped within the popover when open
+- Month/year navigation buttons are keyboard accessible
+- Cancel and Apply buttons are fully focusable

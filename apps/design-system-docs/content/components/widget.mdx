@@ -1,0 +1,327 @@
+---
+title: Widget
+description: A pre-composed dashboard tile. Bakes in the title + filters + actions header pattern, optional drag-and-drop sortability, and an optional pagination footer.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/widget.tsx
+keywords:
+  - widget
+  - dashboard
+  - tile
+  - sortable
+  - drag
+  - pagination
+lastUpdated: 2026-05-14
+---
+
+import {
+	WidgetHeaderlessPreview,
+	WidgetBasicPreview,
+	WidgetWithFiltersPreview,
+	WidgetSortablePreview,
+	WidgetWithPaginationPreview,
+	WidgetAvatarPaginatedPreview,
+	WidgetSortableGridPreview,
+} from '@/components/previews/widget-previews';
+
+## Overview
+
+`Widget` is a dashboard tile. It **composes `Card` internally** — same bounded surface, same border, same shadow — and adds the slots you always need on a tile but don't want to hand-roll every time:
+
+- A header row with `title` + `actions`.
+- An optional second header row of `filters` (Select, DatePicker) with a divider below.
+- An optional `footer` slot for `Pagination` on paginated tiles.
+- A `dragHandleProps` slot that wires the widget into a dnd-kit `SortableGrid` from `@marmoui/ui` — the drag handle button is rendered automatically when this prop is set.
+
+> **Filter and action sizing.** Every input and button inside `filters` and `actions` is the **small** variant: `<SelectTrigger size="sm" />`, `<DatePicker className="h-8 text-sm" />`, `<Button size="sm" />`, `<IconButton size="sm" />`, `<ButtonGroup size="sm" />`. The widget header is dense — full-size controls overflow on half-grid tiles. Filters also no longer wrap to a second row (Widget's filter row is `flex` with `min-w-0 *:shrink`), so use `w-32` / `w-44` width caps on each `SelectTrigger` instead of relying on intrinsic width.
+
+Use `Widget` when the block is a **dashboard module**: a KPI scorecard, a chart, a paginated list/table, or any reorderable dashboard cell. Use raw `Card` when the block is a **non-dashboard bounded surface** — a contact summary, a file preview, a settings detail panel. See the side-by-side contrast in [Card → Card vs Widget](/components/card#card-vs-widget).
+
+`Widget` adds zero visual difference to `Card` until you add slots. A bare `<Widget>` is just a `Card` with the same border and shadow — so dropping it into a dashboard grid keeps every tile aligned even if some tiles have headers and others don't.
+
+## Usage
+
+```tsx
+import { Widget } from '@marmoui/ui';
+```
+
+## Variants
+
+The same `Widget` covers three common dashboard-tile shapes. Each variant is a different combination of the `title`, `actions`, `filters`, and `footer` slots — there is no `variant` prop to memorise.
+
+> **KPI scorecards are NOT a Widget variant.** KPI tiles use the dedicated [`KpiCard`](/components/kpi-card) component (or compose label + value + delta inside a bare `Widget`). They are not sortable or resizable, and they should not be dropped into the same grid as chart Widgets unless you intentionally mix KPI strips above the widget grid. Use Widget only for chart, list, table, or feed tiles.
+
+### 1. Widget without header
+
+When the content is self-describing — a single chart, a feed — and a header would just add noise. Same as KPI but with a richer body.
+
+<CodeExample
+	title="Headerless chart widget"
+	description="Omit title/filters/actions. Useful when the chart itself carries the label or the widget sits below an already-titled section."
+	code={`<Widget>
+  <BarList data={data} header="Source" unit="Visits" />
+</Widget>`}
+	preview={<WidgetHeaderlessPreview />}
+/>
+
+### 2. Simple widget with a header
+
+Title-only header. The most common shape for chart tiles that don't need filtering or a settings action.
+
+<CodeExample
+	title="Title + content"
+	description="The title sits in CardHeader. The body fills the rest of the widget."
+	code={`<Widget title="Referral Sources">
+  <BarList data={data} header="Source" unit="Visits" />
+</Widget>`}
+	preview={<WidgetBasicPreview />}
+/>
+
+### 3. Widget with header, actions, and inputs
+
+The dashboard-rich shape: title on the left, action icon on the right, filter row below. All header content is contained inside `Widget` — no need to compose `CardHeader` / `CardContent` manually.
+
+<CodeExample
+	title="Title + actions + filters"
+	description="`actions` renders to the right of the title (settings icon, menu). `filters` renders on a second row of the header with a divider underneath. Both reconfigure the widget's own content."
+	code={`<Widget
+  title="Lists Growth"
+  actions={
+    <IconButton variant="ghost" size="sm" aria-label="Configure" icon={<MdSettings />} />
+  }
+  filters={
+    <>
+      <Select defaultValue="all">
+        <SelectTrigger className="w-44"><SelectValue placeholder="Select list" /></SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All Lists</SelectItem>
+          <SelectItem value="customers">Customers</SelectItem>
+          <SelectItem value="leads">Leads</SelectItem>
+        </SelectContent>
+      </Select>
+      <DatePicker placeholder="Select date range" isRange triggerType="input" />
+    </>
+  }
+>
+  <BarList data={data} header="Source" unit="Visits" />
+</Widget>`}
+	preview={<WidgetWithFiltersPreview />}
+/>
+
+## Sortable widgets
+
+Drop the widget into a `SortableGrid` from `@marmoui/ui` and pass the render-callback's `dragHandleProps` straight into `Widget`. Widget renders the drag-handle button itself, wires it to dnd-kit's pointer + keyboard sensors, and animates the visual state via the `isDragging` flag. There is **no native HTML5 drag** anywhere — dnd-kit owns the gesture.
+
+The drag handle is absolutely positioned on the left edge of the widget and hidden by default; it fades in on hover, on keyboard focus, and while the widget is dragging. Titles, filters, and actions stay aligned whether the widget is sortable or not.
+
+`Widget` does not reorder itself — `SortableGrid` calls `onReorder` with the new array when a drop lands. The parent owns the list.
+
+<CodeExample
+	title="Two sortable widgets"
+	description="`SortableGrid` provides the dnd-kit context. Each Widget receives `dragHandleProps` and `isDragging` from the render callback."
+	code={`<SortableGrid
+  items={items}
+  onReorder={setItems}
+  strategy="grid"
+  className="grid grid-cols-1 gap-4 md:grid-cols-2"
+  ariaLabel="Sortable widgets"
+>
+  {(item, { dragHandleProps, isDragging }) => (
+    <Widget
+      title={item.title}
+      dragHandleProps={dragHandleProps}
+      dragHandleLabel={\`Drag \${item.title} to reorder\`}
+      isDragging={isDragging}
+    >
+      <BarList data={data} header="Channel" unit="Visits" />
+    </Widget>
+  )}
+</SortableGrid>`}
+	preview={<WidgetSortablePreview />}
+/>
+
+### Drag handle placement
+
+- Always absolute, on the left edge of the Card, vertically centred.
+- Hidden by default (`opacity-0`). Reveals on `group-hover/widget`, on keyboard focus, and while `isDragging` is `true`.
+- Never affects header layout — title, filters, and actions render identically regardless of whether the widget is sortable.
+
+Pass `hideDragHandle` to keep the widget draggable but suppress the visible handle — typically when the entire widget is its own grab target (e.g., a touch-first dashboard where you want the whole tile to be grabbable).
+
+### State and visual flags
+
+| Prop | What it does |
+| ---- | ------------ |
+| `dragHandleProps` | dnd-kit handle props from the `SortableGrid` render callback. Spread automatically onto the internal handle button when present. |
+| `dragHandleLabel` | Aria label for the handle button (e.g. `"Drag Top Buyers to reorder"`). |
+| `hideDragHandle` | Keep the dnd-kit listeners attached but suppress the visible handle. |
+| `isDragging`   | Dims the widget and adds a focus ring while it is the active drag source. Pass through from the render callback. |
+| `isDropTarget` | Highlights the widget with a primary ring when it is the active drop target. Driven by your `onDragOver` if you need a custom hover state. |
+
+### Sortable grid example
+
+A small reorderable dashboard wired through `SortableGrid`. dnd-kit owns the gesture; the parent only stores the list.
+
+<CodeExample
+	title="Four-widget sortable grid"
+	description="Order lives in parent state. `SortableGrid` calls `onReorder` with the new array on drop. `isDragging` is driven by dnd-kit, not the parent."
+	code={`type Item = { id: string; title: string };
+
+function Dashboard({ initial }: { initial: Item[] }) {
+  const [items, setItems] = React.useState(initial);
+  return (
+    <SortableGrid
+      items={items}
+      onReorder={setItems}
+      strategy="grid"
+      className="grid grid-cols-1 gap-4 md:grid-cols-2"
+      ariaLabel="Dashboard widgets"
+    >
+      {(item, { dragHandleProps, isDragging }) => (
+        <Widget
+          title={item.title}
+          dragHandleProps={dragHandleProps}
+          dragHandleLabel={\`Drag \${item.title} to reorder\`}
+          isDragging={isDragging}
+        >
+          {/* widget body */}
+        </Widget>
+      )}
+    </SortableGrid>
+  );
+}`}
+	preview={<WidgetSortableGridPreview />}
+/>
+
+## Paginated content
+
+Pass `Pagination` to the `footer` slot for table or list widgets that span more rows than fit. The footer renders on its own row at the bottom of the Card with a top border.
+
+<CodeExample
+	title="Table widget with pagination"
+	description="Use the standard Marmo `Pagination` primitives. The parent owns the page state and slices the data."
+	code={`const PAGE_SIZE = 4;
+
+function TopCountries({ rows }) {
+  const [page, setPage] = React.useState(1);
+  const pageCount = Math.ceil(rows.length / PAGE_SIZE);
+  const visible = rows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  return (
+    <Widget
+      title="Top Countries"
+      footer={
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                disabled={page === 1}
+                onClick={() => setPage((p) => Math.max(p - 1, 1))}
+              />
+            </PaginationItem>
+            {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+              <PaginationItem key={n}>
+                <PaginationLink
+                  isActive={n === page}
+                  onClick={() => setPage(n)}
+                >
+                  {n}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                disabled={page === pageCount}
+                onClick={() => setPage((p) => Math.min(p + 1, pageCount))}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      }
+    >
+      <table className="w-full text-left text-sm tabular-nums">
+        {/* head + body using visible */}
+      </table>
+    </Widget>
+  );
+}`}
+	preview={<WidgetWithPaginationPreview />}
+/>
+
+### Sortable + paginated together
+
+A list widget can be sortable (reorderable on the dashboard) and contain its own paginated content. The drag handle moves the whole widget; the pager only affects the rows inside. Wire the widget into a `SortableGrid` exactly as in the [sortable example](#sortable-widgets); pass `Pagination` to the `footer` slot independently.
+
+<CodeExample
+	title="Top Buyers with pagination"
+	description="Avatar list inside a Widget, with Pagination in the footer slot. Drop into a SortableGrid to make it reorderable."
+	code={`<Widget
+  title="Top Buyers"
+  actions={<IconButton variant="ghost" size="sm" aria-label="Configure" icon={<MdSettings />} />}
+  footer={<Pagination>{/* …PaginationContent… */}</Pagination>}
+>
+  <ul className="flex flex-col divide-y divide-border-secondary">
+    {pageRows.map((b) => (
+      <li key={b.name} className="flex items-center gap-3 py-2.5">
+        <Avatar size="sm"><AvatarFallback>{b.initials}</AvatarFallback></Avatar>
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-sm font-medium text-ink-dark">{b.name}</div>
+          <div className="text-xs text-ink-light">{b.orders} orders</div>
+        </div>
+        <Badge variant="success">\${b.ltv.toLocaleString()}</Badge>
+      </li>
+    ))}
+  </ul>
+</Widget>`}
+	preview={<WidgetAvatarPaginatedPreview />}
+/>
+
+## Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `title` | `ReactNode` | — | Title rendered in the header. Omit to render a headerless widget. |
+| `filters` | `ReactNode` | — | Filter controls (Select, DatePicker) on a second header row. |
+| `actions` | `ReactNode` | — | Trailing controls (IconButton, menu) to the right of the title. |
+| `footer` | `ReactNode` | — | Footer slot. Pass `Pagination` here for table widgets. |
+| `dragHandleProps` | `WidgetDragHandleProps` | — | dnd-kit handle props from `SortableGrid` / `SortableItem` render callback. When set, Widget renders and wires the drag handle. |
+| `dragHandleLabel` | `string` | `"Drag to reorder widget"` | Aria label for the drag handle button. |
+| `hideDragHandle` | `boolean` | `false` | Keep the dnd-kit listeners attached but hide the visible handle. |
+| `isDragging` | `boolean` | `false` | Visual flag — widget is the active drag source. Driven by `SortableGrid`. |
+| `isDropTarget` | `boolean` | `false` | Visual flag — widget is the active drop target. |
+| `headerClassName` | `string` | — | Class applied to the inner `CardHeader`. |
+| `contentClassName` | `string` | — | Class applied to the inner `CardContent`. |
+| `footerClassName` | `string` | — | Class applied to the footer wrapper. |
+
+## When to use Widget vs Card
+
+`Widget` composes `Card` — same surface, same border, same shadow. The difference is **the job**, not the look.
+
+| You're building… | Use | Why |
+| ---------------- | --- | --- |
+| A KPI tile in a dashboard | **Widget** (no title) | Snaps into the grid even without a header. |
+| A chart tile, possibly with filters | **Widget** (`title` + `filters`) | The header row + divider is built in. |
+| A paginated table or list inside a tile | **Widget** with `footer={<Pagination>...}` | Pagination belongs in the footer slot, not in `CardContent`. |
+| A reorderable dashboard cell | **Widget** inside `SortableGrid`, `dragHandleProps` forwarded | dnd-kit pointer + keyboard sensors, handle button auto-rendered, accessibility wired. |
+| A contact / entity summary outside a dashboard | **Card** | Card + `CardHeader` + `CardContent`. No drag, no pager. |
+| A file / media preview panel | **Card** | Same reason. |
+| A full-page section with header + actions | `PageSection` + plain layout | Not a tile, not a summary. |
+| A selectable option card | `RadioCard` / `CheckboxCard` | Dedicated input cards. |
+
+**The rule for LLMs and code-generation tooling:** if the block lives in a dashboard grid, output `Widget`. If it's a bounded summary surface that does **not** live in a dashboard, output `Card`. If it's page chrome, output a plain `<div>` or `<section>`.
+
+## Common mistakes
+
+- **Wrapping a `Card` to add a drag handle.** Use `Widget` inside `SortableGrid` and forward `dragHandleProps` — the handle, cursor, keyboard support, and accessibility are already wired.
+- **Putting pagination inside `CardContent`.** Pass `Pagination` to the `footer` slot so the bottom border lines up with the rest of the dashboard grid.
+- **Adding filters to a `Widget` that doesn't own the data.** Header filters should only reconfigure this widget's content — never the rest of the page.
+- **Reaching for native HTML5 drag or `react-dnd`.** dnd-kit is the standard. Use `SortableGrid` (or `DragDropProvider` for cross-container flows). See [Drag and drop](/patterns/drag-and-drop).
+
+## Related
+
+- [Card](/components/card) — the lower-level primitive Widget composes.
+- [Pagination](/components/pagination) — used in the footer slot for tables.
+- [Drag and drop](/patterns/drag-and-drop) — the `SortableGrid` + dnd-kit standard Widget integrates with.
+- [Dashboard widgets](/patterns/dashboard-widgets) — chart and KPI dashboard tiles built on Widget.
+- [Charts foundation](/foundation/charts) — the rules every chart widget must satisfy.

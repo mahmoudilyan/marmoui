@@ -1,0 +1,252 @@
+---
+title: Card
+description: A bounded surface for widgets, stats, summaries, previews, and dashboard modules.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/card.tsx
+keywords:
+  - card
+  - surface
+  - widget
+  - stats
+  - summary
+lastUpdated: 2026-04-30
+---
+
+import {
+	CardStatsPreview,
+	CardContactProfilePreview,
+	CardContactFieldsPreview,
+	CardContentActionsPreview,
+	CardFormAlternativePreview,
+} from '@/components/previews/card-previews';
+
+## Overview
+
+`Card` is a bounded surface. Use it when the content is a distinct module inside
+a larger page: contact summaries, custom field groups, analytics panels, stats,
+previews, dashboards, and grouped settings blocks.
+
+Do not use `Card` as the default wrapper for every form or page section. Most
+page forms, wizard steps, and full-height page content should use plain layout
+containers so the page does not become a stack of artificial boxes.
+
+## Card vs Widget
+
+`Card` and [`Widget`](/components/widget) look similar but solve different jobs. `Widget` composes `Card` under the hood and adds dashboard-specific slots — pick by the job, not by the visual.
+
+| You're building… | Use | Why |
+| ---------------- | --- | --- |
+| A KPI tile, chart tile, paginated table tile, or any block that lives in a dashboard grid | **Widget** | Widget bakes in title + filters + actions + footer + sortable drag handle. Don't hand-roll these on top of Card. |
+| A bounded summary surface that is **not** part of a dashboard — contact profile, file preview, account-detail panel, settings detail block | **Card** | Card is the primitive. Compose `CardHeader` + `CardContent` directly. |
+| A full-page section, a wizard step, a form group, a filter toolbar, or any block that spans the page | Plain `<div>` / `<section>` | Neither Card nor Widget — those are for bounded modules, not page chrome. |
+
+**Quick decision flow:**
+
+1. Does this block belong in a reorderable dashboard? → `Widget`.
+2. Is it a non-dashboard bounded summary? → `Card`.
+3. Is it page chrome (section, wizard, toolbar)? → plain layout primitive.
+
+Widget composes Card, so anything you can put in `CardContent` you can put in `Widget`. The reverse is not true — `Widget` adds drag, pagination footer, filter rows, and the dashboard-aligned header layout.
+
+## Usage
+
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@marmoui/ui';
+```
+
+## Examples
+
+### Stats Card
+
+<CodeExample
+	title="Stats cards"
+	description="Stats cards use compact 16px padding (`px-space-md py-space-md`), different from normal content cards."
+	code={`const stats = [
+  { label: 'Sent', value: '13,796' },
+  { label: 'Opened', value: '2,197 - 15.92%' },
+  { label: 'Unique Clicks', value: '49 - (29 unique) - 0.21%' },
+  { label: 'Click Conversions', value: '4 - (2%)' },
+  { label: 'Ecommerce Conversions', value: '37 | $4.4' },
+  { label: 'Unsubscribed', value: '7 - 0.05%' },
+];
+
+<div className="grid gap-space-md md:grid-cols-3">
+  {stats.map(stat => (
+    <Card key={stat.label}>
+      <CardContent className="px-space-md py-space-md">
+        <p className="text-caps-sm font-medium uppercase tracking-caps-sm text-ink-light">
+          {stat.label}
+        </p>
+        <p className="mt-space-2xs text-heading-md font-medium text-ink-dark">{stat.value}</p>
+      </CardContent>
+    </Card>
+  ))}
+</div>`}
+	preview={<CardStatsPreview />}
+/>
+
+### Contact Summary Card
+
+<CodeExample
+	title="Contact summary"
+	description="A card can group identity, labels, and contact details without becoming a page-action container."
+	code={`function ContactDetail({ icon, label, value, emphasize = false }) {
+  return (
+    <div className="flex items-center justify-between gap-space-md">
+      <dt className="flex min-w-0 items-center gap-space-xs text-ink">
+        <span className="text-icon">{icon}</span>
+        <span className="truncate">{label}</span>
+      </dt>
+      <dd className={emphasize ? 'font-medium text-primary-solid' : 'text-ink-light'}>{value}</dd>
+    </div>
+  );
+}
+
+<Card className="max-w-md overflow-hidden">
+  <CardHeader>
+    <div className="flex justify-between gap-4">
+      <Avatar size="lg">
+        <AvatarImage src="https://api.dicebear.com/9.x/lorelei/svg" alt="User Avatar" />
+        <AvatarFallback>JD</AvatarFallback>
+      </Avatar>
+      <div className="flex flex-col gap-2 items-start">
+        <div className="flex gap-1 items-center">
+          <CardTitle className="text-heading-md font-medium text-ink-dark">John Doe</CardTitle>
+          <CardDescription className="text-ink-light">johndoe@company.com</CardDescription>
+        </div>
+        <Badge variant="success">Repeated Customers 120</Badge>
+        <ButtonGroup attached={false} size="sm">
+          <IconButton variant="secondary" icon={<MdSend />} aria-label="Send Email" />
+          <IconButton variant="secondary" icon={<MdMoreHoriz />} aria-label="More actions" />
+        </ButtonGroup>
+      </div>
+    </div>
+  </CardHeader>
+  <CardContent>
+    <dl className="grid gap-space-sm text-sm">
+      <ContactDetail icon={<MdLocationOn />} label="Location" value="California, USA" />
+      <ContactDetail icon={<MdPhoneIphone />} label="Phone" value="-" />
+      <ContactDetail icon={<MdBusiness />} label="Company" value="Acme Inc." />
+      <ContactDetail icon={<MdTableRows />} label="Lists" value="4" emphasize />
+      <ContactDetail icon={<MdShoppingCart />} label="E-Commerce" value="2" emphasize />
+    </dl>
+  </CardContent>
+</Card>`}
+	preview={<CardContactProfilePreview />}
+/>
+
+### Detail Fields Card
+
+<CodeExample
+	title="Detail fields"
+	description="Use CardHeader for titled card sections, similar to dialog headers: present when it anchors the card content."
+	code={`const fields = [
+  ['Package', '-'],
+  ['Address', 'Los Angeles, CA'],
+  ['Shipping Address', 'San Francisco, CA'],
+  ['Contact Number', 'N/A'],
+  ['Business Name', 'TechCorp'],
+  ['Total Spend', '$50.00'],
+  ['Customer Segments', '5'],
+];
+
+<Card className="max-w-md overflow-hidden">
+  <CardHeader>
+    <CardTitle>Contact Fields</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <dl className="grid gap-space-sm text-sm">
+      {fields.map(([label, value]) => (
+        <div key={label} className="flex justify-between gap-space-md">
+          <dt className="text-ink">{label}</dt>
+          <dd className="text-right text-ink-light">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  </CardContent>
+</Card>`}
+	preview={<CardContactFieldsPreview />}
+/>
+
+### Card Header Actions
+
+<CodeExample
+	title="Actions that affect card content"
+	description="Place controls in CardHeader only when they change, filter, configure, or refresh this card's own content."
+	code={`<Card className="max-w-xl overflow-hidden">
+  <CardHeader className="border-b border-border-secondary p-space-lg">
+    <div className="flex items-center justify-between gap-space-md">
+      <CardTitle>Lists History</CardTitle>
+      <IconButton className="-mt-1" variant="ghost" size="sm" aria-label="Configure chart" icon={<MdSettings />} />
+    </div>
+    <div className="flex flex-wrap gap-space-xs pt-space-sm">
+      <Select defaultValue="all">
+        <SelectTrigger className="w-40">
+          <SelectValue placeholder="Select list" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All Lists</SelectItem>
+          <SelectItem value="customers">Customers</SelectItem>
+          <SelectItem value="leads">Leads</SelectItem>
+        </SelectContent>
+      </Select>
+      <DatePicker placeholder="Select date range" isRange triggerType="input" />
+    </div>
+  </CardHeader>
+  <CardContent>
+    <div className="flex h-20 items-center justify-center">Dynamic content goes here</div>
+  </CardContent>
+</Card>`}
+	preview={<CardContentActionsPreview />}
+/>
+
+### Form Without Card
+
+<CodeExample
+	title="Plain form layout"
+	description="Forms do not need a Card unless the form itself is a widget inside a larger surface."
+	code={`<form className="mx-auto w-full max-w-2xl space-y-4">
+  <Field label="First name" required>
+    <Input placeholder="Ava" required />
+  </Field>
+  <Field label="Email" required>
+    <Input type="email" placeholder="ava@example.com" required />
+  </Field>
+  <div className="flex justify-end gap-2">
+    <Button variant="secondary" type="button">Cancel</Button>
+    <Button type="submit">Save contact</Button>
+  </div>
+</form>`}
+	preview={<CardFormAlternativePreview />}
+/>
+
+## Choosing the right alternative
+
+| You want… | Use this |
+|---|---|
+| A KPI tile, chart tile, paginated table tile, or any reorderable dashboard cell | [`Widget`](/components/widget) |
+| A contact summary, account summary, file/media preview, or other non-dashboard bounded surface | `Card` with normal section padding |
+| A selectable option with card visuals | `RadioCard` or `CheckboxCard` |
+| A full page with header/actions | `PageSection` + plain page layout |
+| A form page or wizard step | Plain layout container, not `Card` by default |
+| A table page | `DataTable` inside the page layout |
+
+For dashboard-tile examples — Referral Sources, Automation, Leads Funnel, Lists Growth, Chatbot Stats, Top Buyers — see [`Widget`](/components/widget). `Widget` composes `Card` internally and bakes in the filter / actions / footer / sortable slots so you don't hand-roll them on top of `Card`.
+
+## Common Mistakes
+
+- **Hand-rolling `Card` + `CardHeader` + filter row for a dashboard tile.** Use [`Widget`](/components/widget) — it composes Card and ships the filter / actions / footer / sortable slots.
+- **Wrapping every generated form in Card.** Use `Card` only when the form is a bounded widget inside a larger page.
+- **Using normal card padding for stats.** Stats cards are compact and should use `px-space-md py-space-md` (16px on all sides).
+- **Using Card for full-page layout.** A card should not become the page shell. Use `Panel`, `PageSection`, and plain flex/grid containers for page structure.
+- **Putting unrelated page actions in CardHeader.** Card actions should affect that card's content, such as filtering, configuring, refreshing, or managing the card module.
+- **Adding custom heavy shadows.** Use the built-in `shadow-card` utility for card surfaces.
+- **Using Card to create spacing.** Use layout utilities like `space-y-*`, `gap-*`, `px-*`, and `py-*` instead.

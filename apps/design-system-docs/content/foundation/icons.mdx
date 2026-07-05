@@ -1,0 +1,184 @@
+---
+title: Icons
+description: A consistent icon system that provides visual clarity and reinforces meaning across the interface. Users building with the AI agent can choose their icon library; Phosphor is the default.
+category: Foundation
+keywords:
+  - icons
+  - iconography
+  - phosphor
+  - material icons
+  - react-icons
+  - lucide
+  - tabler
+  - heroicons
+  - visual
+lastUpdated: 2026-06-25
+---
+
+# Usage
+
+## Overview
+
+Marmo UI lets you build with **any** of several popular MIT-licensed icon libraries. The AI agent asks which library you want to use before generating UI code, and the `marmo-ui` MCP enforces your choice — `review_generated_code` rejects icons imported from any library other than the one you selected.
+
+The **default icon library is [Phosphor Icons](https://phosphoricons.com/)** (`@phosphor-icons/react`, MIT). Phosphor ships outline, duotone, and filled variants from a single set via a `weight` prop, which maps cleanly to the three icon styles the product uses.
+
+* Icons are rendered as inline SVGs for crisp rendering at any size.
+* Icons inherit the current text color by default, making them easy to theme.
+* The `Icon` wrapper component (`@marmoui/ui`) provides consistent sizing, alignment, and two-tone color tokens for any library you pick.
+
+## Choosing an icon library
+
+When you build UI with the AI agent, it asks which library you want. Pass the library id to `get_design_guidelines` and `review_generated_code` so the rules and validator match.
+
+| Library | id | Package | License | Weights |
+|---------|----|---------|---------|---------|
+| **Phosphor Icons** (default) | `phosphor` | `@phosphor-icons/react` | MIT | `regular` · `duotone` · `fill` |
+| Material Design | `material` | `react-icons/md` | MIT | (by name) |
+| Lucide | `lucide` | `lucide-react` | ISC¹ | outline only |
+| Tabler | `tabler` | `@tabler/icons-react` | MIT | outline + `*Filled` |
+| Heroicons | `heroicons` | `@heroicons/react` | MIT | outline · solid |
+| Feather | `feather` | `react-icons/fi` | MIT | outline only |
+
+> ¹ Lucide is **ISC-licensed**, not MIT. It is included in the picker for convenience, but if your policy requires strict MIT-only, choose one of the other libraries.
+
+### The three product icon styles
+
+The product uses three icon styles. Each library maps to them as follows:
+
+| Style | Phosphor | Material | Heroicons | Lucide / Tabler / Feather |
+|-------|----------|----------|-----------|---------------------------|
+| **outline** | `weight="regular"` (default) | `Md…` filled set, or `MdOutline…` | `@heroicons/react/24/outline` | default |
+| **duotone** | `weight="duotone"` | (no native duotone) | (no native duotone) | (no native duotone) |
+| **filled** | `weight="fill"` | `Md…` filled set | `@heroicons/react/24/solid` | Tabler `*Filled`; Lucide/Feather n/a |
+
+Phosphor is the only supported library with a native **duotone** weight. If your designs rely on duotone icons, keep the default (`phosphor`).
+
+## Phosphor (default)
+
+```tsx
+import { Plus, PencilSimple, Trash, MagnifyingGlass } from '@phosphor-icons/react';
+
+// outline (default)
+<Plus />
+
+// duotone — two-tone icons; the Icon wrapper maps the secondary color to --color-<fillSecondary>
+<Plus weight="duotone" />
+
+// filled
+<Plus weight="fill" />
+```
+
+Common icon mappings (Phosphor):
+
+| Action | Icon |
+|--------|------|
+| Add / Create | `Plus` |
+| Edit | `PencilSimple` |
+| Delete | `Trash` |
+| Search | `MagnifyingGlass` |
+| Close | `X` |
+| Check | `Check` |
+| Arrow right | `ArrowRight` |
+| Settings | `GearSix` |
+| User | `User` |
+| Download / Upload | `DownloadSimple` / `UploadSimple` |
+| More options | `DotsThreeVertical` / `DotsThree` |
+| Refresh | `ArrowsClockwise` |
+| Info / Warning / Error | `Info` / `Warning` / `XCircle` |
+
+### Product icon weight policy
+
+The library's built-in icons follow a consistent weight convention so dashboards, navigation, and chrome each read distinctly. Apply the same convention in your own UI:
+
+| Surface | Weight | Example |
+|---------|--------|---------|
+| **Most icons** (chrome, actions, form controls) | `regular` (default — omit `weight`) | `<GearSix />`, `<Plus />` |
+| **Dashboard / analytics / chart tiles** | `duotone` | `<SquaresFour weight="duotone" />`, `<ChartDonut weight="duotone" />` |
+| **Primary navigation icons** | `regular` | `<SquaresFour />` |
+| **Secondary navigation — default state** | `regular` | `<AddressBook />` |
+| **Secondary navigation — active / hover** | `fill` | `<AddressBook weight="fill" />` |
+| **Solid status glyphs** (check, star, circle, avatar) | `fill` | `<Check weight="fill" />`, `<Star weight="fill" />` |
+| **Dropdown / select caret** | `regular` | `<CaretDown />` |
+| **Menu toggle** | `regular` | `<List />` |
+
+```tsx
+import { SquaresFour, CaretDown, List, AddressBook, Check } from '@phosphor-icons/react';
+
+// Dashboard tile — duotone
+<SquaresFour weight="duotone" />
+
+// Dropdown caret + menu toggle — regular (no weight)
+<CaretDown />
+<List />
+
+// Secondary nav: regular default, filled when active
+<AddressBook />              // default
+<AddressBook weight="fill" /> // active
+```
+
+### Brand marks (kept)
+
+The only custom SVGs in the library are the **Marmo brand marks**, exported from `@marmoui/ui/icons`. They are brand assets, not icon-library icons, and are independent of your chosen icon library:
+
+| Mark | Name | Usage |
+|------|------|-------|
+| Marmo mark | `MarmoIcon` | Square brand glyph |
+| Marmo wordmark | `MarmoLogoWordmark` | Mark + "Marmo" wordmark |
+| Step indicator | `StepIcon` / `StepFilledIcon` | Stepper completed/active step glyphs |
+
+## Best Practices
+
+* Pick **one** icon library per project and stick with it. The validator rejects mixed-library imports.
+* Use icons consistently across similar actions and contexts. The icon map in `get_design_guidelines({ iconLibrary })` gives you the canonical name per action for each library.
+* Pair icons with text labels when the icon meaning may be ambiguous.
+* Use the `Icon` wrapper component for consistent sizing, alignment, and two-tone color support (works with any library).
+* Maintain a 1:1 aspect ratio for all icons.
+* Use semantic color tokens for icon colors (e.g., `text-icon`, `text-icon-primary`).
+
+## When Not to Use
+
+* Avoid decorative icons that add no meaning or context.
+* Don't use icons as the sole means of conveying critical information without accessible text alternatives.
+* Don't mix icon libraries inconsistently within the same project.
+
+## Sizing
+
+Icons follow a consistent sizing scale that aligns with the component size system. The `Icon` wrapper applies these regardless of library:
+
+| Size | Dimensions | Use Case |
+|------|-----------|----------|
+| `xs` | 12px | Compact elements, inline indicators |
+| `sm` | 16px | Small buttons, form fields, table cells |
+| `md` | 20px | Default size, most UI contexts |
+| `lg` | 24px | Prominent actions, headers |
+| `xl` | 32px | Feature highlights, empty states |
+
+## Color
+
+Icons use semantic color tokens to ensure proper contrast and meaning:
+
+| Token | CSS Variable | Usage |
+|-------|-------------|-------|
+| Default | `--color-icon` | Standard icon color |
+| Light | `--color-icon-light` | Subtle, secondary icons |
+| Primary | `--color-icon-primary` | Primary action icons |
+| Destructive | `--color-icon-destructive` | Destructive action icons |
+
+For duotone icons (Phosphor `weight="duotone"`), the `Icon` wrapper's `fill` prop sets the primary layer and `fillSecondary` sets the secondary layer.
+
+## Accessibility
+
+* Always provide `aria-label` or `aria-hidden="true"` on icon elements.
+* Icons used as interactive elements (icon buttons) must have accessible names.
+* Decorative icons should be hidden from screen readers with `aria-hidden="true"`.
+* Ensure icon color contrast meets WCAG 2.1 AA standards (3:1 ratio for non-text elements).
+
+## AI agent workflow
+
+When generating UI with the `marmo-ui` MCP:
+
+1. The agent asks which icon library you want (default: `phosphor`).
+2. It calls `get_design_guidelines({ iconLibrary: '<your choice>' })` to load that library's import source, icon name map, and weight mapping.
+3. It imports icons only from your chosen library.
+4. It calls `review_generated_code({ code, iconLibrary: '<your choice>' })` before returning the code. Imports from any other icon library are reported as **errors** and must be fixed before the code is returned.

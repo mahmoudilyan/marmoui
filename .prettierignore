@@ -1,0 +1,14 @@
+# Ignore artifacts:
+dist
+build
+coverage
+node_modules
+.next
+.vercel
+.env*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignore all HTML files:
+*.html

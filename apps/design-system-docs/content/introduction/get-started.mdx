@@ -1,0 +1,215 @@
+---
+title: Get Started
+description: Marmo UI — an open-source React design system plus an MCP server that turns your AI agent into a designer. Connect Claude Code, Codex, Cursor, or Gemini and ship dashboards in minutes.
+category: Introduction
+status: stable
+keywords:
+  - introduction
+  - getting started
+  - overview
+  - design system
+  - component library
+  - installation
+  - mcp
+  - ai agent
+  - claude code
+  - codex
+  - cursor
+  - gemini
+lastUpdated: 2026-07-05
+---
+
+# Marmo UI Design System
+
+Marmo is two things that work as one: an open-source React component library (`@marmoui/ui`) and a hosted **MCP server** that makes the AI agent you already use — Claude Code, Codex, Cursor, Gemini CLI — genuinely good at building UI with it. The agent reads live component APIs, composition patterns, and your design tokens instead of guessing, and its output is validated before it reports done. Production dashboards and apps in minutes — in your style, not template defaults.
+
+## Fastest path: connect your agent
+
+Add the Marmo MCP to your agent and ask it to build. One config block, no new tool to learn:
+
+```json
+{
+	"mcpServers": {
+		"marmo-ui": {
+			"url": "https://mcp.marmoui.com/mcp"
+		}
+	}
+}
+```
+
+- **Claude Code** — `claude mcp add --transport http marmo-ui https://mcp.marmoui.com/mcp`
+- **Cursor** — add the block above to `.cursor/mcp.json`
+- **Codex / Gemini CLI / Windsurf** — see each client's MCP config; same URL
+
+Then prompt: _"Build a billing dashboard with a data table and usage charts using Marmo UI."_ The agent installs `@marmoui/ui`, composes real components, and validates the result.
+
+Want every generated screen in your own brand? That's [Pro](/pricing) — feed the MCP your `DESIGN.md` and connect at [`/connect`](/connect).
+
+## Monorepo Structure
+
+```
+├── apps/
+│   └── design-system-docs/    # Documentation site (marmoui.com)
+├── packages/
+│   └── ui/                    # @marmoui/ui — the publishable component library
+├── pnpm-workspace.yaml        # pnpm workspace configuration
+└── turbo.json                 # Turborepo configuration
+```
+
+## Tech Stack
+
+- **React 19** — UI framework
+- **TypeScript** — type safety
+- **Tailwind CSS 4** — styling
+- **Radix UI** — accessible primitives
+- **Turborepo** — monorepo build orchestration
+- **pnpm** — package manager
+- **tsup** — library bundling
+- **Fumadocs** — documentation site
+- **Storybook** — component playground
+- **MCP SDK** — AI-powered design system tooling
+
+For documentation priorities, UX maturity framing, and planned releases, see the [roadmap](/introduction/roadmap).
+
+---
+
+## Installing `@marmoui/ui` as a Dependency
+
+`@marmoui/ui` is published on the **public npm registry**. No GitHub token or custom `.npmrc` is required.
+
+### 1. Install the package
+
+Install Tailwind CSS in your project (if you have not already):
+
+```bash
+pnpm add -D tailwindcss postcss autoprefixer
+```
+
+Then install Marmo UI:
+
+```bash
+# npm
+npm install @marmoui/ui
+
+# pnpm
+pnpm add @marmoui/ui
+
+# yarn
+yarn add @marmoui/ui
+```
+
+### 2. Import styles
+
+Import the CSS in your application entry point (e.g. `layout.tsx` or `main.tsx`):
+
+```tsx
+import '@marmoui/ui/style.css';
+```
+
+### 3. Use components
+
+```tsx
+import { Button } from '@marmoui/ui';
+
+export default function App() {
+    return <Button>Click me</Button>;
+}
+```
+
+### Peer dependencies
+
+Make sure your project has these peer dependencies installed:
+
+- `react` ^19.2.3
+- `react-dom` ^19.2.3
+
+### Pro: MCP + patterns
+
+The **free** package includes all core components. **Pro** unlocks composition patterns, gated block code, and the hosted MCP for AI-assisted generation. After purchase, sign in at [`/connect`](/connect) to generate your MCP token and agent config.
+
+---
+
+
+## Getting Started (Monorepo Development)
+
+### Prerequisites
+
+- Node.js 20+
+- pnpm (`npm install -g pnpm`)
+- Git
+
+### Installation
+
+```bash
+git clone git@github.com:mahmoudilyan/marmo-ui.git
+cd marmo-ui
+pnpm install
+```
+
+### Development
+
+```bash
+# Run the UI package + docs app
+pnpm dev
+
+# Run only the UI package
+pnpm dev:ui
+
+# Run only the docs app
+pnpm dev:docs
+```
+
+### Build
+
+```bash
+pnpm build
+```
+
+### Available Scripts
+
+| Command             | Description                      |
+| ------------------- | -------------------------------- |
+| `pnpm dev`          | Start development servers        |
+| `pnpm dev:ui`       | Develop the UI package only      |
+| `pnpm build`        | Build all packages and apps      |
+| `pnpm lint`         | Run ESLint across all packages   |
+| `pnpm format`       | Format code with Prettier        |
+| `pnpm format:check` | Check formatting without writing |
+| `pnpm type-check`   | Run TypeScript type checking     |
+| `pnpm clean`        | Clean build artifacts            |
+
+---
+
+## Component Development Guidelines
+
+### File Naming
+
+- Use **kebab-case** for all file and directory names
+- Main component file matches its directory name
+
+```
+button/
+├── button.tsx
+├── button.types.ts   # optional — for complex prop interfaces
+└── index.ts
+```
+
+### Code Style
+
+- Use functional components with TypeScript
+- Export components as **named exports**
+- Keep components focused and single-responsibility
+- Extract complex logic into hooks
+
+### Import Order
+
+```typescript
+// 1. External dependencies
+import { useState } from 'react';
+
+// 2. Internal packages
+import { cn } from '@marmoui/ui';
+
+// 3. Local imports
+import { ButtonProps } from './button.types';
+```

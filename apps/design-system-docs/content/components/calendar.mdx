@@ -1,0 +1,146 @@
+---
+title: Calendar
+description: A date selection calendar widget for picking single dates or date ranges.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/calendar
+keywords:
+  - calendar
+  - date
+  - date picker
+  - month view
+lastUpdated: 2026-03-10
+---
+
+import { Calendar } from '@marmoui/ui';
+import { CalendarSelectedPreview, CalendarRangePreview, CalendarDisabledPreview, CalendarMultiMonthPreview } from '@/components/previews/calendar-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    Calendar renders a month-view date selection widget. Built on `react-day-picker`, it supports single date selection, range selection, and date constraints.
+
+    **When to Use:**
+    - Inline date selection where the calendar is always visible
+    - Date picker dropdown content
+    - Date range selection for reports and filters
+
+    **When NOT to Use:**
+    - For date input with manual typing (use DatePicker)
+    - When only year/month is needed (use Select)
+    - For time selection (use a time picker)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Calendar } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Calendar
+
+<CodeExample
+	title="Default"
+	description="Month view calendar"
+	code={`<Calendar mode="single" />`}
+	preview={<Calendar mode="single" />}
+/>
+
+### With Pre-Selected Date
+
+<CodeExample
+	title="Selected Date"
+	description="Calendar with a default selected date"
+	code={`function CalendarWithSelection() {
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
+
+  return (
+    <Calendar
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+    />
+  );
+}`}
+	preview={<CalendarSelectedPreview />}
+/>
+
+### Date Range Selection
+
+<CodeExample
+	title="Range Selection"
+	description="Select a start and end date for date ranges"
+	code={`function CalendarRange() {
+  const [range, setRange] = React.useState<DateRange | undefined>({
+    from: new Date(2026, 2, 10),
+    to: new Date(2026, 2, 18),
+  });
+
+  return (
+    <Calendar
+      mode="range"
+      selected={range}
+      onSelect={setRange}
+      numberOfMonths={2}
+    />
+  );
+}`}
+	preview={<CalendarRangePreview />}
+/>
+
+### Disabled Dates
+
+<CodeExample
+	title="Disabled Dates"
+	description="Disable past dates or specific date ranges"
+	code={`<Calendar
+  mode="single"
+  disabled={{ before: new Date() }}
+/>`}
+	preview={<CalendarDisabledPreview />}
+/>
+
+### Multiple Months
+
+<CodeExample
+	title="Two Months"
+	description="Display two months side by side"
+	code={`<Calendar
+  mode="single"
+  numberOfMonths={2}
+/>`}
+	preview={<CalendarMultiMonthPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Show today's date">
+		Highlight the current date for orientation.
+	</Guideline>
+	<Guideline type="do" title="Disable unavailable dates">
+		Grey out dates that can't be selected (past dates, booked dates).
+	</Guideline>
+	<Guideline type="dont" title="Don't use without context">
+		Pair the calendar with a label or field that explains what date is being selected.
+	</Guideline>
+	<Guideline type="dont" title="Don't allow invalid ranges">
+		Enforce start-before-end logic for range selection.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Calendar" />
+
+## Accessibility
+
+- Full keyboard navigation: Arrow keys move between days, Page Up/Down changes months.
+- Selected date is announced by screen readers.
+- Disabled dates are communicated via `aria-disabled`.
+- Uses `role="grid"` with proper cell and header roles.

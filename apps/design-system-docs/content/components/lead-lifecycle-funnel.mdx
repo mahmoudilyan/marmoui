@@ -1,0 +1,183 @@
+---
+title: LeadLifecycleFunnel
+description: A predefined lifecycle visualisation for marketing lead-score funnels. Renders the fixed lifecycle stages as an inverted-triangle funnel with the legend outside, pulls data-quality flags (like "Poor Data") out of the funnel into an Alert above the chart, and shows a tooltip on hover.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/lead-lifecycle-funnel.tsx
+keywords:
+  - funnel
+  - lifecycle
+  - leads
+  - lead score
+  - marketing
+lastUpdated: 2026-05-14
+---
+
+import {
+	LeadLifecycleApiShapePreview,
+	LeadLifecycleUserColorsPreview,
+	LeadLifecycleSequentialPreview,
+	LeadLifecycleNoFlagsPreview,
+} from '@/components/previews/lead-lifecycle-funnel-previews';
+
+## Overview
+
+`LeadLifecycleFunnel` is **not** a generic funnel — for that, use [`ChartFunnel`](/components/chart). It is tailored for a fixed set of marketing lifecycle stages (`Awareness → Maintenance`) and takes the raw API response as input.
+
+The component:
+
+- Accepts the API `statuses` array directly — no manual mapping required.
+- Auto-detects data-quality flags (default: `Poor Data`) and renders each as a warning Alert above the funnel. Quality flags are excluded from the lifecycle denominator.
+- Draws an inverted-triangle SVG funnel with the legend in a right-hand column row-aligned to each segment.
+- Shows a tooltip on hover (and on keyboard focus) with the raw count and share.
+- Defaults to the chart-token palette (`chart-1`, `chart-2`, …, `chart-cat-*`). Pass `useDataColors` to honour each status's `color` field.
+- Clamps tiny stages to a minimum visible width so 0.55%-level rows don't disappear.
+
+> The generic `ChartFunnel` is unchanged. Use that for checkout funnels, email funnels, signup funnels — anywhere the question is "where do users drop off?". Use `LeadLifecycleFunnel` only for the predefined lead-score lifecycle funnel with fixed stages.
+
+## Usage
+
+```tsx
+import { LeadLifecycleFunnel } from '@marmoui/ui';
+```
+
+The expected data shape mirrors the lifecycle API exactly:
+
+```ts
+type LifecycleStatus = {
+  label: string;     // e.g. "Awareness"
+  leads: number;     // e.g. 6465
+  color?: string;    // user-set tone from the API; ignored unless `useDataColors` is true
+};
+
+type ApiResponse = {
+  statuses: LifecycleStatus[];
+  status: 'success';
+};
+```
+
+## Examples
+
+### API shape — drop in the response
+
+Pass `apiResponse.statuses` straight to the component. `Poor Data` is auto-extracted into a warning Alert; the remaining six stages render in lifecycle order using the chart palette.
+
+<CodeExample
+	title="Default — chart-token palette, Poor Data flagged"
+	description="No mapping needed: the component reads `label` / `leads` directly from each row and auto-detects `Poor Data` as a quality flag."
+	code={`const apiResponse = {
+  statuses: [
+    { label: 'Poor Data',     color: '#f00000', leads: 9342 },
+    { label: 'Awareness',     color: '#e6b58e', leads: 6465 },
+    { label: 'Consideration', color: '#17960c', leads: 158  },
+    { label: 'Decision',      color: '#1bcaab', leads: 109  },
+    { label: 'Conversion',    color: '#b762bb', leads: 109  },
+    { label: 'Retention',     color: '#30367e', leads: 474  },
+    { label: 'Maintenance',   color: '#c5973d', leads: 4    },
+  ],
+};
+
+<LeadLifecycleFunnel
+  ariaLabel="Lead lifecycle"
+  statuses={apiResponse.statuses}
+  onReviewFlag={(label) => router.push(\`/leads/review?flag=\${label}\`)}
+/>`}
+	preview={<LeadLifecycleApiShapePreview />}
+/>
+
+### Honour the API colors
+
+Set `useDataColors` to use each status's `color` field as the segment fill instead of the chart palette. Useful when the customer has heavily themed their lifecycle.
+
+<CodeExample
+	title="`useDataColors` — fills come from the API"
+	description="Each segment uses the user-defined hex from the API. When the customer hasn't set per-stage colors, omit this flag."
+	code={`<LeadLifecycleFunnel
+  ariaLabel="Lead lifecycle"
+  statuses={apiResponse.statuses}
+  useDataColors
+  onReviewFlag={(label) => {}}
+/>`}
+	preview={<LeadLifecycleUserColorsPreview />}
+/>
+
+### Without data colors (default)
+
+The same data — minus `useDataColors`. Every segment uses the categorical chart palette in lifecycle order.
+
+<CodeExample
+	title="Default chart palette"
+	description="Cycles `chart-1`, `chart-2`, …, `chart-cat-teal`, `chart-cat-violet`, etc."
+	code={`<LeadLifecycleFunnel
+  ariaLabel="Lead lifecycle"
+  statuses={apiResponse.statuses}
+  onReviewFlag={(label) => {}}
+/>`}
+	preview={<LeadLifecycleSequentialPreview />}
+/>
+
+### No quality flags
+
+If `statuses` contains no `Poor Data` row (or no row whose label matches `qualityFlagLabels`), the Alert disappears and the lifecycle bars stand alone.
+
+<CodeExample
+	title="Clean lifecycle"
+	code={`const clean = apiResponse.statuses.filter((s) => s.label !== 'Poor Data');
+
+<LeadLifecycleFunnel
+  ariaLabel="Lead lifecycle"
+  statuses={clean}
+/>`}
+	preview={<LeadLifecycleNoFlagsPreview />}
+/>
+
+## How it fixes the legacy widget
+
+| Legacy problem | `LeadLifecycleFunnel` behaviour |
+| -------------- | ------------------------------- |
+| Inverted-triangle funnel with 7 stages collapsing tiny segments to 0px | SVG inverted-triangle funnel. Slice widths are proportional to `leads`, clamped to `minSlicePercent` (default 4%) so 0.55% stages stay legible. |
+| "Poor Data" rendered as a stage | Auto-extracted via `qualityFlagLabels` (default `["Poor Data"]`). Renders as a `warning` Alert above the funnel with an optional Review action. Excluded from the lifecycle denominator. |
+| Unpredictable user colors on a sequential lifecycle | Default fill is the chart palette (`chart-1` → `chart-cat-*`). Pass `useDataColors` to honour the API `color` field when needed. |
+| Legend inside / under the funnel competing with segments | Legend lives **outside** the funnel, in a right-hand column row-aligned to each segment. Hovering either side highlights the matching segment. |
+| No tooltip on hover | Hover (or keyboard-focus) any segment to surface a tooltip with the raw count and share. |
+| Percentages calculated against the inflated total (including Poor Data) | Stage percentages use the clean lifecycle total. Quality-flag percentages use the grand total — the difference is what makes the Alert numbers meaningful. |
+
+## Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `statuses` | `LifecycleStatus[]` | — | Lifecycle data from the API. Order is preserved. |
+| `qualityFlagLabels` | `string[]` | `["Poor Data"]` | Labels whose rows are pulled out as warning Alerts (case-insensitive match). |
+| `useDataColors` | `boolean` | `false` | Use each status's `color` field as the fill. When `false`, the chart palette is used. |
+| `onReviewFlag` | `(label: string) => void` | — | When set, an action button appears in each quality-flag Alert. |
+| `reviewLabel` | `string` | `"Review"` | Label for the quality-flag Alert action button. |
+| `flagDescription` | `(flag) => ReactNode` | built-in copy | Override the body copy of the quality-flag Alert. |
+| `ariaLabel` | `string` | — | Required. Describes the chart for assistive tech. |
+| `formatValue` | `(value: number) => string` | `toLocaleString` | Override the numeric formatter for legend rows and tooltips. |
+| `height` | `number` | `280` | Funnel SVG height in pixels. |
+| `minSlicePercent` | `number` | `4` | Minimum visual slice width so tiny stages stay visible. |
+| `palette` | `string[]` | chart-1…chart-cat-pink | Override the default categorical palette. |
+| `className` | `string` | — | Class applied to the wrapper. |
+
+### `LifecycleStatus`
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `label` | `string` | Stage name. Matched against `qualityFlagLabels` to decide whether the row becomes a flag or a stage. |
+| `leads` | `number` | Number of leads in the stage / flag. |
+| `color` | `string?` | User-defined fill from the API. Ignored unless `useDataColors` is `true`. |
+
+## When to use this vs the generic funnel
+
+| You're building… | Use |
+| ---------------- | --- |
+| The lead-score lifecycle widget (fixed stages from the API, optional `Poor Data` flag) | **LeadLifecycleFunnel** |
+| A checkout funnel, signup funnel, email funnel, or any "where do users drop off" question | [`ChartFunnel`](/components/chart) |
+| A free-form ranked bar chart | `BarList` or `MarmoBarChart` |
+
+## Related
+
+- [Chart](/components/chart) — generic `ChartFunnel` for non-lifecycle funnels.
+- [Widget](/components/widget) — drop `LeadLifecycleFunnel` into a Widget tile.
+- [Dashboard tiles](/patterns/dashboard-tiles) — the legacy widget review explaining why this redesign exists.

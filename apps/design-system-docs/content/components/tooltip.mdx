@@ -1,0 +1,129 @@
+---
+title: Tooltip
+description: A small informational popup that appears on hover or focus to provide additional context about an element.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/tooltip
+keywords:
+  - tooltip
+  - hint
+  - hover
+  - info
+  - help
+lastUpdated: 2026-03-10
+---
+
+import { Tooltip, Button, IconButton } from '@marmoui/ui';
+import { MdInfo, MdSettings, MdHelp } from 'react-icons/md';
+
+<Accordions>
+  <Accordion title="Overview">
+    Tooltip displays a short informational text when users hover over or focus on an element. It provides contextual help without cluttering the interface.
+
+    **When to Use:**
+    - Explaining icon-only buttons
+    - Providing additional context for truncated text
+    - Showing keyboard shortcuts
+    - Supplementary information that doesn't need to persist
+
+    **When NOT to Use:**
+    - For interactive content (use Popover)
+    - For critical information users must see (use inline text)
+    - For long content or rich formatting
+    - On touch-only devices where hover isn't available
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Tooltip } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Tooltip
+
+<CodeExample
+	title="Default"
+	description="Tooltip on a button"
+	code={`<Tooltip content="Save your changes">
+  <Button variant="secondary">Save</Button>
+</Tooltip>`}
+	preview={
+		<Tooltip content="Save your changes">
+			<Button variant="secondary">Save</Button>
+		</Tooltip>
+	}
+/>
+
+### Icon Button with Tooltip
+
+<CodeExample
+	title="Icon Tooltip"
+	description="Tooltip providing context for an icon button"
+	code={`<Tooltip content="Settings">
+  <IconButton variant="ghost" aria-label="Settings">
+    <MdSettings />
+  </IconButton>
+</Tooltip>`}
+	preview={
+		<Tooltip content="Settings">
+			<IconButton variant="ghost" aria-label="Settings">
+				<MdSettings />
+			</IconButton>
+		</Tooltip>
+	}
+/>
+
+### Positioning
+
+<CodeExample
+	title="Tooltip Sides"
+	description="Tooltips can appear on any side"
+	code={`<div className="flex items-center gap-4">
+  <Tooltip content="Top tooltip" side="top"><Button variant="ghost" size="sm">Top</Button></Tooltip>
+  <Tooltip content="Right tooltip" side="right"><Button variant="ghost" size="sm">Right</Button></Tooltip>
+  <Tooltip content="Bottom tooltip" side="bottom"><Button variant="ghost" size="sm">Bottom</Button></Tooltip>
+  <Tooltip content="Left tooltip" side="left"><Button variant="ghost" size="sm">Left</Button></Tooltip>
+</div>`}
+	preview={
+		<div className="flex items-center gap-4">
+			<Tooltip content="Top tooltip" side="top"><Button variant="ghost" size="sm">Top</Button></Tooltip>
+			<Tooltip content="Right tooltip" side="right"><Button variant="ghost" size="sm">Right</Button></Tooltip>
+			<Tooltip content="Bottom tooltip" side="bottom"><Button variant="ghost" size="sm">Bottom</Button></Tooltip>
+			<Tooltip content="Left tooltip" side="left"><Button variant="ghost" size="sm">Left</Button></Tooltip>
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Keep text short">
+		Tooltip content should be 1-2 short sentences maximum.
+	</Guideline>
+	<Guideline type="do" title="Use for icon buttons">
+		Every icon-only button should have a tooltip explaining its action.
+	</Guideline>
+	<Guideline type="dont" title="Don't put essential info in tooltips">
+		If users must see the information, display it inline.
+	</Guideline>
+	<Guideline type="dont" title="Don't add tooltips to obvious elements">
+		A button labeled "Delete" doesn't need a tooltip saying "Delete this item."
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Tooltip" />
+
+## Accessibility
+
+- Appears on focus for keyboard users, not just hover.
+- Uses `role="tooltip"` and `aria-describedby` linking.
+- Can be disabled for screen readers when content is redundant.
+- Respects `prefers-reduced-motion` for animations.

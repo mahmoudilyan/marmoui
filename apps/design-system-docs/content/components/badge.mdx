@@ -1,0 +1,293 @@
+---
+title: Badge
+description: A versatile badge component for displaying status, categories, or metadata
+category: Components
+status: stable
+keywords:
+  - badge
+  - tag
+  - label
+  - status
+  - pill
+  - chip
+lastUpdated: 2025-01-27
+---
+
+import { Badge } from '@marmoui/ui';
+import { MdCheck, MdWarning, MdInfo, MdClose, MdStar } from 'react-icons/md';
+
+## Overview
+
+A versatile badge component for displaying status, categories, or metadata. Built with accessibility in mind and supporting various visual styles.
+
+<InfoCallout type="info" title="When to Use">
+Use badges to highlight status, categorize content, or display compact metadata. They work well inline with text or as standalone elements.
+</InfoCallout>
+
+## Basic Usage
+
+<CodeExample
+	title="Default Badge"
+	description="Simple badge with default styling"
+	code={`<Badge>New</Badge>`}
+	preview={<Badge>New</Badge>}
+/>
+
+## Variants
+
+<CodeExample
+	title="Badge Variants"
+	description="Different semantic variants for different purposes"
+	code={`<div className="flex flex-wrap items-center gap-2">
+  <Badge variant="normal">Default</Badge>
+  <Badge variant="success">Success</Badge>
+  <Badge variant="warning">Warning</Badge>
+  <Badge variant="info">Info</Badge>
+  <Badge variant="destructive">Destructive</Badge>
+</div>`}
+	preview={
+		<div className="flex flex-wrap items-center gap-2">
+			<Badge variant="normal">Default</Badge>
+			<Badge variant="success">Success</Badge>
+			<Badge variant="warning">Warning</Badge>
+			<Badge variant="info">Info</Badge>
+			<Badge variant="destructive">Destructive</Badge>
+		</div>
+	}
+/>
+
+## Sizes
+
+<CodeExample
+	title="Badge Sizes"
+	description="Two size options for different contexts"
+	code={`<div className="flex items-center gap-4">
+  <Badge size="sm">Small</Badge>
+  <Badge size="md">Medium</Badge>
+</div>`}
+	preview={
+		<div className="flex items-center gap-4">
+			<Badge size="sm">Small</Badge>
+			<Badge size="md">Medium</Badge>
+		</div>
+	}
+/>
+
+## With Icons
+
+<CodeExample
+	title="Icon Badges"
+	description="Add icons to the left or right of badge text"
+	code={`<div className="flex flex-wrap items-center gap-3">
+  <Badge variant="success" leftIcon={<MdCheck className="h-3 w-3" />}>
+    Completed
+  </Badge>
+  <Badge variant="warning" leftIcon={<MdWarning className="h-3 w-3" />}>
+    Warning
+  </Badge>
+  <Badge variant="info" leftIcon={<MdInfo className="h-3 w-3" />}>
+    Information
+  </Badge>
+  <Badge variant="destructive" leftIcon={<MdClose className="h-3 w-3" />}>
+    Failed
+  </Badge>
+  <Badge variant="normal" rightIcon={<MdStar className="h-3 w-3" />}>
+    Featured
+  </Badge>
+</div>`}
+	preview={
+		<div className="flex flex-wrap items-center gap-3">
+			<Badge variant="success" leftIcon={<MdCheck className="h-3 w-3" />}>
+				Completed
+			</Badge>
+			<Badge variant="warning" leftIcon={<MdWarning className="h-3 w-3" />}>
+				Warning
+			</Badge>
+			<Badge variant="info" leftIcon={<MdInfo className="h-3 w-3" />}>
+				Information
+			</Badge>
+			<Badge variant="destructive" leftIcon={<MdClose className="h-3 w-3" />}>
+				Failed
+			</Badge>
+			<Badge variant="normal" rightIcon={<MdStar className="h-3 w-3" />}>
+				Featured
+			</Badge>
+		</div>
+	}
+/>
+
+## Status Indicators
+
+<CodeExample
+	title="Task Status"
+	description="Common status patterns for tasks and workflows"
+	code={`<div className="flex gap-2">
+  <Badge variant="normal">Contacted</Badge>
+  <Badge variant="info">Lead</Badge>
+  <Badge variant="warning">Qualified</Badge>
+  <Badge variant="success">Converted</Badge>
+</div>`}
+	preview={
+		<div className="flex gap-2">
+			<Badge variant="normal">Contacted</Badge>
+			<Badge variant="info">Lead</Badge>
+			<Badge variant="warning">Qualified</Badge>
+			<Badge variant="success">Converted</Badge>
+		</div>
+	}
+/>
+
+## Priority Levels
+
+<CodeExample
+	title="Priority Badges"
+	description="Display priority or importance levels"
+	code={`<div className="flex gap-2">
+  <Badge variant="destructive" size="sm">High</Badge>
+  <Badge variant="warning" size="sm">Medium</Badge>
+  <Badge variant="normal" size="sm">Low</Badge>
+</div>`}
+	preview={
+		<div className="flex gap-2">
+			<Badge variant="destructive" size="sm">High</Badge>
+			<Badge variant="warning" size="sm">Medium</Badge>
+			<Badge variant="normal" size="sm">Low</Badge>
+		</div>
+	}
+/>
+
+## User Roles
+
+<CodeExample
+	title="Role Badges"
+	description="Display user roles or permissions"
+	code={`<div className="flex gap-2">
+  <Badge variant="success">Admin</Badge>
+  <Badge variant="info">Editor</Badge>
+  <Badge variant="normal">Viewer</Badge>
+</div>`}
+	preview={
+		<div className="flex gap-2">
+			<Badge variant="success">Admin</Badge>
+			<Badge variant="info">Editor</Badge>
+			<Badge variant="normal">Viewer</Badge>
+		</div>
+	}
+/>
+
+## Notification Badges
+
+<CodeExample
+	title="System Notifications"
+	description="Badges with icons for system feedback"
+	code={`<div className="flex flex-col gap-2">
+  <Badge variant="success" leftIcon={<MdCheck className="h-3 w-3" />}>
+    Email Delivery Complete
+  </Badge>
+  <Badge variant="warning" leftIcon={<MdWarning className="h-3 w-3" />}>
+    Email Delivery Pending
+  </Badge>
+  <Badge variant="destructive" leftIcon={<MdClose className="h-3 w-3" />}>
+    Email Delivery Failed
+  </Badge>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-2">
+			<Badge variant="success" leftIcon={<MdCheck className="h-3 w-3" />}>
+				Email Delivery Complete
+			</Badge>
+			<Badge variant="warning" leftIcon={<MdWarning className="h-3 w-3" />}>
+				Email Delivery Pending
+			</Badge>
+			<Badge variant="destructive" leftIcon={<MdClose className="h-3 w-3" />}>
+				Email Delivery Failed
+			</Badge>
+		</div>
+	}
+/>
+
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use semantic variants">
+		Choose badge variants that match the meaning of the content (success for completed, warning for attention needed, etc.).
+	</Guideline>
+	
+	<Guideline type="do" title="Keep text concise">
+		Badge text should be short and scannable. Use 1-2 words when possible.
+	</Guideline>
+	
+	<Guideline type="do" title="Use consistent sizing">
+		Stick to one badge size within a component or section for visual consistency.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use as buttons">
+		Badges are for display only. If you need an interactive element, use a button or chip component instead.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't overuse colors">
+		Too many colored badges in one view creates visual noise. Use neutral badges for less important information.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use long text">
+		Avoid lengthy text in badges. If you need more space, consider using a different component.
+	</Guideline>
+</GuidelinesGrid>
+
+## Patterns
+
+### Status column in a table
+
+Use `variant="success"` / `"warning"` / `"destructive"` to show row status in a DataTable cell renderer.
+
+```tsx
+// Status badge in a TanStack Table cell
+{
+  accessorKey: 'status',
+  header: 'Status',
+  cell: ({ row }) => {
+    const map = {
+      active:   { variant: 'success'     as const, label: 'Active' },
+      pending:  { variant: 'warning'     as const, label: 'Pending' },
+      failed:   { variant: 'destructive' as const, label: 'Failed' },
+      inactive: { variant: 'normal'      as const, label: 'Inactive' },
+    };
+    const { variant, label } = map[row.original.status];
+    return <Badge variant={variant}>{label}</Badge>;
+  },
+}
+```
+
+### Badge with icon
+
+```tsx
+import { Badge } from '@marmoui/ui';
+import { MdCheck, MdWarning } from 'react-icons/md';
+
+<Badge variant="success" leftIcon={<MdCheck className="h-3 w-3" />}>Verified</Badge>
+<Badge variant="warning" leftIcon={<MdWarning className="h-3 w-3" />}>Review needed</Badge>
+```
+
+## Common Mistakes
+
+- Using `variant="danger"` — the correct value is `variant="destructive"`
+- Using Badge as an interactive element — it has no click handler; use Button instead
+- Long text in badges — keep to 1–3 words maximum
+
+## Props
+
+<Props componentName="Badge" />
+
+## Accessibility
+
+<InfoCallout type="info" title="Color and Meaning">
+Don't rely solely on color to convey meaning. Use icons or text to reinforce the badge's purpose.
+</InfoCallout>
+
+- Ensure sufficient color contrast between badge background and text
+- Don't rely solely on color to convey meaning
+- Use icons in addition to color for better comprehension
+- Provide appropriate ARIA labels for icon-only badges
+- Make sure interactive badges have proper keyboard navigation
+

@@ -1,0 +1,228 @@
+---
+title: Radio Card
+description: A card-style radio button for visually prominent single-selection choices with icon, label, and description support.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/radio-card
+keywords:
+  - radio card
+  - selection card
+  - choice card
+  - single select card
+lastUpdated: 2026-03-17
+---
+
+import { RadioCard, RadioCardItem } from '@marmoui/ui';
+import {
+	RadioCardBasicPreview,
+	RadioCardWithIndicatorPreview,
+	RadioCardWithIconsPreview,
+	RadioCardGridPreview,
+	RadioCardWithAddonPreview,
+	RadioCardDisabledPreview,
+} from '@/components/previews/radio-card-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    RadioCard presents mutually exclusive options as visually rich cards. They combine the single-selection behavior of radio buttons with the visual presence of cards.
+
+    **When to Use:**
+    - Plan or tier selection
+    - Template or layout picking
+    - Payment method selection
+    - Any single-choice selection that benefits from visual descriptions
+
+    **When NOT to Use:**
+    - For multi-select (use CheckboxCard)
+    - For short, simple option lists (use RadioGroup)
+    - When screen space is limited
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { RadioCard, RadioCardItem } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic
+
+<CodeExample
+	title="Plan Selection"
+	description="Radio cards for selecting a pricing plan"
+	code={`<RadioCard defaultValue="pro" className="max-w-md">
+  <RadioCardItem value="starter" label="Starter" description="For individuals getting started" />
+  <RadioCardItem value="pro" label="Pro" description="For growing businesses" />
+  <RadioCardItem value="enterprise" label="Enterprise" description="For large organizations" />
+</RadioCard>`}
+	preview={<RadioCardBasicPreview />}
+/>
+
+### With Indicator
+
+The `indicator` renders a radio dot inside the card. Control its position with `indicatorPlacement` (`'start'`, `'end'`), or hide it with `indicator={null}`.
+
+<CodeExample
+	title="Indicator Placement"
+	description="Radio indicator at different positions, or hidden"
+	code={`{/* End (default) */}
+<RadioCardItem value="a" label="Option" description="..." />
+
+{/* Start */}
+<RadioCardItem indicatorPlacement="start" value="b" label="Option" description="..." />
+
+{/* Hidden */}
+<RadioCardItem indicator={null} value="c" label="Option" description="..." />`}
+	preview={<RadioCardWithIndicatorPreview />}
+/>
+
+### With Icons
+
+<CodeExample
+	title="Cards with Icons"
+	description="Radio cards with leading icons"
+	code={`<RadioCard defaultValue="pro" className="max-w-md">
+  <RadioCardItem
+    value="starter"
+    icon={<MdRocketLaunch className="size-5 text-icon" />}
+    label="Starter"
+    description="Up to 1,000 contacts"
+  />
+  <RadioCardItem
+    value="pro"
+    icon={<MdSpeed className="size-5 text-icon" />}
+    label="Pro"
+    description="Up to 10,000 contacts"
+  />
+  <RadioCardItem
+    value="enterprise"
+    icon={<MdStar className="size-5 text-icon" />}
+    label="Enterprise"
+    description="Unlimited contacts"
+  />
+</RadioCard>`}
+	preview={<RadioCardWithIconsPreview />}
+/>
+
+### Grid Layout
+
+<CodeExample
+	title="Grid Layout"
+	description="Cards in a multi-column grid for layout selection"
+	code={`<RadioCard defaultValue="grid" className="grid-cols-3 max-w-2xl">
+  <RadioCardItem
+    value="module"
+    icon={<MdViewModule className="size-5 text-icon" />}
+    label="Module"
+    description="Card-based layout"
+  />
+  <RadioCardItem
+    value="list"
+    icon={<MdViewList className="size-5 text-icon" />}
+    label="List"
+    description="Detailed list view"
+  />
+  <RadioCardItem
+    value="grid"
+    icon={<MdGridView className="size-5 text-icon" />}
+    label="Grid"
+    description="Compact grid view"
+  />
+</RadioCard>`}
+	preview={<RadioCardGridPreview />}
+/>
+
+### With Addon
+
+<CodeExample
+	title="Cards with Addon"
+	description="Radio cards with additional metadata"
+	code={`<RadioCard defaultValue="card" className="max-w-md">
+  <RadioCardItem
+    value="card"
+    icon={<MdCreditCard className="size-5 text-icon" />}
+    label="Credit Card"
+    description="Visa, Mastercard, Amex"
+    addon={<span className="text-xs text-ink-muted">Processing fee: 2.9%</span>}
+  />
+  <RadioCardItem
+    value="bank"
+    icon={<MdAccountBalance className="size-5 text-icon" />}
+    label="Bank Transfer"
+    description="Direct ACH payment"
+    addon={<span className="text-xs text-ink-muted">No fee</span>}
+  />
+  <RadioCardItem
+    value="paypal"
+    icon={<MdPayment className="size-5 text-icon" />}
+    label="PayPal"
+    description="Pay with PayPal balance"
+    addon={<span className="text-xs text-ink-muted">Processing fee: 3.4%</span>}
+  />
+</RadioCard>`}
+	preview={<RadioCardWithAddonPreview />}
+/>
+
+### Disabled
+
+<CodeExample
+	title="Disabled State"
+	description="Disabled radio cards"
+	code={`<RadioCard defaultValue="active" className="max-w-md">
+  <RadioCardItem value="active" label="Active Option" description="This option can be selected" />
+  <RadioCardItem value="disabled" label="Disabled Option" description="This option is not available" disabled />
+</RadioCard>`}
+	preview={<RadioCardDisabledPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Limit options to 3-5">
+		Keep the number of radio cards manageable. Too many options cause decision fatigue.
+	</Guideline>
+	<Guideline type="do" title="Pre-select a recommended option">
+		When appropriate, pre-select the most common or recommended option.
+	</Guideline>
+	<Guideline type="dont" title="Don't use without descriptions">
+		If options don't need descriptions, use standard RadioGroup instead.
+	</Guideline>
+	<Guideline type="dont" title="Don't mix with regular radio buttons">
+		Use either card radios or standard radios within the same form section.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Unique value for the radio item |
+| `label` | `ReactNode` | - | Card title text |
+| `description` | `ReactNode` | - | Card description text |
+| `icon` | `ReactElement` | - | Leading icon element |
+| `addon` | `ReactNode` | - | Additional content below the description |
+| `indicator` | `ReactNode \| null` | Default radio dot | Custom indicator element, or `null` to hide |
+| `indicatorPlacement` | `'start' \| 'end'` | `'end'` | Position of the indicator |
+| `disabled` | `boolean` | `false` | Disable the radio card |
+| `className` | `string` | - | Additional className for the card wrapper |
+
+### RadioCard (Group) Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Controlled selected value |
+| `defaultValue` | `string` | - | Default selected value (uncontrolled) |
+| `onValueChange` | `(value: string) => void` | - | Callback when selection changes |
+| `className` | `string` | - | Additional className for the group |
+
+## Accessibility
+
+- Only one option can be selected at a time within a group.
+- Arrow keys navigate between options, Space/Enter selects.
+- Selected state is communicated via `aria-checked`.
+- Uses `role="radiogroup"` for the container.

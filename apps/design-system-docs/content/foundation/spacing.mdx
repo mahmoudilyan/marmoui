@@ -1,0 +1,96 @@
+---
+title: Spacing
+description: A systematic spacing scale that creates consistent rhythm, alignment, and visual harmony across layouts.
+category: Foundation
+keywords:
+  - spacing
+  - padding
+  - margin
+  - gap
+  - layout
+  - whitespace
+lastUpdated: 2026-03-10
+---
+
+# Usage
+
+## Overview
+
+The Marmo UI uses a purposeful spacing scale built on a base unit of `4px` (0.25rem). This scale ensures consistent rhythm and alignment across all components and layouts, making interfaces feel cohesive and well-crafted.
+
+* Spacing tokens define the whitespace between and within UI elements.
+* Consistent spacing reduces cognitive load and creates a sense of order.
+* The scale progresses from tight (compact UIs) to generous (breathing room for content-heavy layouts).
+
+### Spacing Scale
+
+| Token | Value | Pixels | Use Case |
+|-------|-------|--------|----------|
+| `--spacing-0` | `0` | 0px | No spacing, flush elements |
+| `--spacing-4xs` | `0.0625rem` | 1px | Hairline gaps, borders |
+| `--spacing-3xs` | `0.125rem` | 2px | Minimal separation |
+| `--spacing-2xs` | `0.25rem` | 4px | Tight inline spacing |
+| `--spacing-xs` | `0.5rem` | 8px | Compact element gaps |
+| `--spacing-s` | `0.75rem` | 12px | Related element spacing |
+| `--spacing-default` | `1rem` | 16px | Default padding and gaps |
+| `--spacing-lg` | `1.25rem` | 20px | Comfortable padding |
+| `--spacing-xl` | `1.5rem` | 24px | Section padding |
+| `--spacing-2xl` | `2rem` | 32px | Group separation |
+| `--spacing-supra-1` | `2.5rem` | 40px | Large section gaps |
+| `--spacing-supra-2` | `3rem` | 48px | Page-level spacing |
+| `--spacing-supra-3` | `4rem` | 64px | Major section breaks |
+| `--spacing-supra-4` | `5rem` | 80px | Hero spacing |
+| `--spacing-ultra-1` | `6rem` | 96px | Full-page sections |
+| `--spacing-ultra-2` | `8rem` | 128px | Generous layout spacing |
+| `--spacing-ultra-3` | `16rem` | 256px | Maximum spacing |
+
+### Best Practices
+
+* Use smaller tokens (`2xs`-`xs`) for spacing within components (padding, inline gaps).
+* Use medium tokens (`s`-`xl`) for spacing between related elements.
+* Use larger tokens (`2xl`-`supra`) for spacing between sections and page-level layouts.
+* Always use spacing tokens instead of arbitrary values to maintain consistency.
+* When in doubt, use `--spacing-default` (16px) as your starting point.
+
+### When Not to Use
+
+* Don't use spacing tokens for sizing elements (width/height); use sizing tokens or Tailwind utilities instead.
+* Avoid mixing arbitrary pixel values with token-based spacing in the same context.
+
+## Usage in Code
+
+### CSS Custom Properties
+
+```css
+.my-component {
+  padding: var(--spacing-default);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-2xl);
+}
+```
+
+### Tailwind Classes
+
+The spacing scale maps to Tailwind utility classes:
+
+```html
+<div class="p-4 gap-2 mb-8">
+  <!-- p-4 = 16px, gap-2 = 8px, mb-8 = 32px -->
+</div>
+```
+
+| Token | Tailwind | Example |
+|-------|----------|---------|
+| `--spacing-2xs` | `1` | `p-1`, `gap-1`, `m-1` |
+| `--spacing-xs` | `2` | `p-2`, `gap-2`, `m-2` |
+| `--spacing-s` | `3` | `p-3`, `gap-3`, `m-3` |
+| `--spacing-default` | `4` | `p-4`, `gap-4`, `m-4` |
+| `--spacing-lg` | `5` | `p-5`, `gap-5`, `m-5` |
+| `--spacing-xl` | `6` | `p-6`, `gap-6`, `m-6` |
+| `--spacing-2xl` | `8` | `p-8`, `gap-8`, `m-8` |
+
+## Accessibility
+
+* Adequate spacing improves readability and reduces visual clutter, benefiting all users.
+* Touch targets should have at least 44px of tappable area; use spacing to ensure sufficient clearance between interactive elements.
+* Generous spacing around text improves readability for users with cognitive disabilities.

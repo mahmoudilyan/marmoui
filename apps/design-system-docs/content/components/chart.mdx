@@ -1,0 +1,504 @@
+---
+title: Chart
+description: Composable chart primitives for line, bar, area, donut, sparkline, and KPI surfaces. Wraps Recharts with Marmo theming, accessibility defaults, and a tabular fallback.
+category: Components
+status: alpha
+links:
+  github: /tree/main/packages/ui/src/components/chart
+keywords:
+  - chart
+  - charts
+  - recharts
+  - line
+  - bar
+  - area
+  - donut
+  - pie
+  - sparkline
+  - kpi
+  - dataviz
+  - analytics
+lastUpdated: 2026-05-12
+---
+
+import {
+	ChartLinePreview,
+	ChartMultiLinePreview,
+	ChartAreaPreview,
+	ChartStackedAreaPreview,
+	ChartBarPreview,
+	ChartStackedBarPreview,
+	ChartHorizontalBarPreview,
+	ChartBarListPreview,
+	ChartBarListGroupedPreview,
+	ChartBarListStackedPreview,
+	ChartDonutPreview,
+	ChartSparklinePreview,
+	ChartKPIPreview,
+	ChartLoadingPreview,
+	ChartEmptyPreview,
+	ChartErrorPreview,
+	ChartViewAsTablePreview,
+} from '@/components/previews/chart-previews';
+
+## Overview
+
+`Chart` is a small set of composable primitives that wrap [Recharts](https://recharts.org) with Marmo's color tokens, accessibility defaults, and a mandatory tabular fallback. There is no proprietary chart component — you compose recharts primitives (`LineChart`, `BarChart`, `Line`, `Bar`, `XAxis`, …) directly inside `<ChartContainer>`. That keeps the API tiny and the visuals fully customizable.
+
+The full design rules live in **[Charts & data visualization](/foundation/charts)**. This page is the implementation surface.
+
+**When to use**
+
+- Single-question dashboard tiles (revenue trend, signups by channel, traffic mix).
+- KPI scorecards with a sparkline and delta.
+- Anywhere you'd reach for a line, bar, area, donut, or sparkline.
+
+**When NOT to use**
+
+- Tabular data — use `DataTable`.
+- Funnel, Sankey, treemap, choropleth — not in v1. Compose recharts primitives directly inside `ChartContainer` until opinionated wrappers ship.
+- Two y-axes — split into two charts (foundation rule).
+
+<Installation />
+
+## Usage
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+  ChartSkeleton,
+  ChartEmpty,
+  ChartTable,
+  type ChartConfig,
+} from '@marmoui/ui';
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
+```
+
+### The `ChartConfig` mental model
+
+Every chart instance receives a `config` object. Each key matches a `dataKey` from your data; each value supplies a `label`, an optional `icon`, and a `color` (or per-theme `theme: { light, dark }`). `ChartContainer` injects those colors as scoped CSS custom properties, so recharts primitives reference them as `var(--color-revenue)`.
+
+```tsx
+const config = {
+  revenue: { label: 'Revenue', theme: { light: 'var(--color-chart-1)', dark: 'var(--color-chart-1)' } },
+  refunds: { label: 'Refunds', theme: { light: 'var(--color-chart-4)', dark: 'var(--color-chart-4)' } },
+} satisfies ChartConfig;
+
+<ChartContainer config={config} ariaLabel="Monthly revenue">
+  <LineChart data={data}>
+    <Line dataKey="revenue" stroke="var(--color-revenue)" />
+    <Line dataKey="refunds" stroke="var(--color-refunds)" />
+  </LineChart>
+</ChartContainer>
+```
+
+To re-skin a chart globally, override `--color-chart-1` through `--color-chart-6` in your app's CSS. To override per chart, pass literal hex/var in `config[key].theme`.
+
+## Examples
+
+### Line — single series
+
+<CodeExample
+	title="Revenue trend"
+	description="One question, one series, baseline at zero. Title belongs on the surrounding Card or page heading — never inside the chart."
+	code={`const config = {
+  revenue: { label: 'Revenue', theme: { light: 'var(--color-chart-1)', dark: 'var(--color-chart-1)' } },
+} satisfies ChartConfig;
+
+<ChartContainer config={config} ariaLabel="Monthly revenue trend, January to June">
+  <LineChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
+    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+    <XAxis dataKey="month" tickLine={false} axisLine={false} />
+    <YAxis tickLine={false} axisLine={false} tickFormatter={(v) => \`$\${(v / 1000).toFixed(0)}k\`} />
+    <ChartTooltip content={<ChartTooltipContent indicator="line" />} />
+    <Line dataKey="revenue" type="monotone" stroke="var(--color-revenue)" strokeWidth={2} dot={false} />
+  </LineChart>
+</ChartContainer>`}
+	preview={<ChartLinePreview />}
+/>
+
+### Line — multi-series
+
+<CodeExample
+	title="Revenue vs refunds"
+	description="Up to 5 series. Use the legend to let the reader filter."
+	code={`<ChartContainer config={config} ariaLabel="Monthly revenue and refunds">
+  <LineChart data={data}>
+    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+    <XAxis dataKey="month" />
+    <YAxis />
+    <ChartTooltip content={<ChartTooltipContent />} />
+    <ChartLegend content={<ChartLegendContent />} />
+    <Line dataKey="revenue" type="monotone" stroke="var(--color-revenue)" strokeWidth={2} dot={false} />
+    <Line dataKey="refunds" type="monotone" stroke="var(--color-refunds)" strokeWidth={2} dot={false} />
+  </LineChart>
+</ChartContainer>`}
+	preview={<ChartMultiLinePreview />}
+/>
+
+### Area
+
+<CodeExample
+	title="Area chart"
+	description="One trend with magnitude emphasis. Use a soft gradient — never block fills."
+	code={`<ChartContainer config={config} ariaLabel="Revenue area trend">
+  <AreaChart data={data}>
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="var(--color-revenue)" stopOpacity={0.4} />
+        <stop offset="100%" stopColor="var(--color-revenue)" stopOpacity={0.02} />
+      </linearGradient>
+    </defs>
+    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+    <XAxis dataKey="month" />
+    <YAxis />
+    <ChartTooltip content={<ChartTooltipContent />} />
+    <Area dataKey="revenue" type="monotone" stroke="var(--color-revenue)" fill="url(#g)" />
+  </AreaChart>
+</ChartContainer>`}
+	preview={<ChartAreaPreview />}
+/>
+
+### Stacked area
+
+<CodeExample
+	title="Composition over time"
+	description="Up to 5 series. Order largest-to-smallest from the bottom."
+	code={`<ChartContainer config={config} ariaLabel="Revenue and refunds composition">
+  <AreaChart data={data}>
+    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+    <XAxis dataKey="month" />
+    <YAxis />
+    <ChartTooltip content={<ChartTooltipContent />} />
+    <ChartLegend content={<ChartLegendContent />} />
+    <Area dataKey="revenue" stackId="a" stroke="var(--color-revenue)" fill="var(--color-revenue)" fillOpacity={0.4} />
+    <Area dataKey="refunds" stackId="a" stroke="var(--color-refunds)" fill="var(--color-refunds)" fillOpacity={0.5} />
+  </AreaChart>
+</ChartContainer>`}
+	preview={<ChartStackedAreaPreview />}
+/>
+
+### Bar — vertical (column)
+
+<CodeExample
+	title="Signups by channel"
+	description="≤ 5 categories: vertical columns. ≥ 5 categories: switch to a horizontal bar chart."
+	code={`<ChartContainer config={config} ariaLabel="Signups by channel">
+  <BarChart data={data}>
+    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+    <XAxis dataKey="channel" />
+    <YAxis />
+    <ChartTooltip content={<ChartTooltipContent />} />
+    <Bar dataKey="signups" fill="var(--color-signups)" radius={[4, 4, 0, 0]} />
+  </BarChart>
+</ChartContainer>`}
+	preview={<ChartBarPreview />}
+/>
+
+### Bar — stacked
+
+<CodeExample
+	title="New vs returning by channel"
+	description="Parts-of-whole across categories. Stack the smaller series on top."
+	code={`<BarChart data={data}>
+  <CartesianGrid vertical={false} strokeDasharray="3 3" />
+  <XAxis dataKey="channel" />
+  <YAxis />
+  <ChartTooltip content={<ChartTooltipContent />} />
+  <ChartLegend content={<ChartLegendContent />} />
+  <Bar dataKey="new" stackId="a" fill="var(--color-new)" />
+  <Bar dataKey="returning" stackId="a" fill="var(--color-returning)" radius={[4, 4, 0, 0]} />
+</BarChart>`}
+	preview={<ChartStackedBarPreview />}
+/>
+
+### Bar — horizontal
+
+<CodeExample
+	title="Ranked categories"
+	description="Use horizontal layout when category names are long or you have ≥ 5 categories. Sort descending."
+	code={`<BarChart data={data} layout="vertical">
+  <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+  <XAxis type="number" />
+  <YAxis type="category" dataKey="channel" width={80} />
+  <ChartTooltip content={<ChartTooltipContent />} />
+  <Bar dataKey="signups" fill="var(--color-signups)" radius={[0, 4, 4, 0]} />
+</BarChart>`}
+	preview={<ChartHorizontalBarPreview />}
+/>
+
+### `BarList` — DOM-based ranked list
+
+`BarList` is a lightweight, DOM-based ranked horizontal list. No SVG, no axes, no gridlines — just a column of `name → colored bar → value` rows with a chart-style hover tooltip. Use it for simple ranking inside dashboard tiles where the chart-chrome of a real bar chart adds noise without earning its space.
+
+<CodeExample
+	title="Single-series ranking"
+	description="Each row picks the next hue from the categorical chart palette (`--color-chart-cat-teal` → `…-red`). Override per row via `color`, or replace the whole palette via the `colors` prop."
+	code={`import { BarList } from '@marmoui/ui';
+
+<BarList
+  data={[
+    { name: 'Direct', value: 997 },
+    { name: 'Referral', value: 467 },
+    { name: 'Organic Search', value: 268 },
+    { name: 'PPC Google Ads', value: 58 },
+    { name: 'Acme', value: 4 },
+  ]}
+  header="Source"
+  unit="Visits"
+/>`}
+	preview={<ChartBarListPreview />}
+/>
+
+#### Multi-series rows
+
+Pass a `series` array to render multiple values per row. Each `BarListItem` swaps `value` for `values`, keyed by `series[].key`. `layout` picks the shape:
+
+- `single` (default) — one bar per row from `item.value`. Today's behavior.
+- `grouped` — one thin bar per series stacked vertically inside the row. Reach for it when the **individual series values** are what the reader compares.
+- `stacked` — one bar split into segments. Reach for it when the **total and the mix** matter more than the absolute series values.
+
+<CodeExample
+	title="Grouped — one bar per series, per row"
+	description="Pair each row with its own legend chips above. Series colors accept a hue name from the categorical palette (`'teal'`, `'violet'`, …) **or** any CSS color. Per-row `color` overrides are ignored in multi-series modes — series owns color."
+	code={`const series = [
+  { key: 'desktop', label: 'Desktop', color: 'teal' },
+  { key: 'mobile',  label: 'Mobile',  color: 'violet' },
+  { key: 'tablet',  label: 'Tablet',  color: 'blue' },
+];
+
+<div className="flex flex-col gap-3">
+  <BarListLegend series={series} />
+  <BarList
+    data={[
+      { name: 'United States',  values: { desktop: 4200, mobile: 2100, tablet: 600 } },
+      { name: 'Germany',        values: { desktop: 1800, mobile: 800,  tablet: 220 } },
+      { name: 'United Kingdom', values: { desktop: 1400, mobile: 700,  tablet: 180 } },
+    ]}
+    series={series}
+    layout="grouped"
+    header="Country"
+  />
+</div>`}
+	preview={<ChartBarListGroupedPreview />}
+/>
+
+**Sort in multi-series mode is by row total.** Never reorder mid-row.
+
+#### `BarListLegend` — top legend with `+N More`
+
+`BarListLegend` is a sibling component, not built into `BarList`. Drop it above (or beside) the list when there's more than one series — caller chooses placement. When the series list exceeds `maxVisible`, the rest collapse into a `+N More` chip whose tooltip lists the remaining labels and colors.
+
+<CodeExample
+	title="Stacked + overflow legend"
+	description="Stacked layout sums each row into a single bar split by series. `maxVisible={4}` keeps the legend on one line; the remaining series live behind a hover chip."
+	code={`const series = [
+  { key: 'direct',   label: 'Direct',   color: 'teal' },
+  { key: 'organic',  label: 'Organic',  color: 'violet' },
+  { key: 'paid',     label: 'Paid',     color: 'blue' },
+  { key: 'social',   label: 'Social',   color: 'orange' },
+  { key: 'referral', label: 'Referral', color: 'pink' },
+];
+
+<div className="flex flex-col gap-3">
+  <BarListLegend series={series} maxVisible={4} />
+  <BarList
+    data={data}
+    series={series}
+    layout="stacked"
+    header="Country"
+  />
+</div>`}
+	preview={<ChartBarListStackedPreview />}
+/>
+
+Pass any `BarSeries[]` — including a synthetic one built from row names — when you want a top legend over a single-series list with per-row colors.
+
+#### `BarList` props
+
+| Prop | Type | Notes |
+| ---- | ---- | ----- |
+| `data` | `BarListItem[]` | Required. Each item: `{ name, value?, values?, color? }`. |
+| `series` | `BarSeries[]` | Required for `grouped` / `stacked`. Each: `{ key, label, color? }`. |
+| `layout` | `'single' \| 'grouped' \| 'stacked'` | Default `'single'`. |
+| `header` | `string` | Column header above the name column. |
+| `unit` | `string` | Shown inside the hover tooltip (e.g. "Visits", "Contacts"). |
+| `hideZeros` | `boolean` | Default `true`. Hides rows whose total (or value) is 0. |
+| `sort` | `'desc' \| 'asc' \| 'none'` | Default `'desc'`. Multi-series sorts by row total. |
+| `labelWidth` | `number` | Pixel width of the name column. Default `88`. |
+| `maxBarWidth` | `number` | Pixel cap on the longest bar. Default `280`. |
+| `formatValue` | `(value: number) => string` | Format both inline value and tooltip number. |
+| `colors` | `string[]` | Override the categorical palette tokens. |
+
+#### `BarListLegend` props
+
+| Prop | Type | Notes |
+| ---- | ---- | ----- |
+| `series` | `BarSeries[]` | Required. Same shape as `BarList`'s `series`. |
+| `maxVisible` | `number` | Show this many inline; collapse the rest into `+N More`. Default: show all. |
+| `colors` | `string[]` | Override the categorical palette tokens. |
+| `className` | `string` | Extra classes on the legend wrapper. |
+
+#### `BarList` vs. **Bar — horizontal**
+
+Both render horizontal bars. Reach for whichever earns the chart-chrome.
+
+| | `BarList` | Bar — horizontal (recharts) |
+| --- | --- | --- |
+| **What it is** | DOM `<div>` rows, value next to the bar, hover tooltip. | SVG chart with axes, gridlines, recharts `<Tooltip>`. |
+| **Best for** | Compact dashboard tiles, top-N rankings, source/country/channel/product lists. | Charts that need a value axis, gridlines, brush, or click-to-filter legends. |
+| **Categories** | 10+ is fine — palette cycles, value sits next to each bar. | Best ≤ 8 (recharts axis spacing gets cramped beyond that). |
+| **Series per row** | One, or many via `layout="grouped"` / `"stacked"`. | One or many (stacked, grouped). |
+| **Axes / ticks** | None. | Yes. |
+| **Color model** | One categorical hue per row by default; per-series hues in multi-series mode. | Single accent + neutral by default; multi-color only when the data is genuinely multi-series. |
+| **Tooltip** | Built in (chart-style — name + colored marker + value, or per-segment breakdown when stacked). | Bring your own via `<ChartTooltip>` + `<ChartTooltipContent>`. |
+| **Legend** | Optional sibling `BarListLegend` with `+N More` overflow. | `<ChartLegend>` + `<ChartLegendContent>`. |
+| **Footprint** | Tiny — pure CSS, no SVG. | Full recharts surface. |
+
+Rule of thumb: if you'd be reaching for a recharts bar chart just to label rows and show a value, use `BarList`. If you need the chart anatomy (axis, gridlines, multi-series, brush, click-to-filter), use **Bar — horizontal**.
+
+### Donut
+
+<CodeExample
+	title="Traffic by source"
+	description="≤ 4 slices summing to a meaningful 100%. Otherwise prefer a bar chart."
+	code={`<PieChart>
+  <ChartTooltip content={<ChartTooltipContent hideLabel nameKey="source" />} />
+  <Pie data={data} dataKey="visits" nameKey="source" innerRadius={55} outerRadius={85}>
+    {data.map((d) => <Cell key={d.source} fill={\`var(--color-\${d.source})\`} />)}
+    <Label content={({ viewBox }) => /* total in center */ } />
+  </Pie>
+  <ChartLegend content={<ChartLegendContent nameKey="source" />} />
+</PieChart>`}
+	preview={<ChartDonutPreview />}
+/>
+
+### Sparkline
+
+<CodeExample
+	title="Inline trend hint"
+	description="No axes, no legend. Pair with the headline number it summarizes."
+	code={`<ChartContainer config={config} ariaLabel="Visits trend, last 7 days" className="h-10 w-32">
+  <LineChart data={data} margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
+    <Line dataKey="v" type="monotone" stroke="var(--color-v)" strokeWidth={2} dot={false} isAnimationActive={false} />
+  </LineChart>
+</ChartContainer>`}
+	preview={<ChartSparklinePreview />}
+/>
+
+### KPI scorecard
+
+<CodeExample
+	title="Single number, delta, sparkline"
+	description="Wrap in `Card`. The headline is the question; the sparkline gives the trend."
+	code={`<Card>
+  <CardContent className="flex flex-col gap-1 p-4">
+    <span className="text-xs uppercase text-ink-light">Revenue</span>
+    <span className="font-heading text-2xl font-semibold tabular-nums">$24,800</span>
+    <div className="flex items-center justify-between">
+      <span className="text-ink-success">+8.4%</span>
+      <ChartContainer config={config} ariaLabel="Revenue trend" className="h-8 w-20">
+        <LineChart data={spark}>
+          <Line dataKey="v" stroke="var(--color-v)" strokeWidth={2} dot={false} />
+        </LineChart>
+      </ChartContainer>
+    </div>
+  </CardContent>
+</Card>`}
+	preview={<ChartKPIPreview />}
+/>
+
+## States
+
+### Loading
+
+<CodeExample
+	title="Loading state"
+	description="`ChartSkeleton` renders skeleton shapes the size of the chart. Never show zeroed bars during load — readers mistake them for real data."
+	code={`<ChartSkeleton variant="line" height={240} />`}
+	preview={<ChartLoadingPreview />}
+/>
+
+### Empty
+
+<CodeExample
+	title="Empty state"
+	description="Use `ChartEmpty` inside the chart frame so layout stays stable."
+	code={`<ChartEmpty
+  heading="No events yet"
+  body="Once contacts start interacting with your campaigns, their activity will show here."
+  icon={<MdInbox aria-hidden className="size-8" />}
+/>`}
+	preview={<ChartEmptyPreview />}
+/>
+
+### Error
+
+<CodeExample
+	title="Error state"
+	description="Surface the error with `Alert` above the frame; keep the frame visible so the page does not jump."
+	code={`<>
+  <Alert variant="destructive">Couldn't load this chart. Try refreshing.</Alert>
+  <ChartSkeleton variant="line" height={200} />
+</>`}
+	preview={<ChartErrorPreview />}
+/>
+
+## Accessibility
+
+Charts must satisfy every rule in [Charts & data visualization → Accessibility](/foundation/charts#accessibility-non-negotiable-checklist). The primitives bake several of them in; the rest are your job.
+
+| Built in | Your job |
+|---|---|
+| `role="img"` + `aria-label` on the SVG root (via `ChartContainer.ariaLabel`). | Provide a one-sentence label that names the question the chart answers. |
+| Hover **and** focus tooltips — `ChartContainer` is keyboard-focusable. | Make sure tooltips include units and full precision. |
+| Tabular figures in tooltips, legends, and `ChartTable`. | Format compact axis values (`1.2k`, `3.4M`) yourself with `Intl.NumberFormat`. |
+| `prefers-reduced-motion` disables recharts entrance animations. | Don't add custom animations that ignore the motion query. |
+| Two token families ship: `--color-chart-1..6` (series-accent) and `--color-chart-cat-{teal, violet, blue, orange, pink, amber, green, indigo, mint, red}` (categorical, 10 hues with `-bright` siblings for same-variable bands). | Group long tails into "Other"; don't introduce an 11th hue or reuse `cat-red`/`cat-green`/`cat-amber` for semantic status. |
+
+### View as table
+
+Every meaningful chart ships with a tabular alternative for screen readers, export, and copy/paste. Wrap `ChartTable` in `<details>`:
+
+<CodeExample
+	title="Tabular fallback"
+	description="`ChartTable` takes the same data + config you handed the chart, plus the x-axis key."
+	code={`<details>
+  <summary>View as table</summary>
+  <ChartTable
+    data={data}
+    config={{ revenue: { label: 'Revenue' }, refunds: { label: 'Refunds' } }}
+    xKey="month"
+    xLabel="Month"
+    formatValue={(v, key) =>
+      typeof v === 'number' && key !== 'month' ? \`$\${v.toLocaleString()}\` : v
+    }
+  />
+</details>`}
+	preview={<ChartViewAsTablePreview />}
+/>
+
+## Anti-patterns
+
+- **3D, gradient fills on bars, exploding pies.** Don't.
+- **Truncated y-axis on bar charts.** Always start at zero.
+- **Two y-axes.** Split into two charts.
+- **An 11th categorical color.** Group the tail into "Other".
+- **A second hue for an emphasis band of the SAME variable.** Use the hue's `-bright` sibling instead.
+- **`cat-red` / `cat-green` / `cat-amber` for status.** Those are categorical-only — use the semantic ink tokens for status.
+- **Title inside the chart.** Title is the surrounding heading.
+- **Pie with > 4 slices.** Switch to a bar chart.
+- **Recharts bar chart just to label a ranked list.** Use `BarList` instead.
+
+The full reasoning lives in [Charts & data visualization](/foundation/charts).
+
+## Related
+
+- [Charts & data visualization](/foundation/charts) — the criteria, decisions, and color rules every chart must pass.
+- [Card](/components/card) — wrap KPI tiles and chart surfaces.
+- [DataTable](/components/data-table) — for tabular data.
+- [Colors](/foundation/colors) — categorical, sequential, and diverging palettes.

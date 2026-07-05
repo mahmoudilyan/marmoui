@@ -1,0 +1,288 @@
+---
+title: PageSection
+description: A layout component for page headers with breadcrumb navigation, titles, action buttons, and wizard step indicators
+category: Layout
+status: stable
+links:
+  github: https://github.com/mahmoudilyan/marmo-ui/tree/main/packages/ui/src/components/page-section
+keywords:
+  - page
+  - header
+  - section
+  - breadcrumb
+  - navigation
+  - title
+  - actions
+  - wizard
+  - stepper
+lastUpdated: 2025-01-27
+---
+
+import {
+	PageSectionTitlePreview,
+	PageSectionBreadcrumbPreview,
+	PageSectionActionsPreview,
+	PageSectionBreadcrumbActionsPreview,
+	PageSectionDefaultVariantPreview,
+	PageSectionGlobalVariantPreview,
+	PageSectionCompactVariantPreview,
+	WizardBasicPreview,
+	WizardEditableTitlePreview,
+	WizardStepNavigationPreview,
+	WizardStepCounterPreview,
+	WizardCustomStepsPreview,
+} from '@/components/previews/page-section-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    PageSection provides consistent page headers across your application. It handles page titles, contextual breadcrumbs, and action buttons with proper spacing and responsive layouts.
+
+    **Components:**
+    - **PageSection**: Standard page header with breadcrumbs and actions
+    - **PageSectionWizard**: Specialized header for multi-step forms and wizards
+
+    **When to Use:**
+    - Top of content pages for title and action context
+    - Pages requiring primary/secondary actions
+    - Hierarchical detail pages that need breadcrumbs
+    - Dashboard and detail views
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+Import the PageSection components from the package:
+
+```tsx
+import { PageSection, PageSectionWizard } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Page Title
+
+<CodeExample
+	title="Simple Title"
+	description="Display a standalone page title"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="PageSectionTitlePreview"
+	preview={<PageSectionTitlePreview />}
+/>
+
+### With Breadcrumbs
+
+Breadcrumbs are not a mirror of sidebar navigation. Use them only when the page
+has real hierarchy or parent context, such as analytics for a specific module
+(campaign, course, product), a single contact page, a file-manager folder path,
+or a folder that groups related modules. Use `pageTitle` for ordinary sidebar
+destinations.
+
+<CodeExample
+	title="Breadcrumb Navigation"
+	description="Show hierarchical navigation with breadcrumbs"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="PageSectionBreadcrumbPreview"
+	preview={<PageSectionBreadcrumbPreview />}
+/>
+
+### With Actions
+
+<CodeExample
+	title="Action Buttons"
+	description="Add primary and secondary action buttons"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="PageSectionActionsPreview"
+	preview={<PageSectionActionsPreview />}
+/>
+
+## Layout variants (top bar)
+
+`PageSection` has five variants that match the Figma **Page Section** component. Use `AppLayout` to pick the layout + variant pair automatically, or set `variant` manually.
+
+| Variant | Figma | Typical layout |
+|---|---|---|
+| `default` | Default | `sidebar-collapsible` — brand + search + utilities |
+| `workspace` | Layout 2 | `sidebar-hidden` — logo-in-toggle + search; nav row under header |
+| `global` | Layout 3 | `top-nav` — horizontal nav with mega menus |
+| `compact` | Layout 4 | `dual-sidebar` — title/breadcrumbs + actions only (**default**) |
+| `profile` | Profile Header | User profile pages |
+
+Breadcrumbs always render on a **single line** (including the last crumb) across every variant.
+
+See the [App layouts](/patterns/app-layouts) pattern for the full selection flow.
+
+<CodeExample
+	title="Default — brand + search"
+	description="Figma Default variant for collapsible sidebar apps"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="PageSectionDefaultVariantPreview"
+	preview={<PageSectionDefaultVariantPreview />}
+/>
+
+<CodeExample
+	title="Global — horizontal nav"
+	description="Figma Layout 3 for top-nav apps"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="PageSectionGlobalVariantPreview"
+	preview={<PageSectionGlobalVariantPreview />}
+/>
+
+<CodeExample
+	title="Compact — title only"
+	description="Figma Layout 4 for dual-sidebar apps"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="PageSectionCompactVariantPreview"
+	preview={<PageSectionCompactVariantPreview />}
+/>
+
+### Breadcrumb Actions
+
+<CodeExample
+	title="Actions on Breadcrumb"
+	description="Add contextual actions to the last breadcrumb item"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="PageSectionBreadcrumbActionsPreview"
+	preview={<PageSectionBreadcrumbActionsPreview />}
+/>
+
+## Wizard Variant
+
+PageSectionWizard is designed for multi-step form flows with editable titles and step indicators.
+
+### Basic Wizard
+
+<CodeExample
+	title="Wizard Header"
+	description="Step indicator for multi-step forms"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardBasicPreview"
+	preview={<WizardBasicPreview />}
+/>
+
+### Editable Title
+
+<CodeExample
+	title="Editable Wizard Title"
+	description="Allow users to edit the wizard title inline"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardEditableTitlePreview"
+	preview={<WizardEditableTitlePreview />}
+/>
+
+### With Step Navigation
+
+<CodeExample
+	title="Clickable Steps"
+	description="Click completed steps to navigate back"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardStepNavigationPreview"
+	preview={<WizardStepNavigationPreview />}
+/>
+
+### Simple Step Counter
+
+<CodeExample
+	title="Step Counter"
+	description="Minimal step indicator without labels"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardStepCounterPreview"
+	preview={<WizardStepCounterPreview />}
+/>
+
+### Custom Steps Content
+
+<CodeExample
+	title="Custom Steps Area"
+	description="Replace step indicators with custom content"
+	src="src/components/previews/page-section-previews.tsx"
+	componentName="WizardCustomStepsPreview"
+	preview={<WizardCustomStepsPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use breadcrumbs for deep navigation">
+		Use breadcrumbs for real hierarchy: module analytics detail pages, single contact pages, file-manager folders/files, and folders that group related modules.
+	</Guideline>
+
+	<Guideline type="do" title="Use pageTitle for regular sidebar pages">
+		Sidebar navigation and breadcrumbs solve different problems. A top-level sidebar destination usually needs `pageTitle`, not breadcrumbs.
+	</Guideline>
+
+	<Guideline type="do" title="Limit visible actions">
+		Show at most 1-2 primary actions. Use the overflow menu for additional actions.
+	</Guideline>
+
+	<Guideline type="do" title="Make primary action prominent">
+		The primary action should be the most important action on the page.
+	</Guideline>
+
+	<Guideline type="do" title="Use wizard for multi-step flows">
+		Use PageSectionWizard when guiding users through a sequential process.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't use long breadcrumb labels">
+		Keep breadcrumb labels concise. Truncate if necessary.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't mix page header styles">
+		Use one consistent page header pattern throughout your application.
+	</Guideline>
+</GuidelinesGrid>
+
+## Common Mistakes
+
+- **PageSection is a header, do not pass children into it.** Use it self-closing as `<PageSection pageTitle="…" primaryAction={…} />` and place page content in a sibling element beneath it. PageSection is not a wrapper.
+- **Do not generate breadcrumbs from the active sidebar item.** Breadcrumbs are for hierarchy and parent context, not for repeating the navigation menu.
+- **Do not wrap the entire page body inside `<PageSection>…</PageSection>`.** That pattern ignores the component's real prop contract (`pageTitle`, `breadcrumbs`, `primaryAction`, `secondaryActions`, `otherActions`) and will not render correctly.
+- **Pass actions as prop objects, not as rendered JSX.** `primaryAction={{ label: 'Save', onClick: () => {} }}` — not `primaryAction={<Button>Save</Button>}`.
+- **Do not use the deprecated legacy `title` / `subtitle` / `children` props.** Those belong to an older, private PageSection component that is no longer part of `@marmoui/ui`. Use `pageTitle` and breadcrumbs instead.
+
+## Props
+
+### PageSection
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'default' \| 'workspace' \| 'global' \| 'compact' \| 'profile'` | `'compact'` | Top bar layout — see [App layouts](/patterns/app-layouts) |
+| `pageTitle` | `string` | - | Standalone page title (alternative to breadcrumbs) |
+| `breadcrumbs` | <TypeInfo>PageSectionBreadcrumbItem[]</TypeInfo> | - | Array of breadcrumb items |
+| `primaryAction` | <TypeInfo>PageSectionActionItem</TypeInfo> | - | Primary CTA button configuration |
+| `secondaryActions` | <TypeInfo>PageSectionSecondaryActionItem[]</TypeInfo> | - | Secondary action buttons |
+| `otherActions` | <TypeInfo>PageSectionActionItem[]</TypeInfo> | - | Overflow menu actions |
+| `showSidebarToggle` | `boolean` | `true` | Show sidebar toggle when sidebar is collapsed |
+| `globalNavItems` | <TypeInfo>PageSectionGlobalNavItem[]</TypeInfo> | - | Horizontal nav links (`variant="global"`); items with `hasMenu` open a mega menu populated from `menu` groups |
+| `logoInToggle` | `boolean` | `false` | Render the brand logo inside the sidebar toggle button (Layout 2); hides the standalone brand |
+| `searchPlaceholder` | `string` | `'Search'` | Search input placeholder (`default` / `workspace`) |
+| `brandLabel` | `string` | `'Marmo'` | Brand text beside logo |
+| `profile` | <TypeInfo>PageSectionProfile</TypeInfo> | - | Profile header content (`variant="profile"`) |
+| `className` | `string` | - | Additional className |
+
+### PageSectionWizard
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | - | Wizard title |
+| `onTitleChange` | `(newTitle: string) => void` | - | Makes title editable when provided |
+| `onTitleChangeEnd` | `(newTitle: string) => void` | - | Called when title editing ends |
+| `titlePlaceholder` | `string` | `'Untitled'` | Placeholder when title is empty |
+| `currentStep` | `number` | - | Current step index (0-based) |
+| `totalSteps` | `number` | - | Total number of steps |
+| `steps` | <TypeInfo>WizardStepItem[]</TypeInfo> | - | Array of step definitions |
+| `onStepClick` | `(stepIndex: number) => void` | - | Called when a step is clicked |
+| `showSidebarToggle` | `boolean` | `true` | Show sidebar toggle when sidebar is collapsed |
+| `stepsContent` | <TypeInfo>ReactNode</TypeInfo> | - | Custom content for steps area |
+
+## Accessibility
+
+<InfoCallout type="info" title="Navigation Landmarks">
+PageSection uses proper semantic HTML with navigation landmarks for breadcrumbs and heading elements for titles.
+</InfoCallout>
+
+- Breadcrumbs use `<nav>` with proper ARIA labels
+- Action buttons are keyboard accessible
+- Editable titles support keyboard interaction (Enter to submit, Escape to cancel)
+- Step indicators communicate current progress to screen readers

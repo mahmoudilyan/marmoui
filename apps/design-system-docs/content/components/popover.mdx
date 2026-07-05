@@ -1,0 +1,105 @@
+---
+title: Popover
+description: A floating panel anchored to a trigger element for displaying rich, interactive content in context.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/popover
+keywords:
+  - popover
+  - popup
+  - floating
+  - overlay
+  - dropdown
+lastUpdated: 2026-03-10
+---
+
+import { Popover, PopoverTrigger, PopoverContent, Button, Input } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Popover displays rich, interactive content in a floating panel anchored to a trigger element. Unlike tooltips, popovers can contain interactive elements like forms, buttons, and links.
+
+    **When to Use:**
+    - Small forms or quick editors
+    - Color pickers, date pickers, or other inline tools
+    - Additional context or settings for a specific element
+    - Content that benefits from inline editing without navigation
+
+    **When NOT to Use:**
+    - For simple informational text (use Tooltip)
+    - For full forms or complex content (use Dialog or Sheet)
+    - For navigation menus (use DropdownMenu)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Popover, PopoverTrigger, PopoverContent } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Popover
+
+<CodeExample
+	title="Default"
+	description="Popover with interactive content"
+	code={`<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="secondary">Edit Name</Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-80">
+    <div className="flex flex-col gap-3">
+      <h4 className="font-medium text-sm">Edit Display Name</h4>
+      <Input defaultValue="John Doe" />
+      <Button size="sm">Save</Button>
+    </div>
+  </PopoverContent>
+</Popover>`}
+	preview={
+		<Popover>
+			<PopoverTrigger asChild>
+				<Button variant="secondary">Edit Name</Button>
+			</PopoverTrigger>
+			<PopoverContent className="w-80">
+				<div className="flex flex-col gap-3">
+					<h4 className="font-medium text-sm">Edit Display Name</h4>
+					<Input defaultValue="John Doe" />
+					<Button size="sm">Save</Button>
+				</div>
+			</PopoverContent>
+		</Popover>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Keep content focused">
+		Popovers should contain one focused task or piece of information.
+	</Guideline>
+	<Guideline type="do" title="Position intelligently">
+		Let the popover auto-position to avoid viewport clipping.
+	</Guideline>
+	<Guideline type="dont" title="Don't put critical content in popovers">
+		Popovers can be easily dismissed. Use dialogs for important actions.
+	</Guideline>
+	<Guideline type="dont" title="Don't oversize popovers">
+		If you need more than a small panel's worth of content, use Sheet or Dialog.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="PopoverContent" />
+
+## Accessibility
+
+- Focus is moved into the popover when opened.
+- Escape key closes the popover and returns focus to the trigger.
+- Click outside closes the popover.
+- Uses `role="dialog"` for screen readers.

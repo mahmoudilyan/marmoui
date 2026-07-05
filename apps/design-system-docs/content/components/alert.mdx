@@ -1,0 +1,408 @@
+---
+title: Alert
+description: A contextual feedback message that communicates status, warnings, errors, or informational content to users.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/alert
+keywords:
+  - alert
+  - notification
+  - message
+  - feedback
+  - status
+  - warning
+  - error
+  - info
+  - success
+lastUpdated: 2026-03-17
+---
+
+import { Alert, AlertIcon, AlertContent, AlertTitle, AlertDescription, AlertAction, Button } from '@marmoui/ui';
+import { MdDarkMode, MdRocketLaunch, MdSecurity, MdBackup, MdUpdate, MdCreditCard, MdInfoOutline, MdCheckCircleOutline, MdWarningAmber, MdErrorOutline } from 'react-icons/md';
+
+<Accordions>
+  <Accordion title="Overview">
+    Alerts display prominent messages that require user attention. They communicate status information, warnings, errors, or success messages in a visually distinct container.
+
+    **When to Use:**
+    - Displaying form validation summaries
+    - Communicating system status changes
+    - Warning users about important consequences
+    - Confirming successful operations
+    - Providing contextual information about a page section
+
+    **When NOT to Use:**
+    - For brief, dismissible messages (use Toast instead)
+    - For inline field-level validation (use Field error text instead)
+    - For promotional or marketing content
+    - When the message is not directly related to the current context
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Alert, AlertIcon, AlertContent, AlertTitle, AlertDescription, AlertAction } from '@marmoui/ui';
+```
+
+## Examples
+
+### Default Alert
+
+<CodeExample
+	title="Default"
+	description="Standard informational alert"
+	code={`<Alert>
+  <AlertContent>
+    <AlertTitle>Heads up</AlertTitle>
+    <AlertDescription>You can add components to your app using the CLI.</AlertDescription>
+  </AlertContent>
+</Alert>`}
+	preview={
+		<Alert>
+			<AlertContent>
+				<AlertTitle>Heads up</AlertTitle>
+				<AlertDescription>You can add components to your app using the CLI.</AlertDescription>
+			</AlertContent>
+		</Alert>
+	}
+/>
+
+### Variants
+
+<CodeExample
+	title="Alert Variants"
+	description="Different variants for different severity levels"
+	code={`<div className="flex flex-col gap-3">
+  <Alert variant="default">
+    <AlertContent>
+      <AlertTitle>Default</AlertTitle>
+      <AlertDescription>A neutral informational message.</AlertDescription>
+    </AlertContent>
+  </Alert>
+  <Alert variant="info">
+    <AlertIcon><MdInfoOutline /></AlertIcon>
+    <AlertContent>
+      <AlertTitle>Info</AlertTitle>
+      <AlertDescription>Your trial expires in 7 days.</AlertDescription>
+    </AlertContent>
+  </Alert>
+  <Alert variant="success">
+    <AlertIcon><MdCheckCircleOutline /></AlertIcon>
+    <AlertContent>
+      <AlertTitle>Success</AlertTitle>
+      <AlertDescription>Your campaign has been published.</AlertDescription>
+    </AlertContent>
+  </Alert>
+  <Alert variant="warning">
+    <AlertIcon><MdWarningAmber /></AlertIcon>
+    <AlertContent>
+      <AlertTitle>Warning</AlertTitle>
+      <AlertDescription>This action will affect 1,200 contacts.</AlertDescription>
+    </AlertContent>
+  </Alert>
+  <Alert variant="destructive">
+    <AlertIcon><MdErrorOutline /></AlertIcon>
+    <AlertContent>
+      <AlertTitle>Error</AlertTitle>
+      <AlertDescription>Failed to save changes. Please try again.</AlertDescription>
+    </AlertContent>
+  </Alert>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-3">
+			<Alert variant="default">
+				<AlertContent>
+					<AlertTitle>Default</AlertTitle>
+					<AlertDescription>A neutral informational message.</AlertDescription>
+				</AlertContent>
+			</Alert>
+			<Alert variant="info">
+				<AlertIcon><MdInfoOutline /></AlertIcon>
+				<AlertContent>
+					<AlertTitle>Info</AlertTitle>
+					<AlertDescription>Your trial expires in 7 days.</AlertDescription>
+				</AlertContent>
+			</Alert>
+			<Alert variant="success">
+				<AlertIcon><MdCheckCircleOutline /></AlertIcon>
+				<AlertContent>
+					<AlertTitle>Success</AlertTitle>
+					<AlertDescription>Your campaign has been published.</AlertDescription>
+				</AlertContent>
+			</Alert>
+			<Alert variant="warning">
+				<AlertIcon><MdWarningAmber /></AlertIcon>
+				<AlertContent>
+					<AlertTitle>Warning</AlertTitle>
+					<AlertDescription>This action will affect 1,200 contacts.</AlertDescription>
+				</AlertContent>
+			</Alert>
+			<Alert variant="destructive">
+				<AlertIcon><MdErrorOutline /></AlertIcon>
+				<AlertContent>
+					<AlertTitle>Error</AlertTitle>
+					<AlertDescription>Failed to save changes. Please try again.</AlertDescription>
+				</AlertContent>
+			</Alert>
+		</div>
+	}
+/>
+
+### With Action
+
+<CodeExample
+	title="Alert with Action"
+	description="Alert with an action button"
+	code={`<Alert>
+  <AlertIcon><MdDarkMode /></AlertIcon>
+  <AlertContent>
+    <AlertTitle>Dark mode is now available</AlertTitle>
+    <AlertDescription>Enable it under your profile settings to get started.</AlertDescription>
+    <AlertAction>
+      <Button size="xs" variant="secondary">Enable</Button>
+    </AlertAction>
+  </AlertContent>
+</Alert>`}
+	preview={
+		<Alert>
+			<AlertIcon><MdDarkMode /></AlertIcon>
+			<AlertContent>
+				<AlertTitle>Dark mode is now available</AlertTitle>
+				<AlertDescription>Enable it under your profile settings to get started.</AlertDescription>
+				<AlertAction>
+					<Button size="xs" variant="secondary">Enable</Button>
+				</AlertAction>
+			</AlertContent>
+		</Alert>
+	}
+/>
+
+<CodeExample
+	title="Multiple Actions"
+	description="Alert with multiple action buttons"
+	code={`<Alert variant="warning" closable>
+  <AlertIcon><MdUpdate /></AlertIcon>
+  <AlertContent>
+    <AlertTitle>New version available</AlertTitle>
+    <AlertDescription>Version 3.2 is ready to install. Review the changelog before updating.</AlertDescription>
+    <AlertAction>
+      <Button size="xs" variant="secondary">Update now</Button>
+      <Button size="xs" variant="ghost">Later</Button>
+    </AlertAction>
+  </AlertContent>
+</Alert>`}
+	preview={
+		<Alert variant="warning" closable>
+			<AlertIcon><MdWarningAmber /></AlertIcon>
+			<AlertContent>
+				<AlertTitle>New version available</AlertTitle>
+				<AlertDescription>Version 3.2 is ready to install. Review the changelog before updating.</AlertDescription>
+				<AlertAction>
+					<Button size="xs" variant="secondary">Update now</Button>
+					<Button size="xs" variant="ghost">Later</Button>
+				</AlertAction>
+			</AlertContent>
+		</Alert>
+	}
+/>
+
+### Custom Icons
+
+Use any Material Design icon (or any SVG) inside `AlertIcon`.
+
+<CodeExample
+	title="Custom Icons"
+	description="Alerts with your own icons"
+	code={`<div className="flex flex-col gap-3">
+  <Alert variant="info">
+    <AlertIcon className="text-ink-info"><MdRocketLaunch /></AlertIcon>
+    <AlertContent>
+      <AlertTitle>New feature launched</AlertTitle>
+      <AlertDescription>A/B testing is now available for all Pro plans.</AlertDescription>
+    </AlertContent>
+  </Alert>
+  <Alert variant="success">
+    <AlertIcon className="text-success-solid"><MdBackup /></AlertIcon>
+    <AlertContent>
+      <AlertTitle>Backup complete</AlertTitle>
+      <AlertDescription>All your data has been backed up successfully.</AlertDescription>
+    </AlertContent>
+  </Alert>
+  <Alert variant="warning">
+    <AlertIcon className="text-ink-orange"><MdCreditCard /></AlertIcon>
+    <AlertContent>
+      <AlertTitle>Payment method expiring</AlertTitle>
+      <AlertDescription>Your Visa ending in 4242 expires next month.</AlertDescription>
+      <AlertAction>
+        <Button size="xs" variant="secondary">Update card</Button>
+        <Button size="xs" variant="ghost">Dismiss</Button>
+      </AlertAction>
+    </AlertContent>
+  </Alert>
+  <Alert variant="destructive">
+    <AlertIcon className="text-destructive-solid"><MdSecurity /></AlertIcon>
+    <AlertContent>
+      <AlertTitle>Security alert</AlertTitle>
+      <AlertDescription>Unusual login detected from a new device.</AlertDescription>
+    </AlertContent>
+  </Alert>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-3">
+			<Alert variant="info">
+				<AlertIcon className="text-ink-info"><MdRocketLaunch /></AlertIcon>
+				<AlertContent>
+					<AlertTitle>New feature launched</AlertTitle>
+					<AlertDescription>A/B testing is now available for all Pro plans.</AlertDescription>
+				</AlertContent>
+			</Alert>
+			<Alert variant="success">
+				<AlertIcon className="text-icon-success"><MdBackup /></AlertIcon>
+				<AlertContent>
+					<AlertTitle>Backup complete</AlertTitle>
+					<AlertDescription>All your data has been backed up successfully.</AlertDescription>
+				</AlertContent>
+			</Alert>
+			<Alert variant="warning">
+				<AlertIcon className="text-ink-orange"><MdCreditCard /></AlertIcon>
+				<AlertContent>
+					<AlertTitle>Payment method expiring</AlertTitle>
+					<AlertDescription>Your Visa ending in 4242 expires next month.</AlertDescription>
+					<AlertAction>
+						<Button size="xs" variant="secondary">Update card</Button>
+						<Button size="xs" variant="ghost">Dismiss</Button>
+					</AlertAction>
+				</AlertContent>
+			</Alert>
+			<Alert variant="destructive">
+				<AlertIcon className="text-icon-destructive"><MdSecurity /></AlertIcon>
+				<AlertContent>
+					<AlertTitle>Security alert</AlertTitle>
+					<AlertDescription>Unusual login detected from a new device.</AlertDescription>
+				</AlertContent>
+			</Alert>
+		</div>
+	}
+/>
+
+### Description Only
+
+<CodeExample
+	title="Description Only"
+	description="Alert without a title for simpler messages"
+	code={`<Alert variant="info">
+  <AlertIcon><MdInfoOutline /></AlertIcon>
+  <AlertContent>
+    <AlertDescription>Your settings have been updated.</AlertDescription>
+  </AlertContent>
+</Alert>`}
+	preview={
+		<Alert variant="info">
+			<AlertIcon><MdInfoOutline /></AlertIcon>
+			<AlertContent>
+				<AlertDescription>Your settings have been updated.</AlertDescription>
+			</AlertContent>
+		</Alert>
+	}
+/>
+
+### Closable
+
+<CodeExample
+	title="Closable Alert"
+	description="Alert with a close button"
+	code={`<Alert variant="warning" closable>
+  <AlertIcon><MdWarningAmber /></AlertIcon>
+  <AlertContent>
+    <AlertTitle>Warning</AlertTitle>
+    <AlertDescription>This action will affect 1,200 contacts.</AlertDescription>
+  </AlertContent>
+</Alert>`}
+	preview={
+		<Alert variant="warning" closable>
+			<AlertIcon><MdWarningAmber /></AlertIcon>
+			<AlertContent>
+				<AlertTitle>Warning</AlertTitle>
+				<AlertDescription>This action will affect 1,200 contacts.</AlertDescription>
+			</AlertContent>
+		</Alert>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use appropriate variants">
+		Match the alert variant to the severity: info for neutral information, success for confirmations, warning for caution, destructive for errors.
+	</Guideline>
+	<Guideline type="do" title="Keep messages concise">
+		Write clear, actionable alert messages. Include what happened and what the user should do next.
+	</Guideline>
+	<Guideline type="dont" title="Don't overuse alerts">
+		Too many alerts on a page create noise. Reserve alerts for genuinely important information.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for transient messages">
+		Use Toast for temporary feedback. Alerts should persist and be relevant to the current view.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### Alert
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'default' \| 'info' \| 'success' \| 'warning' \| 'destructive'` | `'default'` | Alert style variant |
+| `closable` | `boolean` | `false` | Show a close button |
+| `onClose` | `() => void` | - | Callback when close button is clicked |
+| `className` | `string` | - | Additional className |
+
+### AlertIcon
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | - | Icon element (auto-sized to 32px) |
+| `className` | `string` | - | Additional className (use for icon color, e.g. `text-ink-info`) |
+
+### AlertContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | - | AlertTitle, AlertDescription, AlertAction |
+| `className` | `string` | - | Additional className |
+
+### AlertTitle
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | - | Title text |
+| `className` | `string` | - | Additional className |
+
+### AlertDescription
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | - | Description text |
+| `className` | `string` | - | Additional className |
+
+### AlertAction
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | - | Action buttons or links |
+| `className` | `string` | - | Additional className |
+
+## Accessibility
+
+<InfoCallout type="info" title="ARIA Roles">
+Alerts use the `alert` role by default, which causes screen readers to announce the content immediately. Use `role="status"` for non-urgent updates.
+</InfoCallout>
+
+- Alerts are announced by screen readers when they appear in the DOM.
+- Use descriptive text that makes sense without visual context.
+- Ensure sufficient color contrast between alert variants and their text.
+- Don't rely solely on color to convey meaning; always include text.

@@ -1,0 +1,128 @@
+---
+title: Hooks
+description: Custom React hooks that provide reusable stateful logic for common UI patterns and interactions.
+category: Develop
+keywords:
+  - hooks
+  - react hooks
+  - useDialog
+  - useMobile
+  - usePagination
+  - state management
+lastUpdated: 2026-03-10
+---
+
+# Usage
+
+## Overview
+
+The Marmo UI provides custom React hooks that encapsulate common UI logic. These hooks handle dialog management, responsive detection, pagination state, and other recurring patterns so you don't have to rewrite them.
+
+### useDialog
+
+Manages dialog open/close state and provides imperative controls for programmatic dialog management.
+
+```tsx
+import { useDialog } from '@marmoui/ui';
+
+function MyComponent() {
+  const { isOpen, open, close, toggle, dialogProps } = useDialog();
+
+  return (
+    <>
+      <Button onClick={open}>Open Dialog</Button>
+      <Dialog {...dialogProps}>
+        <DialogContent>
+          <p>Dialog content here</p>
+          <Button onClick={close}>Close</Button>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+```
+
+**Returns:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `isOpen` | `boolean` | Current open state |
+| `open` | `() => void` | Opens the dialog |
+| `close` | `() => void` | Closes the dialog |
+| `toggle` | `() => void` | Toggles the dialog state |
+| `dialogProps` | `object` | Props to spread onto the Dialog component |
+
+### useMobile
+
+Detects whether the viewport is at mobile breakpoint using a media query listener.
+
+```tsx
+import { useMobile } from '@marmoui/ui';
+
+function MyComponent() {
+  const isMobile = useMobile();
+
+  return (
+    <div>
+      {isMobile ? (
+        <Drawer>Mobile layout</Drawer>
+      ) : (
+        <Dialog>Desktop layout</Dialog>
+      )}
+    </div>
+  );
+}
+```
+
+**Returns:** `boolean` - `true` when viewport width is below the mobile breakpoint.
+
+**Use cases:**
+* Switching between mobile and desktop component variants
+* Conditionally rendering navigation patterns
+* Adjusting layout density based on screen size
+
+### usePagination
+
+Manages pagination state for lists and data tables, providing page navigation logic.
+
+```tsx
+import { usePagination } from '@marmoui/ui';
+
+function MyComponent({ totalItems }) {
+  const pagination = usePagination({
+    totalItems,
+    pageSize: 10,
+    initialPage: 1,
+  });
+
+  return (
+    <div>
+      <DataList items={pagination.currentItems} />
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        onPageChange={pagination.goToPage}
+      />
+    </div>
+  );
+}
+```
+
+### Best Practices
+
+* Use `useDialog` instead of manually managing dialog open/close state with `useState`.
+* Use `useMobile` for responsive behavior instead of CSS-only approaches when the component tree needs to differ between mobile and desktop.
+* Combine `usePagination` with the DataTable component for consistent pagination across the application.
+* All hooks follow React's rules of hooks; call them at the top level of your component.
+
+### Installation
+
+All hooks are included in the main package:
+
+```bash
+pnpm add @marmoui/ui
+```
+
+```tsx
+import { useDialog, useMobile } from '@marmoui/ui';
+```

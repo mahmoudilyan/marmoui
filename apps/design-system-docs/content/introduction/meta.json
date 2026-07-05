@@ -1,0 +1,6 @@
+{
+  "title": "Introduction",
+  "description": "Getting started with Marmo UI",
+  "defaultOpen": true,
+  "pages": ["get-started", "install-agent", "roadmap"]
+}

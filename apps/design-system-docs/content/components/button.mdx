@@ -1,0 +1,414 @@
+---
+title: Button
+description: A clickable element which communicates that users can trigger an action
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/button
+keywords:
+  - button
+  - action
+  - click
+  - cta
+  - call to action
+  - interactive
+lastUpdated: 2025-01-27
+---
+
+import { Button } from '@marmoui/ui';
+import { MdAdd, MdSave, MdEdit, MdArrowForward, MdDownload, MdOpenInNew, MdDelete } from 'react-icons/md';
+
+## When to use
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use for actions, not navigation">
+		Submitting forms, closing modals, triggering operations, confirming or cancelling. Anything that *changes state* in the app.
+	</Guideline>
+	<Guideline type="do" title="Limit to one primary action per visible context">
+		Only one `variant="primary"` should be visible at a time on a screen — that's the main thing the user is here to do.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for navigation between pages">
+		Use a `<Link>`, or `<Button asChild><Link/></Button>` for a button-styled link. Navigation buttons confuse SEO, screen readers, and browser back-stack behaviour.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for toggling settings">
+		Use **Switch** for on/off, **Checkbox** for opt-in, **RadioGroup** for mutually exclusive choice.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for icon-only triggers">
+		Use **IconButton** instead — it enforces an `aria-label` for accessibility.
+	</Guideline>
+</GuidelinesGrid>
+
+<Installation />
+
+## Usage
+
+Import the Button component from the package. For examples with icons, you'll also need to import from `react-icons/md`:
+
+```tsx
+import { Button } from '@marmoui/ui';
+import { MdAdd, MdSave, MdEdit, MdArrowForward, MdDownload, MdOpenInNew, MdDelete } from 'react-icons/md';
+```
+
+## Examples
+
+### Basic Button
+
+<CodeExample
+	title="Default Button"
+	description="The simplest form of a button"
+	code={`<Button>Click me</Button>`}
+	preview={<Button>Click me</Button>}
+/>
+
+### Variants
+
+Buttons come in different visual styles to indicate their importance and purpose.
+
+<CodeExample
+	title="Button Variants"
+	description="Different visual styles for different use cases"
+	code={`<div className="flex flex-wrap gap-2">
+  <Button variant="primary">Primary</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="destructive">Destructive</Button>
+  <Button variant="ghost">Ghost</Button>
+  <Button variant="ghost-body">Ghost Body</Button>
+  <Button variant="ghost-destructive">Ghost Destructive</Button>
+  <Button variant="link">Link</Button>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Button variant="primary">Primary</Button>
+			<Button variant="secondary">Secondary</Button>
+			<Button variant="destructive">Destructive</Button>
+			<Button variant="ghost">Ghost</Button>
+			<Button variant="ghost-body">Ghost Body</Button>
+			<Button variant="ghost-destructive">Ghost Destructive</Button>
+			<Button variant="link">Link</Button>
+		</div>
+	}
+/>
+
+### Sizes
+
+Buttons are available in four sizes to fit different contexts and density needs.
+
+<CodeExample
+	title="Button Sizes"
+	description="Four size options from extra small to large"
+	code={`<div className="flex items-center gap-2">
+  <Button size="xs">Extra Small</Button>
+  <Button size="sm">Small</Button>
+  <Button size="md">Medium</Button>
+  <Button size="lg">Large</Button>
+</div>`}
+	preview={
+		<div className="flex items-center gap-2">
+			<Button size="xs">Extra Small</Button>
+			<Button size="sm">Small</Button>
+			<Button size="md">Medium</Button>
+			<Button size="lg">Large</Button>
+		</div>
+	}
+/>
+
+**Size recommendations:**
+- **xs**: Compact spaces, tables, crowded interfaces
+- **sm**: Default density interfaces, secondary actions
+- **md**: Default size for most primary actions
+- **lg**: Prominent calls-to-action, hero sections
+
+### With Icons
+
+Buttons support icons on both the left and right sides, or as standalone icon-only buttons.
+
+**Using leftIcon and rightIcon props:**
+
+<CodeExample
+	title="Buttons with Left Icons"
+	description="Use the leftIcon prop for icons before text"
+	code={`<div className="flex flex-wrap gap-2">
+  <Button variant="primary" leftIcon={<MdAdd />}>
+    Add Item
+  </Button>
+  <Button leftIcon={<MdSave />}>
+    Save Changes
+  </Button>
+  <Button variant="secondary" leftIcon={<MdEdit />}>
+    Edit
+  </Button>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Button variant="primary" leftIcon={<MdAdd />}>Add Item</Button>
+			<Button variant="primary" leftIcon={<MdAdd />} size='lg'>Add Item</Button>
+			<Button variant="primary" leftIcon={<MdAdd />} size='xs'>Add Item</Button>
+			<Button variant="primary" leftIcon={<MdAdd />} size='sm'>Add Item</Button>
+
+			<Button leftIcon={<MdSave />}>Save Changes</Button>
+			<Button variant="secondary" leftIcon={<MdEdit />}>Edit</Button>
+		</div>
+	}
+/>
+
+**Right side icons:**
+
+<CodeExample
+	title="Buttons with Right Icons"
+	description="Use the rightIcon prop for icons after text"
+	code={`<div className="flex flex-wrap gap-2">
+  <Button variant="primary" rightIcon={<MdArrowForward />}>
+    Continue
+  </Button>
+  <Button rightIcon={<MdDownload />}>
+    Download
+  </Button>
+  <Button variant="link" rightIcon={<MdOpenInNew />}>
+    Open Link
+  </Button>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Button variant="primary" rightIcon={<MdArrowForward />}>Continue</Button>
+			<Button rightIcon={<MdDownload />}>Download</Button>
+			<Button variant="link" rightIcon={<MdOpenInNew />}>Open Link</Button>
+		</div>
+	}
+/>
+
+### Loading State
+
+Buttons can display a loading state to provide feedback during async operations.
+
+<CodeExample
+	title="Loading Buttons"
+	description="Show loading state during async operations"
+	code={`<div className="flex flex-wrap gap-2">
+  <Button variant="primary" loading disabled>
+    Processing...
+  </Button>
+  <Button variant="primary" loading loadingText="Saving..." disabled>
+    Save Changes
+  </Button>
+  <Button variant="secondary" loading disabled>
+    Loading
+  </Button>
+  <Button variant="destructive" loading loadingText="Deleting..." disabled>
+    Delete
+  </Button>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Button variant="primary" loading disabled>Processing...</Button>
+			<Button variant="primary" loading loadingText="Saving..." disabled>Save Changes</Button>
+			<Button variant="secondary" loading disabled>Loading</Button>
+			<Button variant="destructive" loading loadingText="Deleting..." disabled>Delete</Button>
+		</div>
+	}
+/>
+
+**Loading state behavior:**
+- Automatically disables the button
+- Shows a spinning loader icon
+- Optionally shows custom `loadingText`
+- Hides icons while loading
+
+### Disabled State
+
+<CodeExample
+	title="Disabled Buttons"
+	description="Buttons that are temporarily unavailable"
+	code={`<div className="flex flex-wrap gap-2">
+  <Button variant="primary" disabled>Primary Disabled</Button>
+  <Button variant="secondary" disabled>Secondary Disabled</Button>
+  <Button variant="destructive" disabled>Destructive Disabled</Button>
+  <Button variant="ghost" disabled>Ghost Disabled</Button>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Button variant="primary" disabled>Primary Disabled</Button>
+			<Button variant="secondary" disabled>Secondary Disabled</Button>
+			<Button variant="destructive" disabled>Destructive Disabled</Button>
+			<Button variant="ghost" disabled>Ghost Disabled</Button>
+		</div>
+	}
+/>
+
+### Destructive Actions
+
+Use the destructive variant for actions that have permanent consequences like deleting data or canceling subscriptions.
+
+<CodeExample
+	title="Destructive Actions"
+	description="Highlight permanent and dangerous actions"
+	code={`<div className="flex flex-wrap gap-2">
+  <Button variant="destructive">Delete Account</Button>
+  <Button variant="destructive" leftIcon={<MdDelete />}>
+    Remove Item
+  </Button>
+  <Button variant="primary">Save Changes</Button>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Button variant="destructive">Delete Account</Button>
+			<Button variant="destructive" leftIcon={<MdDelete />}>Remove Item</Button>
+			<Button variant="primary">Save Changes</Button>
+		</div>
+	}
+/>
+
+### As a Link (asChild)
+
+You can render a button as a link element using the `asChild` prop, which is useful for semantic HTML.
+
+<CodeExample
+	title="Button as Link"
+	description="Render button styles on a link element"
+	code={`<div className="flex flex-wrap gap-2">
+  <Button variant="primary" asChild>
+    <a href="/dashboard">Go to Dashboard</a>
+  </Button>
+  <Button variant="link" asChild>
+    <a href="/documentation">Read Docs</a>
+  </Button>
+</div>`}
+	preview={
+		<div className="flex flex-wrap gap-2">
+			<Button variant="link" asChild><a href="/documentation">Read Docs</a></Button>
+		</div>
+	}
+/>
+
+<InfoCallout type="info" title="Semantic HTML">
+When using `asChild`, the button style is applied to the child element. This is useful when you need proper `<a>` tags for SEO or when integrating with Next.js Link components.
+</InfoCallout>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use action-oriented labels">
+		Button text should clearly describe the action that will occur. Use verbs: "Save changes", "Delete account", "Add to cart", "Submit form".
+	</Guideline>
+	
+	<Guideline type="do" title="Provide loading feedback">
+		Always show loading state during async operations to prevent users from clicking multiple times and to provide clear feedback.
+	</Guideline>
+	
+	<Guideline type="do" title="Use appropriate size for context">
+		Match button size to importance and density: xs/sm for tables and toolbars, md for forms, lg for prominent CTAs.
+	</Guideline>
+	
+	<Guideline type="do" title="Choose the right variant">
+		Use primary for main actions, secondary/destructive for important but not primary actions, ghost/link for subtle actions, and destructive for dangerous operations.
+	</Guideline>
+	
+	<Guideline type="dont" title="Avoid vague labels">
+		Don't use generic text like "Click here", "OK", "Submit". Be specific about what will happen.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use multiple primary buttons">
+		Only one primary action per interface. Multiple primary buttons create confusion about hierarchy and importance.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use buttons for navigation">
+		Use `<Link>` or the `asChild` prop when navigating between pages. Save buttons for actions that change state.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't forget disabled states">
+		Disable buttons when actions aren't available. Provide clear feedback about why an action is disabled.
+	</Guideline>
+</GuidelinesGrid>
+
+## Patterns
+
+```tsx
+// Loading state for async actions
+const [saving, setSaving] = useState(false);
+<Button loading={saving} onClick={async () => { setSaving(true); await save(); setSaving(false); }}>
+  Save changes
+</Button>
+
+// Icon buttons — always use leftIcon/rightIcon props, not children
+<Button leftIcon={<MdAdd />}>Add item</Button>
+<Button rightIcon={<MdChevronRight />}>Next step</Button>
+
+// Destructive confirmation with secondary variant
+<Button variant="destructive" onClick={handleDelete}>Delete account</Button>
+
+// Navigate with asChild + Next.js Link
+<Button asChild variant="ghost">
+  <Link href="/settings">Settings</Link>
+</Button>
+
+// Button group — consistent sizes
+<div className="flex items-center gap-2">
+  <Button variant="secondary" size="sm">Cancel</Button>
+  <Button variant="primary" size="sm">Confirm</Button>
+</div>
+```
+
+## Choosing the right alternative
+
+| You want… | Use this |
+|---|---|
+| Icon-only trigger (toolbar, table row, header bar) | `IconButton` |
+| On/off toggle (notifications, dark mode) | `Switch` |
+| Multi-select opt-in (terms accepted, features enabled) | `Checkbox` |
+| Mutually exclusive choice (plan tier, billing cycle) | `RadioGroup` |
+| Navigation styled like a button | `<Button asChild><Link href="..."/></Button>` |
+| Inline text link (within a paragraph) | `Button variant="link"` |
+| Compact action group (Save / Cancel pair) | Pair of `Button`s with consistent `size` |
+| Multi-action toolbar | `ButtonGroup` |
+| Floating context action (kebab menu) | `IconButton` inside a `Dropdown` or `Popover` |
+
+## Common Mistakes
+
+```tsx
+// ❌ WRONG — no "outline" or "solid" variants
+<Button variant="outline">Cancel</Button>
+<Button variant="solid">Submit</Button>
+// ✅ CORRECT
+<Button variant="secondary">Cancel</Button>
+<Button variant="primary">Submit</Button>
+
+// ❌ WRONG — passing an icon as children
+<Button><MdAdd /></Button>
+// ✅ CORRECT — use leftIcon prop
+<Button leftIcon={<MdAdd />}>Add item</Button>
+
+// ❌ WRONG — no "icon" prop on Button (use IconButton instead)
+<Button icon={<MdEdit />} />
+// ✅ CORRECT — use IconButton for icon-only buttons
+<IconButton icon={<MdEdit />} aria-label="Edit" />
+
+// ❌ WRONG — mixing sizes in the same button group
+<div><Button size="lg">Cancel</Button><Button size="sm">OK</Button></div>
+// ✅ CORRECT — consistent size within a group
+<div><Button size="sm">Cancel</Button><Button size="sm">OK</Button></div>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'primary' \| 'secondary' \| 'destructive' \| 'ghost' \| 'ghost-body' \| 'ghost-destructive' \| 'link'` | `'primary'` | Visual style variant |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | `'md'` | Button size |
+| `loading` | `boolean` | `false` | Show loading spinner and disable interaction |
+| `loadingText` | <TypeInfo>ReactNode</TypeInfo> | - | Custom text shown during loading state |
+| `leftIcon` | <TypeInfo>ReactNode</TypeInfo> | - | Icon displayed before the button text |
+| `rightIcon` | <TypeInfo>ReactNode</TypeInfo> | - | Icon displayed after the button text |
+| `asChild` | `boolean` | `false` | Render as child element using Radix Slot (e.g. for `<a>` tags) |
+| `disabled` | `boolean` | `false` | Disable the button |
+| `className` | `string` | - | Additional className |
+| `children` | <TypeInfo>ReactNode</TypeInfo> | - | Button content |
+
+## Accessibility
+
+<InfoCallout type="info" title="Keyboard Navigation">
+Buttons can be activated using the Space or Enter key when focused. Use Tab to navigate between buttons.
+</InfoCallout>
+
+<InfoCallout type="warning" title="Button vs Link">
+Use a button for actions that affect the current page. Use a link for navigation to different pages or sections.
+</InfoCallout>
+

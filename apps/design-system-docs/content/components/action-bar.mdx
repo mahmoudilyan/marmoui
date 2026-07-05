@@ -1,0 +1,91 @@
+---
+title: Action Bar
+description: A floating toolbar that appears when items are selected, providing bulk action controls for lists and tables.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/action-bar
+keywords:
+  - action bar
+  - toolbar
+  - bulk actions
+  - selection
+  - floating bar
+lastUpdated: 2026-03-10
+---
+
+import { ActionBarRoot, ActionBarContent, ActionBarCloseTrigger, ActionBarSelectionTrigger, ActionBarSeparator, Button } from '@marmoui/ui';
+import { MdDelete, MdEdit, MdArchive } from 'react-icons/md';
+import { ActionBarPreview } from '@/components/previews/action-bar-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    ActionBar is a floating toolbar that appears when users select items in a list or table. It provides contextual bulk action controls like delete, archive, or edit.
+
+    **When to Use:**
+    - Bulk operations on selected table rows
+    - Multi-select actions in list views
+    - Any context where users can select multiple items and act on them
+
+    **When NOT to Use:**
+    - For single-item actions (use inline buttons or context menus)
+    - For global page actions (use a page header toolbar)
+    - For navigation actions
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { ActionBarRoot, ActionBarContent, ActionBarCloseTrigger, ActionBarSelectionTrigger, ActionBarSeparator } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Action Bar
+
+<CodeExample
+	title="Bulk Actions"
+	description="Floating action bar for selected items"
+	code={`<ActionBarRoot open>
+  <ActionBarContent>
+    <ActionBarCloseTrigger />
+    <ActionBarSelectionTrigger>3 selected</ActionBarSelectionTrigger>
+    <ActionBarSeparator />
+    <Button variant="ghost" size="sm" leftIcon={<MdEdit />}>Edit</Button>
+    <Button variant="ghost" size="sm" leftIcon={<MdArchive />}>Archive</Button>
+    <Button variant="ghost-destructive" size="sm" leftIcon={<MdDelete />}>Delete</Button>
+  </ActionBarContent>
+</ActionBarRoot>`}
+	preview={<ActionBarPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Show selection count">
+		Always display the number of selected items for context.
+	</Guideline>
+	<Guideline type="do" title="Provide a dismiss button">
+		Include a close trigger so users can deselect and dismiss the bar.
+	</Guideline>
+	<Guideline type="dont" title="Don't overcrowd">
+		Limit to 3-5 actions. Move less common actions to an overflow menu.
+	</Guideline>
+	<Guideline type="dont" title="Don't hide destructive actions">
+		Show delete/destructive actions but visually distinguish them with the destructive variant.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="ActionBarRoot" />
+
+## Accessibility
+
+- Escape key dismisses the action bar and deselects items.
+- Actions are keyboard navigable.
+- Selection count is announced to screen readers.
+- Focus is managed when the bar appears and disappears.

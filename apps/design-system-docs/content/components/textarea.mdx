@@ -1,0 +1,133 @@
+---
+title: Textarea
+description: A multi-line text input for collecting longer form content such as descriptions, comments, and messages.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/textarea
+keywords:
+  - textarea
+  - text area
+  - multiline
+  - input
+  - comment
+  - description
+lastUpdated: 2026-03-10
+---
+
+import { Textarea } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Textarea provides a multi-line text input for collecting longer-form content. It is built on the native `<textarea>` element with consistent styling that matches the design system.
+  </Accordion>
+</Accordions>
+
+## When to use
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use for free-text content that exceeds one line">
+		Descriptions, comments, notes, addresses, bios, email body composition.
+	</Guideline>
+	<Guideline type="do" title="Wrap in a Field for label + error display">
+		Same as `Input` — never render Textarea bare in a form.
+	</Guideline>
+	<Guideline type="do" title="Set a sensible rows count for the expected content length">
+		Don't default to 10+ rows for short notes. Match the visible size to the typical input length.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for single-line input">
+		Names, emails, search queries → **Input**.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for rich text">
+		Bold, lists, links, etc. → use a dedicated rich-text editor (not part of `@marmoui/ui`). Plain text only here.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for code editing">
+		Use a code editor component (Monaco, CodeMirror, etc.). Textarea has no syntax highlighting or indent handling.
+	</Guideline>
+</GuidelinesGrid>
+
+## Choosing the right alternative
+
+| You want… | Use this |
+|---|---|
+| Single-line text (name, email, URL) | `Input` |
+| Rich text (bold, lists, links) | A dedicated rich-text editor — not in `@marmoui/ui` |
+| Code editing with syntax highlighting | A code editor component (CodeMirror / Monaco) |
+| Multi-value tag entry | `TagsInput` |
+| Markdown editing with preview | A Markdown editor — not in `@marmoui/ui` |
+| Numeric input | `NumberInput` |
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Textarea } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Textarea
+
+<CodeExample
+	title="Default Textarea"
+	description="Simple multi-line text input"
+	code={`<Textarea placeholder="Enter your message..." />`}
+	preview={<Textarea placeholder="Enter your message..." />}
+/>
+
+### With Label and Helper
+
+<CodeExample
+	title="With Context"
+	description="Textarea within a form field with label and helper text"
+	code={`<div className="flex flex-col gap-1.5">
+  <label className="text-sm font-medium text-ink-dark">Description</label>
+  <Textarea placeholder="Describe your campaign..." rows={4} />
+  <p className="text-xs text-ink-light">Maximum 500 characters</p>
+</div>`}
+	preview={
+		<div className="flex flex-col gap-1.5">
+			<label className="text-sm font-medium text-ink-dark">Description</label>
+			<Textarea placeholder="Describe your campaign..." rows={4} />
+			<p className="text-xs text-ink-light">Maximum 500 characters</p>
+		</div>
+	}
+/>
+
+### Disabled
+
+<CodeExample
+	title="Disabled State"
+	description="Textarea that is not editable"
+	code={`<Textarea disabled value="This content cannot be edited" />`}
+	preview={<Textarea disabled value="This content cannot be edited" />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Set appropriate height">
+		Use the `rows` prop to set a reasonable default height based on expected content length.
+	</Guideline>
+	<Guideline type="do" title="Provide placeholder guidance">
+		Use placeholder text to hint at the expected format or content type.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for single-line input">
+		Use the Input component for short, single-line values like names or emails.
+	</Guideline>
+	<Guideline type="dont" title="Don't hide character limits">
+		If there's a max length, show remaining characters to prevent frustration.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Textarea" />
+
+## Accessibility
+
+- Associates with labels via `id` and `htmlFor` attributes.
+- Supports `aria-describedby` for helper and error text.
+- Standard keyboard navigation: Tab to focus, type to enter text.
+- Ensure visible focus indicators are present.

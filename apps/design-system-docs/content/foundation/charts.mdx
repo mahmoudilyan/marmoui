@@ -1,0 +1,491 @@
+---
+title: Charts & data visualization
+description: How to pick the right chart, color palettes, axis and legend rules, accessibility, and the criteria that make a chart feel intuitive.
+category: Foundation
+status: alpha
+keywords:
+  - charts
+  - data visualization
+  - dataviz
+  - graphs
+  - analytics
+  - perception
+  - laws of ux
+  - intuitive design
+lastUpdated: 2026-05-12
+---
+
+import { FigureGrid, PreviewCard } from '@/components/mdx/figure';
+import {
+	ColorSwatch,
+	PrinciplesHero,
+	DecisionTreeFigure,
+	CatalogBar,
+	CatalogLine,
+	CatalogStackedArea,
+	CatalogScatter,
+	CatalogDonut,
+	CatalogSparkline,
+	PaletteCategorical,
+	PaletteSequential,
+	PaletteDiverging,
+	PaletteMonochromatic,
+	CompositionAnatomy,
+	ContextTile,
+	AnnotationsExample,
+	SmallMultiplesGrid,
+	TooltipExample,
+	StateLoading,
+	StateEmpty,
+	StateError,
+	StateNoData,
+	DoChart,
+	DontChart,
+} from '@/components/previews/charts-foundation-previews';
+
+# Charts & data visualization
+
+A chart is an answer to a question. The job of every chart in Marmo is to make a single question easier to answer than reading a row of numbers — and to do it in a way the eye and brain understand without instructions.
+
+This page covers **what to draw**, **how to draw it**, **how it should behave**, and — at the end — the **criteria a chart must clear** before it ships, drawn from cognitive psychology and interaction-design fundamentals.
+
+> **Status:** alpha. Library choice is **Recharts** (see [§ Library](#library--recharts)).
+
+---
+
+## Principles
+
+Six rules. They override anything else on this page.
+
+1. **One question per chart.** Every chart answers a single, named question. Two questions = two charts.
+2. **No distortion.** Bar baselines start at zero. No 3D. No truncated axes that exaggerate change. No inverted scales without an explicit label.
+3. **Color is meaning.** Reusing the same color for the same series across the product is a contract with the reader. Don't break it.
+4. **Color is never the only channel.** Every color signal also exists as text, icon, position, or pattern.
+5. **A chart without a table is incomplete.** Every meaningful chart ships with a tabular alternative — for screen readers, for export, for copy-paste.
+6. **One clear chart beats six dense tiles.** A scorecard plus one well-chosen chart almost always beats a 6-up grid of half-thoughts.
+
+<PreviewCard caption="One question · one highlighted series · neutral comparison · sparse gridlines · tabular figures.">
+	<PrinciplesHero />
+</PreviewCard>
+
+---
+
+## Pick the right chart
+
+Start from the **question**, not the data shape.
+
+| Question | Reach for | Avoid |
+| -------- | --------- | ----- |
+| **How does X compare across categories?** | Horizontal bar (≥ 5 categories) · Vertical column (≤ 5) | Pie chart |
+| **How has X changed over time?** | Line (continuous) · Column (discrete buckets) | Line with too few points (< 4) |
+| **What is X made of right now?** | Stacked bar · Treemap · Donut (≤ 4 slices) | Pie (> 4 slices), nested donuts |
+| **How has X's composition shifted over time?** | Stacked area (relative) · Stacked column (absolute) | Two pie charts side by side |
+| **How are values distributed?** | Histogram · Box plot · Density | Bar chart of raw values |
+| **Is X correlated with Y?** | Scatter · Bubble (third dimension) | Line chart |
+| **Is X above / below a target?** | Bullet · Gauge (sparingly) · Scorecard with delta | Speedometer gauges |
+| **Where is X happening?** | Choropleth · Symbol map | Pie on a map |
+| **What's the single number right now?** | Scorecard / KPI · Sparkline beside it | Gauge taking 1/4 of the page |
+| **Where does the funnel leak?** | Funnel · Sankey | Stacked bar |
+| **What's the hierarchy?** | Treemap · Sunburst (sparingly) | Nested pies |
+
+**Rules of thumb**
+
+- **Pie** allowed only when there are ≤ 4 slices summing to a meaningful 100%. Otherwise use a bar chart.
+- **Two y-axes** mislead more than they explain. Split into two charts.
+- **3D**: never.
+
+<PreviewCard caption="Start from the question — the answer column is the recommended chart.">
+	<DecisionTreeFigure />
+</PreviewCard>
+
+---
+
+## Chart catalog
+
+Each chart has a single best-fit and one or two anti-patterns. Treat this as the source of truth when proposing dashboard tiles.
+
+| Chart | Best for | Don't use for |
+| ----- | -------- | ------------- |
+| **Bar (horizontal)** | Ranking many categories | Time series |
+| **Column (vertical bar)** | Comparing few categories or discrete time buckets | Long category names |
+| **Line** | Continuous trends, ≥ 4 time points, 1–5 series | Categorical comparison |
+| **Area** | One trend + magnitude emphasis | Many overlapping series |
+| **Stacked area** | Composition shifting over time | More than 5 series |
+| **Stacked bar / column** | Parts-of-whole across categories | When totals aren't meaningful |
+| **100% stacked** | Composition only (totals normalized) | When absolute values matter |
+| **Histogram** | Distribution of one variable | Categorical data |
+| **Box plot** | Spread + outliers across groups | Casual audiences |
+| **Scatter** | Relationship between two variables | Single-variable summaries |
+| **Bubble** | Three-variable relationship (x, y, size) | Qualitative third variable |
+| **Donut** | Single proportion (≤ 4 slices), KPI center | Comparing precise values |
+| **Treemap** | Hierarchical composition, many categories | Continuous trends |
+| **Funnel** | Conversion or drop-off across stages | Non-sequential categories |
+| **Sankey** | Flows between nodes | Simple part-to-whole |
+| **Choropleth** | Regional value comparison | Cities / point data |
+| **Symbol map** | Point events with magnitude | Region-level summary |
+| **Sparkline** | Trend hint inside a row, KPI, or table cell | Anything requiring axes |
+| **Scorecard / KPI** | Single number + delta vs. target | More than one metric |
+| **Bullet chart** | Single value vs. target + ranges | Many series |
+
+<FigureGrid columns={3}>
+	<PreviewCard caption="Bar (horizontal) — ranking categories."><CatalogBar /></PreviewCard>
+	<PreviewCard caption="Line — trend over time."><CatalogLine /></PreviewCard>
+	<PreviewCard caption="Stacked area — composition over time."><CatalogStackedArea /></PreviewCard>
+	<PreviewCard caption="Scatter — relationship between two variables."><CatalogScatter /></PreviewCard>
+	<PreviewCard caption="Donut — single proportion (≤ 4 slices)."><CatalogDonut /></PreviewCard>
+	<PreviewCard caption="Sparkline — inline trend hint beside a KPI."><CatalogSparkline /></PreviewCard>
+</FigureGrid>
+
+---
+
+## Color — palette types
+
+Four palette archetypes carry every chart. Pick the palette by the **kind of data**, not by the brand.
+
+| Palette | Use when… | Visual rule |
+| ------- | --------- | ----------- |
+| **Categorical** (qualitative) | Series have no order (regions, products, channels, referral sources). | One hue per category. Up to **10 distinct hues** in the Marmo palette; beyond that, group the long tail into "Other". |
+| **Sequential** (quantitative, one direction) | Single quantitative scale (heatmap intensity, density). | One hue, varying lightness — light → dark = low → high. |
+| **Diverging** (quantitative, two directions around a midpoint) | Values diverge from a meaningful center (above/below target, year-over-year change). | Two hues meeting at a near-neutral midpoint. |
+| **Monochromatic** | Single trend or relationship chart where shape > category. | One hue, one or two values. |
+
+<FigureGrid columns={2}>
+	<PreviewCard caption="Categorical — up to 10 hues. Add an 'Other' bucket beyond ten."><PaletteCategorical /></PreviewCard>
+	<PreviewCard caption="Sequential — one hue, varying lightness (low → high)."><PaletteSequential /></PreviewCard>
+	<PreviewCard caption="Diverging — two hues meeting at a neutral midpoint."><PaletteDiverging /></PreviewCard>
+	<PreviewCard caption="Monochromatic — one hue + `-bright` sibling for same-variable bands."><PaletteMonochromatic /></PreviewCard>
+</FigureGrid>
+
+### Categorical tokens — how to use them
+
+Marmo ships ten categorical hues. Each hue has a `-bright` sibling for emphasis bands inside the **same** category. Use the hue name, not a chart index — designers reference categories by name in Figma, and tokens line up 1:1.
+
+| Swatch | Token | Hue | Use for |
+| ------ | ----- | --- | ------- |
+| <ColorSwatch token="--color-chart-cat-teal" /> | `--color-chart-cat-teal` | Brand teal | The most important / brand series, or the leader in a ranked list. |
+| <ColorSwatch token="--color-chart-cat-violet" /> | `--color-chart-cat-violet` | Violet | Secondary category. |
+| <ColorSwatch token="--color-chart-cat-blue" /> | `--color-chart-cat-blue` | Blue | Third category. |
+| <ColorSwatch token="--color-chart-cat-orange" /> | `--color-chart-cat-orange` | Orange | Fourth category. |
+| <ColorSwatch token="--color-chart-cat-pink" /> | `--color-chart-cat-pink` | Pink | Fifth category. |
+| <ColorSwatch token="--color-chart-cat-amber" /> | `--color-chart-cat-amber` | Amber | Sixth category. **Not** for warnings — that's a semantic role. |
+| <ColorSwatch token="--color-chart-cat-green" /> | `--color-chart-cat-green` | Green | Seventh category. **Not** for "success" — semantic role. |
+| <ColorSwatch token="--color-chart-cat-indigo" /> | `--color-chart-cat-indigo` | Indigo | Eighth category. |
+| <ColorSwatch token="--color-chart-cat-mint" /> | `--color-chart-cat-mint` | Mint | Ninth category. |
+| <ColorSwatch token="--color-chart-cat-red" /> | `--color-chart-cat-red` | Red | Tenth category. **Not** for "error" — semantic role. |
+
+The `-bright` siblings (`--color-chart-cat-teal-bright`, `--color-chart-cat-violet-bright`, …) are paler steps of the same hue:
+
+<div className="not-prose my-4 flex flex-wrap gap-3">
+	<div className="flex items-center gap-2 rounded-md border border-border-secondary bg-bg px-2 py-1">
+		<ColorSwatch token="--color-chart-cat-teal" /><ColorSwatch token="--color-chart-cat-teal-bright" />
+		<code className="text-xs">teal + teal-bright</code>
+	</div>
+	<div className="flex items-center gap-2 rounded-md border border-border-secondary bg-bg px-2 py-1">
+		<ColorSwatch token="--color-chart-cat-violet" /><ColorSwatch token="--color-chart-cat-violet-bright" />
+		<code className="text-xs">violet + violet-bright</code>
+	</div>
+	<div className="flex items-center gap-2 rounded-md border border-border-secondary bg-bg px-2 py-1">
+		<ColorSwatch token="--color-chart-cat-blue" /><ColorSwatch token="--color-chart-cat-blue-bright" />
+		<code className="text-xs">blue + blue-bright</code>
+	</div>
+	<div className="flex items-center gap-2 rounded-md border border-border-secondary bg-bg px-2 py-1">
+		<ColorSwatch token="--color-chart-cat-orange" /><ColorSwatch token="--color-chart-cat-orange-bright" />
+		<code className="text-xs">orange + orange-bright</code>
+	</div>
+</div>
+
+### The two rules that decide which token to use
+
+1. **Different categories → different hues.** A new category gets a new hue from the categorical palette, in the order above. Never recolor a category between pages — the hue is the category's identity.
+2. **Same variable, different bands → same hue, `-bright` sibling.** When one variable is split into emphasis bands (new vs. returning, active vs. inactive, current vs. comparison period, converted vs. drop-off), use the **same hue's base + `-bright`** rather than a second hue. The eye reads "same family" instead of "two unrelated categories".
+
+> **Example:** A "Users by source" chart uses 10 categorical hues — one per source. The "New vs returning users" chart uses **one** categorical hue at base + `-bright` — same category, two bands.
+
+**Rules**
+
+- **10-hue ceiling for categorical.** Beyond ten, perception breaks down — the eye stops distinguishing.
+- **Reserve semantic colors.** Red = error, green = success, amber = warning, in **semantic** UI roles. The chart-categorical tokens of the same hue (`cat-red`, `cat-green`, `cat-amber`) are categorical-only — never use them to signal status.
+- **One brand accent on the most-important series; neutrals for the rest** when the chart has a single hero series. Almost always clearer than rainbows.
+- **Color-blind safe.** Test categorical palettes through Deuteranopia and Protanopia simulators. When two adjacent hues are close, add patterns or icons.
+- **Same hue + `-bright` always before a second hue** when the variable is one thing in two bands.
+
+---
+
+## Composition — axes, labels, gridlines
+
+| Element | Rule |
+| ------- | ---- |
+| **Bar baseline** | Always zero. Truncating exaggerates change and is a distortion. |
+| **Linear y-axis** | Default. Log only when the range spans 2+ orders of magnitude **and** the audience expects it. Always label log scales. |
+| **Tick density** | 4–7 horizontal gridlines is the sweet spot. More is noise. |
+| **Axis labels** | Outside the data area. Short. Include units (`$`, `%`, `s`). |
+| **Number formatting** | Tabular figures. Locale-aware. Compact for axes (`1.2k`, `3.4M`); full precision in tooltips. |
+| **Date formatting** | Match the app locale. Abbreviations on axes (`Jan`, `Feb`); full dates in tooltips. |
+| **Gridlines** | Light, behind the data. Never crossing labels. |
+| **Origin marker** | Show "0" explicitly when the y-axis crosses it. |
+| **Auto-rotated labels** | Avoid. If labels are long, switch to horizontal bars. |
+
+<PreviewCard caption="Anatomy — title is the question, axis labels outside the data, gridlines light and behind, tooltip on hover and focus.">
+	<CompositionAnatomy />
+</PreviewCard>
+
+---
+
+## Context — pair the chart with a summary
+
+A chart shows the **shape** of the data. A scorecard answers **"should I care right now?"**. On a dashboard, almost every standalone chart should travel with one — above or beside it — so the reader gets both signals in a single glance.
+
+| Rule | Notes |
+| ---- | ----- |
+| **One scorecard per chart** | The KPI that matches the chart's question. Multiple KPIs belong in their own row, not stacked on the chart. |
+| **Always show a comparison** | Don't display a number without context. Comparison priority: **vs. previous period → vs. target → vs. cohort average**. |
+| **Delta is colored, not just numbered** | Use semantic ink for up/down, never the categorical palette. Add an arrow or icon so the signal isn't color-only. |
+| **Sparkline beside the KPI** | Optional, but a 30–60 day sparkline makes the delta legible without scrolling. |
+| **Time range is part of the title or hint** | The same KPI means nothing without "last 30 days" or "Q2". Put it in the chart hint, not the body. |
+
+<PreviewCard caption="KPI scorecard + delta + sparkline on the left answers ‘should I care right now?’; the trend chart on the right shows the shape.">
+	<ContextTile />
+</PreviewCard>
+
+---
+
+## Sort, order, and direction
+
+Ordering is meaning. Get it wrong and a ranked chart reads like noise.
+
+| Rule | Notes |
+| ---- | ----- |
+| **Bars sorted by value, descending, by default** | Switch to time-ordered only when the x-axis is time. |
+| **Time goes left → right, oldest → newest** | Always. Never flip for "recent first". |
+| **Stacked series ordered largest → smallest, bottom-up** | The largest band reads first against the baseline. |
+| **Legend order mirrors visual order** | Top-down for stacks, left-to-right for line endpoints, value-ranked for bars. |
+| **"Other" / long-tail bucket always last** | Never in the middle of the ranking. |
+| **Categorical series keep the same color across pages** | Reordering rows is fine; recoloring the same metric isn't. |
+
+---
+
+## Annotations & reference lines
+
+Annotations turn a chart into a story. Use them sparingly so they don't compete with the data.
+
+- **Reference lines** for targets, thresholds, or averages. Label at the right edge in a neutral tone — never the categorical palette.
+- **Vertical event guides** for launches, outages, policy changes, or pricing shifts. One-line label, same weight as axis labels, smaller size.
+- **Cap at two annotations** per dashboard-sized chart. More belongs in a dedicated story or report view.
+- **Don't annotate every peak.** If the eye already notices it, the chart is doing its job.
+- **Annotations are part of the alt text.** A screen reader user should learn about the target line and the event from the chart's `aria-label` or description.
+
+<PreviewCard caption="One horizontal target line (‘Goal’) plus one vertical event guide (‘Launch’). Cap at two annotations per dashboard-sized chart.">
+	<AnnotationsExample />
+</PreviewCard>
+
+---
+
+## Small multiples
+
+When the same metric needs to be compared across many categories, **don't pile series onto one chart** — break it into a grid of tiny identical charts (small multiples).
+
+| Rule | Notes |
+| ---- | ----- |
+| **Shared axes across every cell** | Same scale, same range, same formatting. Different scales destroy the comparison and mislead the reader. |
+| **Cap the grid at 3×3 (9 cells)** | Beyond that, sort by value and truncate the tail into "Other" or a "View all" link. |
+| **Each cell has its own title** (the category) | Axis labels appear only on the outer edges of the grid. |
+| **Same color across cells** when comparing one metric | Vary only when the cells represent genuinely different series. |
+| **Reading order is left-to-right, top-to-bottom, ranked by value** | The top-left cell is the most important one. |
+
+<PreviewCard caption="Six small multiples — one metric, same scale across all cells, same accent color. Each cell gets its own category title at the top.">
+	<SmallMultiplesGrid />
+</PreviewCard>
+
+---
+
+## Legends
+
+| Rule | Why |
+| ---- | --- |
+| **Position above or to the right** of the plot, not floating inside it. | Predictable scan path. |
+| **Match legend order to the visual order** in the chart (top-down stack, left-right line endpoints). | Reduces lookup time. |
+| **Make legends interactive** when there are ≥ 3 series — clicking a legend item filters that series. | Standard expectation. |
+| **Skip the legend** when there is only one series **and** the title makes it clear. | Less chrome. |
+| **Don't repeat the title in the legend.** | Redundant. |
+
+### Direct labels vs. legends
+
+A legend forces the reader to glance back and forth between the data and the key. Direct labels remove that cost.
+
+- Prefer **direct labels** at the end of lines, beside bars, or on slices when there are **≤ 3 series** or the labels fit without overlap.
+- Use a legend only when direct labeling would crowd the plot.
+- When direct labels are used, **omit the legend entirely** — never both.
+- Direct labels inherit series color; pair them with the same icon/marker used in the chart so the connection survives without color.
+
+### Legend overflow — `+N More`
+
+When the series list outruns the legend strip, **don't wrap to a third line** and don't shrink the type. Show the first few chips inline (in value order, matching the visual order in the chart) and collapse the tail into a `+N More` chip whose hover/focus popover lists the rest with the same color swatches.
+
+- Visible chips: 3–5 is the sweet spot at dashboard-tile width.
+- The overflow chip is interactive — hover **and** focus reveal the popover.
+- The chips inside the popover use the same swatch + label format as the inline chips. No alternative shapes.
+- The overflow popover is supplemental, not the canonical legend — its contents must also be reachable via the chart's "View as table" fallback.
+
+`BarListLegend` ships this overflow pattern out of the box; see [Chart → `BarListLegend`](/components/chart#barlistlegend-props).
+
+---
+
+## Tooltips
+
+| Rule | Notes |
+| ---- | ----- |
+| **Trigger:** hover **and** focus | Keyboard users get the same info. |
+| **Content:** category/x-value, all series at that x, formatted numbers, units | Always show units. |
+| **Crosshair on time-series charts.** | Helps align across multiple metrics. |
+| **One tooltip at a time.** | Don't scatter tooltips across the chart. |
+| **Don't truncate.** | If the value needs wrapping, allow wrapping. |
+| **Stable ordering.** | Sort tooltip rows the same way each time. |
+
+<PreviewCard caption="Tooltip with crosshair on a time-series chart. Triggered by hover and focus; tabular figures inside.">
+	<TooltipExample />
+</PreviewCard>
+
+---
+
+## States
+
+Charts have the same lifecycle as any other surface. Define each one explicitly.
+
+| State | Pattern |
+| ----- | ------- |
+| **Loading** | `Skeleton` shaped like the chart. Don't show 0-value bars during load — they read as real data. |
+| **Empty** | `EmptyState` inside the chart frame: heading + body + first action. |
+| **Error** | `Alert` (variant: error) above the chart frame, with a Retry. Keep the frame visible so layout doesn't jump. |
+| **Partial / no data for range** | Inline text inside the frame: "No events in this range. Try a wider window." Keep axes visible if the question stays the same. |
+| **Locked / no permission** | `EmptyState` with permission copy (see [Voice & Tone — Permission denied](/foundation/voice-and-tone)). |
+
+<FigureGrid columns={4}>
+	<PreviewCard caption="Loading — `ChartSkeleton` shaped like the chart."><StateLoading /></PreviewCard>
+	<PreviewCard caption="Empty — `EmptyState` with icon, heading, body, and primary action."><StateEmpty /></PreviewCard>
+	<PreviewCard tone="danger" caption="Error — destructive icon, short message, Retry."><StateError /></PreviewCard>
+	<PreviewCard caption="No data for range — axes visible, inline message inside the frame."><StateNoData /></PreviewCard>
+</FigureGrid>
+
+---
+
+## Interaction & keyboard
+
+- **Hover / focus:** show tooltip + crosshair.
+- **Click:** open detail (drill-down) **or** filter, but never both. Pick one per chart and document it.
+- **Keyboard:** Tab to enter the chart, Arrow keys to move between data points, Enter to select, Escape to clear selection.
+- **Zoom & pan:** opt-in; don't ship them on dashboard tiles by default.
+- **Brush selection** (for time series): only when the user can actually do something with the selection (filter, export, drill).
+
+---
+
+## Accessibility — non-negotiable checklist
+
+- [ ] **Data table alternative** linked from every chart (`<details>` or "View as table" toggle).
+- [ ] **Color is never the sole signal** — pair with text, icon, position, or pattern (WCAG 1.4.1).
+- [ ] **`role="img"` and `aria-label`** on the SVG root, with a one-sentence summary of the chart's takeaway.
+- [ ] **`aria-describedby`** linking to a longer description for complex charts.
+- [ ] **Keyboard navigable** through data points with visible focus.
+- [ ] **Live region** (`aria-live="polite"`) for dynamic updates on real-time charts.
+- [ ] **Don't rely on hover-only tooltips** — same info on focus.
+- [ ] **Respect `prefers-reduced-motion`** for entrance animations and live tickers.
+- [ ] **Color-blind tested.** Run categorical palettes through Deuteranopia + Protanopia simulators.
+
+---
+
+## Library — Recharts
+
+Marmo charts are built on **[Recharts](https://recharts.org/)**. It's the only chart library we use, the only one to install, and the only one to reach for when proposing a new chart. Wrap every chart in a Marmo `Card` or `PageSection` shell so spacing, headings, and toolbar patterns stay consistent.
+
+Recharts gives us:
+
+- Bar, column, line, area, stacked area, scatter, pie/donut, composed, and funnel out of the box.
+- React-native composition (`<BarChart>`, `<XAxis>`, `<Tooltip>`, …) — no imperative API.
+- A `ResponsiveContainer` that handles parent-driven sizing, which keeps charts honest inside dashboard tiles.
+
+### Wrapper checklist
+
+Every chart wrapper we ship on top of Recharts must set:
+
+- Default colors from the token palette (categorical / sequential / diverging / monochromatic).
+- Tabular figures + locale-aware number/date formatting.
+- `<Tooltip>` with a crosshair on time-series charts; hover **and** focus.
+- Empty / loading / error states baked in (see [States](#states)).
+- `role="img"`, `aria-label`, "View as table" toggle.
+- `prefers-reduced-motion` respected — `isAnimationActive={false}` when the user opts out.
+
+`@marmoui/ui` ships the shared primitives: **`ChartContainer`** + **`ChartTooltip`** / **`ChartLegend`** (token-aware Recharts wrapper), **`BarList`** + **`BarListLegend`** (DOM-based ranking), **`ChartFunnel`** (generic conversion funnel), **`LeadLifecycleFunnel`** (trapezoid funnel with built-in quality-flag Alert), **`ChartSkeleton`**, **`ChartEmpty`**, **`ChartTable`**. See [Chart](/components/chart) for the API. Higher-level scaffolding (`ChartTile`, `KPIScorecard`) used in these docs previews is not yet shipped — tracked on the [roadmap](/introduction/roadmap).
+
+---
+
+## Do / don't
+
+<FigureGrid columns={2}>
+	<PreviewCard tone="success" label="Do" caption="Title is the question, baseline at zero, one categorical hue per source, sorted descending.">
+		<DoChart />
+	</PreviewCard>
+	<PreviewCard tone="danger" label="Don't" caption="3D pie, eight slices, rainbow palette — every distortion at once.">
+		<DontChart />
+	</PreviewCard>
+</FigureGrid>
+
+| Do | Don't |
+| -- | ----- |
+| Title each chart with the **question** it answers. | Title with the metric name only ("Revenue"). |
+| Anchor bar baselines at zero. | Truncate the y-axis to make small differences look big. |
+| Use a single brand accent + neutrals for one-series charts. | Rainbow a one-series chart. |
+| Cap categorical palettes at 10 hues; group the tail. | Generate a unique color per category indefinitely. |
+| Use a hue's `-bright` sibling for emphasis bands of the **same** category. | Pick a second hue when the data is one variable in two bands. |
+| Show units in axis labels and tooltips. | Show raw numbers without `%`, `$`, time units. |
+| Provide a "View as table" toggle. | Ship a chart with no tabular alternative. |
+| Reuse the same color for the same series across pages. | Recolor the same metric per page. |
+| Match legend order to visual order. | Sort the legend alphabetically while bars are ranked by value. |
+| Use Skeleton during load. | Show zeroed bars or spinners that hide structure. |
+
+---
+
+## Numbers, dates, and locales
+
+- Use the same **date and number format** as the rest of the app (locale-aware when shipped).
+- Tabular figures across all chart text — required for axes and tooltips, where digits must align.
+- Compact notation for axis labels (`1.2k`, `3.4M`); full precision in tooltips.
+- Currency: ISO format with locale-aware grouping.
+
+---
+
+## Outliers and data quality
+
+Real data is messy. The chart is responsible for telling the truth about that, not papering over it.
+
+| Situation | Pattern |
+| --------- | ------- |
+| **One value dwarfs the others** | Split into two charts — the top mover on its own, the rest on a shared scale. Never use a broken-axis indicator on a bar chart. |
+| **Zero-value categories** | Group into "Other (N)" in the footer, or hide behind an explicit toggle. Don't show a row of empty bars. |
+| **Sparse data in a wide range** | Show the underlying points (scatter or strip) instead of a misleading smooth line through gaps. |
+| **Missing / unknown values** | Render the gap explicitly. Never interpolate silently — it invents data the user didn't see. |
+| **Cumulative / unbounded series** | Cap the axis at a sensible round number and label any clipped points. The reader should know the chart was clipped. |
+| **Negative values on a default zero-baseline chart** | Make the baseline explicit and use the diverging palette. Don't flip the axis to hide the sign. |
+
+---
+
+## How this connects to the rest of the system
+
+Every rule on this page is an application of the broader Marmo design language — the five criteria every design must pass: **is the question obvious, is the answer effortless, does it match expectations, is exploration safe, is it inclusive?** A chart is just a screen with axes.
+
+This page sticks to the chart-specific application: title is the question, ≤ 10 categorical hues (with `-bright` siblings for same-variable bands), ≤ 4 series per single chart, baselines at zero, hover **and** focus, Skeleton during load, table alternative.
+
+---
+
+## Sources (chart-specific)
+
+- **Andrew Abela** — Chart Chooser methodology (decision-by-question lineage).
+- **WCAG 2.1** — 1.4.1 (Use of Color).
+- **Norman, Cooper, Weinschenk, Yablonski, Cleveland & McGill** — the cognition and perception research behind these criteria.
+
+---
+
+## Related
+
+- [Voice & Tone — Empty state, Permission denied formulas](/foundation/voice-and-tone)
+- [Colors](/foundation/colors)
+- [Typography](/foundation/typography)
+- [Patterns](/patterns)

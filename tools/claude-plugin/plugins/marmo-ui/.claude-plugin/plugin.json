@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "marmo-ui",
+  "description": "MCP-backed workflow for building UI with @marmoui/ui. Bundles the marmo-ui skill, /marmo-ui:* commands, and the Marmo MCP server so agents read real component props instead of guessing. Works free without a token; add your Pro token for on-brand generation.",
+  "author": {
+    "name": "Marmo UI Team",
+    "email": "design-system@marmoui.com"
+  },
+  "homepage": "https://github.com/mahmoudilyan/marmo-ui",
+  "repository": "https://github.com/mahmoudilyan/marmo-ui",
+  "license": "MIT",
+  "keywords": [
+    "marmo",
+    "design-system",
+    "ui",
+    "mcp"
+  ],
+  "userConfig": {
+    "marmo_mcp_token": {
+      "type": "string",
+      "title": "Marmo MCP API token",
+      "description": "Optional Pro token for on-brand generation and patterns. Leave empty for the free Core tier. Get yours at marmoui.com/connect.",
+      "required": false,
+      "default": ""
+    },
+    "mcp_url": {
+      "type": "string",
+      "title": "Marmo MCP URL",
+      "description": "Override the MCP server URL. Leave the default unless running the MCP locally.",
+      "default": "https://mcp.marmoui.com/mcp"
+    }
+  }
+}

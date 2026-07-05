@@ -1,0 +1,956 @@
+---
+title: DataTable
+description: A powerful data table component with sorting, filtering, pagination, row selection, and column customization built on TanStack Table.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/data-table
+keywords:
+  - table
+  - data
+  - grid
+  - list
+  - sorting
+  - filtering
+  - pagination
+  - selection
+lastUpdated: 2026-03-10
+---
+
+import { DataTable, Badge, Button, ButtonGroup, IconButton, Avatar, AvatarFallback, DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger, TableCellActions, TableMainHeaderCell, Box } from '@marmoui/ui';
+import { MdMoreHoriz, MdEdit, MdDelete, MdEmail, MdPersonAdd, MdOutlineEdit, MdOutlineEmail, MdOutlineDelete, MdOutlinePersonAdd, MdPersonOutline } from 'react-icons/md';
+import {
+  DataTableBasicPreview,
+  DataTableRichCellsPreview,
+  DataTableRowActionsPreview,
+  DataTableRowActionsStickyPreview,
+  DataTableFiltersPreview,
+  DataTableBulkActionsPreview,
+  DataTableLoadingPreview,
+  DataTableEmptyPreview,
+  DataTableColumnVisibilityPreview,
+  DataTableRealWorldPreview,
+} from '@/components/previews/data-table-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    DataTable is a comprehensive data table built on **TanStack Table v8**. It handles column definitions, sorting, filtering, pagination, row selection, bulk actions, column visibility, and loading/empty states out of the box. It is designed for server-side integration and works seamlessly with API-driven data.
+
+    **When to Use:**
+    - Displaying and managing lists of records (contacts, orders, products, campaigns)
+    - Data management interfaces with selection and bulk operations
+    - Reports and analytics dashboards with sortable, filterable data
+    - Any paginated list requiring search, filters, or column customization
+
+    **When NOT to Use:**
+    - For simple, static data display (use a plain HTML `<table>` or DescriptionList)
+    - For card-based layouts or grid views (use a custom grid with Card)
+    - For key-value pair display (use DescriptionList)
+
+    **Key Features:**
+    - Column sorting with server-side support
+    - Multi-type filters (select, multiselect, date range, boolean)
+    - Row selection with a floating action bar for bulk operations
+    - Pagination with configurable page sizes
+    - Column visibility toggling and column grouping
+    - Search with debounced input
+    - Custom cell renderers for rich content (avatars, badges, links, actions)
+    - Loading skeletons and contextual empty states
+    - Controlled state via `tableState` / `setTableState` for server-side integration
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { DataTable } from '@marmoui/ui';
+import type { ColumnDef } from '@tanstack/react-table';
+```
+
+DataTable requires two props: `data` (array of row objects) and `columns` (TanStack Table column definitions). Everything else is optional.
+
+## Examples
+
+### Basic Table
+
+<CodeExample
+	title="Simple DataTable"
+	description="Minimal table with columns and data"
+	code={`import type { ColumnDef } from '@tanstack/react-table';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+const columns: ColumnDef<User>[] = [
+  { accessorKey: 'name', header: 'Name' },
+  { accessorKey: 'email', header: 'Email' },
+  { accessorKey: 'role', header: 'Role' },
+];
+
+const data: User[] = [
+  { id: '1', name: 'John Doe', email: 'john@example.com', role: 'Admin' },
+  { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'Editor' },
+];
+
+<DataTable data={data} columns={columns} />`}
+	preview={<DataTableBasicPreview />}
+/>
+
+### Custom Cell Rendering with Avatars and Badges
+
+In production, table cells often contain rich content. Use the `cell` property in column definitions to render avatars, badges, links, and inline actions.
+
+<CodeExample
+	title="Rich Cell Content"
+	description="Columns with avatar, badge status, and link rendering"
+	code={`const columns: ColumnDef<Contact>[] = [
+  {
+    accessorKey: 'name',
+    header: 'User',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-3">
+        <Avatar size="sm">
+          <AvatarFallback>
+            {row.original.name.split(' ').map(n => n[0]).join('')}
+          </AvatarFallback>
+        </Avatar>
+        <div>
+          <div className="font-medium">{row.original.name}</div>
+          <div className="text-sm text-ink-light">{row.original.email}</div>
+        </div>
+      </div>
+    ),
+    size: 400,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge variant={row.original.status === 'active' ? 'success' : 'default'}>
+        {row.original.status}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: 'list_name',
+    header: 'List',
+    cell: ({ row }) => (
+      <span className="text-ink-light">{row.original.list_name || '—'}</span>
+    ),
+  },
+];`}
+	preview={<DataTableRichCellsPreview />}
+/>
+
+### Row Actions with TableCellActions
+
+Use `TableCellActions` to add hover-revealed action buttons to each row. Pass the cell's visible content via the `content` prop — actions overlay it on row hover. No extra column needed.
+
+<CodeExample
+	title="Row Actions"
+	description="Hover-revealed action buttons overlaying the last cell"
+	code={`import { TableCellActions, ButtonGroup, Button, IconButton, DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, Badge } from '@marmoui/ui';
+import { MdMoreHoriz, MdOutlineEdit, MdOutlineEmail, MdOutlineDelete, MdOutlinePersonAdd, MdPersonOutline } from 'react-icons/md';
+
+const columns = [
+  { accessorKey: 'email', header: 'Contact', size: 300 },
+  { accessorKey: 'role', header: 'Role' },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: (info) => (
+      <TableCellActions
+        row={info.row}
+        table={info.table}
+        content={
+          <Badge variant={info.row.original.status === 'active' ? 'success' : 'default'}>
+            {info.row.original.status}
+          </Badge>
+        }
+      >
+        <ButtonGroup attached={true} size="sm">
+          <Button variant="secondary">View</Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <IconButton variant="secondary" size="sm" aria-label="More options" icon={<MdMoreHoriz />} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="min-w-52">
+              <DropdownMenuItem><MdPersonOutline /> View Profile</DropdownMenuItem>
+              <DropdownMenuItem><MdOutlineEdit /> Edit Contact</DropdownMenuItem>
+              <DropdownMenuItem><MdOutlineEmail /> Send Email</DropdownMenuItem>
+              <DropdownMenuItem><MdOutlinePersonAdd /> Add to List</DropdownMenuItem>
+              <DropdownMenuItem variant="destructive"><MdOutlineDelete /> Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </ButtonGroup>
+      </TableCellActions>
+    ),
+  },
+];`}
+	preview={<DataTableRowActionsPreview />}
+/>
+
+### Row Actions with Sticky Column
+
+When using `columnPinning`, the primary column stays fixed while other columns scroll. This is useful for wide tables with many columns.
+
+<CodeExample
+	title="Row Actions with Sticky Column"
+	description="Pinned contact column stays visible while other columns scroll"
+	code={`<DataTable
+  data={contacts}
+  columns={columns}
+  columnPinning={{ left: ['email'] }}
+/>`}
+	preview={<DataTableRowActionsStickyPreview />}
+/>
+
+### Filters
+
+DataTable supports multiple filter types: `select`, `multiselect`, `date`, and `boolean`. Filters appear in the table toolbar and update `tableState.filters`.
+
+<CodeExample
+	title="Multi-type Filters"
+	description="Combine multiselect, date range, and other filter types"
+	code={`<DataTable
+  data={contacts}
+  columns={columns}
+  filters={[
+    {
+      id: 'lists',
+      label: 'List(s)',
+      type: 'multiselect',
+      placeholder: 'Select lists',
+      searchPlaceholder: 'Search lists...',
+      searchable: true,
+      options: lists.map(list => ({ label: list.name, value: list.id })),
+    },
+    {
+      id: 'audiences',
+      label: 'Audiences',
+      type: 'multiselect',
+      placeholder: 'Select audiences',
+      searchPlaceholder: 'Search audiences...',
+      searchable: true,
+      options: audiences.map(a => ({ label: a.name, value: a.id })),
+    },
+    {
+      id: 'dateRange',
+      label: 'Sign Up Date',
+      type: 'date',
+      placeholder: 'Select date range',
+      mode: 'range',
+    },
+    {
+      id: 'status',
+      label: 'Status',
+      type: 'select',
+      options: [
+        { value: 'active', label: 'Active' },
+        { value: 'inactive', label: 'Inactive' },
+      ],
+    },
+  ]}
+/>`}
+	preview={<DataTableFiltersPreview />}
+/>
+
+### Row Selection with Bulk Actions
+
+Enable row selection to show a floating action bar. The `actionBarActions` prop receives the selected rows and renders bulk action buttons.
+
+<CodeExample
+	title="Bulk Actions"
+	description="Select rows and perform bulk operations like send email, add to list, or delete"
+	code={`<DataTable
+  data={contacts}
+  columns={columns}
+  dataType="contact"
+  actionBarActions={(selectedContacts) => (
+    <ButtonGroup attached={false} size="sm">
+      <Button
+        variant="secondary"
+        size="sm"
+        leftIcon={<MdEmail />}
+        onClick={() => openDialog('sendEmail', { contacts: selectedContacts })}
+      >
+        Send Email
+      </Button>
+      <Button
+        variant="secondary"
+        size="sm"
+        leftIcon={<MdPersonAdd />}
+        onClick={() => openDialog('addToList', { contacts: selectedContacts })}
+      >
+        Add to List
+      </Button>
+      <Button
+        variant="destructive"
+        size="sm"
+        leftIcon={<MdDelete />}
+        onClick={() => openDialog('deleteContact', {
+          dialogTitle: \`Delete \${selectedContacts.length} contact\${selectedContacts.length === 1 ? '' : 's'}?\`,
+          dialogDescription: 'This action cannot be undone.',
+          contacts: selectedContacts,
+        })}
+      >
+        Delete
+      </Button>
+      <IconButton variant="secondary" size="sm" icon={<MdMoreHoriz />} />
+    </ButtonGroup>
+  )}
+/>`}
+	preview={<DataTableBulkActionsPreview />}
+/>
+
+### Column Visibility
+
+Control which columns are visible with `columnVisibility` and `onColumnVisibilityChange`. Users can toggle columns via the built-in columns menu.
+
+<CodeExample
+	title="Column Visibility"
+	description="Let users show/hide columns dynamically"
+	code={`function ContactsTable() {
+  const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>({
+    phone: true,
+    list_name: true,
+    created_at: false, // hidden by default
+  });
+
+  return (
+    <DataTable
+      data={contacts}
+      columns={columns}
+      columnVisibility={columnVisibility}
+      onColumnVisibilityChange={setColumnVisibility}
+    />
+  );
+}`}
+	preview={<DataTableColumnVisibilityPreview />}
+/>
+
+### Server-Side Integration with TableState
+
+For server-side pagination, sorting, and filtering, use the controlled `tableState` and `setTableState` props. The table communicates all state changes through `setTableState`, and you send those to your API.
+
+<CodeExample
+	title="Controlled Table State with Data Fetching"
+	description="Server-side pagination, search, and filters using fetch and useEffect"
+	code={`import { useState, useEffect, useMemo } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import { DataTable } from '@marmoui/ui';
+import type { TableState } from '@marmoui/ui';
+
+interface Contact {
+  id: string;
+  name: string;
+  email: string;
+  status: string;
+}
+
+function ContactsPage() {
+  const [data, setData] = useState<Contact[]>([]);
+  const [total, setTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [tableState, setTableState] = useState<TableState>({
+    pagination: { pageIndex: 0, pageSize: 10 },
+    sorting: [],
+    filters: {},
+    columns: [],
+    search: '',
+    view: 'list',
+  });
+
+  // Fetch data whenever tableState changes
+  useEffect(() => {
+    const fetchContacts = async () => {
+      setIsLoading(true);
+      try {
+        const params = new URLSearchParams({
+          page: String(tableState.pagination.pageIndex),
+          pageSize: String(tableState.pagination.pageSize),
+          search: tableState.search || '',
+          ...Object.fromEntries(
+            Object.entries(tableState.filters).map(([k, v]) => [k, String(v)])
+          ),
+        });
+
+        const res = await fetch(\`/api/contacts?\${params}\`);
+        const json = await res.json();
+        setData(json.data);
+        setTotal(json.total);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchContacts();
+  }, [tableState.pagination, tableState.search, tableState.filters]);
+
+  const handleTableStateChange = (newState: Partial<TableState>) => {
+    setTableState(prev => ({ ...prev, ...newState }));
+  };
+
+  const columns: ColumnDef<Contact>[] = [
+    { accessorKey: 'name', header: 'Name', enableHiding: false },
+    { accessorKey: 'email', header: 'Email' },
+    { accessorKey: 'status', header: 'Status' },
+  ];
+
+  return (
+    <DataTable
+      data={data}
+      columns={columns}
+      total={total}
+      dataType="contact"
+      isLoadingBody={isLoading}
+      tableState={tableState}
+      setTableState={handleTableStateChange}
+      pageSize={tableState.pagination.pageSize}
+      currentPage={tableState.pagination.pageIndex}
+    />
+  );
+}`}
+	preview={<DataTableBasicPreview />}
+/>
+
+### Row Selection with Checkbox
+
+The `TableMainHeaderCell` component adds a select-all checkbox to the primary column header. Combined with `actionBarActions`, users can select rows and perform bulk operations.
+
+<CodeExample
+	title="Checkbox Selection"
+	description="Row selection with select-all header checkbox and bulk action bar"
+	code={`import { useMemo, useState, useEffect } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import {
+  DataTable, Box, Button, ButtonGroup, IconButton,
+  DropdownMenu, DropdownMenuItem, DropdownMenuContent,
+  DropdownMenuTrigger, TableCellActions, TableMainHeaderCell,
+  Badge, Avatar, AvatarFallback,
+} from '@marmoui/ui';
+import type { TableState } from '@marmoui/ui';
+import { MdMoreHoriz, MdDelete, MdEmail, MdPersonAdd,
+  MdOutlineEdit, MdOutlineEmail, MdOutlineDelete,
+  MdOutlinePersonAdd, MdPersonOutline } from 'react-icons/md';
+
+interface Contact {
+  id: string;
+  email: string;
+  name: string;
+  status: string;
+  list_name: string;
+}
+
+function ContactsWithCheckbox() {
+  const [data, setData] = useState<Contact[]>([]);
+  const [total, setTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [tableState, setTableState] = useState<TableState>({
+    pagination: { pageIndex: 0, pageSize: 10 },
+    sorting: [],
+    filters: {},
+    columns: [],
+    search: '',
+    view: 'list',
+  });
+
+  // Fetch data whenever tableState changes
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const params = new URLSearchParams({
+        page: String(tableState.pagination.pageIndex),
+        limit: String(tableState.pagination.pageSize),
+        search: tableState.search || '',
+      });
+      const res = await fetch(\`/api/contacts?\${params}\`);
+      const json = await res.json();
+      setData(json.data);
+      setTotal(json.total);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, [tableState.pagination, tableState.search, tableState.filters]);
+
+  const columns = useMemo<ColumnDef<Contact>[]>(() => [
+    {
+      id: 'email',
+      accessorKey: 'email',
+      // TableMainHeaderCell renders the select-all checkbox
+      header: ({ table }) => (
+        <TableMainHeaderCell label="Email" columnIndex={0} table={table} />
+      ),
+      cell: (info) => {
+        const contact = info.row.original;
+        return (
+          <div className="flex items-center gap-1.5 w-full group/row">
+            <Avatar size="sm">
+              <AvatarFallback>
+                {contact.name.split(' ').map(n => n[0]).join('')}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <span className="text-ink-dark font-medium truncate block">
+                {contact.email}
+              </span>
+            </div>
+            <div className="flex-shrink-0 opacity-0 group-hover/row:opacity-100 transition-opacity">
+              <TableCellActions row={info.row} table={info.table}>
+                <ButtonGroup attached={true} size="sm">
+                  <Button variant="secondary">View</Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <IconButton variant="secondary" size="sm"
+                        aria-label="More" icon={<MdMoreHoriz />} />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="min-w-52">
+                      <DropdownMenuItem><MdPersonOutline /> View Profile</DropdownMenuItem>
+                      <DropdownMenuItem><MdOutlineEdit /> Edit</DropdownMenuItem>
+                      <DropdownMenuItem><MdOutlineEmail /> Send Email</DropdownMenuItem>
+                      <DropdownMenuItem variant="destructive">
+                        <MdOutlineDelete /> Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </ButtonGroup>
+              </TableCellActions>
+            </div>
+          </div>
+        );
+      },
+      size: 400,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'name',
+      header: 'Name',
+      meta: { label: 'Name', group: 'Contact Info' },
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ row }) => (
+        <Badge variant={row.original.status === 'active' ? 'success' : 'default'}>
+          {row.original.status}
+        </Badge>
+      ),
+      meta: { label: 'Status', group: 'Contact Info' },
+    },
+    {
+      accessorKey: 'list_name',
+      header: 'List',
+      meta: { label: 'List', group: 'Contact Info' },
+    },
+  ], []);
+
+  return (
+    <DataTable<Contact>
+      columns={columns}
+      data={data}
+      total={total}
+      dataType="contact"
+      isLoadingBody={isLoading}
+      tableState={tableState}
+      setTableState={(s) => setTableState(prev => ({ ...prev, ...s }))}
+      onColumnVisibilityChange={setColumnVisibility}
+      columnVisibility={columnVisibility}
+      pageSize={tableState.pagination.pageSize}
+      currentPage={tableState.pagination.pageIndex}
+      filters={[
+        {
+          id: 'lists',
+          label: 'List(s)',
+          type: 'multiselect',
+          placeholder: 'Select lists',
+          searchable: true,
+          options: [
+            { label: 'Newsletter', value: '1' },
+            { label: 'VIP Members', value: '2' },
+          ],
+        },
+        {
+          id: 'dateRange',
+          label: 'Sign Up Date',
+          type: 'date',
+          mode: 'range',
+        },
+      ]}
+      actionBarActions={(selectedContacts) => (
+        <ButtonGroup attached={false} size="sm">
+          <Button variant="secondary" size="sm" leftIcon={<MdEmail />}>
+            Send Email
+          </Button>
+          <Button variant="secondary" size="sm" leftIcon={<MdPersonAdd />}>
+            Add to List
+          </Button>
+          <Button variant="destructive" size="sm" leftIcon={<MdDelete />}>
+            Delete
+          </Button>
+          <IconButton variant="secondary" size="sm" icon={<MdMoreHoriz />} />
+        </ButtonGroup>
+      )}
+    />
+  );
+}`}
+	preview={<DataTableBulkActionsPreview />}
+/>
+
+### Loading State
+
+<CodeExample
+	title="Loading State"
+	description="Show skeleton rows while data is being fetched"
+	code={`<DataTable
+  data={[]}
+  columns={columns}
+  isLoadingBody={true}
+  dataType="contact"
+/>`}
+	preview={<DataTableLoadingPreview />}
+/>
+
+### Empty State
+
+<CodeExample
+	title="Empty State"
+	description="Show contextual message when no data matches"
+	code={`<DataTable
+  data={[]}
+  columns={columns}
+  dataType="contact"
+/>`}
+	preview={<DataTableEmptyPreview />}
+/>
+
+## Real-World Example
+
+A full production-style contacts table combining row selection, column visibility, filters, bulk actions, and pinned columns.
+
+<CodeExample
+	title="Contacts Management Table"
+	description="Full-featured table with search, filters, column visibility, row actions, and bulk actions"
+	code={`import { useState, useMemo } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import {
+  DataTable, Button, ButtonGroup, IconButton, Badge,
+  Avatar, AvatarFallback,
+  DropdownMenu, DropdownMenuItem, DropdownMenuContent,
+  DropdownMenuTrigger, TableCellActions, TableMainHeaderCell,
+} from '@marmoui/ui';
+import type { TableState } from '@marmoui/ui';
+import {
+  MdMoreHoriz, MdDelete, MdEmail, MdPersonAdd,
+  MdOutlineEdit, MdOutlineEmail, MdOutlineDelete,
+  MdOutlinePersonAdd, MdPersonOutline,
+} from 'react-icons/md';
+
+function ContactsList() {
+  const [tableState, setTableState] = useState<TableState>({
+    pagination: { pageIndex: 0, pageSize: 10 },
+    sorting: [], filters: {}, columns: [], search: '', view: 'list',
+  });
+  const [columnVisibility, setColumnVisibility] = useState({
+    phone: true, list_name: true, created_at: false,
+  });
+
+  const columns = useMemo<ColumnDef<Contact>[]>(() => [
+    {
+      id: 'email',
+      accessorKey: 'email',
+      header: ({ table }) => (
+        <TableMainHeaderCell label="Email" columnIndex={0} table={table} />
+      ),
+      cell: (info) => {
+        const contact = info.row.original;
+        return (
+          <div className="flex items-center gap-1.5 w-full group/row">
+            <Avatar size="sm">
+              <AvatarFallback>
+                {contact.name.split(' ').map(n => n[0]).join('')}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <span className="text-ink-dark font-medium truncate block">
+                {contact.email}
+              </span>
+            </div>
+            <TableCellActions row={info.row} table={info.table}>
+              <ButtonGroup attached={true} size="sm">
+                <Button variant="secondary">View</Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <IconButton variant="secondary" size="sm"
+                      aria-label="More" icon={<MdMoreHoriz />} />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="min-w-52">
+                    <DropdownMenuItem><MdPersonOutline /> View Profile</DropdownMenuItem>
+                    <DropdownMenuItem><MdOutlineEdit /> Edit</DropdownMenuItem>
+                    <DropdownMenuItem><MdOutlineEmail /> Send Email</DropdownMenuItem>
+                    <DropdownMenuItem><MdOutlinePersonAdd /> Add to List</DropdownMenuItem>
+                    <DropdownMenuItem variant="destructive">
+                      <MdOutlineDelete /> Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </ButtonGroup>
+            </TableCellActions>
+          </div>
+        );
+      },
+      size: 400,
+      enableHiding: false,
+    },
+    { accessorKey: 'name', header: 'Name', meta: { label: 'Name', group: 'Contact Info' } },
+    { accessorKey: 'phone', header: 'Phone', meta: { label: 'Phone', group: 'Contact Info' } },
+    {
+      accessorKey: 'status', header: 'Status',
+      cell: ({ row }) => (
+        <Badge variant={row.original.status === 'active' ? 'success' : 'default'}>
+          {row.original.status}
+        </Badge>
+      ),
+      meta: { label: 'Status', group: 'Contact Info' },
+    },
+    { accessorKey: 'list_name', header: 'List', meta: { label: 'List', group: 'Contact Info' } },
+    {
+      accessorKey: 'created_at', header: 'Created',
+      cell: ({ row }) => new Date(row.original.created_at).toLocaleDateString(),
+      meta: { label: 'Created', group: 'Details' },
+    },
+  ], []);
+
+  return (
+    <DataTable<Contact>
+      columns={columns}
+      data={contacts}
+      total={contacts.length}
+      dataType="contact"
+      tableState={tableState}
+      setTableState={(s) => setTableState(prev => ({ ...prev, ...s }))}
+      onColumnVisibilityChange={setColumnVisibility}
+      columnVisibility={columnVisibility}
+      columnPinning={{ left: ['email'] }}
+      filters={[
+        {
+          id: 'lists', label: 'List(s)', type: 'multiselect',
+          placeholder: 'Select lists', searchable: true,
+          options: [
+            { label: 'Newsletter', value: 'newsletter' },
+            { label: 'VIP Members', value: 'vip' },
+          ],
+        },
+        { id: 'dateRange', label: 'Sign Up Date', type: 'date', mode: 'range' },
+      ]}
+      actionBarActions={(selected) => (
+        <ButtonGroup attached={false} size="sm">
+          <Button variant="secondary" leftIcon={<MdEmail />}>Send Email</Button>
+          <Button variant="secondary" leftIcon={<MdPersonAdd />}>Add to List</Button>
+          <Button variant="destructive" leftIcon={<MdDelete />}>Delete</Button>
+          <IconButton variant="secondary" size="sm" icon={<MdMoreHoriz />} />
+        </ButtonGroup>
+      )}
+    />
+  );
+}`}
+	preview={<DataTableRealWorldPreview />}
+/>
+
+## Column Definition Reference
+
+Columns follow the TanStack Table `ColumnDef` format:
+
+```tsx
+import type { ColumnDef } from '@tanstack/react-table';
+
+const columns: ColumnDef<YourDataType>[] = [
+  {
+    id: 'uniqueId',           // Unique column ID (optional if accessorKey is set)
+    accessorKey: 'fieldName', // Property name on the data object
+    header: 'Display Name',   // String or render function for header
+    cell: ({ row }) => ...,   // Custom cell renderer (optional)
+    enableSorting: true,      // Allow sorting (default: true)
+    enableHiding: true,       // Allow toggling visibility (default: true)
+    size: 200,                // Column width in pixels
+    meta: {
+      label: 'Field Label',  // Label shown in column visibility menu
+      group: 'Group Name',   // Group in column visibility menu
+    },
+  },
+];
+```
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use custom cell renderers for readability">
+		Enhance data presentation with avatars, badges, formatted dates, and links. Raw data is harder to scan.
+	</Guideline>
+
+	<Guideline type="do" title="Provide contextual empty states">
+		Use the `dataType` prop (e.g., `"contact"`) so empty states say "No contacts found" instead of generic text.
+	</Guideline>
+
+	<Guideline type="do" title="Show loading states during data fetches">
+		Set `isLoadingBody={true}` while fetching. Skeleton rows reassure users that data is on the way.
+	</Guideline>
+
+	<Guideline type="do" title="Pin the primary column">
+		Set `enableHiding: false` on the primary identifier column (e.g., email) so users always have context.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't show too many columns by default">
+		Start with 4-6 visible columns. Let users toggle additional columns via the column menu.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't skip pagination for large datasets">
+		Always paginate when dealing with more than 50 rows. Use server-side pagination for datasets over 1,000 rows.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### DataTable
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `T[]` | — | Array of row data objects |
+| `columns` | `ColumnDef<T>[]` | — | TanStack Table column definitions |
+| `dataType` | `string` | `'Item'` | Data label for empty states and pagination text |
+| `total` | `number` | — | Total records (for server-side pagination) |
+| `pageSize` | `number` | `10` | Rows per page |
+| `currentPage` | `number` | `0` | Current page index (0-based) |
+| `isLoadingBody` | `boolean` | `false` | Show skeleton loading in table body |
+| `isLoadingHeaders` | `boolean` | `false` | Show skeleton loading for entire table |
+| `tableState` | `TableState` | — | Controlled table state object |
+| `setTableState` | `(state: Partial<TableState>) => void` | — | Callback when table state changes |
+| `searchPlaceholder` | `string` | `'Search...'` | Placeholder for the search input |
+| `hideSearch` | `boolean` | `false` | Hide the search input |
+| `hideColumnsMenu` | `boolean` | `false` | Hide column visibility toggle |
+| `filters` | `TableFilter[]` | — | Filter configurations (see below) |
+| `columnVisibility` | `Record<string, boolean>` | `{}` | Controlled column visibility state |
+| `onColumnVisibilityChange` | `(visibility) => void` | — | Callback when column visibility changes |
+| `onRowSelectionChange` | `(selectedRows: T[]) => void` | — | Callback when row selection changes |
+| `actionBarActions` | `ReactNode \| ((rows: T[]) => ReactNode)` | — | Bulk action buttons for selected rows |
+| `columnPinning` | `{ left?: string[]; right?: string[] }` | — | Pin columns to left or right edges (sticky) |
+| `maxHeight` | `string` | full-height viewport calc with CSS variable fallbacks | Height of the internal table scroll area |
+| `className` | `string` | — | Additional className |
+
+### TableState
+
+```tsx
+interface TableState {
+  pagination: { pageIndex: number; pageSize: number };
+  sorting: SortingState;
+  filters: Record<string, any>;
+  columns: ColumnOrderState;
+  search: string;
+  view: 'list' | 'grid';
+}
+```
+
+### Filter Types
+
+```tsx
+// Single select filter
+{ id: 'status', label: 'Status', type: 'select', options: [...] }
+
+// Multi-select filter with search
+{ id: 'lists', label: 'Lists', type: 'multiselect', searchable: true, options: [...] }
+
+// Date range filter
+{ id: 'dateRange', label: 'Date', type: 'date', mode: 'range' }
+
+// Boolean filter
+{ id: 'verified', label: 'Verified', type: 'boolean', trueLabel: 'Yes', falseLabel: 'No' }
+```
+
+## Patterns
+
+### Minimal local table (no server pagination)
+
+Pass `data` and `columns` — sorting and client-side pagination work automatically.
+
+```tsx
+import { DataTable } from '@marmoui/ui';
+import type { ColumnDef } from '@tanstack/react-table';
+
+interface User { id: string; name: string; email: string; }
+
+const columns: ColumnDef<User>[] = [
+  { accessorKey: 'name', header: 'Name' },
+  { accessorKey: 'email', header: 'Email' },
+];
+
+<DataTable columns={columns} data={users} pageSize={20} />
+```
+
+### Server-side pagination with tableState
+
+```tsx
+const [tableState, setTableState] = useState<DataTableParams>({
+  page: 1, pageSize: 20, search: '', sortBy: '', sortDir: 'asc',
+});
+
+<DataTable
+  columns={columns}
+  data={data}
+  total={totalCount}
+  tableState={tableState}
+  setTableState={setTableState}
+  isLoadingBody={isLoading}
+/>
+```
+
+### Status badge in a cell
+
+```tsx
+{
+  accessorKey: 'status',
+  header: 'Status',
+  cell: ({ row }) => {
+    const variantMap = {
+      active:   'success',
+      pending:  'warning',
+      inactive: 'normal',
+      failed:   'destructive',
+    } as const;
+    return (
+      <Badge variant={variantMap[row.original.status]}>
+        {row.original.status}
+      </Badge>
+    );
+  },
+}
+```
+
+## Common Mistakes
+
+- **`pageSize` is a real prop** — `<DataTable columns={columns} data={data} pageSize={20} />` is correct. Default is `10`. Do not omit it when you need a specific page size.
+- **`pageSize` is static** — it is the initial/controlled rows-per-page value. For server-side pagination, also pass `total`, `currentPage`, `tableState`, and `setTableState` so the table knows the full dataset size and can compute page numbers.
+- Using `enableSorting` or `enablePagination` props — these do not exist; sorting is always on, pagination is controlled via `tableState`/`setTableState`.
+- Forgetting `total` for server-side pagination — without it the table treats the current `data` array as the full dataset.
+- Passing rendered JSX as column `header` string — use a string or a function: `header: () => <span>Name</span>`
+- Not importing `ColumnDef` from `@tanstack/react-table` — it must be imported separately alongside the DataTable import.
+- Using `rows` or `items` instead of `data` for the data prop — the prop name is always `data`.
+
+## Accessibility
+
+<InfoCallout type="info" title="Keyboard Navigation">
+DataTable supports full keyboard navigation. Use Tab to move between interactive elements, Enter or Space to activate buttons, and arrow keys within dropdowns.
+</InfoCallout>
+
+- Uses proper ARIA roles (`table`, `rowgroup`, `row`, `columnheader`, `cell`)
+- Sortable column headers are keyboard accessible with `aria-sort`
+- Row selection checkboxes are fully accessible with `aria-checked`
+- Action bar announces selected count to screen readers
+- Focus management for inline action buttons and dropdown menus
+- Loading and empty states are announced via `aria-live` regions

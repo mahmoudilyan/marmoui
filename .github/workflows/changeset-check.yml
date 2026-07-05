@@ -1,0 +1,36 @@
+name: Changeset Check
+
+# Publishable packages changed on a PR → require a changeset (or an explicit
+# empty one via `pnpm changeset --empty`) so every merge to main carries its
+# semver intent.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/ui/**'
+      - 'packages/cli/**'
+
+jobs:
+  changeset:
+    name: Require changeset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Changeset status
+        run: pnpm changeset status --since=origin/${{ github.base_ref }}

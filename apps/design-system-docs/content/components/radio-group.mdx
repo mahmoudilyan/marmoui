@@ -1,0 +1,89 @@
+---
+title: Radio Group
+description: A set of mutually exclusive radio buttons for selecting a single option from a list.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/radio
+keywords:
+  - radio group
+  - radio
+  - single select
+  - option
+lastUpdated: 2026-03-10
+---
+
+import { RadioGroup, Radio } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    RadioGroup wraps multiple Radio components into a group where only one option can be selected at a time. Built on Radix UI primitives for full accessibility.
+
+    **When to Use:**
+    - Selecting one option from a short list (2-5 items)
+    - Settings where all options should be visible
+    - Forms requiring a single selection
+
+    **When NOT to Use:**
+    - For more than 5-7 options (use Select dropdown)
+    - For multi-select (use Checkbox)
+    - When options need rich descriptions (use RadioCard)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { RadioGroup, Radio } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Radio Group
+
+<CodeExample
+	title="Default"
+	description="Simple radio group with options"
+	code={`<RadioGroup defaultValue="email">
+  <Radio value="email" label="Email" />
+  <Radio value="sms" label="SMS" />
+  <Radio value="push" label="Push Notification" />
+</RadioGroup>`}
+	preview={
+		<RadioGroup defaultValue="email">
+			<Radio value="email" label="Email" />
+			<Radio value="sms" label="SMS" />
+			<Radio value="push" label="Push Notification" />
+		</RadioGroup>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Always set a default value">
+		Pre-select the most common option to reduce user effort.
+	</Guideline>
+	<Guideline type="do" title="Keep options visible">
+		Radio buttons work best when all options are visible without scrolling.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for binary choices">
+		For yes/no, on/off choices, use a Checkbox or Switch instead.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for many options">
+		If there are more than 5-7 options, use a Select dropdown.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="RadioGroup" />
+
+## Accessibility
+
+- Arrow keys navigate between options within the group.
+- Space key selects the focused option.
+- Uses `role="radiogroup"` on the container.
+- Only the selected radio button is in the tab order.

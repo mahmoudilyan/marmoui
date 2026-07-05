@@ -1,0 +1,841 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+@plugin 'tailwindcss-animate';
+
+/* Scan content and src directories for Tailwind classes */
+@source "../../content/**/*.{mdx,tsx,jsx}";
+@source "../**/*.{ts,tsx,js,jsx}";
+/* Import UI package's compiled styles which include all component classes */
+@source "../../../packages/ui/src/**/*.{ts,tsx,js,jsx}";
+/* Fumadocs UI components - required for Tailwind v4 */
+@source "../../node_modules/fumadocs-ui/dist/**/*.js";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Register semantic border-color tokens so Tailwind v4 generates
+ * border-border-success / border-border-warning / etc. utilities.
+ * Runtime values come from @marmoui/ui's tokens.css (imported
+ * via layout.tsx) but Tailwind only sees `@theme` blocks at build,
+ * so we re-register the names here mapped to default palette colors.
+ */
+@theme {
+	--color-border-secondary: var(--color-gray-200);
+	--color-border-muted: var(--color-gray-100);
+	--color-border-success: var(--color-green-600);
+	--color-border-warning: var(--color-yellow-600);
+	--color-border-info: var(--color-blue-600);
+	--color-border-destructive: var(--color-red-600);
+
+	/* Semantic shorthand colors used by border-success / border-destructive / etc. */
+	--color-success: var(--color-green-600);
+	--color-warning: var(--color-yellow-600);
+	--color-info: var(--color-blue-600);
+	--color-destructive: var(--color-red-600);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentColor);
+	}
+}
+
+@layer utilities {
+	body {
+		font-family:
+			-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+			'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+}
+
+/* @layer base {
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 0 0% 3.9%;
+		--card: 0 0% 100%;
+		--card-foreground: 0 0% 3.9%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 0 0% 3.9%;
+		--primary: 0 0% 9%;
+		--primary-foreground: 0 0% 98%;
+		--secondary: 0 0% 96.1%;
+		--secondary-foreground: 0 0% 9%;
+		--muted: 0 0% 96.1%;
+		--muted-foreground: 0 0% 45.1%;
+		--accent: 0 0% 96.1%;
+		--accent-foreground: 0 0% 9%;
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 0 0% 89.8%;
+		--input: 0 0% 89.8%;
+		--ring: 0 0% 3.9%;
+		--chart-1: 12 76% 61%;
+		--chart-2: 173 58% 39%;
+		--chart-3: 197 37% 24%;
+		--chart-4: 43 74% 66%;
+		--chart-5: 27 87% 67%;
+		--radius: 0.5rem;
+		--sidebar-background: 0 0% 98%;
+		--sidebar-foreground: 240 5.3% 26.1%;
+		--sidebar-primary: 240 5.9% 10%;
+		--sidebar-primary-foreground: 0 0% 98%;
+		--sidebar-accent: 240 4.8% 95.9%;
+		--sidebar-accent-foreground: 240 5.9% 10%;
+		--sidebar-border: 220 13% 91%;
+		--sidebar-ring: 217.2 91.2% 59.8%;
+	}
+	.dark {
+		--background: 0 0% 3.9%;
+		--foreground: 0 0% 98%;
+		--card: 0 0% 3.9%;
+		--card-foreground: 0 0% 98%;
+		--popover: 0 0% 3.9%;
+		--popover-foreground: 0 0% 98%;
+		--primary: 0 0% 98%;
+		--primary-foreground: 0 0% 9%;
+		--secondary: 0 0% 14.9%;
+		--secondary-foreground: 0 0% 98%;
+		--muted: 0 0% 14.9%;
+		--muted-foreground: 0 0% 63.9%;
+		--accent: 0 0% 14.9%;
+		--accent-foreground: 0 0% 98%;
+		--destructive: 0 62.8% 30.6%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 0 0% 14.9%;
+		--input: 0 0% 14.9%;
+		--ring: 0 0% 83.1%;
+		--chart-1: 220 70% 50%;
+		--chart-2: 160 60% 45%;
+		--chart-3: 30 80% 55%;
+		--chart-4: 280 65% 60%;
+		--chart-5: 340 75% 55%;
+		--sidebar-background: 240 5.9% 10%;
+		--sidebar-foreground: 240 4.8% 95.9%;
+		--sidebar-primary: 224.3 76.3% 48%;
+		--sidebar-primary-foreground: 0 0% 100%;
+		--sidebar-accent: 240 3.7% 15.9%;
+		--sidebar-accent-foreground: 240 4.8% 95.9%;
+		--sidebar-border: 240 3.7% 15.9%;
+		--sidebar-ring: 217.2 91.2% 59.8%;
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+} */
+
+/* Additional animations */
+@import 'tw-animate-css';
+
+/* Map Fumadocs variables to work with existing shadcn colors */
+@layer base {
+	:root {
+		/* Fumadocs specific variables */
+		--fd-background: var(--background);
+		--fd-foreground: var(--foreground);
+		--fd-card: var(--card);
+		--fd-card-foreground: var(--card-foreground);
+		--fd-popover: var(--popover);
+		--fd-popover-foreground: var(--popover-foreground);
+		--fd-primary: var(--primary);
+		--fd-primary-foreground: var(--primary-foreground);
+		--fd-secondary: var(--secondary);
+		--fd-secondary-foreground: var(--secondary-foreground);
+		--fd-muted: var(--muted);
+		--fd-muted-foreground: var(--muted-foreground);
+		--fd-accent: var(--accent);
+		--fd-accent-foreground: var(--accent-foreground);
+		--fd-destructive: var(--destructive);
+		--fd-border: var(--border);
+		--fd-ring: var(--ring);
+
+		/* Layout variables */
+		--fd-nav-height: 64px;
+		--fd-sidebar-width: 280px;
+		--fd-layout-width: 1400px;
+	}
+
+	.dark {
+		/* Fumadocs dark mode - inherits from shadcn dark theme */
+		--fd-background: var(--background);
+		--fd-foreground: var(--foreground);
+		--fd-card: var(--card);
+		--fd-card-foreground: var(--card-foreground);
+		--fd-popover: var(--popover);
+		--fd-popover-foreground: var(--popover-foreground);
+		--fd-primary: var(--primary);
+		--fd-primary-foreground: var(--primary-foreground);
+		--fd-secondary: var(--secondary);
+		--fd-secondary-foreground: var(--secondary-foreground);
+		--fd-muted: var(--muted);
+		--fd-muted-foreground: var(--muted-foreground);
+		--fd-accent: var(--accent);
+		--fd-accent-foreground: var(--accent-foreground);
+		--fd-destructive: var(--destructive);
+		--fd-border: var(--border);
+		--fd-ring: var(--ring);
+	}
+}
+
+/* Marmo UI semantic tokens — imported from packages/ui/src/styles/globals.css 
+:root {
+	/* Semantic Background Colors */
+/* --color-panel: #ffffff;
+	--color-bg: oklch(0.97 0.002 240);
+	--color-ink-dark: oklch(0.33 0.04 258);
+	--color-ink: oklch(0.37 0.03 259);
+	--color-ink-light: oklch(0.66 0.04 257);
+	--color-ink-muted: oklch(0.79 0.02 252);
+	--color-ink-destructive: oklch(0.48 0.2 28.9);
+	--color-ink-success: oklch(0.55 0.11 158);
+	--color-ink-primary: oklch(0.48 0.08 200);
+	--color-ink-primary-contrast: oklch(1 0 0);
+	--color-ink-info: oklch(0.46 0.12 253);
+	--color-ink-warning: oklch(0.51 0.1 92.1);
+	--color-primary-solid: oklch(0.48 0.08 200);
+	--color-primary-solid-hover: oklch(0.56 0.1 200);
+	--color-primary-muted: oklch(0.98 0.02 193);
+	--color-primary-bright: oklch(0.84 0.08 192);
+	--color-primary-contrast: oklch(1 0 0);
+	--color-destructive-solid: oklch(0.48 0.2 28.9);
+	--color-success-solid: oklch(0.55 0.11 158);
+	--color-warning-solid: oklch(0.9 0.16 101);
+	--color-info-solid: oklch(0.55 0.13 250);
+	--color-solid: oklch(0.39 0.03 250);
+	--color-border-input: oklch(0.85 0.005 250);
+	--color-border-hover: oklch(0.72 0.01 250);
+	--color-border-focus: oklch(0.91 0.05 191);
+	--color-border-destructive: oklch(0.75 0.13 22.3);
+	--color-border-primary: oklch(0.56 0.1 200);
+	--color-icon: oklch(0.38 0.03 259 / 0.89);
+} 
+
+.dark {
+	--color-panel: oklch(0.21 0.02 256);
+	--color-bg: oklch(0.16 0 0);
+	--color-ink-dark: oklch(0.98 0 0);
+	--color-ink: oklch(0.95 0 248);
+	--color-ink-light: oklch(0.71 0.02 259);
+	--color-ink-muted: oklch(0.6 0.05 258);
+	--color-ink-destructive: oklch(0.75 0.13 22.3);
+	--color-ink-success: oklch(0.79 0.1 155);
+	--color-ink-primary: oklch(0.69 0.12 195);
+	--color-ink-info: oklch(0.8 0.08 237);
+	--color-ink-warning: oklch(0.88 0.1 106);
+	--color-primary-solid: oklch(0.5 0.09 196);
+	--color-primary-solid-hover: oklch(0.63 0.11 196);
+	--color-primary-muted: oklch(0.28 0.05 199);
+	--color-primary-bright: oklch(0.44 0.07 196);
+	--color-destructive-solid: oklch(0.48 0.2 28.9);
+	--color-success-solid: oklch(0.56 0.13 155);
+	--color-warning-solid: oklch(0.48 0.12 103);
+	--color-info-solid: oklch(0.5 0.12 241);
+	--color-solid: oklch(0.41 0.04 256);
+	--color-border-input: oklch(0.37 0.04 256);
+	--color-border-hover: oklch(0.41 0.04 256);
+	--color-border-focus: oklch(0.44 0.07 196);
+	--color-border-destructive: oklch(0.75 0.13 22.3);
+	--color-border-primary: oklch(0.8 0.11 195);
+	--color-icon: oklch(0.95 0 248);
+}
+
+/* Documentation-specific styles 
+:root {
+	--header-height: 64px;
+	--sidebar-width: 240px;
+	--radius: 0.625rem;
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.129 0.042 264.695);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.129 0.042 264.695);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.129 0.042 264.695);
+	--primary: oklch(0.208 0.042 265.755);
+	--primary-foreground: oklch(0.984 0.003 247.858);
+	--secondary: oklch(0.968 0.007 247.896);
+	--secondary-foreground: oklch(0.208 0.042 265.755);
+	--muted: oklch(0.968 0.007 247.896);
+	--muted-foreground: oklch(0.554 0.046 257.417);
+	--accent: oklch(0.968 0.007 247.896);
+	--accent-foreground: oklch(0.208 0.042 265.755);
+	--destructive: oklch(0.577 0.245 27.325);
+	--border: oklch(0.929 0.013 255.508);
+	--input: oklch(0.929 0.013 255.508);
+	--ring: oklch(0.704 0.04 256.788);
+	--chart-1: oklch(0.646 0.222 41.116);
+	--chart-2: oklch(0.6 0.118 184.704);
+	--chart-3: oklch(0.398 0.07 227.392);
+	--chart-4: oklch(0.828 0.189 84.429);
+	--chart-5: oklch(0.769 0.188 70.08);
+	--sidebar: oklch(0.984 0.003 247.858);
+	--sidebar-foreground: oklch(0.129 0.042 264.695);
+	--sidebar-primary: oklch(0.208 0.042 265.755);
+	--sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+	--sidebar-accent: oklch(0.968 0.007 247.896);
+	--sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+	--sidebar-border: oklch(0.929 0.013 255.508);
+	--sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0px) rotate(0deg);
+	}
+	50% {
+		transform: translateY(-30px) rotate(180deg);
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideInLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* MDX content styles */
+@layer components {
+	.mdx-content {
+		max-width: none;
+	}
+
+	.mdx-content h1 {
+		font-size: 2.5rem;
+		line-height: 1.2;
+		letter-spacing: -0.02em;
+		font-weight: 700;
+		margin-bottom: 1rem;
+		margin-top: 0;
+		color: var(--color-foreground);
+	}
+
+	.mdx-content h2 {
+		font-size: 1.875rem;
+		line-height: 1.3;
+		letter-spacing: -0.01em;
+		font-weight: 700;
+		margin-bottom: 1rem;
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--color-border);
+		color: var(--color-foreground);
+	}
+
+	.mdx-content h3 {
+		font-size: 1.5rem;
+		line-height: 1.4;
+		letter-spacing: -0.01em;
+		font-weight: 600;
+		margin-bottom: 1rem;
+		margin-top: 2.5rem;
+		color: var(--color-foreground);
+	}
+
+	.mdx-content h4 {
+		font-size: 1.25rem;
+		line-height: 1.5;
+		font-weight: 600;
+		margin-bottom: 0.75rem;
+		margin-top: 1.5rem;
+		color: var(--color-foreground);
+	}
+
+	.mdx-content p {
+		font-size: 1rem;
+		line-height: 1.7;
+		margin-bottom: 1.25rem;
+		color: var(--color-muted-foreground);
+	}
+
+	.mdx-content ul,
+	.mdx-content ol {
+		margin-top: 1rem;
+		margin-bottom: 1.5rem;
+		margin-left: 1.5rem;
+		list-style-type: disc;
+	}
+
+	.mdx-content ol {
+		list-style-type: decimal;
+	}
+
+	.mdx-content li {
+		margin-bottom: 0.5rem;
+		line-height: 1.7;
+		color: var(--color-muted-foreground);
+	}
+
+	.mdx-content a {
+		color: var(--color-primary);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		transition: color 0.2s ease;
+	}
+
+	.mdx-content a:hover {
+		color: var(--color-primary-foreground);
+	}
+
+	.mdx-content code {
+		position: relative;
+		border-radius: 0.375rem;
+		background-color: var(--color-muted);
+		padding: 0.2rem 0.4rem;
+		font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--color-foreground);
+	}
+
+	.mdx-content pre {
+		margin-bottom: 1.5rem;
+		margin-top: 1rem;
+		overflow-x: auto;
+		border-radius: 0.75rem;
+		padding: 0;
+	}
+
+	.mdx-content pre code {
+		background-color: transparent;
+		padding: 0;
+		font-size: 0.875rem;
+		line-height: 1.7;
+	}
+
+	/* Shiki code block styling - target shiki class directly (works everywhere) */
+	figure.shiki,
+	pre.shiki,
+	.mdx-content pre:has(code span[style*='--shiki']),
+	.mdx-content pre:has(code[class*='language-']),
+	.mdx-content pre.shiki,
+	.mdx-content figure.shiki {
+		background-color: transparent;
+		border: none;
+		border-radius: 0;
+		padding: 0;
+		margin: 0;
+		overflow-x: auto;
+		box-shadow: none;
+	}
+
+	figure.shiki code,
+	pre.shiki code,
+	.mdx-content pre:has(code span[style*='--shiki']) code,
+	.mdx-content pre:has(code[class*='language-']) code,
+	.mdx-content pre.shiki code,
+	.mdx-content figure.shiki code {
+		background: transparent;
+		padding: 0;
+		font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+		font-size: 0.875rem;
+		line-height: 1.7;
+		color: inherit;
+		display: block;
+		width: 100%;
+	}
+
+	/* Shiki generates CSS variables in inline styles on spans */
+	/* Each span has style="--shiki-light:#color;--shiki-dark:#color" */
+	/* CSS can read CSS variables from the element's own inline style using var() */
+	figure.shiki code span[style*='--shiki-light'],
+	pre.shiki code span[style*='--shiki-light'],
+	.mdx-content pre code span[style*='--shiki-light'],
+	.mdx-content pre.shiki code span[style*='--shiki-light'],
+	.mdx-content figure.shiki code span[style*='--shiki-light'],
+	.mdx-content pre code span[style*='--shiki-light'] span {
+		/* The CSS variable is defined in the span's inline style, var() reads it */
+		color: var(--shiki-light);
+	}
+
+	.dark figure.shiki code span[style*='--shiki-dark'],
+	.dark pre.shiki code span[style*='--shiki-dark'],
+	.dark .mdx-content pre code span[style*='--shiki-dark'],
+	.dark .mdx-content pre.shiki code span[style*='--shiki-dark'],
+	.dark .mdx-content figure.shiki code span[style*='--shiki-dark'],
+	.dark .mdx-content pre code span[style*='--shiki-dark'] span {
+		color: var(--shiki-dark);
+	}
+
+	/* Ensure all spans inside code blocks can use their CSS variables */
+	figure.shiki code span[style*='--shiki'],
+	pre.shiki code span[style*='--shiki'],
+	.mdx-content pre code span[style*='--shiki'],
+	.mdx-content figure.shiki code span[style*='--shiki'] {
+		/* Let each span use its own CSS variable */
+		color: var(--shiki-light, var(--shiki-dark, var(--color-ink)));
+	}
+
+	/* Style the pre/figure element with shiki class - ensure it's visible */
+	figure.shiki,
+	pre.shiki {
+		border: none;
+		background-color: transparent;
+		border-radius: 0;
+		margin: 0;
+		overflow: hidden;
+		box-shadow: none;
+	}
+
+	/* Default margin for code blocks (overridden in tabs below) */
+	figure.shiki,
+	pre.shiki {
+		margin: 0;
+	}
+
+	/* Override Tab component's negative margin and border removal for code blocks */
+	/* Tab component adds: [&>figure:only-child]:-m-4 [&>figure:only-child]:border-none */
+	[role='tabpanel'] figure.shiki,
+	[role='tabpanel'] figure.shiki:only-child {
+		margin: 0;
+		border: 0;
+		background-color: transparent;
+		border-radius: 0;
+	}
+
+	/* Remove Tab panel's padding and background for code tabs */
+	[role='tabpanel']:has(figure.shiki) {
+		padding: 0;
+		background-color: transparent;
+	}
+
+	/* Copy button styling when absolutely positioned */
+	figure.shiki .absolute .absolute {
+		position: static;
+	}
+
+	.dark figure.shiki,
+	.dark pre.shiki {
+		background-color: var(--shiki-dark-bg, var(--color-panel));
+	}
+
+	/* Style code blocks with language classes even if Shiki isn't applied */
+	.mdx-content pre:has(code[class*='language-']) {
+		background-color: var(--color-panel);
+		border: 1px solid var(--color-border);
+		border-radius: 0.75rem;
+		padding: 1rem;
+		margin: 1.5rem 0;
+		overflow-x: auto;
+		font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+		font-size: 0.875rem;
+		line-height: 1.7;
+	}
+
+	.mdx-content blockquote {
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+		border-left: 3px solid var(--color-border);
+		padding-left: 1.5rem;
+		font-style: italic;
+		color: var(--color-muted-foreground);
+	}
+
+	.mdx-content table {
+		width: 100%;
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+		border-collapse: collapse;
+		border-radius: 0.5rem;
+		overflow: hidden;
+	}
+
+	.mdx-content th {
+		border: 1px solid var(--color-border);
+		padding: 0.75rem 1rem;
+		text-align: left;
+		font-weight: 600;
+		background-color: var(--color-secondary);
+		font-size: 0.875rem;
+		color: var(--color-foreground);
+	}
+
+	.mdx-content td {
+		border: 1px solid var(--color-border);
+		padding: 0.75rem 1rem;
+		font-size: 0.875rem;
+		color: var(--color-muted-foreground);
+	}
+
+	.mdx-content hr {
+		margin-top: 3rem;
+		margin-bottom: 3rem;
+		border: none;
+		border-top: 1px solid var(--color-border);
+	}
+
+	/* Improved spacing for description paragraph under h1 */
+	.mdx-content h1 + p {
+		font-size: 1.125rem;
+		color: var(--color-muted-foreground);
+		margin-bottom: 2rem;
+	}
+
+	/* Custom Tab Styling - Match coss.com design */
+	[role='tablist'] {
+		border-bottom: 1px solid var(--color-border);
+		gap: 0;
+		padding: 0;
+		background-color: var(--color-card);
+	}
+
+	[role='tab'] {
+		border: none;
+		border-radius: 0;
+		padding: 0.75rem 1.5rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--color-muted-foreground);
+		background: transparent;
+		border-bottom: 2px solid transparent;
+		transition: all 0.2s ease;
+	}
+
+	[role='tab']:hover {
+		color: var(--color-foreground);
+		background-color: var(--color-secondary) / 50%;
+	}
+
+	[role='tab'][data-selected='true'] {
+		color: var(--color-foreground);
+		border-bottom-color: var(--color-primary);
+		font-weight: 600;
+	}
+
+	/* Accordion Styling - Match coss.com design */
+	[data-accordion] {
+		border: 1px solid var(--color-border);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		background-color: var(--color-card);
+	}
+
+	[data-accordion-item] {
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	[data-accordion-item]:last-child {
+		border-bottom: none;
+	}
+
+	[data-accordion-trigger] {
+		padding: 1.25rem 1.5rem;
+		font-size: 1rem;
+		font-weight: 500;
+		color: var(--color-foreground);
+		background: transparent;
+		transition: background-color 0.2s ease;
+	}
+
+	[data-accordion-trigger]:hover {
+		background-color: var(--color-secondary) / 50%;
+	}
+
+	[data-accordion-content] {
+		padding: 0 1.5rem 1.25rem 1.5rem;
+		font-size: 0.9375rem;
+		line-height: 1.7;
+		color: var(--color-muted-foreground);
+	}
+
+	/* Code Block Improvements */
+	.codeblock {
+		margin: 0;
+	}
+
+	.codeblock pre {
+		margin: 0;
+		padding: 1.25rem;
+		border-radius: 0;
+		font-size: 0.875rem;
+		line-height: 1.7;
+	}
+
+	/* Callout Improvements */
+	[data-callout] {
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+		margin: 1.5rem 0;
+		border-width: 1px;
+	}
+
+	[data-callout-title] {
+		font-weight: 600;
+		font-size: 0.9375rem;
+		margin-bottom: 0.5rem;
+	}
+
+	/* Card improvements */
+	[data-card] {
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		transition: all 0.2s ease;
+	}
+
+	[data-card]:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	}
+}
+/*
+  ---break---
+*/
+/* @theme inline {
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+
+	/* Marmo UI semantic tokens */
+/* --color-panel: var(--color-panel);
+	--color-bg: var(--color-bg);
+	--color-solid: var(--color-solid);
+	--color-ink-dark: var(--color-ink-dark);
+	--color-ink: var(--color-ink);
+	--color-ink-light: var(--color-ink-light);
+	--color-ink-muted: var(--color-ink-muted);
+	--color-ink-destructive: var(--color-ink-destructive);
+	--color-ink-success: var(--color-ink-success);
+	--color-ink-primary: var(--color-ink-primary);
+	--color-ink-primary-contrast: var(--color-ink-primary-contrast);
+	--color-ink-info: var(--color-ink-info);
+	--color-ink-warning: var(--color-ink-warning);
+	--color-icon: var(--color-icon);
+	--color-primary-solid: var(--color-primary-solid);
+	--color-primary-solid-hover: var(--color-primary-solid-hover);
+	--color-primary-muted: var(--color-primary-muted);
+	--color-primary-bright: var(--color-primary-bright);
+	--color-primary-contrast: var(--color-primary-contrast);
+	--color-destructive-solid: var(--color-destructive-solid);
+	--color-destructive-solid-hover: var(--color-destructive-solid);
+	--color-success-solid: var(--color-success-solid);
+	--color-warning-solid: var(--color-warning-solid);
+	--color-info-solid: var(--color-info-solid);
+	--color-border-input: var(--color-border-input);
+	--color-border-hover: var(--color-border-hover);
+	--color-border-focus: var(--color-border-focus);
+	--color-border-destructive: var(--color-border-destructive);
+	--color-border-primary: var(--color-border-primary); 
+}*/
+/*
+  ---break---
+*/
+/* .dark {
+	--background: oklch(0.129 0.042 264.695);
+	--foreground: oklch(0.984 0.003 247.858);
+	--card: oklch(0.208 0.042 265.755);
+	--card-foreground: oklch(0.984 0.003 247.858);
+	--popover: oklch(0.208 0.042 265.755);
+	--popover-foreground: oklch(0.984 0.003 247.858);
+	--primary: oklch(0.929 0.013 255.508);
+	--primary-foreground: oklch(0.208 0.042 265.755);
+	--secondary: oklch(0.279 0.041 260.031);
+	--secondary-foreground: oklch(0.984 0.003 247.858);
+	--muted: oklch(0.279 0.041 260.031);
+	--muted-foreground: oklch(0.704 0.04 256.788);
+	--accent: oklch(0.279 0.041 260.031);
+	--accent-foreground: oklch(0.984 0.003 247.858);
+	--destructive: oklch(0.704 0.191 22.216);
+	--border: oklch(1 0 0 / 10%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.551 0.027 264.364);
+	--chart-1: oklch(0.488 0.243 264.376);
+	--chart-2: oklch(0.696 0.17 162.48);
+	--chart-3: oklch(0.769 0.188 70.08);
+	--chart-4: oklch(0.627 0.265 303.9);
+	--chart-5: oklch(0.645 0.246 16.439);
+	--sidebar: oklch(0.208 0.042 265.755);
+	--sidebar-foreground: oklch(0.984 0.003 247.858);
+	--sidebar-primary: oklch(0.488 0.243 264.376);
+	--sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+	--sidebar-accent: oklch(0.279 0.041 260.031);
+	--sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-ring: oklch(0.551 0.027 264.364);
+} */
+/*
+  ---break---
+*/
+@layer base {
+	body {
+		background-color: var(--color-background);
+		color: var(--color-ink);
+	}
+}

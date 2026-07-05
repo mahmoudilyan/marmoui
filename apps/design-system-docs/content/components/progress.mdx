@@ -1,0 +1,103 @@
+---
+title: Progress
+description: A visual indicator that shows the completion percentage of a task or process.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/progress
+keywords:
+  - progress
+  - progress bar
+  - completion
+  - percentage
+  - loading
+lastUpdated: 2026-03-10
+---
+
+import { Progress } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Progress displays a horizontal bar that fills to indicate the completion percentage of a task. It provides clear visual feedback for determinate processes.
+
+    **When to Use:**
+    - File upload progress
+    - Step completion in multi-step workflows
+    - Quota or limit usage display
+    - Profile completion percentage
+
+    **When NOT to Use:**
+    - For indeterminate loading (use Spinner)
+    - For very quick operations
+    - For complex multi-stage progress (use Steps)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Progress } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Progress
+
+<CodeExample
+	title="Default"
+	description="Simple progress bar"
+	code={`<Progress value={60} />`}
+	preview={<Progress value={60} />}
+/>
+
+### Various States
+
+<CodeExample
+	title="Progress States"
+	description="Different completion levels"
+	code={`<div className="flex flex-col gap-4">
+  <Progress value={0} />
+  <Progress value={25} />
+  <Progress value={50} />
+  <Progress value={75} />
+  <Progress value={100} />
+</div>`}
+	preview={
+		<div className="flex flex-col gap-4">
+			<Progress value={0} />
+			<Progress value={25} />
+			<Progress value={50} />
+			<Progress value={75} />
+			<Progress value={100} />
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Show percentage or label">
+		Pair the progress bar with a percentage or descriptive label for clarity.
+	</Guideline>
+	<Guideline type="do" title="Update in real-time">
+		Progress should update smoothly as the task advances.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for indeterminate waits">
+		If you don't know the progress percentage, use Spinner instead.
+	</Guideline>
+	<Guideline type="dont" title="Don't fake progress">
+		Don't artificially animate progress. Show real completion data.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Progress" />
+
+## Accessibility
+
+- Uses `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`.
+- Screen readers announce the current progress percentage.
+- Ensure the progress bar has sufficient color contrast against its background.

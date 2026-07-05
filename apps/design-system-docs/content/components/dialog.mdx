@@ -1,0 +1,785 @@
+---
+title: Dialog
+description: A modal dialog system with programmatic control, dialog stacking, and a centralized registry via useDialog and DialogManager.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/dialog.tsx
+keywords:
+  - dialog
+  - modal
+  - popup
+  - overlay
+  - alert
+  - confirmation
+  - useDialog
+  - DialogManager
+  - DialogProvider
+lastUpdated: 2026-04-06
+---
+
+import {
+	Dialog,
+	DialogTrigger,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogDescription,
+	DialogFooter,
+	DialogClose,
+	Button,
+	Input,
+} from '@marmoui/ui';
+import {
+	DialogBasicPreview,
+	DialogConfirmationPreview,
+	DialogDestructivePreview,
+	DialogFormPreview,
+	DialogSettingsPreview,
+	DialogManagementPanelPreview,
+	DialogStickyFooterPreview,
+	DialogStickyFooterAltPreview,
+	DialogScrollableContentPreview,
+	DialogOutsideScrollPreview,
+	DialogControlledPreview,
+	DialogSizesPreview,
+	UseDialogPreview,
+	DialogStackPreview,
+	DialogStackClickablePreview,
+	DialogComponentPatternPreview,
+} from '@/components/previews/dialog-previews';
+
+## Overview
+
+The dialog system has two layers:
+
+1. **Declarative (Radix-based):** `Dialog`, `DialogTrigger`, `DialogContent` — render a dialog inline with a trigger button.
+2. **Programmatic (`useDialog` + `DialogManager`):** Open any registered dialog from anywhere in your app by calling `openDialog('dialogType', props)`. Supports dialog stacking, dynamic props, and a centralised registry.
+
+## When to use
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use for actions that need explicit acknowledgment">
+		Destructive confirmations (delete, discard, cancel subscription). Forms that gate a workflow (create audience, campaign settings). Alerts the user must read before continuing.
+	</Guideline>
+	<Guideline type="do" title="Use the programmatic API for cross-cutting dialogs">
+		If a dialog can be opened from multiple places (e.g. a global "Upgrade plan" modal), register it with `DialogManager` and open via `useDialog().openDialog('upgrade', props)`.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for non-critical feedback">
+		Successful saves, transient errors, brief info → use **Toaster**. Persistent informational banners → use **Alert**.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for long multi-step flows">
+		Anything more than ~2 steps belongs on a dedicated page or in a wizard. Modal stacking is supported but should be rare.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for quick selections">
+		Picking from a short list of options → **Dropdown** or **Popover**. Filtering options on a page → keep them inline.
+	</Guideline>
+</GuidelinesGrid>
+
+## Choosing the right alternative
+
+| You want… | Use this |
+|---|---|
+| Brief auto-dismissing feedback ("Saved!", "Failed to send") | `Toaster` (`toaster.success(...)`) |
+| Persistent informational banner that stays on screen | `Alert` |
+| Destructive action requiring "yes" confirmation | `ConfirmationDialog` (a thin wrapper over `Dialog`) |
+| Form taking over the screen | `Dialog` with a form inside |
+| Side-anchored panel (filters, details) | `Drawer` |
+| Quick option picker | `Popover` or `Dropdown` |
+| Tooltip on hover/focus | `Tooltip` (or `HoverCard` for richer content) |
+
+<Installation />
+
+## Usage
+
+```tsx
+// Declarative (inline trigger)
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter, Button } from '@marmoui/ui';
+
+// Programmatic (open from anywhere)
+import { DialogProvider, DialogManager, useDialog } from '@marmoui/ui';
+```
+
+## Declarative Dialogs
+
+### When to Use `DialogHeader`
+
+`DialogHeader` renders a persistent title bar with a bottom border separator. It is **not needed for every dialog** — adding it to simple confirmations creates unnecessary visual weight. When you do use `DialogHeader`, usually keep it to `DialogTitle` only and put explanatory copy in the dialog body instead of adding `DialogDescription` to the header.
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use DialogHeader for forms and panels">
+		Use it when the dialog has multiple fields, a sidebar, or contextual navigation. The title bar anchors the user and persists as content changes.
+	</Guideline>
+
+	<Guideline type="do" title="Use DialogHeader for lg and xl dialogs">
+		Large dialogs benefit from a visible title bar as spatial orientation. The close button alone isn't sufficient at wide viewports.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't use DialogHeader for confirmations">
+		Simple "Are you sure?" dialogs don't need a header. Put `DialogTitle` and `DialogDescription` directly in the content — the dialog is focused and temporary.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't pair header and description by default">
+		If `DialogHeader` is present, usually omit `DialogDescription`. Put helper copy near the fields or in `DialogContent` body copy.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't use DialogHeader for destructive actions">
+		Delete and discard confirmations follow the same rule. A header adds noise to an already urgent message.
+	</Guideline>
+</GuidelinesGrid>
+
+---
+
+### Simple Confirmation
+
+No `DialogHeader`. `DialogTitle` and `DialogDescription` go directly inside `DialogContent`. Best for quick confirmations, alerts, and single-purpose prompts.
+
+<CodeExample
+	title="Simple Confirmation"
+  src='/src/components/previews/dialog-previews.tsx'
+  componentName='DialogBasicPreview'
+	preview={<DialogBasicPreview />}
+/>
+
+<CodeExample
+	title="Confirmation with Checkbox"
+  src='/src/components/previews/dialog-previews.tsx'
+  componentName='DialogConfirmationPreview'
+	preview={<DialogConfirmationPreview />}
+/>
+
+
+<CodeExample
+	title="Destructive Confirmation"
+  src='/src/components/previews/dialog-previews.tsx'
+  componentName='DialogDestructivePreview'
+	preview={<DialogDestructivePreview />}
+/>
+
+---
+
+### Create / Edit Form
+
+Uses `DialogHeader` because the form has multiple fields and users benefit from a persistent title. Avoid `DialogDescription` in the header; place helper copy in the body if needed.
+
+<CodeExample
+	title="Create / Edit Form"
+  src='/src/components/previews/dialog-previews.tsx'
+  componentName='DialogFormPreview'
+	preview={<DialogFormPreview />}
+/>
+
+
+### Controlled Dialog
+Control open/close state with React state. No header — this is a focused single-purpose dialog.
+
+<CodeExample
+	title="Controlled Dialog"
+	code={`function ControlledExample() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button>Open Controlled</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Controlled Dialog</DialogTitle>
+        <DialogDescription>
+          This dialog state is controlled by React state.
+        </DialogDescription>
+        <DialogFooter>
+          <Button variant="secondary" onClick={() => setOpen(false)}>
+            Close
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`}
+	preview={<DialogControlledPreview />}
+/>
+
+### Dialog Sizes
+
+`DialogContent` accepts a `size` prop: `sm` (320px), `md` (620px, default), `lg` (980px), `xl` (1120px), or `full` (covers the entire viewport).
+
+- **sm** — quick confirmations, short prompts
+- **md** — most dialogs and forms (default)
+- **lg** — settings panels, complex forms, sidebars
+- **xl** — rich content, data tables, wide layouts
+- **full** — immersive flows, editors, mobile-first experiences
+
+<CodeExample
+	title="Size Variants"
+	description="Click each button to see the different dialog widths"
+	code={`// Small — 320px
+<DialogContent size="sm">...</DialogContent>
+
+// Medium — 620px (default)
+<DialogContent size="md">...</DialogContent>
+
+// Large — 980px
+<DialogContent size="lg">...</DialogContent>
+
+// Extra Large — 1120px
+<DialogContent size="xl">...</DialogContent>
+
+// Full — covers entire viewport
+<DialogContent size="full">...</DialogContent>`}
+	preview={<DialogSizesPreview />}
+/>
+
+---
+
+## Scroll Patterns
+
+By default dialogs render at their natural height centered in the viewport. When content is long, choose the scroll pattern that best fits the UX:
+
+| Pattern | When to use |
+|---|---|
+| **Sticky footer** | Long forms or settings where the action buttons must always be visible |
+| **Scrollable content** | Browsable lists where no explicit confirmation is needed |
+| **Outside scroll** | Legal text, read-only documents, long articles where the dialog grows naturally |
+
+The `scrollable` prop on `DialogContent` applies `max-h-[80vh]` and `grid-rows-[auto_1fr_auto]` — the header/footer rows are auto-height and the `1fr` middle row gives `ScrollArea` a concrete computed height so its internal viewport resolves correctly. Give `ScrollArea` `className="min-h-0"` so the grid can shrink it within the `1fr` row.
+
+### Sticky Footer — Long Form
+
+<CodeExample
+	title="Sticky Footer (Form)"
+	description="Header and footer are pinned — a long input form scrolls in between"
+	code={`<DialogContent scrollable>
+  <DialogHeader>
+    <DialogTitle>Create Contact</DialogTitle>
+  </DialogHeader>
+
+  <ScrollArea className="min-h-0">
+    <div className="py-6 space-y-4 pr-2">
+      <p className="text-sm text-ink-light">Fill in all details.</p>
+      <Input placeholder="First Name" />
+      <Input placeholder="Last Name" />
+      {/* ...more fields... */}
+    </div>
+  </ScrollArea>
+
+  {/* mt-0 removes default gap; border-t adds a visual separator */}
+  <DialogFooter className="mt-0 pt-6 border-t border-border-secondary">
+    <Button variant="secondary">Cancel</Button>
+    <Button variant="primary">Create Contact</Button>
+  </DialogFooter>
+</DialogContent>`}
+	preview={<DialogStickyFooterPreview />}
+/>
+
+### Scrollable Content (No Footer)
+
+When a dialog contains a browsable list with no explicit confirmation step (selection happens via row click or the dialog is purely informational), omit `DialogFooter`. The `ScrollArea` expands to fill all remaining space below the header.
+
+<CodeExample
+	title="Scrollable Content"
+	description="Header stays pinned — the list fills remaining space and scrolls"
+	code={`<DialogContent scrollable>
+  <DialogHeader>
+    <DialogTitle>Choose a Template</DialogTitle>
+  </DialogHeader>
+
+  <ScrollArea className="min-h-0">
+    <div className="py-2 pr-2">
+      <p className="mb-3 text-sm text-ink-light">Select a starting point.</p>
+      {templates.map((name, i) => (
+        <div key={i} className="flex items-center gap-3 py-3 border-b last:border-0 cursor-pointer hover:bg-bg rounded">
+          ...
+        </div>
+      ))}
+    </div>
+  </ScrollArea>
+</DialogContent>`}
+	preview={<DialogScrollableContentPreview />}
+/>
+
+### Outside Scroll
+
+Add the `outsideScroll` prop to `DialogContent`. The dialog renders without a `max-height` and grows naturally with its content. The dark backdrop becomes a scrollable container so users scroll the overlay rather than an internal area. Best for long read-only content like terms, changelogs, or documentation.
+
+<CodeExample
+	title="Outside Scroll"
+	description="The dialog grows to fit its content — users scroll the backdrop overlay"
+	code={`// The dialog has no max-height; it expands naturally.
+// The backdrop overlay becomes scrollable.
+<DialogContent outsideScroll>
+  <DialogHeader>
+    <DialogTitle>Terms &amp; Conditions</DialogTitle>
+  </DialogHeader>
+
+  <div className="pt-6 space-y-5">
+    <p className="text-sm text-ink-light">Scroll down to read all sections.</p>
+    {sections.map((s) => (
+      <div key={s.title}>
+        <h4 className="text-sm font-medium text-ink-dark mb-1">{s.title}</h4>
+        <p className="text-sm text-ink-light">{s.body}</p>
+      </div>
+    ))}
+  </div>
+
+  <DialogFooter>
+    <Button variant="secondary">Decline</Button>
+    <Button variant="primary">Accept &amp; Continue</Button>
+  </DialogFooter>
+</DialogContent>`}
+	preview={<DialogOutsideScrollPreview />}
+/>
+
+---
+
+## Programmatic Dialogs with useDialog
+
+For apps with many dialogs, the programmatic approach is cleaner. Instead of embedding `Dialog` + `DialogTrigger` everywhere, you register dialog components in a central config and open them from anywhere with `openDialog()`.
+
+### Architecture
+
+```
+DialogProvider          ← Wraps your app, manages dialog stack
+  ├── Your App
+  │   └── useDialog()   ← Call openDialog('type', props) from any component
+  └── DialogManager     ← Renders the active dialog from the stack
+        └── config      ← Registry mapping type strings to components
+```
+
+### Step 1: Create Dialog Components
+
+Dialog components receive `onClose` and any props you pass to `openDialog`. They render the **inner content** only — `DialogManager` handles the outer `Dialog` and `DialogContent` wrapper.
+
+<CodeExample
+	title="Dialog Component Pattern"
+	description="Each dialog is a standalone component that receives onClose and custom props"
+  code={`
+export function DeleteCampaignDialog({
+  dialogTitle,
+  campaignName,
+  onClose,
+}: {
+  dialogTitle: string;
+  campaignName: string;
+  onClose: () => void;
+}) {
+  return (
+    <>
+      <DialogTitle>{dialogTitle}</DialogTitle>
+      <DialogDescription>
+        {'Are you sure you want to delete ' + campaignName + '?'}
+      </DialogDescription>
+      <DialogFooter>
+        <Button variant="secondary" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="destructive" onClick={onClose}>
+          Delete Campaign
+        </Button>
+      </DialogFooter>
+    </>
+  );
+}`
+  }
+  preview={<DialogComponentPatternPreview dialogTitle="Are you sure you want to perform this delete action?" dialogDescription="Are you sure you want to delete this campaign?" campaignName="Campaign Name"  />}
+/>
+
+### Step 2: Create the Dialog Registry
+
+Map string keys to dialog components. Use dynamic imports for code splitting.
+
+```tsx
+// components/dialogs/index.ts
+import dynamic from 'next/dynamic';
+import type { DialogManagerConfig } from '@marmoui/ui';
+
+export const appDialogConfig: DialogManagerConfig = {
+  dialogs: {
+    // Campaign dialogs
+    deleteCampaign: dynamic(() => import('./delete-campaign-dialog'), { ssr: false }),
+    createCampaign: dynamic(() => import('./create-campaign-dialog'), { ssr: false }),
+
+    // Contact dialogs
+    createContact: dynamic(() => import('./create-contact-dialog'), { ssr: false }),
+    deleteContact: dynamic(() => import('./delete-contact-dialog'), { ssr: false }),
+    sendEmail: dynamic(() => import('./send-email-dialog'), { ssr: false }),
+    editContact: dynamic(() => import('./edit-contact-dialog'), { ssr: false }),
+  },
+  defaultConfig: {
+    size: 'md',
+    closeOnEscape: true,
+    closeOnInteractOutside: true,
+  },
+};
+```
+
+### Step 3: Wire Up the Provider
+
+Wrap your app with `DialogProvider` and place `DialogManager` at the root.
+
+```tsx
+// app/providers.tsx
+import { DialogProvider, DialogManager } from '@marmoui/ui';
+import { appDialogConfig } from '@/components/dialogs';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <DialogProvider>
+      {children}
+      <DialogManager config={appDialogConfig} />
+    </DialogProvider>
+  );
+}
+```
+
+### Step 4: Open Dialogs from Anywhere
+
+Call `useDialog()` in any component to get `openDialog`. Pass the dialog type string and any props the dialog component expects.
+
+<CodeExample
+	title="useDialog Hook"
+	description="Open any registered dialog from any component with openDialog()"
+	code={`import { useDialog, Button } from '@marmoui/ui';
+
+function CampaignActions({ campaign }) {
+  const { openDialog } = useDialog();
+
+  return (
+    <div className="flex gap-2">
+      <Button
+        variant="destructive"
+        onClick={() => openDialog('deleteCampaign', {
+          dialogTitle: \`Delete "\${campaign.name}"?\`,
+          dialogDescription: 'This action cannot be undone.',
+          campaignName: campaign.name,
+        })}
+      >
+        Delete
+      </Button>
+      <Button
+        variant="primary"
+        onClick={() => openDialog('createContact')}
+      >
+        Create Contact
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => openDialog('sendEmail', {
+          contactName: 'Jane Smith',
+        })}
+      >
+        Send Email
+      </Button>
+    </div>
+  );
+}`}
+	preview={<UseDialogPreview />}
+/>
+
+---
+
+## Dialog Stack
+
+`DialogStack` renders multiple dialogs as a visual stack — previous dialogs appear as cards pushed behind the active one. Use `DialogStackNext` and `DialogStackPrevious` to navigate between them.
+
+<CodeExample
+	title="Stacked Dialogs"
+	description="Navigate through multiple dialogs with a visual stack effect"
+	code={`<DialogStack>
+  <DialogStackTrigger asChild>
+    <Button>Open Stacked Dialogs</Button>
+  </DialogStackTrigger>
+  <DialogStackOverlay />
+  <DialogStackBody>
+    <DialogStackContent>
+      <DialogStackHeader>
+        <DialogStackTitle>Campaign Details</DialogStackTitle>
+        <DialogStackDescription>Fill in the basics.</DialogStackDescription>
+      </DialogStackHeader>
+      <div className="py-4">
+        <Input placeholder="Campaign name..." />
+      </div>
+      <DialogStackFooter>
+        <DialogStackPrevious asChild>
+          <Button variant="secondary" size="sm">Previous</Button>
+        </DialogStackPrevious>
+        <DialogStackNext asChild>
+          <Button variant="primary" size="sm">Next</Button>
+        </DialogStackNext>
+      </DialogStackFooter>
+    </DialogStackContent>
+
+    <DialogStackContent>
+      <DialogStackHeader>
+        <DialogStackTitle>Select Audience</DialogStackTitle>
+        <DialogStackDescription>Choose recipients.</DialogStackDescription>
+      </DialogStackHeader>
+      <div className="py-4">
+        <Input placeholder="All subscribers" />
+      </div>
+      <DialogStackFooter>
+        <DialogStackPrevious asChild>
+          <Button variant="secondary" size="sm">Previous</Button>
+        </DialogStackPrevious>
+        <DialogStackNext asChild>
+          <Button variant="primary" size="sm">Next</Button>
+        </DialogStackNext>
+      </DialogStackFooter>
+    </DialogStackContent>
+
+    <DialogStackContent>
+      <DialogStackHeader>
+        <DialogStackTitle>Review and Send</DialogStackTitle>
+        <DialogStackDescription>Confirm and launch.</DialogStackDescription>
+      </DialogStackHeader>
+      <div className="py-4">
+        <p className="text-sm text-ink-light">Ready to send.</p>
+      </div>
+      <DialogStackFooter>
+        <DialogStackPrevious asChild>
+          <Button variant="secondary" size="sm">Previous</Button>
+        </DialogStackPrevious>
+        <Button variant="primary" size="sm">Send Campaign</Button>
+      </DialogStackFooter>
+    </DialogStackContent>
+  </DialogStackBody>
+</DialogStack>`}
+	preview={<DialogStackPreview />}
+/>
+
+### Clickable Navigation
+
+Set `clickable` on `DialogStack` to allow users to click previous (stacked) cards to navigate back.
+
+<CodeExample
+	title="Clickable Stack"
+	description="Click previous dialog cards to navigate back"
+	code={`<DialogStack clickable>
+  <DialogStackTrigger asChild>
+    <Button>Open Clickable Stack</Button>
+  </DialogStackTrigger>
+  <DialogStackOverlay />
+  <DialogStackBody>
+    <DialogStackContent>...</DialogStackContent>
+    <DialogStackContent>...</DialogStackContent>
+    <DialogStackContent>...</DialogStackContent>
+  </DialogStackBody>
+</DialogStack>`}
+	preview={<DialogStackClickablePreview />}
+/>
+
+### Dialog Config Options
+
+Pass a third argument to `openDialog` to override the default config per dialog:
+
+```tsx
+openDialog('manageFolders', { type: 'campaign' }, {
+  size: 'lg',                       // Override size for this dialog
+  closeOnInteractOutside: false,    // Prevent closing by clicking outside
+  closeOnEscape: false,             // Prevent closing with Escape
+  role: 'alertdialog',             // ARIA role for critical dialogs
+});
+```
+
+### Dynamic Title and Description
+
+Every dialog automatically receives `dialogTitle` and `dialogDescription` from the props you pass to `openDialog`. This lets you customize the title per invocation:
+
+```tsx
+// From a contacts table row action
+openDialog('deleteContact', {
+  dialogTitle: `Delete "${contact.email}"?`,
+  dialogDescription: 'This action cannot be undone.',
+  contactEmail: contact.email,
+  contactId: contact.id,
+});
+
+// From a bulk action bar
+openDialog('deleteContact', {
+  dialogTitle: `Delete ${selectedContacts.length} contacts?`,
+  dialogDescription: 'This will permanently remove all selected contacts.',
+  contacts: selectedContacts,
+});
+```
+
+## Real-World Example
+
+Here is a complete setup from the Marmo Campaign app showing how all the pieces fit together:
+
+```tsx
+// 1. Root provider (app/providers.tsx)
+import { DialogProvider, DialogManager } from '@marmoui/ui';
+import { appDialogConfig } from '@/components/dialogs';
+
+export function Providers({ children }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <DialogProvider>
+        <SidebarProvider mainNavItems={navItems}>
+          {children}
+          <DialogManager config={appDialogConfig} />
+        </SidebarProvider>
+      </DialogProvider>
+    </QueryClientProvider>
+  );
+}
+
+// 2. Dialog registry (components/dialogs/index.ts)
+import dynamic from 'next/dynamic';
+import type { DialogManagerConfig } from '@marmoui/ui';
+
+export const appDialogConfig: DialogManagerConfig = {
+  dialogs: {
+    deleteCampaign: dynamic(() => import('../campaigns/delete-campaign-dialog'), { ssr: false }),
+    createCampaign: dynamic(() => import('../campaigns/create-campaign-dialog'), { ssr: false }),
+    createContact: dynamic(() => import('../contacts/create-contact-dialog'), { ssr: false }),
+    deleteContact: dynamic(() => import('../contacts/delete-contact-dialog'), { ssr: false }),
+    sendEmail: dynamic(() => import('../contacts/send-email-dialog'), { ssr: false }),
+    editContact: dynamic(() => import('../contacts/edit-contact-dialog'), { ssr: false }),
+    addToList: dynamic(() => import('../contacts/add-to-list-dialog'), { ssr: false }),
+    viewProfile: dynamic(() => import('../contacts/view-profile-dialog'), { ssr: false }),
+    templatePreview: dynamic(() => import('../campaigns/template-preview-dialog')
+      .then(mod => ({ default: mod.TemplatePreviewDialog })), { ssr: false }),
+  },
+  defaultConfig: {
+    size: 'md',
+    closeOnEscape: true,
+    closeOnInteractOutside: true,
+  },
+};
+
+// 3. Using in a data table row (components/contacts/contacts-list.tsx)
+function ContactRowActions({ contact }) {
+  const { openDialog } = useDialog();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <IconButton variant="ghost" size="sm"><MdMoreVert /></IconButton>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem onClick={() => openDialog('viewProfile', { contact })}>
+          View Profile
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => openDialog('editContact', { contact })}>
+          Edit Contact
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => openDialog('sendEmail', { contact })}>
+          Send Email
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => openDialog('addToList', { contact })}>
+          Add to List
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          variant="destructive"
+          onClick={() => openDialog('deleteContact', {
+            dialogTitle: `Delete "${contact.email}"?`,
+            contactEmail: contact.email,
+            contactId: contact.id,
+          })}
+        >
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+```
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use no-header layout for confirmations">
+		For simple confirmations and alerts, put DialogTitle and DialogDescription directly inside DialogContent — no DialogHeader needed.
+	</Guideline>
+
+	<Guideline type="do" title="Use DialogHeader for forms and settings">
+		Use DialogHeader when content is richer — forms, settings panels, or any dialog where a persistent title bar helps orientation.
+	</Guideline>
+
+	<Guideline type="do" title="Use the registry for app-wide dialogs">
+		Register all dialogs in a central config. This keeps dialog logic centralized and enables code splitting via dynamic imports.
+	</Guideline>
+
+	<Guideline type="do" title="Use action-oriented button labels">
+		Use specific labels like "Delete Campaign", "Save Changes", "Send Email" instead of generic "Yes" or "OK".
+	</Guideline>
+
+	<Guideline type="dont" title="Don't nest DialogProvider">
+		Only wrap your app root with one `DialogProvider`. All components share the same dialog stack.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't render Dialog wrapper in registered components">
+		Registered dialog components should render only the inner content (Header, body, Footer). `DialogManager` handles the outer `Dialog` and `DialogContent` wrapper.
+	</Guideline>
+
+	<Guideline type="dont" title="Don't use for non-critical content">
+		Dialogs interrupt the user. For informational messages, use Toast. For quick selections, use Popover or Dropdown.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### Dialog
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | — | Controlled open state |
+| `onOpenChange` | `(open: boolean) => void` | — | Called when open state changes |
+| `defaultOpen` | `boolean` | `false` | Uncontrolled initial open state |
+| `modal` | `boolean` | `true` | Whether to render as modal |
+
+### DialogContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Dialog width |
+| `showCloseButton` | `boolean` | `true` | Show the X close button |
+| `className` | `string` | — | Additional className |
+
+### DialogConfig (for openDialog)
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Dialog width |
+| `closeOnEscape` | `boolean` | `true` | Allow closing with Escape key |
+| `closeOnInteractOutside` | `boolean` | `true` | Allow closing by clicking overlay |
+| `role` | `'dialog' \| 'alertdialog'` | `'dialog'` | ARIA role |
+
+### useDialog
+
+```tsx
+const {
+  openDialog,       // (type: string, props?: object, config?: DialogConfig) => void
+  closeDialog,      // () => void — closes the top dialog
+  closeAllDialogs,  // () => void — clears the entire stack
+  dialogStack,      // DialogEntry[] — current stack of open dialogs
+} = useDialog();
+```
+
+### DialogManagerConfig
+
+```tsx
+interface DialogManagerConfig {
+  dialogs: Record<string, ComponentType<any>>;  // Dialog registry
+  defaultConfig?: {
+    size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+    closeOnEscape?: boolean;
+    closeOnInteractOutside?: boolean;
+  };
+}
+```
+
+## Accessibility
+
+<InfoCallout type="warning" title="Focus Management">
+Dialogs automatically trap focus and return it to the trigger element when closed. Ensure all interactive elements inside dialogs are keyboard accessible.
+</InfoCallout>
+
+- Focus is automatically trapped within the dialog
+- Pressing Escape closes the dialog (unless `closeOnEscape: false`)
+- Focus returns to the trigger element on close
+- Use `DialogTitle` for the dialog heading (renders as h2)
+- Provide `DialogDescription` for screen reader context
+- Use `role="alertdialog"` in config for critical confirmations
+- All buttons and inputs are keyboard navigable

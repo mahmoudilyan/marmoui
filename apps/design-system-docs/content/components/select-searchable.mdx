@@ -1,0 +1,355 @@
+---
+title: Select Searchable
+description: A searchable select component with single or multiple selection, keyboard navigation, and tag-based display for selected items.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/select-searchable
+keywords:
+  - select
+  - search
+  - combobox
+  - autocomplete
+  - multi select
+  - tags
+  - filter
+lastUpdated: 2026-03-18
+---
+
+import { SelectSearchable } from '@marmoui/ui';
+import {
+	SelectSearchableBasicPreview,
+	SelectSearchableCountryPreview,
+	SelectSearchableMultiplePreview,
+	SelectSearchableMultipleTeamPreview,
+	SelectSearchableMaxTagsPreview,
+	SelectSearchableMaxNumberPreview,
+	SelectSearchableWithDescriptionPreview,
+	SelectSearchableDisabledPreview,
+	SelectSearchableCheckboxPreview,
+	SelectSearchableCheckboxPermissionsPreview,
+} from '@/components/previews/select-searchable-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    SelectSearchable is a combobox-style component that combines a select trigger with a searchable dropdown. It supports both single and multiple selection modes.
+
+    In **single mode**, it behaves like a searchable dropdown — select one item and the popover closes.
+
+    In **multiple mode**, selected items appear as removable tags in the trigger. The popover stays open for continued selection.
+
+    **When to Use:**
+    - Selecting from a long list of options (countries, contacts, products)
+    - Tagging or categorizing items with multiple selections
+    - Assigning team members or labels
+    - Any select where search/filter improves usability
+
+    **When NOT to Use:**
+    - For short lists under 5 items (use Select or RadioGroup)
+    - For action menus (use DropdownMenu)
+    - For categorized multi-select (use SelectMultiCategory)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { SelectSearchable } from '@marmoui/ui';
+```
+
+### Single Select
+
+```tsx
+const [value, setValue] = useState('');
+
+<SelectSearchable
+  items={frameworks}
+  placeholder="Select a framework..."
+  value={value}
+  onChange={setValue}
+/>
+```
+
+### Multiple Select
+
+```tsx
+const [value, setValue] = useState<string[]>([]);
+
+<SelectSearchable
+  items={tags}
+  multiple
+  placeholder="Add tags..."
+  value={value}
+  onChange={setValue}
+/>
+```
+
+## Examples
+
+### Basic
+
+<CodeExample
+	title="Single Select"
+	description="Search and pick one item from the list"
+	code={`const [value, setValue] = useState('');
+
+<SelectSearchable
+  items={frameworks}
+  placeholder="Select a framework..."
+  searchPlaceholder="Search frameworks..."
+  value={value}
+  onChange={setValue}
+/>`}
+	preview={<SelectSearchableBasicPreview />}
+/>
+
+### Country Picker
+
+<CodeExample
+	title="Country Picker"
+	description="Search through a long list of countries"
+	code={`const [value, setValue] = useState('');
+
+<SelectSearchable
+  items={countries}
+  placeholder="Select a country..."
+  searchPlaceholder="Search countries..."
+  value={value}
+  onChange={setValue}
+/>`}
+	preview={<SelectSearchableCountryPreview />}
+/>
+
+### Multiple with Tags
+
+<CodeExample
+	title="Multiple Selection"
+	description="Select multiple items displayed as removable tags"
+	code={`const [value, setValue] = useState(['vip', 'high-value']);
+
+<SelectSearchable
+  items={tags}
+  multiple
+  placeholder="Add tags..."
+  searchPlaceholder="Search tags..."
+  value={value}
+  onChange={setValue}
+/>`}
+	preview={<SelectSearchableMultiplePreview />}
+/>
+
+### Team Assignment
+
+<CodeExample
+	title="Team Members"
+	description="Assign multiple people with descriptions and overflow indicator"
+	code={`const [value, setValue] = useState([]);
+
+<SelectSearchable
+  items={teamMembers}
+  multiple
+  placeholder="Assign team members..."
+  searchPlaceholder="Search people..."
+  value={value}
+  onChange={setValue}
+/>`}
+	preview={<SelectSearchableMultipleTeamPreview />}
+/>
+
+### Max Visible Tags
+
+<CodeExample
+	title="Max Tags"
+	description="Limit visible tags in the trigger — overflow shows a count indicator"
+	code={`const [value, setValue] = useState(['vip', 'high-value', 'returning', 'enterprise']);
+
+<SelectSearchable
+  items={tags}
+  multiple
+  maxTags={2}
+  placeholder="Add tags..."
+  searchPlaceholder="Search tags..."
+  value={value}
+  onChange={setValue}
+/>`}
+	preview={<SelectSearchableMaxTagsPreview />}
+/>
+
+### Max Selections
+
+<CodeExample
+	title="Max Number"
+	description="Limit the total number of items that can be selected"
+	code={`const [value, setValue] = useState([]);
+
+<SelectSearchable
+  items={teamMembers}
+  multiple
+  maxNumber={3}
+  placeholder="Pick up to 3 people..."
+  searchPlaceholder="Search people..."
+  value={value}
+  onChange={setValue}
+/>`}
+	preview={<SelectSearchableMaxNumberPreview />}
+/>
+
+### With Descriptions
+
+<CodeExample
+	title="Items with Descriptions"
+	description="Each option shows a secondary description line"
+	code={`<SelectSearchable
+  items={[
+    { label: 'Next.js', value: 'next', description: 'React framework by Vercel' },
+    { label: 'SvelteKit', value: 'sveltekit', description: 'Svelte meta-framework' },
+    { label: 'Nuxt', value: 'nuxt', description: 'Vue.js framework' },
+  ]}
+  placeholder="Pick a framework..."
+  emptyMessage="No frameworks match your search."
+  value={value}
+  onChange={setValue}
+/>`}
+	preview={<SelectSearchableWithDescriptionPreview />}
+/>
+
+### Disabled
+
+<CodeExample
+	title="Disabled"
+	description="Select in a non-interactive disabled state"
+	code={`<SelectSearchable
+  items={frameworks}
+  placeholder="Disabled select..."
+  disabled
+/>`}
+	preview={<SelectSearchableDisabledPreview />}
+/>
+
+## Indicator Styles
+
+The `indicator` prop controls how selected items are shown in the dropdown. Use `'check'` (default) for a checkmark on the right, or `'checkbox'` for a checkbox on the left.
+
+**When to use `check` (default):**
+- Standard single-select dropdowns (country picker, status selector)
+- Multi-select where tags in the trigger already communicate selection state
+- Simpler, cleaner look for lists where toggling is secondary
+
+**When to use `checkbox`:**
+- Data table column visibility toggles
+- Permission or feature toggles where on/off state must be obvious
+- Settings panels where every item is independently togglable
+- Any list where the user mentally models items as "checked" or "unchecked"
+
+### Checkbox — Column Visibility
+
+<CodeExample
+	title="Data Table Columns"
+	description="Toggle visible columns in a data table using checkbox indicator"
+	code={`const [value, setValue] = useState(['name', 'email', 'total', 'status']);
+
+<SelectSearchable
+  items={tableColumns}
+  multiple
+  indicator="checkbox"
+  placeholder="Toggle columns..."
+  searchPlaceholder="Search columns..."
+  value={value}
+  onChange={setValue}
+/>`}
+	preview={<SelectSearchableCheckboxPreview />}
+/>
+
+### Checkbox — Permissions
+
+<CodeExample
+	title="Role Permissions"
+	description="Assign permissions to a role with clear on/off state"
+	code={`const [value, setValue] = useState(['view-dashboard', 'access-reports']);
+
+<SelectSearchable
+  items={permissions}
+  multiple
+  indicator="checkbox"
+  placeholder="Assign permissions..."
+  searchPlaceholder="Search permissions..."
+  value={value}
+  onChange={setValue}
+/>`}
+	preview={<SelectSearchableCheckboxPermissionsPreview />}
+/>
+
+## Custom Items
+
+Use `labelKey`, `valueKey`, and `descriptionKey` when your items have different property names.
+
+```tsx
+const products = [
+  { name: 'Pro Plan', id: 'pro', info: 'Best for growing businesses' },
+  { name: 'Enterprise', id: 'enterprise', info: 'For large organizations' },
+];
+
+<SelectSearchable
+  items={products}
+  labelKey="name"
+  valueKey="id"
+  descriptionKey="info"
+  placeholder="Select a plan..."
+  value={value}
+  onChange={setValue}
+/>
+```
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use for long lists">
+		Search is most valuable when there are 10+ options. For short lists, use a standard Select.
+	</Guideline>
+	<Guideline type="do" title="Provide helpful placeholders">
+		Use descriptive placeholder and searchPlaceholder text so users know what to expect.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for actions">
+		This is for selecting values, not triggering actions. Use DropdownMenu for action menus.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `T[]` | - | Array of items to display |
+| `multiple` | `boolean` | `false` | Enable multi-select mode |
+| `value` | `string \| string[]` | - | Selected value(s) — string for single, string[] for multiple |
+| `onChange` | `(value) => void` | - | Callback when selection changes |
+| `placeholder` | `string` | `'Select...'` | Trigger placeholder text |
+| `searchPlaceholder` | `string` | `'Search...'` | Search input placeholder |
+| `emptyMessage` | `string` | `'No results found'` | Message shown when no items match search |
+| `labelKey` | `keyof T` | `'label'` | Property name for the display label |
+| `valueKey` | `keyof T` | `'value'` | Property name for the item value |
+| `descriptionKey` | `keyof T` | `'description'` | Property name for optional description |
+| `indicator` | `'check' \| 'checkbox'` | `'check'` | `check` = checkmark on right, `checkbox` = checkbox on left |
+| `maxTags` | `number` | `0` | Max visible tags in trigger (multiple only). `0` = show all |
+| `maxNumber` | `number` | - | Max number of items that can be selected (multiple only) |
+| `disabled` | `boolean` | `false` | Disable the select |
+| `className` | `string` | - | Additional className for the trigger |
+
+## Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `Arrow Down` | Highlight next item |
+| `Arrow Up` | Highlight previous item |
+| `Enter` | Select highlighted item |
+| `Escape` | Close the popover |
+| Type to filter | Filters items in real-time |
+
+## Accessibility
+
+- Uses `aria-haspopup="listbox"` with `aria-expanded` on the trigger.
+- The dropdown list uses `role="listbox"` with `role="option"` on each item.
+- Each option has `aria-selected` for screen readers.
+- Full keyboard navigation with arrow keys and enter to select.
+- Search input auto-focuses when the popover opens.

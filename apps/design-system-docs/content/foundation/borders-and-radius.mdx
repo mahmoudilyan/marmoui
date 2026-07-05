@@ -1,0 +1,99 @@
+---
+title: Borders And Radius
+description: Border styles and corner radius tokens that define the shape language of the design system.
+category: Foundation
+keywords:
+  - borders
+  - radius
+  - rounded
+  - corners
+  - border-radius
+  - shape
+lastUpdated: 2026-03-10
+---
+
+# Usage
+
+## Overview
+
+Borders and border radius define the shape language of the Marmo UI. Consistent use of these tokens ensures a cohesive visual identity across all components, from sharp-cornered data tables to gently rounded cards.
+
+* Borders provide visual separation and containment for UI elements.
+* Border radius tokens create consistent corner rounding across the system.
+* The combination of border color, width, and radius defines the personality of the interface.
+
+### Radius Scale
+
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `--radius-none` | `0px` | Sharp corners, data tables, inline elements |
+| `--radius-2xs` | `2px` | Subtle rounding, tags, small badges |
+| `--radius-xs` | `4px` | Form inputs, compact cards |
+| `--radius-sm` | `6px` | Buttons, dropdowns, small cards |
+| `--radius` | `8px` | Default rounding, cards, dialogs |
+| `--radius-lg` | `8px` | Larger cards, panels |
+| `--radius-xl` | `12px` | Hero cards, featured content |
+| `--radius-full` | `9999px` | Pills, avatars, circular elements |
+
+### Border Colors
+
+| Token | CSS Variable | Usage |
+|-------|-------------|-------|
+| Default | `--color-border` | Standard borders for cards, inputs, dividers |
+| Hover | `--color-border-hover` | Borders on hover state |
+| Secondary | `--color-border-secondary` | Subtle secondary borders |
+| Muted | `--color-border-muted` | Very light borders, background separation |
+| Focus | `--color-border-focus` | Focus ring color for interactive elements |
+| Destructive | `--color-border-destructive` | Error and destructive state borders |
+| Success | `--color-border-success` | Success state borders |
+| Primary | `--color-border-primary` | Primary brand borders |
+| Info | `--color-border-info` | Informational borders |
+| Warning | `--color-border-warning` | Warning state borders |
+
+### Best Practices
+
+* Use `--radius` (8px) as the default for most components.
+* Match radius scale to component size: smaller components get smaller radius.
+* Use `--radius-full` only for pills, avatars, and circular elements.
+* Use consistent border widths: `1px` for standard borders, `2px` for emphasis or focus states.
+* Pair border color tokens with their semantic meaning (use `--color-border-destructive` for error states, not arbitrary red).
+
+### When Not to Use
+
+* Don't apply border-radius to elements that need sharp edges for alignment (e.g., data table cells).
+* Avoid mixing drastically different radius values on adjacent elements.
+* Don't use borders as the sole means of indicating state; combine with color and icon changes.
+
+## Usage in Code
+
+### CSS Custom Properties
+
+```css
+.my-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.my-card:hover {
+  border-color: var(--color-border-hover);
+}
+
+.my-card:focus-within {
+  border-color: var(--color-border-focus);
+  outline: 2px solid var(--color-border-focus);
+}
+```
+
+### Tailwind Classes
+
+```html
+<div class="border border-border rounded-lg">Default card</div>
+<div class="border border-border-hover rounded-sm">Compact element</div>
+<div class="rounded-full">Pill or avatar</div>
+```
+
+## Accessibility
+
+* Focus rings should use `--color-border-focus` with a minimum 2px width for keyboard navigation visibility.
+* Ensure border colors meet WCAG 2.1 AA contrast requirements (3:1 for non-text elements).
+* Don't rely solely on border color changes to communicate state; always pair with other visual indicators.

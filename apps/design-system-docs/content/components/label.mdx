@@ -1,0 +1,84 @@
+---
+title: Label
+description: A text label component that provides accessible identification for form inputs and interactive elements.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/label
+keywords:
+  - label
+  - form label
+  - input label
+  - accessibility
+lastUpdated: 2026-03-10
+---
+
+import { Label, Input } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Label provides accessible text identification for form inputs. Built on Radix UI's Label primitive, it automatically handles click-to-focus behavior and screen reader associations.
+
+    **When to Use:**
+    - Labeling form inputs, selects, textareas, and other form controls
+    - When you need a standalone label outside of the Field or Form components
+
+    **When NOT to Use:**
+    - When using Field or FormLabel (they include labels internally)
+    - For non-form descriptive text (use Text component)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Label } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Label
+
+<CodeExample
+	title="With Input"
+	description="Label associated with a text input"
+	code={`<div className="flex flex-col gap-1.5">
+  <Label htmlFor="email">Email address</Label>
+  <Input id="email" type="email" placeholder="you@example.com" />
+</div>`}
+	preview={
+		<div className="flex flex-col gap-1.5">
+			<Label htmlFor="email-demo">Email address</Label>
+			<Input id="email-demo" type="email" placeholder="you@example.com" />
+		</div>
+	}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Always pair labels with inputs">
+		Every form input should have an associated label using the `htmlFor` attribute.
+	</Guideline>
+	<Guideline type="do" title="Keep labels concise">
+		Use clear, short labels that describe the expected input.
+	</Guideline>
+	<Guideline type="dont" title="Don't hide labels">
+		Visible labels are essential for usability. Avoid visually hiding labels in favor of placeholders.
+	</Guideline>
+	<Guideline type="dont" title="Don't use labels for instructions">
+		Keep labels brief. Use helper text for additional guidance.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Label" />
+
+## Accessibility
+
+- Clicking the label focuses the associated input.
+- Screen readers announce the label when the input receives focus.
+- Uses the native `<label>` element for maximum compatibility.

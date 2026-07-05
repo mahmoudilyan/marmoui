@@ -1,0 +1,339 @@
+---
+title: Colors
+description: Our color system built using OKLCH color space for perceptually uniform colors and consistent accessibility
+category: Foundation
+status: stable
+keywords:
+  - colors
+  - tokens
+  - palette
+  - semantic colors
+  - oklch
+  - accessibility
+lastUpdated: 2025-01-27
+---
+
+## Overview
+
+Our color system is built using OKLCH color space for perceptually uniform colors and consistent accessibility. The system includes comprehensive color palettes with semantic naming conventions.
+
+## Color System Overview
+
+### OKLCH Color Space
+We use OKLCH (Oklch Lightness Chroma Hue) for all our color definitions because it provides:
+- **Perceptual uniformity**: Colors with the same lightness appear equally bright
+- **Better accessibility**: More predictable contrast ratios
+- **Consistent saturation**: Colors maintain consistent vibrancy across hues
+
+<InfoCallout type="info" title="OKLCH and Dark Mode Scaling">
+While OKLCH enables consistent perceptual scaling, we intentionally deviated from strict mathematical rules to ensure colors feel natural and visually harmonious. Dark mode colors are not simply inverted versions of light mode—they represent a fundamentally different approach to color presentation. We've applied distinct scaling strategies for dark mode that account for reduced ambient light, different contrast requirements, and the perceptual differences in how colors appear on dark backgrounds. This approach ensures our dark theme feels cohesive and natural, rather than mechanically inverted.
+</InfoCallout>
+
+## Color Palettes
+
+<ColorPalette
+	name="Base Colors"
+	description="Essential black and white colors for high contrast and foundational elements."
+	colors={[
+		{ name: 'White', variable: '--color-white', textColor: 'dark', value: 'oklch(1 0 0)' },
+		{ name: 'Black', variable: '--color-black', textColor: 'light', value: 'oklch(0.16 0 0)' },
+	]}
+	columns={2}
+/>
+
+<ColorPalette
+	name="Primary Colors"
+	description="Brand primary palette — indigo tones anchored at 600 (#3C44A8) for actions and links."
+	colors={[
+		{ name: '50', variable: '--color-primary-50', shade: 50, textColor: 'dark', value: '#EDEEFA' },
+		{ name: '100', variable: '--color-primary-100', shade: 100, textColor: 'dark', value: '#DBDDF6' },
+		{ name: '200', variable: '--color-primary-200', shade: 200, textColor: 'dark', value: '#B7BBED' },
+		{ name: '300', variable: '--color-primary-300', shade: 300, textColor: 'dark', value: '#9399E4' },
+		{ name: '400', variable: '--color-primary-400', shade: 400, textColor: 'dark', value: '#6F77DB' },
+		{ name: '500', variable: '--color-primary-500', shade: 500, textColor: 'light', value: '#4B56D2' },
+		{ name: '600', variable: '--color-primary-600', shade: 600, textColor: 'light', value: '#3C44A8' },
+		{ name: '700', variable: '--color-primary-700', shade: 700, textColor: 'light', value: '#363D96' },
+		{ name: '800', variable: '--color-primary-800', shade: 800, textColor: 'light', value: '#313789' },
+		{ name: '900', variable: '--color-primary-900', shade: 900, textColor: 'light', value: '#2B3179' },
+	]}
+/>
+
+<ColorPalette
+	name="Gray Scale"
+	description="Our neutral colors for backgrounds, borders, and subtle elements ranging from 50 to 950."
+	colors={[
+		{ name: '50', variable: '--color-gray-50', shade: 50, textColor: 'dark', value: 'oklch(0.98 0 229)' },
+		{ name: '100', variable: '--color-gray-100', shade: 100, textColor: 'dark', value: 'oklch(0.94 0.01 240)' },
+		{ name: '200', variable: '--color-gray-200', shade: 200, textColor: 'dark', value: 'oklch(0.88 0.01 252)' },
+		{ name: '300', variable: '--color-gray-300', shade: 300, textColor: 'dark', value: 'oklch(0.79 0.02 257)' },
+		{ name: '400', variable: '--color-gray-400', shade: 400, textColor: 'dark', value: 'oklch(0.66 0.04 257)' },
+		{ name: '500', variable: '--color-gray-500', shade: 500, textColor: 'light', value: 'oklch(0.58 0.04 254)' },
+		{ name: '600', variable: '--color-gray-600', shade: 600, textColor: 'light', value: 'oklch(0.47 0.05 256)' },
+		{ name: '700', variable: '--color-gray-700', shade: 700, textColor: 'light', value: 'oklch(0.44 0.05 256)' },
+		{ name: '800', variable: '--color-gray-800', shade: 800, textColor: 'light', value: 'oklch(0.41 0.04 256)' },
+		{ name: '900', variable: '--color-gray-900', shade: 900, textColor: 'light', value: 'oklch(0.37 0.04 256)' },
+		{ name: '950', variable: '--color-gray-950', shade: 950, textColor: 'light', value: 'oklch(0.16 0 0)' },
+	]}
+/>
+
+<ColorPalette
+	name="Red Palette"
+	description="For errors, warnings, and destructive actions."
+	colors={[
+		{ name: '50', variable: '--color-red-50', shade: 50, textColor: 'dark', value: 'oklch(0.98 0.01 17.3)' },
+		{ name: '100', variable: '--color-red-100', shade: 100, textColor: 'dark', value: 'oklch(0.91 0.05 18.1)' },
+		{ name: '200', variable: '--color-red-200', shade: 200, textColor: 'dark', value: 'oklch(0.83 0.09 19.2)' },
+		{ name: '300', variable: '--color-red-300', shade: 300, textColor: 'dark', value: 'oklch(0.75 0.13 22.3)' },
+		{ name: '400', variable: '--color-red-400', shade: 400, textColor: 'dark', value: 'oklch(0.67 0.16 25.9)' },
+		{ name: '500', variable: '--color-red-500', shade: 500, textColor: 'light', value: 'oklch(0.58 0.18 27.9)' },
+		{ name: '600', variable: '--color-red-600', shade: 600, textColor: 'light', value: 'oklch(0.48 0.2 28.9)' },
+		{ name: '700', variable: '--color-red-700', shade: 700, textColor: 'light', value: 'oklch(0.44 0.18 28.9)' },
+		{ name: '800', variable: '--color-red-800', shade: 800, textColor: 'light', value: 'oklch(0.41 0.17 28.8)' },
+		{ name: '900', variable: '--color-red-900', shade: 900, textColor: 'light', value: 'oklch(0.38 0.15 28.8)' },
+	]}
+/>
+
+<ColorPalette
+	name="Orange Palette"
+	description="Warm accent colors for highlights and notifications."
+	colors={[
+		{ name: '50', variable: '--color-orange-50', shade: 50, textColor: 'dark', value: 'oklch(0.98 0.01 60.6)' },
+		{ name: '100', variable: '--color-orange-100', shade: 100, textColor: 'dark', value: 'oklch(0.95 0.03 57.9)' },
+		{ name: '200', variable: '--color-orange-200', shade: 200, textColor: 'dark', value: 'oklch(0.89 0.06 55.8)' },
+		{ name: '300', variable: '--color-orange-300', shade: 300, textColor: 'dark', value: 'oklch(0.83 0.1 54.8)' },
+		{ name: '400', variable: '--color-orange-400', shade: 400, textColor: 'dark', value: 'oklch(0.79 0.13 53.5)' },
+		{ name: '500', variable: '--color-orange-500', shade: 500, textColor: 'dark', value: 'oklch(0.74 0.17 50.7)' },
+		{ name: '600', variable: '--color-orange-600', shade: 600, textColor: 'light', value: 'oklch(0.69 0.19 44.9)' },
+		{ name: '700', variable: '--color-orange-700', shade: 700, textColor: 'light', value: 'oklch(0.63 0.18 45.2)' },
+		{ name: '800', variable: '--color-orange-800', shade: 800, textColor: 'light', value: 'oklch(0.58 0.16 45.5)' },
+		{ name: '900', variable: '--color-orange-900', shade: 900, textColor: 'light', value: 'oklch(0.53 0.15 45.5)' },
+	]}
+/>
+
+<ColorPalette
+	name="Yellow Palette"
+	description="Warning states and attention-grabbing elements."
+	colors={[
+		{ name: '50', variable: '--color-yellow-50', shade: 50, textColor: 'dark', value: 'oklch(1 0.02 107)' },
+		{ name: '100', variable: '--color-yellow-100', shade: 100, textColor: 'dark', value: 'oklch(0.98 0.08 106)' },
+		{ name: '200', variable: '--color-yellow-200', shade: 200, textColor: 'dark', value: 'oklch(0.94 0.13 104)' },
+		{ name: '300', variable: '--color-yellow-300', shade: 300, textColor: 'dark', value: 'oklch(0.92 0.15 102)' },
+		{ name: '400', variable: '--color-yellow-400', shade: 400, textColor: 'dark', value: 'oklch(0.9 0.16 101)' },
+		{ name: '500', variable: '--color-yellow-500', shade: 500, textColor: 'dark', value: 'oklch(0.89 0.17 101)' },
+		{ name: '600', variable: '--color-yellow-600', shade: 600, textColor: 'dark', value: 'oklch(0.86 0.17 97.3)' },
+		{ name: '700', variable: '--color-yellow-700', shade: 700, textColor: 'dark', value: 'oklch(0.79 0.16 94.7)' },
+		{ name: '800', variable: '--color-yellow-800', shade: 800, textColor: 'dark', value: 'oklch(0.74 0.15 94.7)' },
+		{ name: '900', variable: '--color-yellow-900', shade: 900, textColor: 'dark', value: 'oklch(0.67 0.14 94.8)' },
+	]}
+/>
+
+<ColorPalette
+	name="Green Palette"
+	description="Success states, positive feedback, and nature themes."
+	colors={[
+		{ name: '50', variable: '--color-green-50', shade: 50, textColor: 'dark', value: 'oklch(0.99 0.02 154)' },
+		{ name: '100', variable: '--color-green-100', shade: 100, textColor: 'dark', value: 'oklch(0.93 0.07 155)' },
+		{ name: '200', variable: '--color-green-200', shade: 200, textColor: 'dark', value: 'oklch(0.86 0.1 155)' },
+		{ name: '300', variable: '--color-green-300', shade: 300, textColor: 'dark', value: 'oklch(0.79 0.14 155)' },
+		{ name: '400', variable: '--color-green-400', shade: 400, textColor: 'dark', value: 'oklch(0.71 0.14 155)' },
+		{ name: '500', variable: '--color-green-500', shade: 500, textColor: 'light', value: 'oklch(0.63 0.13 156)' },
+		{ name: '600', variable: '--color-green-600', shade: 600, textColor: 'light', value: 'oklch(0.55 0.11 158)' },
+		{ name: '700', variable: '--color-green-700', shade: 700, textColor: 'light', value: 'oklch(0.51 0.1 158)' },
+		{ name: '800', variable: '--color-green-800', shade: 800, textColor: 'light', value: 'oklch(0.47 0.09 158)' },
+		{ name: '900', variable: '--color-green-900', shade: 900, textColor: 'light', value: 'oklch(0.43 0.08 158)' },
+	]}
+/>
+
+<ColorPalette
+	name="Teal Palette"
+	description="Cool accent colors and secondary brand elements."
+	colors={[
+		{ name: '50', variable: '--color-teal-50', shade: 50, textColor: 'dark', value: 'oklch(0.98 0.03 182)' },
+		{ name: '100', variable: '--color-teal-100', shade: 100, textColor: 'dark', value: 'oklch(0.92 0.07 184)' },
+		{ name: '200', variable: '--color-teal-200', shade: 200, textColor: 'dark', value: 'oklch(0.86 0.1 185)' },
+		{ name: '300', variable: '--color-teal-300', shade: 300, textColor: 'dark', value: 'oklch(0.79 0.11 187)' },
+		{ name: '400', variable: '--color-teal-400', shade: 400, textColor: 'dark', value: 'oklch(0.7 0.11 190)' },
+		{ name: '500', variable: '--color-teal-500', shade: 500, textColor: 'light', value: 'oklch(0.62 0.09 193)' },
+		{ name: '600', variable: '--color-teal-600', shade: 600, textColor: 'light', value: 'oklch(0.53 0.07 196)' },
+		{ name: '700', variable: '--color-teal-700', shade: 700, textColor: 'light', value: 'oklch(0.51 0.07 196)' },
+		{ name: '800', variable: '--color-teal-800', shade: 800, textColor: 'light', value: 'oklch(0.46 0.06 197)' },
+		{ name: '900', variable: '--color-teal-900', shade: 900, textColor: 'light', value: 'oklch(0.42 0.06 195)' },
+	]}
+/>
+
+<ColorPalette
+	name="Blue Palette"
+	description="Information states, links, and professional themes."
+	colors={[
+		{ name: '50', variable: '--color-blue-50', shade: 50, textColor: 'dark', value: 'oklch(0.97 0.02 231)' },
+		{ name: '100', variable: '--color-blue-100', shade: 100, textColor: 'dark', value: 'oklch(0.9 0.05 233)' },
+		{ name: '200', variable: '--color-blue-200', shade: 200, textColor: 'dark', value: 'oklch(0.81 0.09 237)' },
+		{ name: '300', variable: '--color-blue-300', shade: 300, textColor: 'dark', value: 'oklch(0.69 0.12 242)' },
+		{ name: '400', variable: '--color-blue-400', shade: 400, textColor: 'light', value: 'oklch(0.61 0.13 247)' },
+		{ name: '500', variable: '--color-blue-500', shade: 500, textColor: 'light', value: 'oklch(0.55 0.13 250)' },
+		{ name: '600', variable: '--color-blue-600', shade: 600, textColor: 'light', value: 'oklch(0.46 0.12 253)' },
+		{ name: '700', variable: '--color-blue-700', shade: 700, textColor: 'light', value: 'oklch(0.42 0.11 253)' },
+		{ name: '800', variable: '--color-blue-800', shade: 800, textColor: 'light', value: 'oklch(0.39 0.1 253)' },
+		{ name: '900', variable: '--color-blue-900', shade: 900, textColor: 'light', value: 'oklch(0.36 0.09 252)' },
+	]}
+/>
+
+<ColorPalette
+	name="Indigo Palette"
+	description="Deep blue tones for sophisticated interfaces."
+	colors={[
+		{ name: '50', variable: '--color-indigo-50', shade: 50, textColor: 'dark', value: 'oklch(0.96 0.02 253)' },
+		{ name: '100', variable: '--color-indigo-100', shade: 100, textColor: 'dark', value: 'oklch(0.88 0.06 259)' },
+		{ name: '200', variable: '--color-indigo-200', shade: 200, textColor: 'dark', value: 'oklch(0.81 0.09 265)' },
+		{ name: '300', variable: '--color-indigo-300', shade: 300, textColor: 'dark', value: 'oklch(0.71 0.13 269)' },
+		{ name: '400', variable: '--color-indigo-400', shade: 400, textColor: 'light', value: 'oklch(0.63 0.16 272)' },
+		{ name: '500', variable: '--color-indigo-500', shade: 500, textColor: 'light', value: 'oklch(0.56 0.17 275)' },
+		{ name: '600', variable: '--color-indigo-600', shade: 600, textColor: 'light', value: 'oklch(0.49 0.17 276)' },
+		{ name: '700', variable: '--color-indigo-700', shade: 700, textColor: 'light', value: 'oklch(0.46 0.15 277)' },
+		{ name: '800', variable: '--color-indigo-800', shade: 800, textColor: 'light', value: 'oklch(0.43 0.14 277)' },
+		{ name: '900', variable: '--color-indigo-900', shade: 900, textColor: 'light', value: 'oklch(0.38 0.13 276)' },
+	]}
+/>
+
+<ColorPalette
+	name="Purple Palette"
+	description="Creative and premium brand elements."
+	colors={[
+		{ name: '50', variable: '--color-purple-50', shade: 50, textColor: 'dark', value: 'oklch(0.98 0.01 308)' },
+		{ name: '100', variable: '--color-purple-100', shade: 100, textColor: 'dark', value: 'oklch(0.91 0.05 306)' },
+		{ name: '200', variable: '--color-purple-200', shade: 200, textColor: 'dark', value: 'oklch(0.84 0.09 304)' },
+		{ name: '300', variable: '--color-purple-300', shade: 300, textColor: 'dark', value: 'oklch(0.74 0.14 300)' },
+		{ name: '400', variable: '--color-purple-400', shade: 400, textColor: 'light', value: 'oklch(0.66 0.16 297)' },
+		{ name: '500', variable: '--color-purple-500', shade: 500, textColor: 'light', value: 'oklch(0.57 0.18 294)' },
+		{ name: '600', variable: '--color-purple-600', shade: 600, textColor: 'light', value: 'oklch(0.5 0.18 292)' },
+		{ name: '700', variable: '--color-purple-700', shade: 700, textColor: 'light', value: 'oklch(0.46 0.17 292)' },
+		{ name: '800', variable: '--color-purple-800', shade: 800, textColor: 'light', value: 'oklch(0.43 0.15 293)' },
+		{ name: '900', variable: '--color-purple-900', shade: 900, textColor: 'light', value: 'oklch(0.39 0.14 293)' },
+	]}
+/>
+
+<ColorPalette
+	name="Pink Palette"
+	description="Playful accents and feminine brand elements."
+	colors={[
+		{ name: '50', variable: '--color-pink-50', shade: 50, textColor: 'dark', value: 'oklch(0.98 0.01 3.49)' },
+		{ name: '100', variable: '--color-pink-100', shade: 100, textColor: 'dark', value: 'oklch(0.92 0.05 359)' },
+		{ name: '200', variable: '--color-pink-200', shade: 200, textColor: 'dark', value: 'oklch(0.85 0.09 356)' },
+		{ name: '300', variable: '--color-pink-300', shade: 300, textColor: 'dark', value: 'oklch(0.76 0.14 356)' },
+		{ name: '400', variable: '--color-pink-400', shade: 400, textColor: 'light', value: 'oklch(0.69 0.18 353)' },
+		{ name: '500', variable: '--color-pink-500', shade: 500, textColor: 'light', value: 'oklch(0.61 0.2 353)' },
+		{ name: '600', variable: '--color-pink-600', shade: 600, textColor: 'light', value: 'oklch(0.54 0.19 349)' },
+		{ name: '700', variable: '--color-pink-700', shade: 700, textColor: 'light', value: 'oklch(0.5 0.17 349)' },
+		{ name: '800', variable: '--color-pink-800', shade: 800, textColor: 'light', value: 'oklch(0.47 0.16 349)' },
+		{ name: '900', variable: '--color-pink-900', shade: 900, textColor: 'light', value: 'oklch(0.43 0.14 349)' },
+	]}
+/>
+
+
+
+## Dark Mode Support
+
+<InfoCallout type="info" title="Automatic Dark Mode">
+All colors automatically adapt to dark mode using CSS custom properties. The dark mode theme inverts and adjusts colors for optimal readability in low-light conditions.
+</InfoCallout>
+
+### Key Dark Mode Changes
+
+```css
+.dark {
+  /* Backgrounds become dark */
+  --color-panel: oklch(0.21 0.02 256);     /* Dark panels */
+  --color-bg: var(--color-gray-50);        /* Very dark background */
+  
+  /* Text becomes light */
+  --color-ink-dark: oklch(0.98 0 0);       /* White text */
+  --color-ink: oklch(0.95 0 248);          /* Light text */
+  --color-ink-light: oklch(0.71 0.02 259); /* Muted light text */
+  --color-ink-muted: oklch(0.6 0.05 258);  /* Dark mode muted */
+  
+  /* Primary colors adjust for better contrast */
+  --color-primary-solid: var(--color-primary-400);
+  --color-primary-solid-hover: var(--color-primary-600);
+  
+  /* Semantic colors use lighter variants */
+  --color-ink-destructive: var(--color-red-900);
+  --color-ink-success: var(--color-green-900);
+  --color-ink-warning: var(--color-yellow-900);
+}
+```
+
+### Testing Dark Mode
+
+To test dark mode functionality:
+1. **In your app**: Add `class="dark"` to the `<html>` or `<body>` element
+2. **URL parameter**: Add `?theme=dark` to test specific scenarios
+3. **Media query**: Use `prefers-color-scheme: dark` for automatic detection
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use semantic color tokens">
+		Always use semantic color tokens (like --color-primary-solid) instead of raw color values for consistent theming across light and dark modes.
+	</Guideline>
+	
+	<Guideline type="do" title="Test color combinations">
+		Test all color combinations for accessibility compliance. Ensure proper contrast ratios for text and interactive elements.
+	</Guideline>
+	
+	<Guideline type="do" title="Use OKLCH values">
+		Use the OKLCH values provided in design tokens for consistent color perception across all hues.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use hard-coded colors">
+		Don't use hard-coded hex colors in components. Always reference design tokens for maintainability.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't create custom colors">
+		Don't create custom colors outside the design system without consulting the design team.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't ignore contrast requirements">
+		Don't use colors that don't meet WCAG 2.1 AA contrast requirements (4.5:1 for normal text, 3:1 for large text).
+	</Guideline>
+</GuidelinesGrid>
+
+## Accessibility
+
+<InfoCallout type="info" title="WCAG Compliance">
+All color combinations meet WCAG 2.1 AA standards for accessibility.
+</InfoCallout>
+
+All color combinations meet WCAG 2.1 AA standards:
+- **Normal text**: 4.5:1 contrast ratio minimum
+- **Large text**: 3:1 contrast ratio minimum
+- **Interactive elements**: Clear focus indicators
+- **Color-blind friendly**: Not relying on color alone to convey meaning
+
+## Implementation
+
+### CSS Custom Properties
+
+```css
+.my-component {
+  background-color: var(--color-panel);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+}
+```
+
+### Tailwind Classes
+
+```html
+<div class="bg-panel text-ink border border-border">
+  Content with semantic colors
+</div>
+```
+
+### React Component
+
+```tsx
+<Card className="bg-panel text-ink border-border">
+  <Text color="text-ink-light">Secondary text</Text>
+</Card>
+```
+

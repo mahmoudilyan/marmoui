@@ -1,0 +1,415 @@
+---
+title: Radio
+description: A control that allows users to select exactly one option from a set of mutually exclusive choices
+category: Components
+status: stable
+links:
+  github: https://github.com/mahmoudilyan/marmo-ui/tree/main/packages/ui/src/components/radio
+keywords:
+  - radio
+  - radio button
+  - option
+  - selection
+  - form
+  - single
+  - exclusive
+lastUpdated: 2025-01-27
+---
+
+import { RadioGroup, Radio, RadioCard, RadioCardItem } from '@marmoui/ui';
+import {
+	RadioBasicPreview,
+	RadioWithDescriptionsPreview,
+	RadioHorizontalPreview,
+	RadioDisabledPreview,
+	RadioAlternativePreview,
+	RadioCardBasicPreview,
+	RadioCardIconsPreview,
+	RadioCardAddonPreview,
+} from '@/components/previews/radio-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    Radio buttons allow users to select exactly one option from a set of mutually exclusive choices. When one radio button is selected, all others in the group are automatically deselected.
+
+    **Components Included:**
+    - **RadioGroup**: Container for radio options
+    - **Radio**: Individual radio button (pair with `Label` for accessible labeling)
+    - **RadioCard**: Card-style radio for rich selection interfaces
+
+    **When to Use:**
+    - Selecting one option from 2-5 mutually exclusive choices
+    - When all options need to be visible at once
+    - Settings where only one value can be active
+    - Survey questions with single-choice answers
+
+    **When NOT to Use:**
+    - For multiple selections (use Checkbox instead)
+    - For long lists of options (use Select instead)
+    - For binary on/off (use Switch instead)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+Import the Radio components from the package:
+
+```tsx
+import { RadioGroup, Radio, Label } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic
+
+<CodeExample
+	title="Simple Radio Group"
+	description="Basic radio group with labels"
+	code={`<RadioGroup defaultValue="option-1" className="space-y-2">
+  <div className="flex items-center space-x-2">
+    <Radio value="option-1" id="option-1" />
+    <Label htmlFor="option-1" className="font-normal">Option One</Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <Radio value="option-2" id="option-2" />
+    <Label htmlFor="option-2" className="font-normal">Option Two</Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <Radio value="option-3" id="option-3" />
+    <Label htmlFor="option-3" className="font-normal">Option Three</Label>
+  </div>
+</RadioGroup>`}
+	preview={<RadioBasicPreview />}
+/>
+
+### Controlled
+
+<CodeExample
+	title="Controlled State"
+	description="Radio group with controlled value"
+	code={`function ControlledRadioGroup() {
+  const [value, setValue] = React.useState('comfortable');
+
+  return (
+    <div className="space-y-4">
+      <RadioGroup value={value} onValueChange={setValue} className="space-y-2">
+        <div className="flex items-center space-x-2">
+          <Radio value="comfortable" id="comfortable" />
+          <Label htmlFor="comfortable" className="font-normal">Comfortable</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Radio value="compact" id="compact" />
+          <Label htmlFor="compact" className="font-normal">Compact</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Radio value="dense" id="dense" />
+          <Label htmlFor="dense" className="font-normal">Dense</Label>
+        </div>
+      </RadioGroup>
+      <p className="text-sm text-ink-light">
+        Selected: <strong>{value}</strong>
+      </p>
+    </div>
+  );
+}`}
+	preview={<RadioBasicPreview />}
+/>
+
+### With Descriptions
+
+<CodeExample
+	title="Options with Descriptions"
+	description="Radio buttons with additional context below each label"
+	code={`<RadioGroup defaultValue="free" className="space-y-4">
+  <div className="flex items-start space-x-3">
+    <Radio value="free" id="free" className="mt-0.5" />
+    <div>
+      <Label htmlFor="free" className="font-medium">Free Plan</Label>
+      <p className="text-sm text-ink-light">Basic features for individuals getting started</p>
+    </div>
+  </div>
+  <div className="flex items-start space-x-3">
+    <Radio value="pro" id="pro" className="mt-0.5" />
+    <div>
+      <Label htmlFor="pro" className="font-medium">Pro Plan</Label>
+      <p className="text-sm text-ink-light">Advanced features for professionals and small teams</p>
+    </div>
+  </div>
+</RadioGroup>`}
+	preview={<RadioWithDescriptionsPreview />}
+/>
+
+### Horizontal Layout
+
+<CodeExample
+	title="Inline Radio Buttons"
+	description="Radio group in horizontal layout"
+	code={`<RadioGroup defaultValue="left" className="flex gap-4">
+  <div className="flex items-center space-x-2">
+    <Radio value="left" id="left" />
+    <Label htmlFor="left" className="font-normal">Left</Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <Radio value="center" id="center" />
+    <Label htmlFor="center" className="font-normal">Center</Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <Radio value="right" id="right" />
+    <Label htmlFor="right" className="font-normal">Right</Label>
+  </div>
+</RadioGroup>`}
+	preview={<RadioHorizontalPreview />}
+/>
+
+### Disabled State
+
+<CodeExample
+	title="Disabled Options"
+	description="Some or all options disabled"
+	code={`<RadioGroup defaultValue="option-1" className="space-y-2">
+  <div className="flex items-center space-x-2">
+    <Radio value="option-1" id="option-1" />
+    <Label htmlFor="option-1" className="font-normal">Enabled option</Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <Radio value="option-2" id="option-2" disabled />
+    <Label htmlFor="option-2" className="font-normal">Disabled option</Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <Radio value="option-3" id="option-3" />
+    <Label htmlFor="option-3" className="font-normal">Another enabled option</Label>
+  </div>
+</RadioGroup>`}
+	preview={<RadioDisabledPreview />}
+/>
+
+### In Form Context
+
+<CodeExample
+	title="Form with Radio Group"
+	description="Radio group in a complete form"
+	code={`function FormExample() {
+  const [formData, setFormData] = React.useState({
+    frequency: 'daily',
+    format: 'html',
+  });
+
+  return (
+    <form className="w-80 p-6 border border-border rounded-lg space-y-6">
+      <h3 className="text-lg font-semibold">Email Preferences</h3>
+
+      <div className="space-y-3">
+        <Label className="text-base font-medium">Email Frequency</Label>
+        <RadioGroup
+          value={formData.frequency}
+          onValueChange={(value) => setFormData(prev => ({ ...prev, frequency: value }))}
+          className="space-y-2"
+        >
+          <div className="flex items-center space-x-2">
+            <Radio value="daily" id="daily" />
+            <Label htmlFor="daily" className="font-normal">Daily digest</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Radio value="weekly" id="weekly" />
+            <Label htmlFor="weekly" className="font-normal">Weekly summary</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Radio value="monthly" id="monthly" />
+            <Label htmlFor="monthly" className="font-normal">Monthly newsletter</Label>
+          </div>
+        </RadioGroup>
+      </div>
+
+      <div className="space-y-3">
+        <Label className="text-base font-medium">Email Format</Label>
+        <RadioGroup
+          value={formData.format}
+          onValueChange={(value) => setFormData(prev => ({ ...prev, format: value }))}
+          className="flex gap-4"
+        >
+          <div className="flex items-center space-x-2">
+            <Radio value="html" id="html" />
+            <Label htmlFor="html" className="font-normal">HTML</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Radio value="text" id="text" />
+            <Label htmlFor="text" className="font-normal">Plain text</Label>
+          </div>
+        </RadioGroup>
+      </div>
+
+      <Button type="submit" className="w-full">Save Preferences</Button>
+    </form>
+  );
+}`}
+	preview={<RadioBasicPreview />}
+/>
+
+## Radio Card
+
+RadioCard provides a card-style radio selection interface with rich content including icons, labels, descriptions, and addons.
+
+### Basic Radio Card
+
+<CodeExample
+	title="Card Selection"
+	description="Rich card-style radio options"
+	code={`<RadioCard defaultValue="starter">
+  <RadioCardItem
+    value="starter"
+    label="Starter Plan"
+    description="Perfect for individuals and small projects"
+  />
+  <RadioCardItem
+    value="pro"
+    label="Pro Plan"
+    description="For growing teams with advanced needs"
+  />
+  <RadioCardItem
+    value="enterprise"
+    label="Enterprise"
+    description="Custom solutions for large organizations"
+  />
+</RadioCard>`}
+	preview={<RadioCardBasicPreview />}
+/>
+
+### With Icons
+
+<CodeExample
+	title="Icon Cards"
+	description="Radio cards with visual icons"
+	code={`<RadioCard defaultValue="email">
+  <RadioCardItem
+    value="email"
+    icon={<MdEmail className="size-6 text-primary" />}
+    label="Email"
+    description="Send via email campaign"
+  />
+  <RadioCardItem
+    value="sms"
+    icon={<MdSms className="size-6 text-primary" />}
+    label="SMS"
+    description="Send via text message"
+  />
+  <RadioCardItem
+    value="push"
+    icon={<MdNotifications className="size-6 text-primary" />}
+    label="Push Notification"
+    description="Send via mobile app"
+  />
+</RadioCard>`}
+	preview={<RadioCardIconsPreview />}
+/>
+
+### With Addon Content
+
+<CodeExample
+	title="Cards with Addon"
+	description="Additional content like pricing or actions"
+	code={`<RadioCard defaultValue="monthly">
+  <RadioCardItem
+    value="monthly"
+    label="Monthly Billing"
+    description="Pay month-to-month, cancel anytime"
+    addon={<span className="text-lg font-bold">$29/mo</span>}
+  />
+  <RadioCardItem
+    value="yearly"
+    label="Yearly Billing"
+    description="Save 20% with annual payment"
+    addon={
+      <div className="flex items-center gap-2">
+        <span className="text-lg font-bold">$279/yr</span>
+        <Badge variant="success" size="sm">Save $69</Badge>
+      </div>
+    }
+  />
+</RadioCard>`}
+	preview={<RadioCardAddonPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use for mutually exclusive choices">
+		Radio buttons are ideal when users must select exactly one option from a set.
+	</Guideline>
+	
+	<Guideline type="do" title="Keep options visible">
+		Show all options upfront so users can compare before choosing. Use Select for long lists.
+	</Guideline>
+	
+	<Guideline type="do" title="Set a sensible default">
+		Pre-select the most common or recommended option when appropriate.
+	</Guideline>
+	
+	<Guideline type="do" title="Use descriptive labels">
+		Labels should clearly indicate what each option does or represents.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use for multiple selections">
+		If users can select multiple options, use Checkbox instead.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't use for more than 5-7 options">
+		For longer lists, consider using a Select dropdown instead.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### RadioGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Controlled value |
+| `defaultValue` | `string` | - | Default value |
+| `onValueChange` | `(value: string) => void` | - | Change handler |
+| `disabled` | `boolean` | `false` | Disable all items |
+| `required` | `boolean` | `false` | Mark as required |
+| `name` | `string` | - | Form field name |
+| `orientation` | `'horizontal' \| 'vertical'` | `'vertical'` | Layout direction |
+| `className` | `string` | - | Additional className |
+
+### Radio
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Item value (required) |
+| `disabled` | `boolean` | `false` | Disable this item |
+| `id` | `string` | - | Element ID for label association |
+| `className` | `string` | - | Additional className |
+
+### RadioCard
+
+Extends RadioGroup with the same props.
+
+### RadioCardItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Item value (required) |
+| `label` | `ReactNode` | - | Card title/label |
+| `description` | `ReactNode` | - | Description text below label |
+| `icon` | `ReactElement` | - | Icon element to display |
+| `addon` | `ReactNode` | - | Additional content (e.g., pricing) |
+| `indicator` | `ReactNode \| null` | - | Custom indicator element |
+| `indicatorPlacement` | `'start' \| 'end' \| 'inside'` | - | Position of indicator |
+| `disabled` | `boolean` | `false` | Disable this item |
+| `className` | `string` | - | Additional className |
+
+## Accessibility
+
+<InfoCallout type="info" title="Keyboard Navigation">
+Radio groups support keyboard navigation. Use arrow keys to move between options, and Space to select.
+</InfoCallout>
+
+- Built on Radix UI RadioGroup with full ARIA support
+- Uses proper `role="radiogroup"` and `role="radio"` attributes
+- Arrow keys navigate between options in the group
+- Space key selects the focused option
+- Focus is automatically managed within the group
+- Required state is announced by assistive technology

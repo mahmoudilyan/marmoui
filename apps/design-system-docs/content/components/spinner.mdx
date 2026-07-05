@@ -1,0 +1,103 @@
+---
+title: Spinner
+description: An animated loading indicator that communicates ongoing processing or data fetching.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/spinner
+keywords:
+  - spinner
+  - loading
+  - progress
+  - indicator
+  - busy
+lastUpdated: 2026-03-10
+---
+
+import { Spinner } from '@marmoui/ui';
+
+<Accordions>
+  <Accordion title="Overview">
+    Spinner provides a rotating animation that indicates ongoing processing. It is used when the system is busy and the wait time or progress is indeterminate.
+
+    **When to Use:**
+    - Button loading states
+    - Page or section loading when layout is unknown
+    - Inline loading indicators
+    - Overlay loading states
+
+    **When NOT to Use:**
+    - When content layout is known (use Skeleton)
+    - For determinate progress (use Progress)
+    - For very long waits (combine with messaging)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { Spinner } from '@marmoui/ui';
+```
+
+## Examples
+
+### Sizes
+
+<CodeExample
+	title="Spinner Sizes"
+	description="Available from extra small to extra large"
+	code={`<div className="flex items-center gap-4">
+  <Spinner size="xs" />
+  <Spinner size="sm" />
+  <Spinner size="md" />
+  <Spinner size="lg" />
+  <Spinner size="xl" />
+</div>`}
+	preview={
+		<div className="flex items-center gap-4">
+			<Spinner size="xs" />
+			<Spinner size="sm" />
+			<Spinner size="md" />
+			<Spinner size="lg" />
+			<Spinner size="xl" />
+		</div>
+	}
+/>
+
+### With Label
+
+<CodeExample
+	title="Labeled Spinner"
+	description="Spinner with visible descriptive text"
+	code={`<Spinner size="md" label="Loading contacts..." showLabel />`}
+	preview={<Spinner size="md" label="Loading contacts..." showLabel />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Add context with labels">
+		Tell users what is loading when the spinner is the primary content indicator.
+	</Guideline>
+	<Guideline type="do" title="Match size to context">
+		Use xs/sm for inline or button loading, md/lg for section loading, xl for full-page.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for known layouts">
+		If you know the content shape, use Skeleton instead for a smoother experience.
+	</Guideline>
+	<Guideline type="dont" title="Don't block the entire page">
+		Prefer localized spinners over full-page overlays when possible.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Spinner" />
+
+## Accessibility
+
+- Has `role="status"` to announce loading state to screen readers.
+- The `label` prop provides `aria-label` for context.
+- Visually hidden text "Loading" is announced by default.

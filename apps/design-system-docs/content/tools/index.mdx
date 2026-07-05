@@ -1,0 +1,34 @@
+---
+title: Tools
+description: Design and development tools that streamline working with the Marmo UI.
+category: Tools
+keywords:
+  - tools
+  - figma
+  - storybook
+  - cli
+  - plugins
+  - extensions
+  - claude
+  - mcp
+  - ai
+lastUpdated: 2026-04-29
+---
+
+# Tools
+
+The Marmo UI ships alongside a small set of developer tools that make it faster to ship correct, on-brand UI.
+
+## AI tooling
+
+| Tool | Audience | What it does |
+|---|---|---|
+| [Claude Plugin & MCP](./tools/claude-plugin) | Every engineer working on a Marmo product app | Auto-loads a skill, slash command, and live MCP connection in Claude Code so the AI generates `@marmoui/ui` code with real prop signatures — no hallucinated components, no wrong imports. |
+
+## Design & build (coming soon)
+
+- **Figma plugin** — open a Marmo component in Figma and copy the matching React snippet to your clipboard.
+- **Storybook explorer** — browse every component variant interactively at [storybook.marmoui.com](https://68d5b2258627ede6122d680b-jbyxhbjayc.chromatic.com).
+- **CLI scaffolder** — `pnpm dlx @marmoui/ui-cli new page settings` to generate a settings page from a pattern in seconds.
+
+If a tool you'd find useful isn't here, open an issue on `mahmoudilyan/marmo-ui` with the label `tooling-request`.

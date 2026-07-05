@@ -1,0 +1,139 @@
+---
+title: Toaster
+description: A toast notification system for displaying brief, auto-dismissing feedback messages.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/toaster
+keywords:
+  - toaster
+  - toast
+  - notification
+  - snackbar
+  - feedback
+lastUpdated: 2026-03-10
+---
+
+import { Toaster, Button } from '@marmoui/ui';
+import { ToastVariantsPreview } from '@/components/previews/toaster-previews';
+
+## Overview
+
+Toaster provides a toast notification system for displaying brief, auto-dismissing feedback messages. It supports `success`, `error`, `info`, `warning`, and `loading` variants. Styling follows the Figma **Toasts** component (`2624:114500`) — tinted surfaces per variant, 64px min height, inline actions, and no leading type icon.
+
+### Design tokens
+
+Toast surfaces use semantic tokens from `@marmoui/ui`:
+
+| Variant | Token |
+|---|---|
+| Info | `--color-toast-info-bg` (`bg-toast-info-bg`) |
+| Success | `--color-toast-success-bg` (`bg-toast-success-bg`) |
+| Warning | `--color-toast-warning-bg` (`bg-toast-warning-bg`) |
+| Error | `--color-toast-error-bg` (`bg-toast-error-bg`) |
+| Neutral | `--color-toast-neutral-bg` (`bg-toast-neutral-bg`) |
+
+Text uses `--color-ink-dark` for titles and `--color-ink` for descriptions and actions. Error toasts use `--color-toast-on-error` for light text on the destructive surface.
+
+## When to use
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use for transient acknowledgments">
+		Operation succeeded, error from a background task, brief info. Toasts auto-dismiss — they're for things that don't require the user to act.
+	</Guideline>
+	<Guideline type="do" title="Use loading variant for async kicks">
+		`toaster.loading('Sending...')` for longer-than-instant operations. Update or dismiss when the operation finishes.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for persistent messages">
+		If the message must stay visible until the user acts, use **Alert** (page-level) or **Banner** (inline).
+	</Guideline>
+	<Guideline type="dont" title="Don't use for form validation errors">
+		Validation errors belong inline with the field, via the `Field` component's `error` prop.
+	</Guideline>
+	<Guideline type="dont" title="Don't use for content that needs interaction">
+		Anything with a button or link the user must click → use **Dialog** or **ConfirmationDialog**. Toasts can be missed.
+	</Guideline>
+</GuidelinesGrid>
+
+## Choosing the right alternative
+
+| You want… | Use this |
+|---|---|
+| Persistent informational note (page-level) | `Alert` |
+| Inline contextual message (e.g. above a form) | `Alert` (with appropriate `variant`) |
+| Critical confirmation requiring "yes" | `ConfirmationDialog` |
+| Field-level validation error | `Field` `error` prop |
+| Loading state on a specific button | `Button loading` (not a toast) |
+| Page-blocking notice | `Dialog` with no dismiss option |
+
+<Installation />
+
+## Usage
+
+Add the `<Toaster />` component to your app layout, then use the `toaster` utility to trigger notifications:
+
+```tsx
+import { Toaster, toaster } from '@marmoui/ui';
+
+// In your layout
+<Toaster />
+
+// Trigger toasts anywhere
+toaster.success('Campaign published successfully');
+toaster.error('Failed to send email');
+toaster.info('New contacts imported');
+toaster.warning('Approaching storage limit');
+toaster.loading('Sending emails...');
+
+// With description and inline action (Figma-style Undo)
+toaster.info('Action completed', {
+  description: 'Click undo to revert.',
+  action: { label: 'Undo', onClick: () => toaster.dismiss() },
+});
+```
+
+## Examples
+
+### Toast Variants
+
+<CodeExample
+	title="All Variants"
+	description="Static Figma-aligned bars plus live triggers. Surfaces use toast tokens — no hard-coded colors."
+	code={`<div className="flex flex-wrap gap-2">
+  <Button onClick={() => toaster.success('Saved successfully')}>Success</Button>
+  <Button onClick={() => toaster.error('Something went wrong')}>Error</Button>
+  <Button onClick={() => toaster.info('3 new contacts imported', {
+    action: { label: 'Undo', onClick: () => toaster.dismiss() },
+  })}>Info + Undo</Button>
+  <Button onClick={() => toaster.warning('Storage almost full')}>Warning</Button>
+</div>`}
+	preview={<ToastVariantsPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Keep messages brief">
+		Toast messages should be 1 short sentence. Users scan them quickly.
+	</Guideline>
+	<Guideline type="do" title="Use appropriate variants">
+		Match the toast variant to the message type (success, error, info, warning).
+	</Guideline>
+	<Guideline type="dont" title="Don't use for critical errors">
+		If the error blocks the user's workflow, use an Alert or Dialog instead.
+	</Guideline>
+	<Guideline type="dont" title="Don't stack too many toasts">
+		Limit visible toasts to 3-5. Too many notifications overwhelm users.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="Toaster" />
+
+## Accessibility
+
+- Toasts are announced to screen readers via `aria-live="polite"`.
+- Toasts can be dismissed with keyboard (close button or Escape).
+- Auto-dismiss timing should be long enough for reading (minimum 5 seconds).
+- Don't rely solely on toasts for critical information.

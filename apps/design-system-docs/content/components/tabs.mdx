@@ -1,0 +1,207 @@
+---
+title: Tabs
+description: Layered content sections with line and pill variants in horizontal or vertical orientation.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/tabs.tsx
+keywords:
+  - tabs
+  - navigation
+  - panels
+  - sections
+lastUpdated: 2026-04-30
+---
+
+import {
+  TabsLinePreview,
+  TabsPillPreview,
+  TabsVerticalLinePreview,
+  TabsVerticalPillPreview,
+  TabsControlledPreview,
+} from '@/components/previews/tabs-previews';
+
+## Overview
+
+Tabs organize related sections of content that share the same page context. Each
+`TabsTrigger` maps to one `TabsContent` with the same `value`. Use tabs when the
+user can switch between peer sections without leaving the page or changing the
+primary route.
+
+There are two visual variants:
+
+- `line` — page-level or section-level tabs with an underline indicator.
+- `pill` — compact toggle-like tabs for filters, ranges, and smaller controls.
+
+Both variants support `orientation="horizontal"` and `orientation="vertical"`.
+
+## Usage
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@marmoui/ui';
+```
+
+> ⚠️ **All four named exports are flat** — `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. There is **no** `Tabs.List`, `Tabs.Trigger`, or `Tabs.Content` sub-component API.
+
+## Examples
+
+### Line Tabs
+
+<CodeExample
+  title="Line tabs"
+  description="Default page-level tabs for peer content sections."
+  code={`<Tabs defaultValue="overview">
+  <TabsList variant="line">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="analytics">Analytics</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">Overview content here.</TabsContent>
+  <TabsContent value="analytics">Analytics content here.</TabsContent>
+  <TabsContent value="settings">Settings content here.</TabsContent>
+</Tabs>`}
+  preview={<TabsLinePreview />}
+/>
+
+### Pill Tabs
+
+<CodeExample
+  title="Pill tabs"
+  description="Compact tabs for filters, ranges, and dense control groups."
+  code={`<Tabs defaultValue="30d" variant="pill">
+  <TabsList>
+    <TabsTrigger value="7d">7 days</TabsTrigger>
+    <TabsTrigger value="30d">30 days</TabsTrigger>
+    <TabsTrigger value="90d">90 days</TabsTrigger>
+  </TabsList>
+  <TabsContent value="7d">Last 7 days</TabsContent>
+  <TabsContent value="30d">Last 30 days</TabsContent>
+  <TabsContent value="90d">Last 90 days</TabsContent>
+</Tabs>`}
+  preview={<TabsPillPreview />}
+/>
+
+### Vertical Line Tabs
+
+<CodeExample
+  title="Vertical line tabs"
+  description="Use for settings-style pages where the tab list acts like local section navigation."
+  code={`<Tabs defaultValue="profile" orientation="vertical">
+  <TabsList variant="line">
+    <TabsTrigger value="profile">Profile</TabsTrigger>
+    <TabsTrigger value="billing">Billing</TabsTrigger>
+    <TabsTrigger value="notifications">Notifications</TabsTrigger>
+  </TabsList>
+  <TabsContent value="profile">Profile settings</TabsContent>
+  <TabsContent value="billing">Billing settings</TabsContent>
+  <TabsContent value="notifications">Notification settings</TabsContent>
+</Tabs>`}
+  preview={<TabsVerticalLinePreview />}
+/>
+
+### Vertical Pill Tabs
+
+<CodeExample
+  title="Vertical pill tabs"
+  description="Use for compact local filters or short mode switches in a side panel."
+  code={`<Tabs defaultValue="active" variant="pill" orientation="vertical">
+  <TabsList>
+    <TabsTrigger value="active">Active</TabsTrigger>
+    <TabsTrigger value="paused">Paused</TabsTrigger>
+    <TabsTrigger value="archived">Archived</TabsTrigger>
+  </TabsList>
+  <TabsContent value="active">Active items</TabsContent>
+  <TabsContent value="paused">Paused items</TabsContent>
+  <TabsContent value="archived">Archived items</TabsContent>
+</Tabs>`}
+  preview={<TabsVerticalPillPreview />}
+/>
+
+### Controlled Tabs
+
+<CodeExample
+  title="Controlled tabs"
+  description="Use controlled tabs when the selected tab needs URL sync or external state."
+  code={`const [tab, setTab] = useState('overview');
+
+<Tabs value={tab} onValueChange={setTab}>
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="analytics">Analytics</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">Overview content</TabsContent>
+  <TabsContent value="analytics">Analytics content</TabsContent>
+</Tabs>`}
+  preview={<TabsControlledPreview />}
+/>
+
+## Choosing the right variant
+
+| Variant | Use when | Avoid when |
+|---|---|---|
+| `line` horizontal | Page-level peer sections, profile/detail sections, analytics breakdowns | Tiny filter controls or dense toolbars |
+| `pill` horizontal | Date ranges, list filters, modes, compact dashboard controls | Primary page navigation or many long labels |
+| `line` vertical | Settings/detail pages with local section navigation | Main app/sidebar navigation |
+| `pill` vertical | Short side-panel filters or local modes | More than a few options or long-form navigation |
+
+Tabs are not breadcrumbs and they are not sidebar navigation. Use tabs only when
+the sections are peers inside the current page context.
+
+## Props
+
+### Tabs
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `defaultValue` | `string` | — | The tab selected on mount (uncontrolled) |
+| `value` | `string` | — | The controlled selected tab value |
+| `onValueChange` | `(value: string) => void` | — | Callback when the selected tab changes |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Orientation of the tabs |
+| `variant` | `'line' \| 'pill'` | `'line'` | Visual style shared with list and triggers through context |
+| `className` | `string` | — | Additional className on the root element |
+| `--tabs-list-width` | CSS variable | `180px` | Width of the `TabsList` column when `orientation="vertical"`. Set via `style` or a parent class. |
+
+### TabsList
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'line' \| 'pill'` | inherited from `Tabs` | Visual style of the tab strip |
+| `orientation` | `'horizontal' \| 'vertical'` | inherited from `Tabs` | Orientation of the tab strip |
+| `className` | `string` | — | Additional className |
+
+### TabsTrigger
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | **required** | Value that identifies this tab |
+| `variant` | `'line' \| 'pill'` | inherited from `Tabs` | Visual style of the trigger |
+| `orientation` | `'horizontal' \| 'vertical'` | inherited from `Tabs` | Orientation-specific trigger styling |
+| `disabled` | `boolean` | `false` | Disable this tab trigger |
+| `className` | `string` | — | Additional className |
+
+### TabsContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | **required** | The tab value whose panel this renders |
+| `className` | `string` | — | Additional className |
+
+## Common Mistakes
+
+- **Using namespace sub-components** — `Tabs.List`, `Tabs.Trigger`, `Tabs.Content` **do not exist**. These will throw a runtime error. Always use the flat named exports:
+  ```tsx
+  // ❌ WRONG — Tabs.List does not exist
+  <Tabs.List>
+    <Tabs.Trigger value="a">A</Tabs.Trigger>
+  </Tabs.List>
+
+  // ✅ CORRECT — use flat exports
+  <TabsList>
+    <TabsTrigger value="a">A</TabsTrigger>
+  </TabsList>
+  ```
+- **Forgetting to import TabsList/TabsTrigger/TabsContent** — `import { Tabs }` alone is not enough. Import all four: `import { Tabs, TabsList, TabsTrigger, TabsContent } from '@marmoui/ui';`
+- **Mismatched values** — every `TabsTrigger value` must match a `TabsContent value` exactly (case-sensitive).
+- **Nesting TabsContent outside of Tabs** — `TabsContent` must be a descendant of the `Tabs` root to receive state.
+- **Using stale variants** — `variant="default"` and `variant="underline"` do not exist. Use `variant="line"` or `variant="pill"`.
+- **Using tabs for hierarchy** — breadcrumbs and sidebar navigation are separate patterns. Tabs are for peer sections inside one page.

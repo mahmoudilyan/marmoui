@@ -1,0 +1,249 @@
+---
+title: Marketing Cards
+description: Composite card patterns built from Marmo UI primitives — project card, message card, profile card, colored widget, secondary navigation, profile dropdown menu, and comment.
+category: Components
+status: stable
+links:
+  github: /tree/main/apps/design-system-docs/src/components/previews/marketing-cards-previews.tsx
+keywords:
+  - card
+  - project
+  - message
+  - profile
+  - widget
+  - navigation
+  - comment
+  - composite
+lastUpdated: 2026-06-25
+---
+
+import {
+	ProjectCardPreview,
+	MessageCardPreview,
+	ProfileCardPreview,
+	ColoredWidgetPreview,
+	SecondaryNavPreview,
+	ProfileDropdownMenuPreview,
+	CommentPreview,
+	InputCommentPreview,
+	ScheduledMaintenanceAlertPreview,
+	ToastsPreview,
+	BoardTabsPreview,
+	StatusBadgesPreview,
+	InputsPreview,
+} from '@/components/previews/marketing-cards-previews';
+
+## Overview
+
+These are **composition patterns** — ready-to-assemble blocks built from the
+core `@marmoui/ui` primitives (`Card`, `Avatar`, `Badge`, `Progress`, `Alert`,
+`DropdownMenu`, `Input`, `Tabs`, `toaster`, etc.). They mirror the floating
+component collage on the marketing hero and show how the primitives combine
+into real dashboard surfaces.
+
+Each preview is a function you can copy into your own app and adapt. They do
+not add new exports to `@marmoui/ui` — they compose what is already there.
+
+## Usage
+
+```tsx
+import {
+  ProjectCardPreview,
+  MessageCardPreview,
+  ProfileCardPreview,
+  ColoredWidgetPreview,
+  SecondaryNavPreview,
+  ProfileDropdownMenuPreview,
+  CommentPreview,
+} from '@/components/previews/marketing-cards-previews';
+```
+
+## Examples
+
+### Project Card
+
+A bounded summary of a project: icon, title, status tag, description, progress,
+and a footer with task count, due date, and an avatar stack.
+
+<CodeExample
+	title="Project card"
+	description="Composes Card, Badge, Progress, AvatarStack, and IconButton"
+	code={`<ProjectCardPreview
+  title="Services Features"
+  tag="API Design"
+  description="Science is driven by evidence gathered in experiments…"
+  progress={75}
+  tasks="3/6"
+  dueDate="1 Jan 2023"
+/>`}
+	preview={<ProjectCardPreview />}
+/>
+
+### Message Card
+
+A compact horizontal row for an inbox item — sender, timestamp, and a single
+preview line, with an unread indicator bar.
+
+<CodeExample
+	title="Message card"
+	description="Composes Card, Avatar with status, and truncated text"
+	code={`<MessageCardPreview
+  sender="John Locke"
+  time="10:20 AM"
+  preview="Message excerpt goes here and change it dfaaa"
+  unread
+/>`}
+	preview={<MessageCardPreview />}
+/>
+
+### Profile Card
+
+A profile surface with a header image, overlapping avatar, name/role, a
+three-column stat row, and footer details (projects, location).
+
+<CodeExample
+	title="Profile card"
+	description="Composes Card, Avatar, and a stats grid"
+	code={`<ProfileCardPreview
+  name="Benjamin Franklin"
+  role="Author"
+  posts="997"
+  followers="373k"
+  following="299"
+  projects="5 Projects"
+  location="Istanbul, Turkey"
+  headerImage="/marketing/benjamin-header.jpg"
+/>`}
+	preview={<ProfileCardPreview className="max-w-sm" />}
+/>
+
+### Colored Widget
+
+A solid-accent KPI tile — icon, label, large value, and a trend line. Use it
+inside a dashboard grid where a neutral surface is not enough.
+
+<CodeExample
+	title="Colored widget"
+	description="Accent backgrounds for high-emphasis KPIs"
+	code={`<ColoredWidgetPreview
+  label="New epics"
+  value={32}
+  trend="+43%"
+  accent="violet"
+/>`}
+	preview={
+		<div className="max-w-[230px]">
+			<ColoredWidgetPreview />
+		</div>
+	}
+/>
+
+### Secondary Navigation
+
+A vertical list of labeled destinations with icons and optional count badges.
+Use it as a secondary rail inside a two-pane layout.
+
+<CodeExample
+	title="Secondary navigation"
+	description="Composes Card with a styled list of icon rows"
+	code={`<SecondaryNavPreview />`}
+	preview={<SecondaryNavPreview className="max-w-[180px]" />}
+/>
+
+### Profile Dropdown Menu
+
+A menu anchored to a profile trigger — header with the user, an integration
+status row, account links, and a destructive log-out item.
+
+<CodeExample
+	title="Profile dropdown menu"
+	description="Composes DropdownMenu, Avatar, and Badge"
+	code={`<ProfileDropdownMenuPreview />`}
+	preview={<ProfileDropdownMenuPreview />}
+/>
+
+### Input Comment
+
+A comment composer (`InputComment`) — author label with required marker, avatar,
+white inline field with emoji picker affordance, primary send button, and helper text.
+
+<CodeExample
+	title="Input comment"
+	description="Composes Avatar, inline input, emoji trigger, and IconButton send"
+	code={`<InputCommentPreview
+  author="Thaer Shayeb"
+  required
+  initialValue="This looks great"
+/>`}
+	preview={<InputCommentPreview className="max-w-sm" />}
+/>
+
+## Supporting feedback & input blocks
+
+These smaller blocks feed the same hero collage and are documented individually
+on their own pages: [`Alert`](/components/alert), [`Toaster`](/components/toaster),
+[`Tabs`](/components/tabs), [`Badge`](/components/badge), and [`Input`](/components/input).
+
+### Scheduled Maintenance Alert
+
+<CodeExample
+	title="Info alert"
+	description="Composes Alert with icon, title, description, and an action"
+	code={`<ScheduledMaintenanceAlertPreview />`}
+	preview={<ScheduledMaintenanceAlertPreview className="max-w-md" />}
+/>
+
+### Toasts
+
+<CodeExample
+	title="Toast rows"
+	description="Info and success toast rows with Undo / close actions"
+	code={`<ToastsPreview />`}
+	preview={<ToastsPreview className="max-w-md" />}
+/>
+
+### Status Badges
+
+<CodeExample
+	title="Status badges"
+	description="Success, warning, and info badges in a row"
+	code={`<StatusBadgesPreview />`}
+	preview={<StatusBadgesPreview />}
+/>
+
+### Board Tabs
+
+<CodeExample
+	title="Line tabs"
+	description="Composes Tabs with the line variant"
+	code={`<BoardTabsPreview />`}
+	preview={<BoardTabsPreview />}
+/>
+
+### Inputs
+
+<CodeExample
+	title="Inputs"
+	description="Composes Input with and without a start adornment"
+	code={`<InputsPreview />`}
+	preview={<InputsPreview className="max-w-xs" />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Copy and adapt, don't re-export">
+		These previews live in the docs app on purpose. Copy the composition into
+		your project and adjust the props and content to your domain — they are
+		patterns, not part of the published component API.
+	</Guideline>
+	<Guideline type="do" title="Reach for the primitive first">
+		If a preview does not fit, compose the underlying primitive (`Card`,
+		`Avatar`, `Badge`, `Progress`) directly. The previews are starting
+		points, not a cage.
+	</Guideline>
+	<Guideline type="dont" title="Don't mix accent colors in one grid">
+		`ColoredWidgetPreview` accents are high-emphasis. One accent per dashboard
+		section keeps the hierarchy readable.
+	</Guideline>
+</GuidelinesGrid>

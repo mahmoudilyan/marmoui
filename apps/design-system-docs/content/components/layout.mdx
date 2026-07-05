@@ -1,0 +1,363 @@
+---
+title: Layout
+description: Complete layout system with sidebar navigation, main content area, and page sections for building consistent application interfaces
+category: Layout
+status: stable
+links:
+  github: https://github.com/mahmoudilyan/marmo-ui/tree/main/packages/ui/src/components/layout
+keywords:
+  - layout
+  - sidebar
+  - navigation
+  - shell
+  - application
+  - primary
+  - secondary
+  - content
+lastUpdated: 2025-01-27
+---
+
+import { SidebarProvider, SideNavigation, SidebarPanel, SidebarItem, SidebarSubItem, PageSection } from '@marmoui/ui';
+import { MdOutlineDashboard, MdDashboard, MdPeopleOutline, MdPeople, MdOutlineCampaign, MdCampaign, MdOutlineSettings, MdSettings } from 'react-icons/md';
+
+<Accordions>
+  <Accordion title="Overview">
+    The Layout system provides a complete application shell with primary navigation rail, secondary sidebar panel, and main content area. It's designed for complex applications with multi-level navigation.
+
+    **Components:**
+    - **SidebarProvider**: Context provider for sidebar state management
+    - **SideNavigation**: Full sidebar with primary rail and secondary panel
+    - **SidebarPanel**: Collapsible secondary navigation panel
+    - **SidebarItem / SidebarSubItem**: Navigation items
+    - **PageSection**: Page header component
+
+    **Layout Structure:**
+    ```
+    ┌────────────────────────────────────────────┐
+    │  Primary  │  Secondary  │                  │
+    │   Rail    │   Panel     │   Main Content   │
+    │  (icons)  │  (menu)     │                  │
+    └────────────────────────────────────────────┘
+    ```
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+Import the layout components from the package:
+
+```tsx
+import { 
+  SidebarProvider, 
+  SideNavigation,
+  SidebarPanel,
+  SidebarItem,
+  SidebarSubItem 
+} from '@marmoui/ui';
+```
+
+## Examples
+
+### Complete Application Layout
+
+<CodeExample
+	title="Full Application Shell"
+	description="Complete layout with sidebar and main content"
+	code={`const mainNavItems = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    iconOutlined: MdOutlineDashboard,
+    iconFilled: MdDashboard,
+    path: '/dashboard',
+    secondaryItems: [
+      { id: 'overview', label: 'Overview', path: '/dashboard/overview' },
+      { id: 'analytics', label: 'Analytics', path: '/dashboard/analytics' },
+    ],
+  },
+  {
+    id: 'campaigns',
+    label: 'Campaigns',
+    iconOutlined: MdOutlineCampaign,
+    iconFilled: MdCampaign,
+    path: '/campaigns',
+    secondaryItems: [
+      { id: 'active', label: 'Active', path: '/campaigns/active' },
+      { id: 'drafts', label: 'Drafts', path: '/campaigns/drafts' },
+      { id: 'archived', label: 'Archived', path: '/campaigns/archived' },
+    ],
+  },
+  {
+    id: 'contacts',
+    label: 'Contacts',
+    iconOutlined: MdPeopleOutline,
+    iconFilled: MdPeople,
+    path: '/contacts',
+    secondaryItems: [
+      { id: 'all', label: 'All Contacts', path: '/contacts/all' },
+      { id: 'segments', label: 'Segments', path: '/contacts/segments' },
+    ],
+  },
+];
+
+function AppLayout({ children }) {
+  return (
+    <SidebarProvider mainNavItems={mainNavItems}>
+      <div className="flex h-screen">
+        <SideNavigation />
+        <main className="flex-1 overflow-auto">
+          {children}
+        </main>
+      </div>
+    </SidebarProvider>
+  );
+}`}
+	showCode={true}
+/>
+
+### With Page Section
+
+<CodeExample
+	title="Layout with Page Header"
+	description="Combining layout with page section headers"
+	code={`function DashboardPage() {
+  return (
+    <SidebarProvider mainNavItems={mainNavItems}>
+      <div className="flex h-screen">
+        <SideNavigation />
+        <main className="flex-1 overflow-auto bg-bg">
+          <PageSection
+            pageTitle="Dashboard"
+            primaryAction={{
+              label: 'Create Campaign',
+              onClick: () => {},
+            }}
+          />
+          <div className="p-6">
+            {/* Page content */}
+          </div>
+        </main>
+      </div>
+    </SidebarProvider>
+  );
+}`}
+	showCode={true}
+/>
+
+### Standalone Secondary Panel
+
+<CodeExample
+	title="Secondary Panel Only"
+	description="Use SidebarPanel independently for custom layouts"
+	code={`function CustomLayout() {
+  const [isOpen, setIsOpen] = useState(true);
+  const [activeItem, setActiveItem] = useState('overview');
+
+  return (
+    <div className="flex h-screen">
+      <SidebarPanel
+        title="Settings"
+        isOpen={isOpen}
+        onToggle={() => setIsOpen(!isOpen)}
+      >
+        <SidebarItem
+          label="Overview"
+          iconOutlined={MdOutlineDashboard}
+          iconFilled={MdDashboard}
+          isActive={activeItem === 'overview'}
+          onClick={() => setActiveItem('overview')}
+        />
+        <SidebarItem
+          label="Account"
+          iconOutlined={MdPeopleOutline}
+          iconFilled={MdPeople}
+          isActive={activeItem === 'account'}
+          onClick={() => setActiveItem('account')}
+        >
+          <SidebarSubItem
+            label="Profile"
+            isActive={activeItem === 'profile'}
+            onClick={() => setActiveItem('profile')}
+          />
+          <SidebarSubItem
+            label="Security"
+            isActive={activeItem === 'security'}
+            onClick={() => setActiveItem('security')}
+          />
+        </SidebarItem>
+      </SidebarPanel>
+      <main className="flex-1">
+        {/* Content */}
+      </main>
+    </div>
+  );
+}`}
+	showCode={true}
+/>
+
+### Custom Configuration
+
+<CodeExample
+	title="Provider Configuration"
+	description="Customize sidebar behavior with config options"
+	code={`<SidebarProvider
+  mainNavItems={mainNavItems}
+  config={{
+    defaultSecondaryOpen: true,
+    animationDuration: 300,
+    collapsedWidth: 64,
+    expandedWidth: 224,
+  }}
+>
+  <div className="flex h-screen">
+    <SideNavigation />
+    <main className="flex-1">{children}</main>
+  </div>
+</SidebarProvider>`}
+	showCode={true}
+/>
+
+## Layout Patterns
+
+### Dashboard Layout
+
+```tsx
+function DashboardLayout({ children }) {
+  return (
+    <SidebarProvider mainNavItems={dashboardNav}>
+      <div className="flex h-screen bg-bg">
+        <SideNavigation />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <PageSection pageTitle="Dashboard" />
+          <main className="flex-1 overflow-auto p-6">
+            {children}
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+}
+```
+
+### Settings Layout
+
+```tsx
+function SettingsLayout({ children }) {
+  const [activeSection, setActiveSection] = useState('general');
+
+  return (
+    <div className="flex h-screen">
+      <SidebarPanel title="Settings" isOpen={true}>
+        <SidebarItem
+          label="General"
+          isActive={activeSection === 'general'}
+          onClick={() => setActiveSection('general')}
+        />
+        <SidebarItem
+          label="Security"
+          isActive={activeSection === 'security'}
+          onClick={() => setActiveSection('security')}
+        />
+        <SidebarItem
+          label="Notifications"
+          isActive={activeSection === 'notifications'}
+          onClick={() => setActiveSection('notifications')}
+        />
+      </SidebarPanel>
+      <main className="flex-1 p-6">
+        {children}
+      </main>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use SidebarProvider at root">
+		Wrap your entire application or layout section with SidebarProvider for consistent state management.
+	</Guideline>
+	
+	<Guideline type="do" title="Organize navigation logically">
+		Group related items together and use clear, descriptive labels.
+	</Guideline>
+	
+	<Guideline type="do" title="Persist sidebar state">
+		Save the user's sidebar open/closed preference in local storage.
+	</Guideline>
+	
+	<Guideline type="do" title="Use icons consistently">
+		Use Material Design icons with outlined/filled variants for visual consistency.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't overcrowd navigation">
+		Limit primary navigation to 5-7 items. Use secondary panels for additional items.
+	</Guideline>
+	
+	<Guideline type="dont" title="Don't nest too deeply">
+		Keep navigation depth to 3 levels maximum for usability.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+### SidebarProvider
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `mainNavItems` | `MainNavItem[]` | - | Primary navigation items with icons and paths |
+| `config` | `SidebarConfig` | - | Configuration options for sidebar behavior |
+| `className` | `string` | - | Additional className for wrapper |
+| `children` | `ReactNode` | - | Application content |
+
+### SideNavigation
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `string` | - | Additional className |
+
+### MainNavItem
+
+```tsx
+interface MainNavItem {
+  id: string;
+  label: string;
+  iconOutlined: IconType;
+  iconFilled: IconType;
+  path: string;
+  secondaryItems?: SecondaryNavItem[];
+}
+
+interface SecondaryNavItem {
+  id: string;
+  label: string;
+  path: string;
+  subItems?: SubNavItem[];
+}
+```
+
+### SidebarConfig
+
+```tsx
+interface SidebarConfig {
+  defaultSecondaryOpen?: boolean;
+  animationDuration?: number;
+  collapsedWidth?: number;
+  expandedWidth?: number;
+}
+```
+
+## Accessibility
+
+<InfoCallout type="info" title="Semantic Navigation">
+The layout system uses proper semantic HTML with `<nav>` elements and ARIA landmarks for screen reader navigation.
+</InfoCallout>
+
+- Primary and secondary navigation use separate `<nav>` elements with distinct aria-labels
+- All interactive elements are keyboard accessible
+- Focus is properly managed when toggling panels
+- Active states are communicated to assistive technology
+- Skip links should be added to bypass navigation for keyboard users

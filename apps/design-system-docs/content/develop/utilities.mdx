@@ -1,0 +1,95 @@
+---
+title: Utilities
+description: Helper functions and utility classes that simplify common development tasks when building with the design system.
+category: Develop
+keywords:
+  - utilities
+  - helpers
+  - functions
+  - cn
+  - classnames
+  - tailwind
+  - merge
+lastUpdated: 2026-03-10
+---
+
+# Usage
+
+## Overview
+
+The Marmo UI exports a set of utility functions and helpers that streamline common development patterns. These utilities handle class merging, data transformation, and other recurring tasks.
+
+### cn() - Class Name Merger
+
+The `cn` utility combines `clsx` and `tailwind-merge` to intelligently merge Tailwind CSS classes, resolving conflicts and removing duplicates.
+
+```tsx
+import { cn } from '@marmoui/ui';
+
+// Basic usage
+cn('px-4 py-2', 'px-6')
+// Result: 'px-6 py-2' (px-6 overrides px-4)
+
+// Conditional classes
+cn('base-class', isActive && 'active-class', isDisabled && 'disabled-class')
+
+// With arrays and objects
+cn(['flex', 'items-center'], { 'bg-primary': isPrimary })
+```
+
+**When to use:**
+* Merging component props `className` with internal styles
+* Conditionally applying Tailwind classes
+* Resolving conflicting utility classes
+
+### Data Table Utilities
+
+Utilities for working with the DataTable component's server-side integration:
+
+```tsx
+import {
+  convertColumnsToFormData,
+  convertOrderToFormData,
+  createServerParams,
+  type DataTableParams
+} from '@marmoui/ui';
+```
+
+| Function | Description |
+|----------|-------------|
+| `createServerParams` | Converts DataTable state (pagination, sorting, filters) into server-friendly query parameters |
+| `convertColumnsToFormData` | Transforms column configuration into form-compatible data |
+| `convertOrderToFormData` | Converts sort order state into form-compatible data |
+
+### useComposedRefs
+
+A utility hook for composing multiple refs into a single callback ref:
+
+```tsx
+import { useComposedRefs } from '@marmoui/ui';
+
+function MyComponent({ forwardedRef }) {
+  const internalRef = useRef(null);
+  const composedRef = useComposedRefs(internalRef, forwardedRef);
+
+  return <div ref={composedRef} />;
+}
+```
+
+### Best Practices
+
+* Always use `cn()` instead of string concatenation for Tailwind classes.
+* Import utilities directly from `@marmoui/ui` to benefit from tree-shaking.
+* Use TypeScript generic types from the data table utilities for type-safe server params.
+
+### Installation
+
+All utilities are included in the main package:
+
+```bash
+pnpm add @marmoui/ui
+```
+
+```tsx
+import { cn } from '@marmoui/ui';
+```

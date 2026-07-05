@@ -1,0 +1,81 @@
+---
+title: Select Multi Category
+description: A categorized multi-select dropdown that organizes options into groups for structured selection.
+category: Components
+status: stable
+links:
+  github: /tree/main/packages/ui/src/components/select-multi-category
+keywords:
+  - select
+  - multi category
+  - grouped select
+  - categorized
+lastUpdated: 2026-03-10
+---
+
+import { SelectMultiCategory } from '@marmoui/ui';
+import { SelectMultiCategoryBasicPreview } from '@/components/previews/select-multi-category-previews';
+
+<Accordions>
+  <Accordion title="Overview">
+    SelectMultiCategory extends the multi-select pattern by organizing options into named categories. It helps users navigate large option sets with logical groupings.
+
+    **When to Use:**
+    - Selecting items from multiple categories (e.g., products from different lines)
+    - Filter selection with grouped facets
+    - Permission or role assignment with categorized options
+
+    **When NOT to Use:**
+    - For uncategorized options (use SelectCheckboxSearchable)
+    - For single selection (use Select)
+    - For simple category filtering (use SegmentedControl + list)
+  </Accordion>
+</Accordions>
+
+<Installation />
+
+## Usage
+
+```tsx
+import { SelectMultiCategory } from '@marmoui/ui';
+```
+
+## Examples
+
+### Basic Categorized Select
+
+<CodeExample
+	title="Default"
+	description="Multi-select with categorized options"
+	src="src/components/previews/select-multi-category-previews.tsx"
+	componentName="SelectMultiCategoryBasicPreview"
+	preview={<SelectMultiCategoryBasicPreview />}
+/>
+
+## Best Practices
+
+<GuidelinesGrid>
+	<Guideline type="do" title="Use meaningful categories">
+		Category labels should help users quickly locate relevant options.
+	</Guideline>
+	<Guideline type="do" title="Show category counts">
+		Display how many items from each category are selected.
+	</Guideline>
+	<Guideline type="dont" title="Don't create single-item categories">
+		If a category has only one item, merge it with a related category.
+	</Guideline>
+	<Guideline type="dont" title="Don't nest categories">
+		Keep categories flat. Sub-categories should use a different pattern.
+	</Guideline>
+</GuidelinesGrid>
+
+## Props
+
+<Props componentName="SelectMultiCategory" />
+
+## Accessibility
+
+- Categories are announced as groups by screen readers.
+- Items within categories are navigable with Arrow keys.
+- Search filters across all categories.
+- Selected items are clearly indicated.

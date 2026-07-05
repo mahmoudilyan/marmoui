@@ -1,0 +1,375 @@
+---
+title: Claude Plugin & MCP
+description: How to install, use, and troubleshoot the Marmo UI Claude Code plugin and the MCP server it connects to. The fastest way for AI agents to write correct @marmoui/ui code.
+category: Tools
+status: stable
+keywords:
+  - claude
+  - claude code
+  - plugin
+  - mcp
+  - model context protocol
+  - ai
+  - marmo-ui
+  - cursor
+  - install
+  - setup
+lastUpdated: 2026-04-29
+---
+
+# Claude Plugin & MCP
+
+The **Marmo UI Claude Code plugin** is the recommended way for engineers to use AI to build UI with `@marmoui/ui`. It bundles three things into a single install:
+
+1. A **skill** that auto-triggers whenever you ask Claude to build, edit, or review UI code.
+2. A **slash command** (`/marmo-ui:marmo-build`) for explicit "build this Marmo way" requests.
+3. The **Marmo UI MCP server** — a hosted service that streams the current design-system knowledge (every component, every prop, every pattern) into Claude's context.
+
+The result: Claude stops hallucinating prop names, stops importing `@chakra-ui/react`, and starts producing code that compiles and matches your design system on the first try.
+
+> One install per developer, one time. Updates arrive automatically — no per-repo config, no env vars, no shell exports.
+
+---
+
+## Architecture
+
+```
+                  ┌──────────────────────────────────┐
+                  │      Your repo (any product app) │
+                  │                                  │
+                  │   Claude Code session            │
+                  │   ─────────────────              │
+                  │   Skill auto-loads               │
+                  │   Slash command available        │
+                  └─────────────┬────────────────────┘
+                                │  HTTPS + Bearer token
+                                ▼
+                  ┌──────────────────────────────────┐
+                  │   marmo-ui MCP server (hosted)  │
+                  │   ──────────────────────────     │
+                  │   • Component index (74+)        │
+                  │   • Pattern catalog              │
+                  │   • Prop signatures (live)       │
+                  │   • Validators                   │
+                  └─────────────┬────────────────────┘
+                                │  Re-indexes on every push
+                                ▼
+                  ┌──────────────────────────────────┐
+                  │   mahmoudilyan/marmo-ui repo      │
+                  │   ──────────────────────────     │
+                  │   • packages/ui/src/             │
+                  │   • content/components/*.mdx     │
+                  │   • content/patterns/*.mdx       │
+                  └──────────────────────────────────┘
+```
+
+When you push a component change or update an MDX file, the deployed MCP rebuilds its index within ~2 minutes and every developer's Claude Code session automatically sees the new data on its next tool call. Nobody has to update anything.
+
+---
+
+## Quick start
+
+In Claude Code, run these two commands inside any repo:
+
+```
+/plugin marketplace add mahmoudilyan/marmo-ui
+/plugin install marmo-ui@marmoui-plugins
+```
+
+When prompted for `marmo_mcp_token`, paste the team-wide bearer token (ask Dan for the token"). 
+
+That's it. The MCP starts automatically on the next tool call.
+
+> You need GitHub read access to `mahmoudilyan/marmo-ui` for `/plugin marketplace add` to clone the marketplace catalog.
+
+### One-paste alternative
+
+If you'd rather skip the prompt:
+
+```bash
+CLAUDE_PLUGIN_OPTION_MARMO_MCP_TOKEN=<paste-team-token-here> \
+  claude plugin marketplace add mahmoudilyan/marmo-ui && \
+CLAUDE_PLUGIN_OPTION_MARMO_MCP_TOKEN=<paste-team-token-here> \
+  claude plugin install marmo-ui@marmoui-plugins
+```
+
+Same end state — token goes straight to the OS keychain.
+
+---
+
+## Verify it's working
+
+In Claude Code:
+
+```
+/plugin                       # confirm marmo-ui is in the enabled list
+/mcp                          # confirm marmo-ui MCP is connected (green dot)
+```
+
+Then in chat:
+
+> List all Marmo UI components.
+
+If you see 70+ components come back, you're good. If `/mcp` shows a red dot, jump to [Troubleshooting](#troubleshooting).
+
+---
+
+## Daily workflow
+
+You don't need to do anything special — the skill auto-triggers on UI work. But it helps to know what's happening behind the scenes.
+
+### Auto-trigger (most common)
+
+Whenever your prompt mentions any of:
+
+- `@marmoui/ui`, "Marmo components", "our design system"
+- "build a form", "build a page", "build a dashboard"
+- "make this look like our app"
+- "add analytics", "track this", "PostHog" (the skill also covers analytics layering)
+
+…the `marmo-ui` skill auto-loads and walks Claude through the validated workflow:
+
+1. Check the MCP is fresh (`get_knowledge_version`).
+2. Read the rules (`get_design_guidelines`).
+3. Find the right primitive — call `get_pattern` for known layouts, otherwise `search_components` + `get_component_info`.
+4. Write the code.
+5. Validate with `review_generated_code` before returning.
+
+You'll see Claude make these calls in the trace. That's the workflow.
+
+### Explicit slash command
+
+For a heavyweight "do it the Marmo way" request:
+
+```
+/marmo-ui:marmo-build a settings page with workspace, notifications, and billing tabs
+```
+
+The slash command runs the same workflow, but doesn't depend on Claude inferring intent from your wording — useful when the prompt is short or ambiguous.
+
+### Direct MCP tool calls
+
+You can also invoke MCP tools directly:
+
+```
+@marmo-ui get_pattern patternId="app-shell"
+@marmo-ui search_components query="dropdown"
+@marmo-ui get_component_info componentName="Button"
+```
+
+Useful for spot-checks ("what props does Badge accept?") without launching the full generation workflow.
+
+---
+
+## What's in the MCP — tool reference
+
+Eight tools, each focused on a specific job:
+
+| Tool | When the AI calls it | What it returns |
+|---|---|---|
+| `get_knowledge_version` | Once per session, before generating any UI | `{ gitSha, indexedAt, componentCount, patternCount, uptimeSeconds }` |
+| `get_design_guidelines` | Mandatory first call before writing `@marmoui/ui` code | Generation checklist, hard rules (no namespace sub-components, `PageSection` is self-closing, etc.), import conventions |
+| `list_components` | Discovery — when the AI doesn't know what exists | Names, descriptions, categories, prop counts for every component |
+| `search_components` | Discovery — when the AI knows the use case | Top 5–8 components matching a keyword (`"form"`, `"table"`, `"toast"`) |
+| `get_component_info` | **Required** before using any component for the first time in a session | Exact prop signatures, types, defaults, examples, common mistakes |
+| `get_pattern` | When the task matches a known multi-component layout | Validated copy-pasteable code for `app-shell`, `data-table-with-filters`, `form-with-validation`, `confirmation-dialog`, `dialogs-for-other-actions`, `posthog-tracking` |
+| `review_generated_code` | **Mandatory** on every piece of code before returning to the user | `{ valid, errors[], warnings[], suggestedFixes[] }` against live prop signatures |
+| `validate_component_usage` | When validating user-provided or existing code (not freshly generated) | `{ valid, issues[] }` |
+
+The tool descriptions are what tells Claude *when* to use each tool — they're tuned in the MCP server (`apps/design-system-mcp/src/tools/index.ts`).
+
+---
+
+## What gets installed
+
+After `/plugin install`, you have:
+
+| Item | Location | Purpose |
+|---|---|---|
+| The `marmo-ui` skill | Auto-loaded in every Claude Code session | Walks the AI through the validated workflow |
+| The `/marmo-ui:marmo-build` slash command | Always available | Explicit "build this Marmo way" |
+| The `marmo-ui` MCP server connection | `mcp_servers` registry | Streams design-system knowledge to Claude |
+| `marmo_mcp_token` | OS keychain (sensitive) | Authenticates with the hosted MCP |
+| `mcp_url` (optional override) | OS keychain | Points the plugin at a fork or local server |
+
+You don't see any of this on disk — there are no per-repo `.mcp.json` or `.env` files to commit.
+
+---
+
+## Updating
+
+Updates are automatic. The plugin uses **git-SHA versioning**, which means every commit to `mahmoudilyan/marmo-ui` is a new version. Claude Code re-checks the marketplace on a schedule, and you'll be prompted to update when a new SHA lands.
+
+Manual update:
+
+```
+/plugin update marmo-ui@marmoui-plugins
+```
+
+This re-pulls the plugin from the marketplace; your token stays in the keychain across updates.
+
+---
+
+## Configuration
+
+The plugin exposes two config values via Claude Code's `userConfig`:
+
+| Key | Required | Default | Notes |
+|---|---|---|---|
+| `marmo_mcp_token` | yes | — | Sensitive (`sensitive: true`). Stored in OS keychain. |
+| `mcp_url` | no | `https://mcp.marmoui.com/mcp` | Override only when running against a fork or local MCP. |
+
+### Changing the token or URL
+
+There's no built-in `reconfigure` flow yet. Two options:
+
+**Option A — uninstall + reinstall (re-prompts for both values):**
+
+```
+/plugin uninstall marmo-ui@marmoui-plugins
+/plugin install marmo-ui@marmoui-plugins
+```
+
+**Option B — one-paste with new values:**
+
+```bash
+CLAUDE_PLUGIN_OPTION_MARMO_MCP_TOKEN=<new-token> \
+CLAUDE_PLUGIN_OPTION_MCP_URL=<new-url> \
+  claude plugin install marmo-ui@marmoui-plugins --force
+```
+
+Either way the previous keychain entry is overwritten.
+
+---
+
+## Troubleshooting
+
+### MCP not connected (red dot in `/mcp`)
+
+**Most common cause:** wrong or expired token. Reinstall to re-prompt:
+
+```
+/plugin uninstall marmo-ui@marmoui-plugins
+/plugin install marmo-ui@marmoui-plugins
+```
+
+If reinstall doesn't fix it, the issue is server-side. Surface the error to the design-system team.
+
+### "SDK auth failed: HTTP 404 / Invalid OAuth error response"
+
+This means the MCP server returned an HTML 404 instead of a JSON response — typically because the server's `TEAM_API_KEY` env var is unset or empty, so requests fall through to the docs site's 404 page. Server-side issue; ping the design-system team.
+
+### "401 Unauthorized" on tool calls
+
+Your token doesn't match the server's `TEAM_API_KEY`. The team rotated the token, or you pasted the wrong value. Reinstall the plugin and paste the current team token.
+
+### "Tool not found: mcp__marmo-ui__*"
+
+The plugin isn't enabled in this session. Run `/plugin` and confirm `marmo-ui` is in the enabled list. If it isn't, `/plugin install marmo-ui@marmoui-plugins`.
+
+### Stale component data
+
+The MCP indexes from `main`. If you don't see a component you just merged, it hasn't redeployed yet (~2 min after merge). You can confirm by calling:
+
+```
+@marmo-ui get_knowledge_version
+```
+
+Compare `gitSha` to the latest commit on `main`. If they don't match, wait or check the deploy workflow on GitHub.
+
+### Two `marmo-ui` MCP entries showing in `/mcp`
+
+You probably installed the plugin **and** also have the design-system contributor manual setup (`.mcp.json` + `MARMO_MCP_TOKEN` env var) active. They both register a server named `marmo-ui` — Claude Code can pick the wrong one. Pick one path:
+
+- **Product engineers:** keep the plugin, remove `MARMO_MCP_TOKEN` from your shell.
+- **Design-system contributors:** uninstall the plugin, keep the manual setup.
+
+---
+
+## Cursor users
+
+Cursor doesn't support Claude Code plugins, but it does support the same MCP server. Add a per-user MCP config at `~/.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "marmo-ui": {
+      "url": "https://mcp.marmoui.com/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_TEAM_API_KEY"
+      }
+    }
+  }
+}
+```
+
+Replace `YOUR_TEAM_API_KEY` with the team token. Restart Cursor.
+
+The skill and slash command are Claude-Code-only, but the MCP tools (`get_component_info`, `get_pattern`, `review_generated_code`, etc.) work the same way in Cursor — just call them directly or let Cursor's agent use them.
+
+---
+
+## Other MCP clients (Cline, Continue, Zed, …)
+
+The server speaks standard MCP over Streamable HTTP. Configure your client with:
+
+```
+URL:    https://mcp.marmoui.com/mcp
+Header: Authorization: Bearer <team-token>
+```
+
+No client-specific tweaks required.
+
+---
+
+## For design-system contributors (manual setup)
+
+If you're working *inside* `mahmoudilyan/marmo-ui` and changing the MCP itself, use the project-scoped config rather than the plugin:
+
+```bash
+echo 'export MARMO_MCP_TOKEN="<paste-token>"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+The repo-root `.mcp.json` interpolates this env var. **Don't run this *and* the plugin** — they declare the same server name and Claude Code may pick the wrong one.
+
+The MCP server source lives in a private repository; you only ever connect to the hosted instance.
+
+---
+
+## How knowledge stays fresh
+
+Every merge to `main` in this repo flows to the hosted MCP automatically: CI rebuilds the MCP image (which pulls the latest public docs — `component-props.json`, component MDX, `@marmoui/ui` exports — plus the private patterns knowledge) and redeploys it. The MCP rebuilds its index on startup.
+
+The pre-commit hook (`.husky/pre-commit`) keeps `component-props.json` in sync with component source, so the index never drifts from the real props.
+
+For details on the authoring schema (frontmatter, required sections, cross-reference tables), see [CONTRIBUTING-MDX.md](https://github.com/mahmoudilyan/marmo-ui/blob/main/apps/design-system-docs/CONTRIBUTING-MDX.md).
+
+---
+
+## Privacy & data flow
+
+- **What leaves your machine?** Tool call arguments (component name, pattern id, code snippets you ask Claude to validate). The MCP server logs the tool name, request id, and duration — not the raw argument bodies.
+- **What's stored?** Nothing user-identifying. The hosted MCP is stateless; restarts wipe everything but the indexed knowledge.
+- **Where's the token?** OS keychain only. Never in logs, never on disk, never in git.
+- **Network egress?** Your client → the hosted MCP over HTTPS. The MCP itself doesn't contact third parties during a tool call.
+
+If your team has stricter data-residency requirements, the same MCP can run inside your network — point `mcp_url` at your hosted instance.
+
+---
+
+## Reporting issues
+
+- **Plugin / install issue:** open an issue on `mahmoudilyan/marmo-ui` with the label `claude-plugin`.
+- **Wrong / hallucinated component data:** open an issue with the label `mcp-bug` and the offending tool call (the request id from the trace is enough to find it in server logs).
+- **MDX content gap (component missing a "When to use" or cross-ref):** open an issue with the label `mdx-audit` and link to the relevant `content/components/*.mdx`.
+
+---
+
+## Related
+
+- [`apps/design-system-mcp/SETUP.md`](https://github.com/mahmoudilyan/marmo-ui/blob/main/apps/design-system-mcp/SETUP.md) — operator guide for running the MCP locally and the technical reference for env vars / deployment.
+- [`apps/design-system-mcp/README.md`](https://github.com/mahmoudilyan/marmo-ui/blob/main/apps/design-system-mcp/README.md) — what the MCP is for, how indexing works.
+- [`tools/claude-plugin/README.md`](https://github.com/mahmoudilyan/marmo-ui/blob/main/tools/claude-plugin/README.md) — internals for plugin authors and how to ship updates.
+- [Patterns catalog](/patterns) — the patterns the AI fetches via `get_pattern`.
+- [`CONTRIBUTING-MDX.md`](https://github.com/mahmoudilyan/marmo-ui/blob/main/apps/design-system-docs/CONTRIBUTING-MDX.md) — authoring guide for the MDX content the MCP indexes.

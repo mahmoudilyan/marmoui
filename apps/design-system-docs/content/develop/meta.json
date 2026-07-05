@@ -1,0 +1,6 @@
+{
+  "title": "Develop",
+  "description": "Developer utilities, hooks, and integration guides",
+  "defaultOpen": true,
+  "pages": ["utilities", "hooks"]
+}
