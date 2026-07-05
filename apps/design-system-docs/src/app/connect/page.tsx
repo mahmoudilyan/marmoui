@@ -21,7 +21,7 @@ export const metadata: Metadata = {
  * (`ConnectClient`) that unlocks on-brand generation.
  */
 export default async function ConnectPage() {
-	const { plan } = await getEntitlement();
+	const { plan, authenticated, email } = await getEntitlement();
 	const mcpUrl = process.env.NEXT_PUBLIC_MCP_URL || 'http://localhost:3001/mcp';
 
 	return (
@@ -91,12 +91,21 @@ export default async function ConnectPage() {
 						>
 							Get Pro
 						</Link>
-						<Link
-							href="/unlock"
-							className="inline-flex h-10 items-center justify-center rounded-md border border-border px-4 text-sm font-medium text-ink transition-colors hover:bg-secondary"
-						>
-							I have a license
-						</Link>
+						{authenticated ? (
+							<Link
+								href="/welcome"
+								className="inline-flex h-10 items-center justify-center rounded-md border border-border px-4 text-sm font-medium text-ink transition-colors hover:bg-secondary"
+							>
+								Account{email ? ` (${email})` : ''}
+							</Link>
+						) : (
+							<Link
+								href="/signin"
+								className="inline-flex h-10 items-center justify-center rounded-md border border-border px-4 text-sm font-medium text-ink transition-colors hover:bg-secondary"
+							>
+								Already bought? Sign in
+							</Link>
+						)}
 					</div>
 				</div>
 			)}

@@ -13,6 +13,8 @@ export type Plan = 'free' | 'pro';
 export interface Entitlement {
 	authenticated: boolean;
 	plan: Plan;
+	/** Signed-in user's email, when known. */
+	email?: string;
 }
 
 const FREE: Entitlement = { authenticated: false, plan: 'free' };
@@ -42,14 +44,33 @@ export async function getEntitlement(): Promise<Entitlement> {
 	// Lazy import keeps the Supabase client out of the module graph (and out of
 	// any bundle) when the Platform isn't configured, and avoids a static import
 	// cycle with the platform/entitlements helper.
-	const { isPlatformConfigured, resolveSessionAccount, getPlanForAccount } =
+	const { isPlatformConfigured, resolveSessionAccount, getPlanForAccount, upsertAccount } =
 		await import('@/lib/platform/entitlements');
+
+	// Primary path: Supabase Auth session (magic-link sign-in via @supabase/ssr).
+	// The middleware keeps the session cookies fresh; here we resolve the user's
+	// email to an account and read its entitlement (written by the checkout
+	// webhook, keyed by the same email).
+	const { getAuthUser, isAuthConfigured } = await import('@/lib/supabase/server');
+	if (isAuthConfigured()) {
+		const user = await getAuthUser();
+		if (user?.email) {
+			if (!isPlatformConfigured()) {
+				// Signed in but no service credentials to read plans (preview env).
+				return { authenticated: true, plan: 'free', email: user.email };
+			}
+			const account = await upsertAccount(user.email);
+			if (!account) return { authenticated: true, plan: 'free', email: user.email };
+			const plan = await getPlanForAccount(account.id);
+			return { authenticated: true, plan, email: user.email };
+		}
+	}
 
 	if (isPlatformConfigured()) {
 		const account = await resolveSessionAccount();
 		if (!account) return FREE;
 		const plan = await getPlanForAccount(account.id);
-		return { authenticated: true, plan };
+		return { authenticated: true, plan, email: account.email };
 	}
 
 	const store = await cookies();
