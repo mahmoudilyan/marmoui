@@ -1,92 +1,76 @@
 import 'server-only';
-import Database from 'better-sqlite3';
-import fs from 'node:fs';
-import path from 'node:path';
+import { getServiceClient } from '@/lib/platform/supabase';
 
-const DEFAULT_DB_PATH = path.join(process.cwd(), 'data', 'votes.db');
-const DB_PATH = process.env.VOTES_DB_PATH ?? DEFAULT_DB_PATH;
-
-let dbInstance: Database.Database | null = null;
-
-function getDb(): Database.Database {
-	if (dbInstance) return dbInstance;
-
-	const dir = path.dirname(DB_PATH);
-	if (!fs.existsSync(dir)) {
-		fs.mkdirSync(dir, { recursive: true });
-	}
-
-	const db = new Database(DB_PATH);
-	db.pragma('journal_mode = WAL');
-	db.pragma('synchronous = NORMAL');
-	db.exec(`
-		CREATE TABLE IF NOT EXISTS roadmap_votes (
-			card_id TEXT NOT NULL,
-			voter_id TEXT NOT NULL,
-			created_at INTEGER NOT NULL,
-			PRIMARY KEY (card_id, voter_id)
-		);
-		CREATE INDEX IF NOT EXISTS idx_roadmap_votes_card ON roadmap_votes(card_id);
-	`);
-
-	dbInstance = db;
-	return db;
-}
+/**
+ * Roadmap voting, backed by the Supabase `roadmap_votes` table (see
+ * marmo-platform migration 0004_roadmap_votes.sql). Serverless-safe — no
+ * local filesystem. When Supabase env is absent (local dev without secrets),
+ * reads return empty and toggles no-op with `voted: false`.
+ */
 
 export type VoteCounts = Record<string, number>;
 export type VoterState = Record<string, boolean>;
+export type ToggleResult = { voted: boolean; count: number };
 
-export function getAllCounts(): VoteCounts {
-	const rows = getDb()
-		.prepare(`SELECT card_id, COUNT(*) AS count FROM roadmap_votes GROUP BY card_id`)
-		.all() as Array<{ card_id: string; count: number }>;
+export async function getAllCounts(): Promise<VoteCounts> {
+	const client = getServiceClient();
+	if (!client) return {};
+
+	const { data, error } = await client.from('roadmap_votes').select('card_id');
+	if (error || !data) return {};
 
 	const counts: VoteCounts = {};
-	for (const row of rows) counts[row.card_id] = row.count;
+	for (const row of data as Array<{ card_id: string }>) {
+		counts[row.card_id] = (counts[row.card_id] ?? 0) + 1;
+	}
 	return counts;
 }
 
-export function getVoterState(voterId: string): VoterState {
-	const rows = getDb()
-		.prepare(`SELECT card_id FROM roadmap_votes WHERE voter_id = ?`)
-		.all(voterId) as Array<{ card_id: string }>;
+export async function getVoterState(voterId: string): Promise<VoterState> {
+	const client = getServiceClient();
+	if (!client) return {};
+
+	const { data, error } = await client
+		.from('roadmap_votes')
+		.select('card_id')
+		.eq('voter_id', voterId);
+	if (error || !data) return {};
 
 	const state: VoterState = {};
-	for (const row of rows) state[row.card_id] = true;
+	for (const row of data as Array<{ card_id: string }>) state[row.card_id] = true;
 	return state;
 }
 
-export function getCardCount(cardId: string): number {
-	const row = getDb()
-		.prepare(`SELECT COUNT(*) AS count FROM roadmap_votes WHERE card_id = ?`)
-		.get(cardId) as { count: number };
-	return row.count;
+export async function getCardCount(cardId: string): Promise<number> {
+	const client = getServiceClient();
+	if (!client) return 0;
+
+	const { count, error } = await client
+		.from('roadmap_votes')
+		.select('*', { count: 'exact', head: true })
+		.eq('card_id', cardId);
+	return error ? 0 : (count ?? 0);
 }
 
-export type ToggleResult = { voted: boolean; count: number };
+export async function toggleVote(cardId: string, voterId: string): Promise<ToggleResult> {
+	const client = getServiceClient();
+	if (!client) return { voted: false, count: 0 };
 
-export function toggleVote(cardId: string, voterId: string): ToggleResult {
-	const db = getDb();
-	const tx = db.transaction(() => {
-		const existing = db
-			.prepare(`SELECT 1 FROM roadmap_votes WHERE card_id = ? AND voter_id = ?`)
-			.get(cardId, voterId);
+	const { data: existing } = await client
+		.from('roadmap_votes')
+		.select('card_id')
+		.eq('card_id', cardId)
+		.eq('voter_id', voterId)
+		.maybeSingle();
 
-		if (existing) {
-			db.prepare(`DELETE FROM roadmap_votes WHERE card_id = ? AND voter_id = ?`).run(
-				cardId,
-				voterId
-			);
-			return false;
-		}
+	if (existing) {
+		await client.from('roadmap_votes').delete().eq('card_id', cardId).eq('voter_id', voterId);
+	} else {
+		// Unique (card_id, voter_id) makes double-submits idempotent.
+		await client
+			.from('roadmap_votes')
+			.upsert({ card_id: cardId, voter_id: voterId }, { onConflict: 'card_id,voter_id' });
+	}
 
-		db.prepare(
-			`INSERT INTO roadmap_votes (card_id, voter_id, created_at) VALUES (?, ?, ?)`
-		).run(cardId, voterId, Date.now());
-		return true;
-	});
-
-	const voted = tx();
-	const count = getCardCount(cardId);
-	return { voted, count };
+	return { voted: !existing, count: await getCardCount(cardId) };
 }

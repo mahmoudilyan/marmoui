@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
 	try {
 		const voterId = await getVoterId();
-		const result = toggleVote(cardId, voterId);
+		const result = await toggleVote(cardId, voterId);
 		return NextResponse.json(result);
 	} catch (error) {
 		console.error('[roadmap/vote] failed:', error);

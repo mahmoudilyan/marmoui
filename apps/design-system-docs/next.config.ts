@@ -37,7 +37,6 @@ const nextConfig: NextConfig = {
 		optimisticClientCache: true,
 	},
 	transpilePackages: ['@marmoui/ui'],
-	serverExternalPackages: ['better-sqlite3'],
 	async redirects() {
 		return [
 			{

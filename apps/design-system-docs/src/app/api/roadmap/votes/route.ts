@@ -8,8 +8,8 @@ export const runtime = 'nodejs';
 export async function GET() {
 	try {
 		const voterId = await getVoterId();
-		const counts = getAllCounts();
-		const voted = getVoterState(voterId);
+		const counts = await getAllCounts();
+		const voted = await getVoterState(voterId);
 		return NextResponse.json({ counts, voted });
 	} catch (error) {
 		console.error('[roadmap/votes] failed:', error);
