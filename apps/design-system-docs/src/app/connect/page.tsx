@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MdAutoAwesome } from 'react-icons/md';
 import { getEntitlement } from '@/lib/entitlement';
+import { upsertAccount } from '@/lib/platform/entitlements';
+import { getTenantForAccount } from '@/lib/platform/tenants';
 import { ConnectClient } from './connect-client';
+import { TenantSiteCard } from './tenant-site-card';
 import siteConfig from '@/../site.config';
 
 export const dynamic = 'force-dynamic';
@@ -58,15 +61,7 @@ export default async function ConnectPage() {
 			</p>
 
 			{plan === 'pro' ? (
-				<div className="mt-12">
-					<h2 className="text-base font-semibold text-ink">Your personal token</h2>
-					<p className="mt-1 text-sm text-ink-light">
-						Unlocks on-brand generation and patterns for every agent using it.
-					</p>
-					<div className="mt-6">
-						<ConnectClient mcpUrl={mcpUrl} />
-					</div>
-				</div>
+				<ProSections mcpUrl={mcpUrl} email={email} />
 			) : (
 				<div className="mt-12 flex flex-col items-start gap-4 rounded-xl border border-border bg-panel p-6">
 					<div className="flex h-11 w-11 items-center justify-center rounded-full bg-secondary text-ink">
@@ -110,5 +105,28 @@ export default async function ConnectPage() {
 				</div>
 			)}
 		</main>
+	);
+}
+
+/** Pro-only sections: personal MCP token + the tenant design-system site. */
+async function ProSections({ mcpUrl, email }: { mcpUrl: string; email?: string }) {
+	const account = email ? await upsertAccount(email) : null;
+	const tenant = account ? await getTenantForAccount(account.id) : null;
+
+	return (
+		<>
+			<div className="mt-12">
+				<h2 className="text-base font-semibold text-ink">Your personal token</h2>
+				<p className="mt-1 text-sm text-ink-light">
+					Unlocks on-brand generation and patterns for every agent using it.
+				</p>
+				<div className="mt-6">
+					<ConnectClient mcpUrl={mcpUrl} />
+				</div>
+			</div>
+			<div className="mt-10">
+				<TenantSiteCard initialSlug={tenant?.slug} initialName={tenant?.name} />
+			</div>
+		</>
 	);
 }

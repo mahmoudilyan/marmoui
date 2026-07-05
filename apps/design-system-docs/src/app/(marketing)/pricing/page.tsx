@@ -38,6 +38,7 @@ const tiers = [
 			'Composition patterns — app shells, settings pages, dashboards',
 			'Pro blocks, generated straight into your repo',
 			'Personal MCP token + dashboard',
+			'Hosted design-system site at marmoui.com/t/your-team — the library in your tokens',
 			'Pattern & Pro-component docs',
 			'Priority support',
 		],
@@ -53,6 +54,7 @@ const comparison: { label: string; free: boolean; pro: boolean }[] = [
 	{ label: 'Composition patterns library', free: false, pro: true },
 	{ label: 'Pro blocks', free: false, pro: true },
 	{ label: 'Personal MCP token', free: false, pro: true },
+	{ label: 'Hosted design-system site (/t/your-team)', free: false, pro: true },
 ];
 
 const pricingFaq = [

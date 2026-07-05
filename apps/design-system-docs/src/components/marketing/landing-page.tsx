@@ -504,6 +504,7 @@ const proFeatures = [
 	'Composition patterns library',
 	'Pro blocks — generated into your repo',
 	'Personal MCP token & dashboard',
+	'Hosted design-system site in your tokens',
 ];
 
 function PricingSection() {
