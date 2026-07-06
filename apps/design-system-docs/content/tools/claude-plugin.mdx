@@ -14,7 +14,7 @@ keywords:
   - cursor
   - install
   - setup
-lastUpdated: 2026-04-29
+lastUpdated: 2026-07-06
 ---
 
 # Claude Plugin & MCP
@@ -22,7 +22,7 @@ lastUpdated: 2026-04-29
 The **Marmo UI Claude Code plugin** is the recommended way for engineers to use AI to build UI with `@marmoui/ui`. It bundles three things into a single install:
 
 1. A **skill** that auto-triggers whenever you ask Claude to build, edit, or review UI code.
-2. A **slash command** (`/marmo-ui:marmo-build`) for explicit "build this Marmo way" requests.
+2. Five **slash commands** (`/marmo-ui:init`, `/marmo-ui:marmo-build`, `/marmo-ui:override`, `/marmo-ui:design-md`, `/marmo-ui:prototype`) for explicit workflows — see the [command reference](#slash-commands).
 3. The **Marmo UI MCP server** — a hosted service that streams the current design-system knowledge (every component, every prop, every pattern) into Claude's context.
 
 The result: Claude stops hallucinating prop names, stops importing `@chakra-ui/react`, and starts producing code that compiles and matches your design system on the first try.
@@ -145,7 +145,7 @@ For a heavyweight "do it the Marmo way" request:
 /marmo-ui:marmo-build a settings page with workspace, notifications, and billing tabs
 ```
 
-The slash command runs the same workflow, but doesn't depend on Claude inferring intent from your wording — useful when the prompt is short or ambiguous.
+The slash command runs the same workflow, but doesn't depend on Claude inferring intent from your wording — useful when the prompt is short or ambiguous. All five commands are documented in the [command reference](#slash-commands) below.
 
 ### Direct MCP tool calls
 
@@ -158,6 +158,79 @@ You can also invoke MCP tools directly:
 ```
 
 Useful for spot-checks ("what props does Badge accept?") without launching the full generation workflow.
+
+---
+
+## Slash commands
+
+Five commands ship with the plugin. **You never *have* to use them** — every command has a plain-text equivalent, because the `marmo-ui` skill auto-triggers on natural language. Slash commands exist for precision: they run the exact documented workflow without depending on Claude inferring intent from your wording.
+
+| Command | What it does | Plain-text equivalent |
+|---|---|---|
+| `/marmo-ui:init` | Bootstrap the project's design identity — detect brand basics from the codebase, interview for the gaps, write `DESIGN.md` | "Set up a DESIGN.md for this project" |
+| `/marmo-ui:marmo-build` | Build UI following the full MCP-backed workflow (guidelines → patterns → props → validate) | "Build a settings page with our design system" |
+| `/marmo-ui:override` | Set up the local `ui/` wrapper folder, then override an `@marmoui/ui` component or create a custom one | "Override DataTable with a custom default page size" / "Create a custom InvoiceCard component in our ui folder" |
+| `/marmo-ui:design-md` | Generate a portable `DESIGN.md` (brand color, type, tokens, component inventory) any AI agent can read | "Generate a design brief for this project" |
+| `/marmo-ui:prototype` | Scaffold a shareable prototype with the comments + AI-edit overlay, deploy to Netlify, return a public URL | "Spin up a shareable prototype of this flow" |
+
+### `/marmo-ui:init`
+
+First-run setup for a product app. Scans the repo for existing tokens (CSS custom properties, Tailwind config, fonts), asks only about what it couldn't detect (brand name, primary color, layout family, rounding, density, dark mode), and writes a `DESIGN.md` at the project root. Every agent — Claude, Cursor, Codex — reads that file to generate on-brand UI. Never overwrites an existing `DESIGN.md`.
+
+```
+/marmo-ui:init
+/marmo-ui:init our brand is Acme, primary color #0F62FE, dark mode required
+```
+
+### `/marmo-ui:marmo-build`
+
+The explicit "build this the Marmo way" command. Runs the same five-step workflow the skill uses (verify MCP freshness → read guidelines → fetch pattern or component info → write code → validate with `review_generated_code`), but guaranteed — no reliance on the skill recognizing your prompt as UI work.
+
+```
+/marmo-ui:marmo-build a subscribers page with an Import CSV action and a data table
+```
+
+Use it when the prompt is short, ambiguous, or when a previous freeform attempt produced off-system code.
+
+### `/marmo-ui:override`
+
+Customize the design system without forking it. On first run it sets up the wrapper convention: creates `src/ui/index.ts` re-exporting `@marmoui/ui`, records `uiImportPath: "@/ui"` in `DESIGN.md`, and offers to migrate existing imports. After that, app code imports UI from `@/ui` and overriding a component is one file plus one re-export line.
+
+```
+/marmo-ui:override DataTable            # override an existing component (wraps, doesn't fork)
+/marmo-ui:override new InvoiceCard      # create an app-specific component in src/ui/
+```
+
+See [Overriding Components](/develop/overriding-components) for the full convention, the wrap-vs-fork guidance, and common mistakes.
+
+### `/marmo-ui:design-md`
+
+Generates the same `DESIGN.md` artifact as `/marmo-ui:init`, but sourced from the design system itself rather than an interview — brand color, typography, tokens, and the component inventory pulled live from the MCP. The portable wedge: hand the file to any agent in any editor and it generates on-brand UI without an MCP connection.
+
+```
+/marmo-ui:design-md
+```
+
+### `/marmo-ui:prototype`
+
+Scaffolds a shareable prototype from the prototype starter, pre-wired with the comments + AI-edit overlay (`@marmoui/prototype-overlay`), deploys it to Netlify, and returns a public URL. Reviewers sign in with Claude to leave inline comments; the owner can make AI edits in select mode.
+
+```
+/marmo-ui:prototype an onboarding flow with a 3-step wizard
+```
+
+### Using commands in plain text
+
+Slash commands are shortcuts, not requirements. The skill watches for intent, so these are equivalent:
+
+| You type | What runs |
+|---|---|
+| `/marmo-ui:override DataTable` | The override workflow, explicitly |
+| "I want to customize the DataTable in this app — set up an override" | The skill recognizes the intent and follows the same workflow |
+| `/marmo-ui:marmo-build a billing page` | The build workflow, explicitly |
+| "Build a billing page with our design system" | Skill auto-triggers, same five steps |
+
+Prefer slash commands when you want guaranteed, reproducible behavior (onboarding docs, runbooks, CI prompts); plain text is fine for day-to-day work.
 
 ---
 
@@ -187,7 +260,7 @@ After `/plugin install`, you have:
 | Item | Location | Purpose |
 |---|---|---|
 | The `marmo-ui` skill | Auto-loaded in every Claude Code session | Walks the AI through the validated workflow |
-| The `/marmo-ui:marmo-build` slash command | Always available | Explicit "build this Marmo way" |
+| Five `/marmo-ui:*` slash commands | Always available | `init`, `marmo-build`, `override`, `design-md`, `prototype` — see [command reference](#slash-commands) |
 | The `marmo-ui` MCP server connection | `mcp_servers` registry | Streams design-system knowledge to Claude |
 | `marmo_mcp_token` | OS keychain (sensitive) | Authenticates with the hosted MCP |
 | `mcp_url` (optional override) | OS keychain | Points the plugin at a fork or local server |

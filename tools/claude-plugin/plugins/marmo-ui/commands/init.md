@@ -92,6 +92,7 @@ Token rules:
 - **Token reference**: `{path.to.token}` — always prefer references over repeated literals in `components:`.
 - **Typography**: composite object (`fontFamily`, `fontSize`, `fontWeight`, `lineHeight`, `letterSpacing`).
 - `components:` entries are **overrides** on top of `@marmoui/ui` defaults — only list tokens that differ. Any component the MCP knows (`button-primary`, `card`, `input`, `badge`, `data-table`, …) can be overridden here.
+- `uiImportPath` (optional, top-level): set to the app's local ui wrapper path (e.g. `"@/ui"`) when the project uses the override convention from `/marmo-ui:override`. If you detect `src/ui/index.ts` re-exporting `@marmoui/ui` during Step 1, include it automatically.
 
 ## Step 4 — Wire it up
 

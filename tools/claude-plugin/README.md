@@ -21,7 +21,11 @@ mahmoudilyan/marmoui/                          # this monorepo (= the marketplac
             ├── skills/
             │   └── marmo-ui/SKILL.md           # model-invoked workflow
             └── commands/
-                └── marmo-build.md              # explicit /marmo-ui:marmo-build slash command
+                ├── init.md                      # /marmo-ui:init — detect/interview brand, write DESIGN.md
+                ├── marmo-build.md              # explicit /marmo-ui:marmo-build slash command
+                ├── override.md                  # /marmo-ui:override — local ui/ wrapper: override or add components
+                ├── design-md.md                 # /marmo-ui:design-md — portable DESIGN.md generator
+                └── prototype.md                 # /marmo-ui:prototype — shareable Netlify prototype
 ```
 
 ## Install (per developer, one time)

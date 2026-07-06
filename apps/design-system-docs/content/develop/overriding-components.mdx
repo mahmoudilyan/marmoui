@@ -1,0 +1,82 @@
+---
+title: Overriding Components
+description: Customize or extend @marmoui/ui in your app with a local ui/ wrapper folder — override any component or add your own without forking the package.
+category: Develop
+keywords:
+  - override
+  - customize
+  - extend
+  - wrapper
+  - eject
+  - local components
+  - ui folder
+lastUpdated: 2026-07-06
+---
+
+# Overriding Components
+
+Sometimes a component needs app-specific behavior the design system shouldn't ship — different defaults, injected analytics, an extra prop, or a component that only makes sense in your product. The **ui wrapper convention** lets you do that without forking `@marmoui/ui` or losing upgrades.
+
+## How it works
+
+Your app imports all UI from one local folder that re-exports the package:
+
+```ts
+// src/ui/index.ts
+// App UI entry point. Import all UI from '@/ui', never from '@marmoui/ui' directly.
+export * from '@marmoui/ui';
+
+// Local overrides — explicit exports below shadow the package's star export.
+export { DataTable } from './data-table';
+```
+
+Everywhere else in the app:
+
+```tsx
+import { Button, DataTable, PageSection } from '@/ui';
+```
+
+ES modules guarantee the shadowing: an explicit named export always wins over the same name arriving via `export *`. Overriding a component is therefore one file plus one re-export line — every consumer picks up your version automatically, and everything you didn't override stays on the package.
+
+**One rule:** app code imports from `@/ui` only. `@marmoui/ui` appears exclusively inside `src/ui/`.
+
+## Setup
+
+1. Make sure `tsconfig.json` has the alias: `"paths": { "@/*": ["./src/*"] }`.
+2. Create `src/ui/index.ts` with the star re-export shown above.
+3. Migrate existing imports: replace `from '@marmoui/ui'` with `from '@/ui'` across `src/` (except inside `src/ui/`).
+4. If you keep a `DESIGN.md`, declare the convention so AI agents follow it: add `uiImportPath: "@/ui"` to the frontmatter.
+
+With the [Claude Code plugin](/tools/claude-plugin), `/marmo-ui:override` does all of this for you — and then generates the override or custom component you ask for (e.g. `/marmo-ui:override DataTable` or `/marmo-ui:override new InvoiceCard`).
+
+## Overriding: wrap, don't fork
+
+Prefer wrapping the original — you keep the package's bug fixes and new props:
+
+```tsx
+// src/ui/data-table.tsx
+import { DataTable as MarmoDataTable } from '@marmoui/ui';
+import type { ComponentProps } from 'react';
+
+export function DataTable(props: ComponentProps<typeof MarmoDataTable>) {
+	return <MarmoDataTable pageSize={25} {...props} />;
+}
+```
+
+Wrappers cover changed defaults, added props, analytics instrumentation, and composition tweaks. Fork (copy the MIT source) only when you must change internal markup or behavior — keep the public prop contract identical and leave a header comment noting the package version you forked from, so major upgrades can be reconciled.
+
+## Adding your own components
+
+App-specific components live in the same folder and follow the same conventions as the design system:
+
+- Compose `@marmoui/ui` primitives; don't rebuild what exists (check the docs or MCP first).
+- Use design tokens (`space-*`, `text-ink-*`, `bg-panel`) — no raw hex or arbitrary pixel values.
+- Flat exports, `className` passthrough via `cn`, action props as objects.
+- Export from `src/ui/index.ts` like everything else.
+
+## Common Mistakes
+
+- **Importing `@marmoui/ui` in app code after adopting the wrapper.** The override silently stops applying for that file. App code imports `@/ui` only.
+- **Placing the override export above `export *` and expecting order to matter.** Order doesn't matter — explicit named exports always shadow star exports — but keep overrides grouped below the star export for readability.
+- **Forking a component to change a default.** A one-line wrapper does it and keeps you on package updates.
+- **Renaming the component in the override.** Keep the original export name so the shadow works and call sites don't change.
