@@ -1,5 +1,11 @@
 # @marmoui/ui
 
+## 1.0.1
+
+### Patch Changes
+
+- 16fe28f: Tooltip border uses the border token instead of currentColor (was rendering black); sidebar collapse toggle uses the Phosphor List icon instead of BookOpen; PageSection sticky header border softened to border-muted.
+
 ## 1.6.0
 
 ### Minor Changes
