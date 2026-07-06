@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import type { ElementType } from 'react';
 import { useSidebar } from './sidebar-provider';
 import type { NavigationItem, SecondaryNavigationItem, SubNavigationItem } from './types';
-import { Bell, GearSix, Question, BookOpen, List } from '@phosphor-icons/react';
+import { Bell, GearSix, Question, List } from '@phosphor-icons/react';
 
 import { SidebarAppearanceProvider, useSidebarAppearance } from './sidebar-appearance';
 import { SidebarBrand } from './sidebar-brand';
@@ -435,7 +435,7 @@ export function SidebarPanelTitle({
 					<IconButton
 						variant="ghost-body"
 						size="sm"
-						icon={<BookOpen />}
+						icon={<List />}
 						onClick={toggleSecondary}
 						aria-label={secondaryIsOpen ? 'Collapse sidebar' : 'Expand sidebar'}
 					/>

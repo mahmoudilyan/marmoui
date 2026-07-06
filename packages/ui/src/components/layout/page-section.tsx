@@ -397,7 +397,7 @@ export default function PageSection({
 	const sidebarEffectivelyOpen = isMobile ? mobileNavOpen : secondaryIsOpen;
 
 	const shellClass = cn(
-		'sticky top-0 z-10 bg-panel border-b border-border-secondary',
+		'sticky top-0 z-10 bg-panel border-b border-border-muted',
 		variant === 'compact' || variant === 'profile'
 			? 'px-space-2xl py-space-xl'
 			: 'px-space-lg py-space-md',
