@@ -53,6 +53,9 @@ export async function GET(request: NextRequest) {
 		tenantName: tenant?.name ?? resolved.account.email,
 		tenantSlug: tenant?.slug ?? fallbackSlug,
 		plan: resolved.plan,
+		// Raw DESIGN.md frontmatter — the MCP turns this into the mandatory
+		// brand CSS override block in get_design_guidelines.
+		designTokens: tenant?.tokens ?? null,
 		theme: null,
 		componentOverrides: {},
 		customPatterns: {},
