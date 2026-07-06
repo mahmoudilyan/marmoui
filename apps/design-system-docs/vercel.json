@@ -1,6 +1,6 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
-	"buildCommand": "pnpm generate:props && pnpm exec fumadocs-mdx && pnpm exec next build",
+	"buildCommand": "pnpm --filter @marmoui/ui build && pnpm generate:props && pnpm exec fumadocs-mdx && pnpm exec next build",
 	"framework": "nextjs",
 	"github": {
 		"silent": true
