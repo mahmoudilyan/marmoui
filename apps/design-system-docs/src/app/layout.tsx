@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
+/* @marmoui/ui's compiled Tailwind sheet must load BEFORE the app's: both
+   register the same cascade layers, and the later sheet's utilities win.
+   The app sheet is the complete one (it @source-scans ui/src too), so it
+   must come last or pairs like `hidden lg:block` break site-wide. */
 import '@marmoui/ui/style.css';
+import './globals.css';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import { SearchWrapper } from '@/components/search/search-wrapper';
 import { Toaster } from '@marmoui/ui';

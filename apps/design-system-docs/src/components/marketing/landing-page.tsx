@@ -574,9 +574,9 @@ function PricingSection() {
 								</p>
 							</div>
 							<p className="font-['Plus_Jakarta_Sans',sans-serif] text-[40px] font-semibold text-ink-dark tracking-[-1.2px]">
-								$59
+								$9.99
 								<span className="ml-2 align-middle text-[14px] font-medium text-ink-light">
-									early access · lifetime
+									per month
 								</span>
 							</p>
 							<BuyProButton className="h-12 w-full text-[16px] font-medium">Get Pro</BuyProButton>
@@ -651,20 +651,19 @@ function FaqSection() {
 							Frequently Asked Questions
 						</h2>
 					</div>
-					{/* Right: accordion */}
+					{/* Right: one question always open, tab-like switching (no collapse) */}
 					<div>
-						<Accordion
-							type="single"
-							collapsible
-							defaultValue="faq-0"
-							className="space-y-3"
-						>
+						<Accordion type="single" defaultValue="faq-0" className="flex flex-col gap-1">
 							{faqItems.map((item, i) => (
-								<AccordionItem key={item.q} value={`faq-${i}`} className="rounded-[10px] border-0 bg-white px-5">
-									<AccordionTrigger className="py-4 text-left text-[16px] font-semibold text-ink-dark hover:no-underline">
+								<AccordionItem
+									key={item.q}
+									value={`faq-${i}`}
+									className="mb-0 rounded-none border-0 bg-transparent px-0 py-1"
+								>
+									<AccordionTrigger className="py-3 text-left text-[17px] font-semibold text-white/60 transition-colors duration-200 hover:no-underline hover:text-white data-[state=open]:text-white [&>svg]:hidden">
 										{item.q}
 									</AccordionTrigger>
-									<AccordionContent className="pb-4 text-[15px] leading-relaxed text-ink-light">
+									<AccordionContent className="pb-5 text-[15px] leading-relaxed text-white/70">
 										{item.a}
 									</AccordionContent>
 								</AccordionItem>

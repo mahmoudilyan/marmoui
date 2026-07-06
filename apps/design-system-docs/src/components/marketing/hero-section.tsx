@@ -22,7 +22,7 @@ export function HeroSection() {
 
 			<HeroBentoGrid />
 
-			<div className="relative mx-auto min-h-[640px] max-w-7xl px-4 md:px-6 md:min-h-[1020px]">
+			<div className="relative mx-auto max-w-7xl px-4 md:px-6 lg:min-h-[960px] 2xl:min-h-[1060px]">
 				{/* Headline — top-left, above the floats. Constrained to the left half so
 				    it never collides with the right-anchored floating column. */}
 				<div className="relative z-10 max-w-[480px] pt-2 md:pt-6">
@@ -39,7 +39,7 @@ export function HeroSection() {
 						now a designer
 					</h1>
 
-					<p className="mt-5 text-[16px] leading-relaxed text-ink-light">
+					<p className="mt-5 text-[16px] leading-relaxed text-ink">
 						Marmo gives {agentNames.slice(0, -1).join(', ')} and {agentNames.at(-1)} a real design
 						system over MCP — component APIs, composition patterns, and your own tokens. Ship
 						production dashboards and apps in minutes, in your style. No AI slop.

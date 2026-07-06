@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { MdLock, MdCheckCircle } from 'react-icons/md';
-import siteConfig from '@/../site.config';
+import { BuyProButton } from '@/components/buy-pro-button';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -93,14 +93,9 @@ export default function UnlockPage() {
 
 			<p className="mt-6 text-sm text-ink-light">
 				Don&apos;t have a license yet?{' '}
-				<a
-					href={siteConfig.buyNowUrl}
-					target="_blank"
-					rel="noreferrer"
-					className="font-medium text-ink underline underline-offset-4"
-				>
+				<BuyProButton unstyled className="font-medium text-ink underline underline-offset-4">
 					Get Pro
-				</a>
+				</BuyProButton>
 			</p>
 		</main>
 	);

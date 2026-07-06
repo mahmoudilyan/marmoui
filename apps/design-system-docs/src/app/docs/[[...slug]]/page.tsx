@@ -77,10 +77,8 @@ export default async function Page(props: PageProps) {
 					<div className="docs-prose w-full flex-1 min-w-0 [&>:first-child]:mt-0">
 						<MDX components={components} />
 					</div>
-					<div className="sticky top-[calc(var(--header-height,64px)+1px)] z-30 ml-auto hidden h-[calc(100vh-var(--header-height,64px))] min-w-64 flex-col gap-4 overflow-y-auto overscroll-none pb-8 xl:flex">
-						<div className="px-2 pt-8">
-							<DocsTableOfContents toc={(doc.toc as any) || []} />
-						</div>
+					<div className="sticky top-[calc(var(--header-height,64px)+1px)] z-30 ml-auto hidden self-start pt-8 xl:block">
+						<DocsTableOfContents toc={(doc.toc as any) || []} />
 					</div>
 				</div>
 				{(neighbours.previous || neighbours.next) && (

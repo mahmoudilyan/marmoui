@@ -34,6 +34,32 @@
 	--color-warning: var(--color-yellow-600);
 	--color-info: var(--color-blue-600);
 	--color-destructive: var(--color-red-600);
+
+	/* Radix accordion open/close animation — @marmoui/ui's AccordionContent
+	   uses animate-accordion-down/up, which needs these keyframes to exist. */
+	--animate-accordion-down: accordion-down 0.25s ease-out;
+	--animate-accordion-up: accordion-up 0.25s ease-out;
+
+	@keyframes accordion-down {
+		from {
+			height: 0;
+			opacity: 0;
+		}
+		to {
+			height: var(--radix-accordion-content-height);
+			opacity: 1;
+		}
+	}
+	@keyframes accordion-up {
+		from {
+			height: var(--radix-accordion-content-height);
+			opacity: 1;
+		}
+		to {
+			height: 0;
+			opacity: 0;
+		}
+	}
 }
 
 /*

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { CopyButton } from '@/components/copy-button';
 import { getIconForLanguageExtension } from '@/components/language-icons';
 import { getEntitlement } from '@/lib/entitlement';
-import siteConfig from '@/../site.config';
+import { BuyProButton } from '@/components/buy-pro-button';
 
 /**
  * ProCode — gated source code for Pro (paid) content.
@@ -118,15 +118,10 @@ function LockedCode({ code, lang, title, className }: Required<Pick<ProCodeProps
 							Unlock the full source for every Marmo UI pattern with a Pro license.
 						</p>
 						<div className="mt-4 flex flex-col gap-2">
-							<a
-								href={siteConfig.buyNowUrl}
-								target="_blank"
-								rel="noreferrer"
-								className="inline-flex h-9 items-center justify-center gap-1.5 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-							>
+							<BuyProButton className="h-9 gap-1.5 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 hover:opacity-100">
 								Unlock with Pro
 								<MdArrowForward className="h-4 w-4" />
-							</a>
+							</BuyProButton>
 							<a
 								href="/unlock"
 								className="inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium text-ink-light transition-colors hover:text-ink"
