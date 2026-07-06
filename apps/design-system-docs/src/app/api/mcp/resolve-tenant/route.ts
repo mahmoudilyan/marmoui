@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { resolveAccountByMcpToken, isPlatformConfigured } from '@/lib/platform/entitlements';
+import { getTenantForAccount } from '@/lib/platform/tenants';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -9,18 +10,15 @@ export const runtime = 'nodejs';
  *
  * The endpoint the MCP server calls (as `PLATFORM_API_URL/api/mcp/resolve-tenant`)
  * to resolve an incoming `Authorization: Bearer <token>` into a tenant context.
- * See `apps/design-system-mcp/src/tenant/store.ts` → `fetchRemoteTenant`, which
- * expects exactly these JSON keys:
- *   tenantId, tenantName, tenantSlug, theme, componentOverrides, customPatterns
+ * The MCP's `fetchRemoteTenant` expects: tenantId, tenantName, tenantSlug, plan,
+ * theme, componentOverrides, customPatterns.
  *
- * The token is validated by hashing it and looking up a non-revoked `mcp_tokens`
- * row; the account must hold a Pro entitlement.
+ * Tiering (ADR-0007): free-account tokens resolve successfully with
+ * `plan: 'free'` — they lift the anonymous rate limit but get Core knowledge
+ * only; the MCP gates patterns/on-brand context by plan. Pro tokens resolve
+ * with `plan: 'pro'` plus the account's Tenant (slug/name) when one exists.
+ *
  *   401 — missing / unknown / revoked token.
- *   403 — token resolves but the account is not Pro.
- *
- * `theme` is returned as `null` here: an individual Pro account uses the default
- * Marmo theme, and the MCP falls back to `DEFAULT_MARMO_THEME` when `theme` is
- * absent. Custom-themed tenants (workspace ingestion) will populate these later.
  */
 export async function GET(request: NextRequest) {
 	if (!isPlatformConfigured()) {
@@ -38,21 +36,23 @@ export async function GET(request: NextRequest) {
 		return NextResponse.json({ error: 'Invalid or revoked token.' }, { status: 401 });
 	}
 
-	if (resolved.plan !== 'pro') {
-		return NextResponse.json({ error: 'Account does not have a Pro entitlement.' }, { status: 403 });
-	}
-
-	const slug =
+	const fallbackSlug =
 		resolved.account.email
 			.split('@')[0]
 			.replace(/[^a-z0-9]+/gi, '-')
 			.replace(/^-+|-+$/g, '')
 			.toLowerCase() || 'account';
 
+	// Pro accounts may have a Tenant (Docs Site) whose slug/name identify the
+	// workspace; theme stays null until workspace ingestion maps DESIGN.md
+	// tokens into the MCP theme shape (the MCP falls back to the Marmo default).
+	const tenant = resolved.plan === 'pro' ? await getTenantForAccount(resolved.account.id) : null;
+
 	return NextResponse.json({
 		tenantId: resolved.account.id,
-		tenantName: resolved.account.email,
-		tenantSlug: slug,
+		tenantName: tenant?.name ?? resolved.account.email,
+		tenantSlug: tenant?.slug ?? fallbackSlug,
+		plan: resolved.plan,
 		theme: null,
 		componentOverrides: {},
 		customPatterns: {},
