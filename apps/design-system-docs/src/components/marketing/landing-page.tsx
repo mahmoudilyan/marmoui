@@ -576,10 +576,10 @@ function PricingSection() {
 							<p className="font-['Plus_Jakarta_Sans',sans-serif] text-[40px] font-semibold text-ink-dark tracking-[-1.2px]">
 								$9.99
 								<span className="ml-2 align-middle text-[14px] font-medium text-ink-light">
-									per month
+									per month · 14-day free trial
 								</span>
 							</p>
-							<BuyProButton className="h-12 w-full text-[16px] font-medium">Get Pro</BuyProButton>
+							<BuyProButton className="h-12 w-full text-[16px] font-medium">Start free trial</BuyProButton>
 							<ul className="space-y-2.5">
 								{proFeatures.map(f => (
 									<li key={f} className="flex items-center gap-2.5 text-[14px] text-ink-dark">

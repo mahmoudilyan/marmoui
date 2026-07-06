@@ -19,7 +19,7 @@ Then just ask your agent: *"Build a billing dashboard with Marmo UI."*
 
 ## Free vs Pro
 
-| | Free | [Pro](https://www.marmoui.com/pricing) |
+| | Free | [Pro — $9.99/mo, 14-day free trial](https://www.marmoui.com/pricing) |
 | --- | --- | --- |
 | React components (`@marmoui/ui`, MIT) | ✓ | ✓ |
 | Core MCP — live props, validation, default Marmo styling | ✓ | ✓ |
