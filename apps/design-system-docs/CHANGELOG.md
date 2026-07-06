@@ -1,5 +1,12 @@
 # @marmoui/design-system-docs
 
+## 1.5.1
+
+### Patch Changes
+
+- Updated dependencies [16fe28f]
+  - @marmoui/ui@1.0.1
+
 ## 1.5.0
 
 ### Minor Changes
