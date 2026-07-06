@@ -31,15 +31,6 @@ const nestedCardReset = 'border-0 shadow-none';
 export function HeroBentoGrid() {
 	return (
 		<div className="absolute inset-0 hidden overflow-hidden lg:block" aria-hidden>
-			{/* Glare — Figma: 1000×1000 at x:1654 y:0 (1920 canvas), 40% opacity */}
-			<div
-				className="pointer-events-none absolute -right-[266px] top-0 size-[1000px] opacity-40"
-				style={{
-					background:
-						'radial-gradient(closest-side, rgba(133,105,206,0.5) 0%, rgba(255,158,196,0.25) 45%, transparent 72%)',
-				}}
-			/>
-
 			{/* ── Right collage, pinned to the viewport edge ── */}
 			<div className="absolute right-6 top-10 flex items-start gap-5">
 				<div className="hidden w-[370px] flex-col gap-5 xl:flex">

@@ -18,14 +18,14 @@
   "userConfig": {
     "marmo_mcp_token": {
       "type": "string",
-      "title": "Marmo MCP API token",
-      "description": "Optional Pro token for on-brand generation and patterns. Leave empty for the free Core tier. Get yours at marmoui.com/connect.",
+      "title": "Marmo token (optional \u2014 leave empty to start free)",
+      "description": "Three tiers: EMPTY = anonymous (full component knowledge, ~100 calls/day) \u00b7 FREE account token = no daily limit (marmoui.com/connect, no card) \u00b7 PRO token = your brand drives generation + composition patterns (marmoui.com/pricing). You can also sign in later via /mcp \u2192 marmo-ui \u2192 Authenticate.",
       "required": false,
       "default": ""
     },
     "mcp_url": {
       "type": "string",
-      "title": "Marmo MCP URL",
+      "title": "Marmo MCP URL (leave default)",
       "description": "Override the MCP server URL. Leave the default unless running the MCP locally.",
       "default": "https://mcp.marmoui.com/mcp"
     }
