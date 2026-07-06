@@ -59,7 +59,9 @@ export async function getEntitlement(): Promise<Entitlement> {
 				// Signed in but no service credentials to read plans (preview env).
 				return { authenticated: true, plan: 'free', email: user.email };
 			}
-			const account = await upsertAccount(user.email);
+			const account = await upsertAccount(user.email, {
+				marketingOptIn: user.user_metadata?.marketing_opt_in === true,
+			});
 			if (!account) return { authenticated: true, plan: 'free', email: user.email };
 			const plan = await getPlanForAccount(account.id);
 			return { authenticated: true, plan, email: user.email };

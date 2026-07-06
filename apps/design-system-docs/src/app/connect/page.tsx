@@ -4,6 +4,7 @@ import { MdAutoAwesome } from 'react-icons/md';
 import { getEntitlement } from '@/lib/entitlement';
 import { upsertAccount } from '@/lib/platform/entitlements';
 import { getTenantForAccount } from '@/lib/platform/tenants';
+import { BuyProButton } from '@/components/buy-pro-button';
 import { ConnectClient } from './connect-client';
 import { TenantSiteCard } from './tenant-site-card';
 import siteConfig from '@/../site.config';
@@ -60,47 +61,33 @@ export default async function ConnectPage() {
 				.
 			</p>
 
-			{plan === 'pro' ? (
-				<ProSections mcpUrl={mcpUrl} email={email} />
+			{authenticated ? (
+				<SignedInSections mcpUrl={mcpUrl} email={email} plan={plan} />
 			) : (
 				<div className="mt-12 flex flex-col items-start gap-4 rounded-xl border border-border bg-panel p-6">
 					<div className="flex h-11 w-11 items-center justify-center rounded-full bg-secondary text-ink">
 						<MdAutoAwesome className="h-5 w-5" />
 					</div>
 					<div>
-						<h2 className="text-base font-medium text-ink">Make it yours with Pro</h2>
+						<h2 className="text-base font-medium text-ink">Free account = personal token</h2>
 						<p className="mt-1 text-sm text-ink-light">
-							Free generates with the default Marmo look. Pro adds a personal token that unlocks
-							on-brand generation — your{' '}
+							Anonymous use is rate-limited. A free account gets you a personal MCP token with no
+							limits, saves your{' '}
 							<Link href="/docs/tools/design-md" className="font-medium text-primary hover:underline">
 								DESIGN.md
-							</Link>{' '}
-							drives every screen any of your agents generates — plus the patterns library and Pro
-							blocks.
+							</Link>
+							, and lets you preview your design-system site. Pro turns the preview on for real —
+							on-brand generation, patterns, Pro blocks.
 						</p>
 					</div>
 					<div className="flex flex-wrap gap-3">
 						<Link
-							href={siteConfig.buyNowUrl}
-							className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+							href="/signin"
+							className="inline-flex h-10 items-center justify-center rounded-md bg-[#141422] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
 						>
-							Get Pro
+							Create free account
 						</Link>
-						{authenticated ? (
-							<Link
-								href="/account"
-								className="inline-flex h-10 items-center justify-center rounded-md border border-border px-4 text-sm font-medium text-ink transition-colors hover:bg-secondary"
-							>
-								Account{email ? ` (${email})` : ''}
-							</Link>
-						) : (
-							<Link
-								href="/signin"
-								className="inline-flex h-10 items-center justify-center rounded-md border border-border px-4 text-sm font-medium text-ink transition-colors hover:bg-secondary"
-							>
-								Already bought? Sign in
-							</Link>
-						)}
+						<BuyProButton className="h-10 border border-border bg-white px-4 text-sm font-medium text-ink hover:bg-panel hover:opacity-100" />
 					</div>
 				</div>
 			)}
@@ -108,25 +95,48 @@ export default async function ConnectPage() {
 	);
 }
 
-/** Pro-only sections: personal MCP token + the tenant design-system site. */
-async function ProSections({ mcpUrl, email }: { mcpUrl: string; email?: string }) {
+/** Signed-in sections: personal MCP token for every plan; tenant site for Pro. */
+async function SignedInSections({
+	mcpUrl,
+	email,
+	plan,
+}: {
+	mcpUrl: string;
+	email?: string;
+	plan: 'free' | 'pro';
+}) {
 	const account = email ? await upsertAccount(email) : null;
-	const tenant = account ? await getTenantForAccount(account.id) : null;
+	const tenant = account && plan === 'pro' ? await getTenantForAccount(account.id) : null;
 
 	return (
 		<>
 			<div className="mt-12">
 				<h2 className="text-base font-semibold text-ink">Your personal token</h2>
 				<p className="mt-1 text-sm text-ink-light">
-					Unlocks on-brand generation and patterns for every agent using it.
+					{plan === 'pro'
+						? 'Unlocks on-brand generation and patterns for every agent using it.'
+						: 'Free tier: no rate limits, full Core knowledge. Upgrade to add your brand.'}
 				</p>
 				<div className="mt-6">
 					<ConnectClient mcpUrl={mcpUrl} />
 				</div>
 			</div>
-			<div className="mt-10">
-				<TenantSiteCard initialSlug={tenant?.slug} initialName={tenant?.name} />
-			</div>
+			{plan === 'pro' ? (
+				<div className="mt-10">
+					<TenantSiteCard initialSlug={tenant?.slug} initialName={tenant?.name} />
+				</div>
+			) : (
+				<div className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-panel p-6">
+					<div>
+						<h2 className="text-base font-medium text-ink">Make it yours with Pro</h2>
+						<p className="mt-1 max-w-md text-sm text-ink-light">
+							Your DESIGN.md drives every screen any of your agents generates — plus patterns, Pro
+							blocks, and your hosted design-system site.
+						</p>
+					</div>
+					<BuyProButton />
+				</div>
+			)}
 		</>
 	);
 }

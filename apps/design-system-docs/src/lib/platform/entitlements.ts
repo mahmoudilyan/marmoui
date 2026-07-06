@@ -42,7 +42,10 @@ export function hashToken(plaintext: string): string {
  * webhook (email comes from the Lemon Squeezy payload) and by session
  * resolution. Returns `null` if the Platform is not configured.
  */
-export async function upsertAccount(email: string): Promise<PlatformAccount | null> {
+export async function upsertAccount(
+	email: string,
+	opts?: { marketingOptIn?: boolean }
+): Promise<PlatformAccount | null> {
 	const client = getServiceClient();
 	if (!client) {
 		console.warn('[platform] upsertAccount skipped: Supabase env not configured');
@@ -50,9 +53,13 @@ export async function upsertAccount(email: string): Promise<PlatformAccount | nu
 	}
 
 	const normalizedEmail = email.trim().toLowerCase();
+	const row: Record<string, unknown> = { email: normalizedEmail };
+	// Consent is one-way here: only ever turn it ON from sign-up metadata;
+	// turning it off happens via unsubscribe, never by omission.
+	if (opts?.marketingOptIn === true) row.marketing_opt_in = true;
 	const { data, error } = await client
 		.from('accounts')
-		.upsert({ email: normalizedEmail }, { onConflict: 'email' })
+		.upsert(row, { onConflict: 'email' })
 		.select('id, email')
 		.single();
 

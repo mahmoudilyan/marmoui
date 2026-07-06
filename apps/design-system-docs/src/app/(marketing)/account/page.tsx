@@ -6,6 +6,7 @@ import siteConfig from '@/../site.config';
 import { getEntitlement } from '@/lib/entitlement';
 import { upsertAccount } from '@/lib/platform/entitlements';
 import { getTenantForAccount } from '@/lib/platform/tenants';
+import { BuyProButton } from '@/components/buy-pro-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,14 +53,7 @@ export default async function AccountPage() {
 									: 'Core components + free MCP. Upgrade for generation in your own style.'}
 							</p>
 						</div>
-						{!isPro ? (
-							<Link
-								href={siteConfig.buyNowUrl}
-								className="inline-flex h-10 shrink-0 items-center rounded-md bg-[#141422] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-							>
-								Get Pro
-							</Link>
-						) : null}
+						{!isPro ? <BuyProButton className="h-10 shrink-0 px-4 text-sm" /> : null}
 					</div>
 				</section>
 

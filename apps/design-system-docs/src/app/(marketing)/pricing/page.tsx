@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MdCheck, MdClose } from 'react-icons/md';
 import siteConfig from '@/../site.config';
+import { BuyProButton } from '@/components/buy-pro-button';
 
 export const metadata: Metadata = {
 	title: `Pricing — ${siteConfig.title}`,
@@ -19,6 +20,7 @@ const tiers = [
 		features: [
 			'Every core component — MIT licensed',
 			'Free Core MCP: connect Claude Code, Codex, Cursor, Gemini CLI',
+			'Free account: personal MCP token, no rate limits, saved DESIGN.md',
 			'Live component APIs — your agent never guesses props',
 			'Generated code validated before it lands',
 			'Component docs, Storybook, Figma library',
@@ -48,6 +50,7 @@ const tiers = [
 const comparison: { label: string; free: boolean; pro: boolean }[] = [
 	{ label: 'React components (@marmoui/ui, MIT)', free: true, pro: true },
 	{ label: 'Core MCP — live props & generation rules', free: true, pro: true },
+	{ label: 'Personal token + saved DESIGN.md (free account)', free: true, pro: true },
 	{ label: 'Generated-code validation', free: true, pro: true },
 	{ label: 'Docs, Storybook, Figma library', free: true, pro: true },
 	{ label: 'On-brand generation from your DESIGN.md', free: false, pro: true },
@@ -111,16 +114,18 @@ export default function PricingPage() {
 										{tier.priceNote}
 									</span>
 								</p>
-								<Link
-									href={tier.cta.href}
-									className={
-										tier.cta.primary
-											? 'inline-flex h-12 w-full items-center justify-center rounded-[6px] bg-[#141422] text-[16px] font-medium text-white transition-opacity hover:opacity-90'
-											: 'inline-flex h-12 w-full items-center justify-center rounded-[6px] border border-border-secondary bg-white text-[16px] font-medium text-ink transition-colors hover:bg-panel'
-									}
-								>
-									{tier.cta.label}
-								</Link>
+								{tier.cta.primary ? (
+									<BuyProButton className="h-12 w-full text-[16px] font-medium">
+										{tier.cta.label}
+									</BuyProButton>
+								) : (
+									<Link
+										href={tier.cta.href}
+										className="inline-flex h-12 w-full items-center justify-center rounded-[6px] border border-border-secondary bg-white text-[16px] font-medium text-ink transition-colors hover:bg-panel"
+									>
+										{tier.cta.label}
+									</Link>
+								)}
 								<ul className="space-y-2.5">
 									{tier.features.map(f => (
 										<li key={f} className="flex items-start gap-2.5 text-[14px] leading-[1.45] text-ink-dark">

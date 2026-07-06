@@ -17,6 +17,7 @@ import { MdCheck } from 'react-icons/md';
 import siteConfig from '@/../site.config';
 import { AgentDemo } from './agent-demo';
 import { agentTools } from './agent-logos';
+import { BuyProButton } from '@/components/buy-pro-button';
 import { HeroSection } from './hero-section';
 
 export type LandingTestimonial = {
@@ -578,21 +579,7 @@ function PricingSection() {
 									early access · lifetime
 								</span>
 							</p>
-							<Link
-								href={siteConfig.pricingUrl}
-								className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-[6px] bg-[#141422] text-[16px] font-medium text-white transition-opacity hover:opacity-90"
-							>
-								Get Pro
-								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-									<path
-										d="M9 18l6-6-6-6"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-							</Link>
+							<BuyProButton className="h-12 w-full text-[16px] font-medium">Get Pro</BuyProButton>
 							<ul className="space-y-2.5">
 								{proFeatures.map(f => (
 									<li key={f} className="flex items-center gap-2.5 text-[14px] text-ink-dark">

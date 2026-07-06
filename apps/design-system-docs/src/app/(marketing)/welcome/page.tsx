@@ -4,6 +4,7 @@ import { MdAutoAwesome, MdCheckCircle, MdHourglassEmpty } from 'react-icons/md';
 import siteConfig from '@/../site.config';
 import { getEntitlement } from '@/lib/entitlement';
 import { SignInForm } from '@/components/auth/sign-in-form';
+import { BuyProButton } from '@/components/buy-pro-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -100,12 +101,7 @@ export default async function WelcomePage({
 							</li>
 						</ul>
 						<div className="mt-8 flex flex-wrap gap-3">
-							<Link
-								href={siteConfig.pricingUrl}
-								className="inline-flex h-11 items-center rounded-md bg-[#141422] px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-							>
-								Get Pro
-							</Link>
+							<BuyProButton />
 							<form action="/api/auth/signout" method="post">
 								<button
 									type="submit"

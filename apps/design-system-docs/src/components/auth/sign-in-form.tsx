@@ -13,6 +13,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error';
  */
 export function SignInForm({ next = '/welcome' }: { next?: string }) {
 	const [email, setEmail] = React.useState('');
+	const [optIn, setOptIn] = React.useState(false);
 	const [status, setStatus] = React.useState<Status>('idle');
 	const [message, setMessage] = React.useState<string | null>(null);
 
@@ -36,6 +37,9 @@ export function SignInForm({ next = '/welcome' }: { next?: string }) {
 			email: email.trim().toLowerCase(),
 			options: {
 				emailRedirectTo: `${window.location.origin}${next}`,
+				// Explicit consent, unchecked by default; synced to the account row
+				// on the next entitlement resolution.
+				data: { marketing_opt_in: optIn },
 			},
 		});
 
@@ -92,6 +96,16 @@ export function SignInForm({ next = '/welcome' }: { next?: string }) {
 					{status === 'sending' ? 'Sending…' : 'Send sign-in link'}
 				</button>
 			</div>
+			<label className="flex items-start gap-2 text-xs text-ink-light">
+				<input
+					type="checkbox"
+					checked={optIn}
+					onChange={e => setOptIn(e.target.checked)}
+					className="mt-0.5 size-3.5 rounded border-border accent-[#141422]"
+				/>
+				Email me product updates — new components, patterns, and releases. No spam, unsubscribe
+				anytime.
+			</label>
 			<p className="text-xs text-ink-muted">
 				Bought Pro? Use the same email you paid with — your upgrade is attached to it.
 			</p>
