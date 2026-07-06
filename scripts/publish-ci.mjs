@@ -8,7 +8,19 @@
  */
 
 import { execSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+// changesets/action points NPM_CONFIG_USERCONFIG at an .npmrc with stale auth
+// config (always-auth etc.), which makes npm skip the OIDC trusted-publishing
+// exchange entirely (ENEEDAUTH). Publish with a clean userconfig instead.
+const cleanNpmrc = join(tmpdir(), 'marmo-publish-npmrc');
+writeFileSync(cleanNpmrc, '');
+const publishEnv = { ...process.env, NPM_CONFIG_USERCONFIG: cleanNpmrc };
+for (const key of Object.keys(publishEnv)) {
+	if (key.toLowerCase().startsWith('npm_config_')) delete publishEnv[key];
+}
 
 const PACKAGES = ['packages/ui', 'packages/cli'];
 
@@ -32,7 +44,11 @@ for (const dir of PACKAGES) {
 	}
 
 	console.log(`publishing ${pkg.name}@${pkg.version}…`);
-	execSync('npm publish --access public --provenance', { cwd: dir, stdio: 'inherit' });
+	execSync('npm --version && npm publish --access public --provenance', {
+		cwd: dir,
+		stdio: 'inherit',
+		env: publishEnv,
+	});
 	published.push({ name: pkg.name, version: pkg.version });
 	publishedAny = true;
 }
