@@ -50,7 +50,9 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm changeset publish
+          # Direct npm publish per package — npm's native OIDC Trusted
+          # Publishing; the pnpm/changesets publish chain drops the credential.
+          publish: node scripts/publish-ci.mjs
           commit: 'chore: version packages'
           title: 'Version Packages'
         env:
