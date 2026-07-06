@@ -44,7 +44,7 @@ for (const dir of PACKAGES) {
 	}
 
 	console.log(`publishing ${pkg.name}@${pkg.version}…`);
-	execSync('npm --version && npm publish --access public --provenance', {
+	execSync('npm publish --access public --provenance --loglevel http', {
 		cwd: dir,
 		stdio: 'inherit',
 		env: publishEnv,
