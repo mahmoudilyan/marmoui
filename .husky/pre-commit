@@ -17,7 +17,7 @@ mdx_changed="$(printf '%s\n' "$staged_files" | grep -E '^apps/design-system-docs
 patterns_meta_changed="$(printf '%s\n' "$staged_files" | grep -E '^apps/design-system-docs/content/(patterns|components)/meta\.json$' || true)"
 component_changed="$(printf '%s\n' "$staged_files" | grep -E '^packages/ui/src/components/' || true)"
 
-if [ -z "$mdx_changed" ] && [ -z "$patterns_meta_changed" ] && [ -z "$component_changed" ] ]; then
+if [ -z "$mdx_changed" ] && [ -z "$patterns_meta_changed" ] && [ -z "$component_changed" ]; then
 	# Nothing relevant to validate.
 	exit 0
 fi
