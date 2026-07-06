@@ -11,6 +11,7 @@ const columns = [
 			{ label: 'Updates', href: siteConfig.updatesUrl },
 			{ label: 'Roadmap', href: '/docs/introduction/roadmap' },
 			{ label: 'Connect your agent', href: siteConfig.connectUrl },
+			{ label: 'Account', href: '/account' },
 		],
 	},
 	{

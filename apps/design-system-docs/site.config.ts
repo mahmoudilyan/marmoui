@@ -20,11 +20,11 @@ const siteConfig = {
 	githubMainUrl: 'https://github.com/mahmoudilyan/marmoui',
 	storybookMainUrl: 'https://68d5b2258627ede6122d680b-jbyxhbjayc.chromatic.com',
 	figmaUrl: 'https://www.figma.com/design/fy2xB61FibtkLoGKLy4DM3/Marmo---UI',
-	// TODO(platform): point buyNowUrl at the Lemon Squeezy hosted checkout for the
-	// Pro variant (e.g. https://<store>.lemonsqueezy.com/buy/<variant-uuid>). The
-	// checkout's success → webhook (POST /api/webhooks/lemonsqueezy) writes the
-	// account's Pro entitlement. Until then it lands on the pricing page.
-	buyNowUrl: '/pricing',
+	// Lemon Squeezy hosted checkout for the Pro variant
+	// (https://<store>.lemonsqueezy.com/buy/<variant-uuid>). Set the env var in
+	// Vercel; until then Pro CTAs land on the pricing page. Checkout success →
+	// webhook writes the entitlement; buyer returns via /welcome.
+	buyNowUrl: process.env.NEXT_PUBLIC_LEMONSQUEEZY_CHECKOUT_URL || '/pricing',
 	previewUrl: 'https://www.figma.com/design/fy2xB61FibtkLoGKLy4DM3/Marmo---UI',
 	docsUrl: '/docs/introduction/get-started',
 	connectUrl: '/connect',

@@ -65,6 +65,12 @@ export default async function WelcomePage({
 							>
 								Set up DESIGN.md
 							</Link>
+							<Link
+								href="/account"
+								className="inline-flex h-11 items-center rounded-md border border-border bg-white px-5 text-sm font-medium text-ink transition-colors hover:bg-panel"
+							>
+								Account
+							</Link>
 						</div>
 					</>
 				) : authenticated ? (
