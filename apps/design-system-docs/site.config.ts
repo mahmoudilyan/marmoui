@@ -17,7 +17,7 @@ const siteConfig = {
 		'marmo',
 		'next.js',
 	],
-	githubMainUrl: 'https://github.com/mahmoudilyan/marmo-ui',
+	githubMainUrl: 'https://github.com/mahmoudilyan/marmoui',
 	storybookMainUrl: 'https://68d5b2258627ede6122d680b-jbyxhbjayc.chromatic.com',
 	figmaUrl: 'https://www.figma.com/design/fy2xB61FibtkLoGKLy4DM3/Marmo---UI',
 	// TODO(platform): point buyNowUrl at the Lemon Squeezy hosted checkout for the

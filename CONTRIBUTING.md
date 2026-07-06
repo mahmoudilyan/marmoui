@@ -15,7 +15,7 @@ commit conventions, versioning, and how a change ships to npm.
 ## Setup
 
 ```bash
-git clone git@github.com:mahmoudilyan/marmo-ui.git
+git clone git@github.com:mahmoudilyan/marmoui.git
 cd marmo-ui
 pnpm install        # Node >= 20, pnpm 9
 pnpm dev            # UI package + docs site (localhost:3002)

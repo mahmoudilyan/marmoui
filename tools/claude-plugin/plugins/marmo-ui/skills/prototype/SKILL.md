@@ -55,11 +55,11 @@ exists and contains anything, ask for an alternative.
 
 ### 4. Copy the starter
 
-Source = `apps/prototype-starter/` inside the `mahmoudilyan/marmo-ui`
+Source = `apps/prototype-starter/` inside the `mahmoudilyan/marmoui`
 monorepo. The user should have it cloned; if not, clone shallow:
 
 ```bash
-git clone --depth 1 https://github.com/mahmoudilyan/marmo-ui /tmp/marmo-ui-template
+git clone --depth 1 https://github.com/mahmoudilyan/marmoui /tmp/marmo-ui-template
 cp -R /tmp/marmo-ui-template/apps/prototype-starter <target-dir>
 rm -rf /tmp/marmo-ui-template
 ```

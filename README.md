@@ -15,7 +15,7 @@ Then just ask your agent: *"Build a billing dashboard with Marmo UI."*
 
 - **[`@marmoui/ui`](packages/ui)** — an open-source React 19 design system (MIT, public npm). Tables, charts, forms, app shells — everything a product UI needs, light + dark from one token set.
 - **The Marmo MCP** — a hosted knowledge server your agent connects to. Instead of guessing from training data, the agent reads live component APIs, composition patterns, and generation rules, and validates its output (`review_generated_code`) before reporting done. Wrong imports and invented props get caught and fixed before you ever see them.
-- **[Claude Code plugin](tools/claude-plugin)** — `/plugin marketplace add mahmoudilyan/marmo-ui` → `/plugin install marmo-ui@marmoui-plugins`. Bundles the MCP plus the `marmo-ui` skill and `/marmo-ui:*` commands (`init`, `design-md`, `build`) that enforce the find → generate → validate workflow.
+- **[Claude Code plugin](tools/claude-plugin)** — `/plugin marketplace add mahmoudilyan/marmoui` → `/plugin install marmo-ui@marmoui-plugins`. Bundles the MCP plus the `marmo-ui` skill and `/marmo-ui:*` commands (`init`, `design-md`, `build`) that enforce the find → generate → validate workflow.
 
 ## Free vs Pro
 
@@ -60,7 +60,7 @@ React 19 + `react-dom` are peer dependencies. Component APIs and examples: [marm
 Node 20+, pnpm 9.
 
 ```bash
-git clone git@github.com:mahmoudilyan/marmo-ui.git
+git clone git@github.com:mahmoudilyan/marmoui.git
 cd marmo-ui
 pnpm install
 pnpm dev            # UI package + docs site (localhost:3002)

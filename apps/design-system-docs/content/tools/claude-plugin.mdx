@@ -55,7 +55,7 @@ The result: Claude stops hallucinating prop names, stops importing `@chakra-ui/r
                                 │  Re-indexes on every push
                                 ▼
                   ┌──────────────────────────────────┐
-                  │   mahmoudilyan/marmo-ui repo      │
+                  │   mahmoudilyan/marmoui repo      │
                   │   ──────────────────────────     │
                   │   • packages/ui/src/             │
                   │   • content/components/*.mdx     │
@@ -72,7 +72,7 @@ When you push a component change or update an MDX file, the deployed MCP rebuild
 In Claude Code, run these two commands inside any repo:
 
 ```
-/plugin marketplace add mahmoudilyan/marmo-ui
+/plugin marketplace add mahmoudilyan/marmoui
 /plugin install marmo-ui@marmoui-plugins
 ```
 
@@ -80,7 +80,7 @@ When prompted for `marmo_mcp_token`, paste the team-wide bearer token (ask Dan f
 
 That's it. The MCP starts automatically on the next tool call.
 
-> You need GitHub read access to `mahmoudilyan/marmo-ui` for `/plugin marketplace add` to clone the marketplace catalog.
+> You need GitHub read access to `mahmoudilyan/marmoui` for `/plugin marketplace add` to clone the marketplace catalog.
 
 ### One-paste alternative
 
@@ -88,7 +88,7 @@ If you'd rather skip the prompt:
 
 ```bash
 CLAUDE_PLUGIN_OPTION_MARMO_MCP_TOKEN=<paste-team-token-here> \
-  claude plugin marketplace add mahmoudilyan/marmo-ui && \
+  claude plugin marketplace add mahmoudilyan/marmoui && \
 CLAUDE_PLUGIN_OPTION_MARMO_MCP_TOKEN=<paste-team-token-here> \
   claude plugin install marmo-ui@marmoui-plugins
 ```
@@ -198,7 +198,7 @@ You don't see any of this on disk — there are no per-repo `.mcp.json` or `.env
 
 ## Updating
 
-Updates are automatic. The plugin uses **git-SHA versioning**, which means every commit to `mahmoudilyan/marmo-ui` is a new version. Claude Code re-checks the marketplace on a schedule, and you'll be prompted to update when a new SHA lands.
+Updates are automatic. The plugin uses **git-SHA versioning**, which means every commit to `mahmoudilyan/marmoui` is a new version. Claude Code re-checks the marketplace on a schedule, and you'll be prompted to update when a new SHA lands.
 
 Manual update:
 
@@ -324,7 +324,7 @@ No client-specific tweaks required.
 
 ## For design-system contributors (manual setup)
 
-If you're working *inside* `mahmoudilyan/marmo-ui` and changing the MCP itself, use the project-scoped config rather than the plugin:
+If you're working *inside* `mahmoudilyan/marmoui` and changing the MCP itself, use the project-scoped config rather than the plugin:
 
 ```bash
 echo 'export MARMO_MCP_TOKEN="<paste-token>"' >> ~/.zshrc
@@ -343,7 +343,7 @@ Every merge to `main` in this repo flows to the hosted MCP automatically: CI reb
 
 The pre-commit hook (`.husky/pre-commit`) keeps `component-props.json` in sync with component source, so the index never drifts from the real props.
 
-For details on the authoring schema (frontmatter, required sections, cross-reference tables), see [CONTRIBUTING-MDX.md](https://github.com/mahmoudilyan/marmo-ui/blob/main/apps/design-system-docs/CONTRIBUTING-MDX.md).
+For details on the authoring schema (frontmatter, required sections, cross-reference tables), see [CONTRIBUTING-MDX.md](https://github.com/mahmoudilyan/marmoui/blob/main/apps/design-system-docs/CONTRIBUTING-MDX.md).
 
 ---
 
@@ -360,7 +360,7 @@ If your team has stricter data-residency requirements, the same MCP can run insi
 
 ## Reporting issues
 
-- **Plugin / install issue:** open an issue on `mahmoudilyan/marmo-ui` with the label `claude-plugin`.
+- **Plugin / install issue:** open an issue on `mahmoudilyan/marmoui` with the label `claude-plugin`.
 - **Wrong / hallucinated component data:** open an issue with the label `mcp-bug` and the offending tool call (the request id from the trace is enough to find it in server logs).
 - **MDX content gap (component missing a "When to use" or cross-ref):** open an issue with the label `mdx-audit` and link to the relevant `content/components/*.mdx`.
 
@@ -368,8 +368,8 @@ If your team has stricter data-residency requirements, the same MCP can run insi
 
 ## Related
 
-- [`apps/design-system-mcp/SETUP.md`](https://github.com/mahmoudilyan/marmo-ui/blob/main/apps/design-system-mcp/SETUP.md) — operator guide for running the MCP locally and the technical reference for env vars / deployment.
-- [`apps/design-system-mcp/README.md`](https://github.com/mahmoudilyan/marmo-ui/blob/main/apps/design-system-mcp/README.md) — what the MCP is for, how indexing works.
-- [`tools/claude-plugin/README.md`](https://github.com/mahmoudilyan/marmo-ui/blob/main/tools/claude-plugin/README.md) — internals for plugin authors and how to ship updates.
+- [`apps/design-system-mcp/SETUP.md`](https://github.com/mahmoudilyan/marmoui/blob/main/apps/design-system-mcp/SETUP.md) — operator guide for running the MCP locally and the technical reference for env vars / deployment.
+- [`apps/design-system-mcp/README.md`](https://github.com/mahmoudilyan/marmoui/blob/main/apps/design-system-mcp/README.md) — what the MCP is for, how indexing works.
+- [`tools/claude-plugin/README.md`](https://github.com/mahmoudilyan/marmoui/blob/main/tools/claude-plugin/README.md) — internals for plugin authors and how to ship updates.
 - [Patterns catalog](/patterns) — the patterns the AI fetches via `get_pattern`.
-- [`CONTRIBUTING-MDX.md`](https://github.com/mahmoudilyan/marmo-ui/blob/main/apps/design-system-docs/CONTRIBUTING-MDX.md) — authoring guide for the MDX content the MCP indexes.
+- [`CONTRIBUTING-MDX.md`](https://github.com/mahmoudilyan/marmoui/blob/main/apps/design-system-docs/CONTRIBUTING-MDX.md) — authoring guide for the MDX content the MCP indexes.

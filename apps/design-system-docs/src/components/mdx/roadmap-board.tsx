@@ -5,7 +5,7 @@ import { MdOpenInNew } from 'react-icons/md';
 import { Badge, Button, Card, CardContent, CardTitle, Text } from '@marmoui/ui';
 import { VoteButton } from '@/components/mdx/roadmap-voting';
 
-const REPO = 'https://github.com/mahmoudilyan/marmo-ui';
+const REPO = 'https://github.com/mahmoudilyan/marmoui';
 
 export function RoadmapAddIssueCallout() {
 	const body = encodeURIComponent(`## Roadmap idea

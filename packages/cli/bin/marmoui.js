@@ -117,7 +117,7 @@ function init() {
 	}
 	console.log(`\n  ${dim('Codex:')}  codex mcp add marmo-ui --url ${MCP_URL}`);
 	console.log(`\n  ${bold('Claude Code users')} ${dim('— the plugin adds skills + /marmo-ui:* commands on top:')}`);
-	console.log(dim('    /plugin marketplace add mahmoudilyan/marmo-ui'));
+	console.log(dim('    /plugin marketplace add mahmoudilyan/marmoui'));
 	console.log(dim('    /plugin install marmo-ui@marmoui-plugins'));
 	if (!flags.has('--global')) console.log(`  ${dim('Windsurf (user-level): rerun with --global')}`);
 	console.log(`\n${bold('Next')}: restart your agent, then try`);

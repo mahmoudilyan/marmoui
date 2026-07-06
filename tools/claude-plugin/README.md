@@ -7,7 +7,7 @@ Currently one plugin: `marmo-ui`. Add more as sibling folders under `plugins/`.
 ## What's where
 
 ```
-mahmoudilyan/marmo-ui/                          # this monorepo (= the marketplace repo)
+mahmoudilyan/marmoui/                          # this monorepo (= the marketplace repo)
 ├── .claude-plugin/
 │   └── marketplace.json                        # marketplace catalog (lists plugins)
 └── tools/claude-plugin/                        # ← you are here
@@ -29,7 +29,7 @@ mahmoudilyan/marmo-ui/                          # this monorepo (= the marketpla
 In Claude Code, in any repo:
 
 ```
-/plugin marketplace add mahmoudilyan/marmo-ui
+/plugin marketplace add mahmoudilyan/marmoui
 /plugin install marmo-ui@marmoui-plugins
 ```
 
@@ -37,7 +37,7 @@ Claude Code prompts for `marmo_mcp_token` (the team-wide bearer token) at instal
 
 That's it. **No env vars, no shell config, no `curl | bash`, no per-repo `.mcp.json`.**
 
-> Devs need GitHub read access to `mahmoudilyan/marmo-ui` for `/plugin marketplace add` to clone the repo.
+> Devs need GitHub read access to `mahmoudilyan/marmoui` for `/plugin marketplace add` to clone the repo.
 
 ### One-paste alternative (no interactive prompt)
 
@@ -45,7 +45,7 @@ If you'd rather skip the prompt, paste this with the token already filled in:
 
 ```bash
 CLAUDE_PLUGIN_OPTION_MARMO_MCP_TOKEN=<paste-team-token-here> \
-  claude plugin marketplace add mahmoudilyan/marmo-ui && \
+  claude plugin marketplace add mahmoudilyan/marmoui && \
 CLAUDE_PLUGIN_OPTION_MARMO_MCP_TOKEN=<paste-team-token-here> \
   claude plugin install marmo-ui@marmoui-plugins
 ```

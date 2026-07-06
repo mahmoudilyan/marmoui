@@ -6,11 +6,11 @@
   "homepage": "https://marmoui.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mahmoudilyan/marmo-ui.git",
+    "url": "https://github.com/mahmoudilyan/marmoui.git",
     "directory": "packages/ui"
   },
   "bugs": {
-    "url": "https://github.com/mahmoudilyan/marmo-ui/issues"
+    "url": "https://github.com/mahmoudilyan/marmoui/issues"
   },
   "keywords": [
     "react",
