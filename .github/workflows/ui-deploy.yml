@@ -1,6 +1,7 @@
 name: UI Package Release
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -29,8 +30,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@marmoui'
+          # NOTE: no registry-url — setup-node would write an _authToken line
+          # to .npmrc, which makes npm skip OIDC Trusted Publishing entirely.
           cache: 'pnpm'
 
       # Trusted Publishing (OIDC) needs npm >= 11.5; publishes are authorized
