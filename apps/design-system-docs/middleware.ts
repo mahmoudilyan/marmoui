@@ -5,7 +5,9 @@ import { NextResponse, type NextRequest } from 'next/server';
 const SESSION_COOKIE = 'marmo_session';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const SUPABASE_ANON_KEY =
+	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+	process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 function isPatternsPath(pathname: string): boolean {
 	return pathname === '/docs/patterns' || pathname.startsWith('/docs/patterns/');

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MdAutoAwesome, MdCheckCircle, MdHourglassEmpty } from 'react-icons/md';
 import siteConfig from '@/../site.config';
+import { redirect } from 'next/navigation';
 import { getEntitlement } from '@/lib/entitlement';
 import { SignInForm } from '@/components/auth/sign-in-form';
 import { BuyProButton } from '@/components/buy-pro-button';
@@ -34,6 +35,9 @@ export default async function WelcomePage({
 }) {
 	const { error } = await searchParams;
 	const { authenticated, plan, email } = await getEntitlement();
+
+	// Free signed-in users get the dashboard, not post-checkout copy.
+	if (authenticated && plan !== 'pro') redirect('/account');
 
 	return (
 		<div className="bg-bg">

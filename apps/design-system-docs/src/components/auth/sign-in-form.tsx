@@ -23,7 +23,7 @@ export function SignInForm({ next = '/welcome' }: { next?: string }) {
 		return (
 			<div className="rounded-xl border border-border bg-panel p-5 text-sm text-ink-light">
 				Sign-in isn&apos;t configured in this environment
-				(<code className="font-mono text-[12px]">NEXT_PUBLIC_SUPABASE_URL</code> unset).
+				(<code className="font-mono text-[12px]">NEXT_PUBLIC_SUPABASE_URL</code> / publishable key unset).
 			</div>
 		);
 	}
@@ -36,7 +36,7 @@ export function SignInForm({ next = '/welcome' }: { next?: string }) {
 		const { error } = await supabase!.auth.signInWithOtp({
 			email: email.trim().toLowerCase(),
 			options: {
-				emailRedirectTo: `${window.location.origin}${next}`,
+				emailRedirectTo: `${window.location.origin}/auth/confirm?next=${encodeURIComponent(next)}`,
 				// Explicit consent, unchecked by default; synced to the account row
 				// on the next entitlement resolution.
 				data: { marketing_opt_in: optIn },

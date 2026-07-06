@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
 	const { searchParams } = new URL(request.url);
 	const tokenHash = searchParams.get('token_hash');
 	const type = searchParams.get('type') as EmailOtpType | null;
+	const code = searchParams.get('code');
 	const nextPath = searchParams.get('next') ?? '/welcome';
 
 	// Only allow same-origin relative redirects.
@@ -24,13 +25,25 @@ export async function GET(request: NextRequest) {
 
 	const redirectTo = (path: string) => NextResponse.redirect(new URL(path, request.url));
 
-	if (!tokenHash || !type) {
-		return redirectTo('/welcome?error=missing-token');
-	}
-
 	const supabase = await getSupabaseServerClient();
 	if (!supabase) {
 		return redirectTo('/welcome?error=auth-not-configured');
+	}
+
+	// PKCE flow: Supabase's default email template verifies server-side and
+	// redirects here with ?code= — exchange it for a session.
+	if (code) {
+		const { error } = await supabase.auth.exchangeCodeForSession(code);
+		if (error) {
+			console.warn('[auth] code exchange failed:', error.message);
+			return redirectTo('/welcome?error=invalid-or-expired');
+		}
+		return redirectTo(safeNext);
+	}
+
+	// token_hash flow: custom email template linking straight to this route.
+	if (!tokenHash || !type) {
+		return redirectTo('/welcome?error=missing-token');
 	}
 
 	const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });

@@ -12,7 +12,10 @@ import { createServerClient } from '@supabase/ssr';
  */
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Accept both the classic anon JWT and Supabase's newer publishable key.
+const ANON_KEY =
+	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+	process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 export function isAuthConfigured(): boolean {
 	return Boolean(URL && ANON_KEY);

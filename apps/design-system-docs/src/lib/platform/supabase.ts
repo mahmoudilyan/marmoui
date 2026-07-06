@@ -12,7 +12,9 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
  */
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// Accept both the classic service-role JWT and Supabase's newer secret key.
+const SERVICE_ROLE_KEY =
+	process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 
 /** True when both Supabase env vars are set and the Platform path is live. */
 export function isPlatformConfigured(): boolean {
