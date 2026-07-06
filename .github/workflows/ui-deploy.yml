@@ -28,10 +28,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           registry-url: 'https://registry.npmjs.org'
           scope: '@marmoui'
           cache: 'pnpm'
+
+      # Trusted Publishing (OIDC) needs npm >= 11.5; publishes are authorized
+      # by this workflow's identity — no NPM_TOKEN secret anywhere.
+      - name: Update npm for Trusted Publishing
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -49,5 +54,5 @@ jobs:
           title: 'Version Packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # npm auth comes from OIDC Trusted Publishing (id-token: write above),
+          # configured per package on npmjs.com → Settings → Trusted Publisher.
