@@ -35,30 +35,39 @@
 	--color-info: var(--color-blue-600);
 	--color-destructive: var(--color-red-600);
 
-	/* Radix accordion open/close animation — @marmoui/ui's AccordionContent
-	   uses animate-accordion-down/up, which needs these keyframes to exist. */
-	--animate-accordion-down: accordion-down 0.25s ease-out;
-	--animate-accordion-up: accordion-up 0.25s ease-out;
+}
 
-	@keyframes accordion-down {
-		from {
-			height: 0;
-			opacity: 0;
-		}
-		to {
-			height: var(--radix-accordion-content-height);
-			opacity: 1;
-		}
+/* Radix accordion open/close animation — @marmoui/ui's AccordionContent
+   references animate-accordion-down/up utilities that its own compiled CSS
+   never shipped keyframes for, so accordions snapped. Plain CSS on the
+   data-slot keeps it working regardless of Tailwind content scanning. */
+[data-slot='accordion-content'] {
+	overflow: hidden;
+}
+[data-slot='accordion-content'][data-state='open'] {
+	animation: accordion-down 0.25s ease-out;
+}
+[data-slot='accordion-content'][data-state='closed'] {
+	animation: accordion-up 0.25s ease-out;
+}
+@keyframes accordion-down {
+	from {
+		height: 0;
+		opacity: 0;
 	}
-	@keyframes accordion-up {
-		from {
-			height: var(--radix-accordion-content-height);
-			opacity: 1;
-		}
-		to {
-			height: 0;
-			opacity: 0;
-		}
+	to {
+		height: var(--radix-accordion-content-height);
+		opacity: 1;
+	}
+}
+@keyframes accordion-up {
+	from {
+		height: var(--radix-accordion-content-height);
+		opacity: 1;
+	}
+	to {
+		height: 0;
+		opacity: 0;
 	}
 }
 

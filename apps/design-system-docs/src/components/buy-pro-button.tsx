@@ -8,6 +8,7 @@ declare global {
 	interface Window {
 		LemonSqueezy?: { Url: { Open: (url: string) => void } };
 		createLemonSqueezy?: () => void;
+		rdt?: (event: string, name: string) => void;
 	}
 }
 
@@ -33,7 +34,8 @@ export function BuyProButton({
 	const href = base.includes('?') ? `${base}&embed=1` : `${base}?embed=1`;
 
 	const openOverlay = (e: React.MouseEvent<HTMLAnchorElement>) => {
-		if (typeof window === 'undefined' || !window.LemonSqueezy?.Url) return; // fall back to href
+		window.rdt?.('track', 'AddToCart'); // Reddit pixel conversion event
+		if (!window.LemonSqueezy?.Url) return; // fall back to href
 		e.preventDefault();
 		window.LemonSqueezy.Url.Open(href);
 	};

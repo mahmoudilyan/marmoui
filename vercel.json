@@ -1,0 +1,7 @@
+{
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"installCommand": "pnpm install --frozen-lockfile",
+	"buildCommand": "cd apps/design-system-docs && pnpm generate:props && pnpm exec fumadocs-mdx && pnpm exec next build",
+	"outputDirectory": "apps/design-system-docs/.next",
+	"framework": "nextjs"
+}

@@ -56,3 +56,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # npm auth comes from OIDC Trusted Publishing (id-token: write above),
           # configured per package on npmjs.com → Settings → Trusted Publisher.
+
+      - name: Post release to Sanity (/updates)
+        if: steps.changesets.outputs.published == 'true'
+        run: node scripts/sanity-release-post.mjs
+        env:
+          SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+          SANITY_WRITE_TOKEN: ${{ secrets.SANITY_WRITE_TOKEN }}
+          PUBLISHED_PACKAGES: ${{ steps.changesets.outputs.publishedPackages }}

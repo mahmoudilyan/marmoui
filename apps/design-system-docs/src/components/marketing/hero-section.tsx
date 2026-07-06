@@ -22,7 +22,7 @@ export function HeroSection() {
 
 			<HeroBentoGrid />
 
-			<div className="relative mx-auto max-w-7xl px-4 md:px-6 lg:min-h-[960px] 2xl:min-h-[1060px]">
+			<div className="relative mx-auto max-w-7xl px-4 md:px-6 lg:min-h-[960px]">
 				{/* Headline — top-left, above the floats. Constrained to the left half so
 				    it never collides with the right-anchored floating column. */}
 				<div className="relative z-10 max-w-[480px] pt-2 md:pt-6">

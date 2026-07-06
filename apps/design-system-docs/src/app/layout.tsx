@@ -9,6 +9,7 @@ import './globals.css';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import { SearchWrapper } from '@/components/search/search-wrapper';
 import { Toaster } from '@marmoui/ui';
+import { Analytics } from '@/components/analytics';
 import siteConfig from '@/../site.config';
 
 const inter = Inter({
@@ -43,6 +44,7 @@ export default function RootLayout({
 					<SearchWrapper>{children}</SearchWrapper>
 				</RootProvider>
 				<Toaster />
+				<Analytics />
 			</body>
 		</html>
 	);

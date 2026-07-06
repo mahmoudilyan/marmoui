@@ -93,7 +93,9 @@ export function DocsTableOfContents({ toc, className }: DocsTableOfContentsProps
 						className={cn(
 							'h-0.5 rounded-full transition-colors duration-200',
 							item.depth <= 2 ? 'w-4' : item.depth === 3 ? 'w-3' : 'w-2',
-							item.url === `#${activeHeading}` ? 'bg-ink-dark' : 'bg-ink-muted/40'
+							item.url === `#${activeHeading}`
+								? 'bg-[var(--color-ink-dark)]'
+								: 'bg-[var(--color-ink-muted)]'
 						)}
 					/>
 				))}
