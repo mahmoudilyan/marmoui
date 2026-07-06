@@ -25,7 +25,7 @@ const siteConfig = {
 	// webhook writes the entitlement; buyer finishes at /welcome.
 	buyNowUrl:
 		process.env.NEXT_PUBLIC_LEMONSQUEEZY_CHECKOUT_URL ||
-		'https://regridx.lemonsqueezy.com/checkout/buy/338fd171-5f47-4396-b617-940a7931aab3',
+		'https://marmoui.lemonsqueezy.com/checkout/buy/338fd171-5f47-4396-b617-940a7931aab3',
 	previewUrl: 'https://www.figma.com/design/fy2xB61FibtkLoGKLy4DM3/Marmo---UI',
 	docsUrl: '/docs/introduction/get-started',
 	connectUrl: '/connect',
