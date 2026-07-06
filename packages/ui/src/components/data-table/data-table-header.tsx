@@ -48,11 +48,16 @@ export function DataTableHeader({
 		table?.setGlobalFilter?.(globalFilter);
 	}, [globalFilter, table]);
 
+	const shownCount = table?.getRowModel?.()?.rows?.length ?? 0;
+	const totalCount = total ?? shownCount;
+	const countLabel =
+		totalCount === 1 || dataType.endsWith('s') ? dataType : `${dataType}s`;
+
 	return (
 		<Flex className="w-full md:w-auto justify-between">
 			<Box className="flex items-center gap-2">
 				<Text variant="body-sm" as="p">
-					Showing {pageSize} of {total ?? 0} {dataType}
+					Showing {Math.min(shownCount, totalCount)} of {totalCount} {countLabel}
 				</Text>
 			</Box>
 			<Flex gap={'2'}>

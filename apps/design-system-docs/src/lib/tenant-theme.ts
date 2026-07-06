@@ -45,6 +45,19 @@ export function tenantCssVars(tokens: TenantTokens): Record<string, string> {
 		for (const [step, pct] of Object.entries(PRIMARY_SCALE)) {
 			vars[`--color-primary-${step}`] = mix(primary, pct);
 		}
+		// Semantic aliases are hardcoded hex in figma-tokens.generated.css, so
+		// the scale alone doesn't retheme real components — set them directly.
+		vars['--color-primary-solid'] = mix(primary, -12);
+		vars['--color-primary-solid-hover'] = mix(primary, 0);
+		vars['--color-primary-bright'] = mix(primary, 24);
+		vars['--color-primary-muted'] = mix(primary, 84);
+		vars['--color-primary-contrast'] = '#ffffff';
+		vars['--color-icon-primary'] = mix(primary, -12);
+		vars['--color-icon-primary-bright'] = mix(primary, 24);
+		vars['--color-ink-primary'] = mix(primary, -24);
+		vars['--color-ink-primary-contrast'] = '#ffffff';
+		vars['--color-border-primary'] = mix(primary, 24);
+		vars['--color-border-focus'] = mix(primary, 24);
 	}
 
 	const secondary = tokens.colors?.secondary;

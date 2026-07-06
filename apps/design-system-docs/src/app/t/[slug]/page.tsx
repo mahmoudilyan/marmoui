@@ -99,7 +99,7 @@ export default async function TenantSitePage({ params }: { params: Promise<Param
 
 				{/* The library, in their tokens */}
 				<div className="mx-auto max-w-[1680px] px-5 py-12 sm:px-8 lg:px-12">
-					<ComponentGallery query="" />
+					<ComponentGallery query="" linked={false} />
 				</div>
 			</main>
 		</div>

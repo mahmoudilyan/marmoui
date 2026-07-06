@@ -568,13 +568,34 @@ function StatusBadge({ status }: { status: NonNullable<ComponentEntry['status']>
 	);
 }
 
-export function ComponentCard({ entry }: { entry: ComponentEntry }) {
+export function ComponentCard({
+	entry,
+	linked = true,
+}: {
+	entry: ComponentEntry;
+	linked?: boolean;
+}) {
+	if (!linked) {
+		return (
+			<div className="group flex w-[280px] max-w-full flex-col overflow-hidden rounded-lg border border-border bg-panel">
+				<CardBody entry={entry} />
+			</div>
+		);
+	}
 	return (
 		<Link
 			href={`/docs/components/${entry.slug}`}
 			prefetch={true}
 			className="group flex w-[280px] max-w-full flex-col overflow-hidden rounded-lg border border-border bg-panel transition-all duration-200 hover:-translate-y-0.5 hover:border-primary-600/40 hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)]"
 		>
+			<CardBody entry={entry} />
+		</Link>
+	);
+}
+
+function CardBody({ entry }: { entry: ComponentEntry }) {
+	return (
+		<>
 			<span
 				className="relative flex h-[200px] items-center justify-center overflow-hidden border-b border-border p-4"
 				aria-hidden
@@ -607,7 +628,7 @@ export function ComponentCard({ entry }: { entry: ComponentEntry }) {
 				</span>
 				{entry.status && <StatusBadge status={entry.status} />}
 			</span>
-		</Link>
+		</>
 	);
 }
 
@@ -625,9 +646,11 @@ export function filterSections(query: string): ComponentSection[] {
 export function ComponentGallery({
 	query = '',
 	withAnchors = false,
+	linked = true,
 }: {
 	query?: string;
 	withAnchors?: boolean;
+	linked?: boolean;
 }) {
 	const visible = filterSections(query);
 
@@ -658,7 +681,7 @@ export function ComponentGallery({
 						style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 280px))' }}
 					>
 						{section.items.map(entry => (
-							<ComponentCard key={entry.slug} entry={entry} />
+							<ComponentCard key={entry.slug} entry={entry} linked={linked} />
 						))}
 					</div>
 				</section>

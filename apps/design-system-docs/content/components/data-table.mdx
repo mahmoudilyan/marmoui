@@ -941,6 +941,8 @@ const [tableState, setTableState] = useState<DataTableParams>({
 - Passing rendered JSX as column `header` string — use a string or a function: `header: () => <span>Name</span>`
 - Not importing `ColumnDef` from `@tanstack/react-table` — it must be imported separately alongside the DataTable import.
 - Using `rows` or `items` instead of `data` for the data prop — the prop name is always `data`.
+- **`dataType` is singular** — pass `dataType="contact"`, not `"contacts"`. The table pluralizes it for the count text and empty state ("Showing 4 of 20 contacts", "No contacts found", "creating your first contact").
+- **Do not build your own toolbar above DataTable.** Search, columns menu, filters, and the count text are built in. The page's primary action goes in `PageSection`'s `primaryAction`, not in a row above the table.
 
 ## Accessibility
 

@@ -94,7 +94,7 @@ export function DataTableColumnsDropdown({
 		const groups = new Map<string, (ColumnDefinition & { column: any })[]>();
 
 		filteredColumns.forEach((col: ColumnDefinition & { column: any }) => {
-			const groupName = col.group || 'MdOutlineViewColumn';
+			const groupName = col.group || 'Other';
 			if (!groups.has(groupName)) {
 				groups.set(groupName, []);
 			}
@@ -113,7 +113,7 @@ export function DataTableColumnsDropdown({
 					size="sm"
 					className={className}
 				>
-					MdOutlineViewColumn
+					Columns
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="min-w-[250px] max-h-[400px] overflow-hidden p-0">
