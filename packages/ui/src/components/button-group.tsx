@@ -14,10 +14,7 @@ export const ButtonGroupContext = React.createContext<ButtonGroupContextValue | 
 const buttonGroupVariants = cva('inline-flex', {
 	variants: {
 		attached: {
-			// The outer boundary belongs to the group itself, not to whichever
-			// child happens to be first/last — so it stays visible regardless
-			// of any button's hover/focus/active state.
-			true: '[&>*]:focus:z-10 [&>*]:hover:z-10 rounded-md border border-border-secondary overflow-hidden',
+			true: '[&>*]:focus:z-10 [&>*]:hover:z-10',
 			false: 'gap-2',
 		},
 		orientation: {
