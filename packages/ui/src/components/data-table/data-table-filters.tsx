@@ -1,10 +1,16 @@
 'use client';
 
 import * as React from 'react';
-import { Funnel } from '@phosphor-icons/react';
+import { Funnel, Plus, X } from '@phosphor-icons/react';
 
 import { Button } from '../button';
 import { Popover, PopoverTrigger, PopoverContent } from '../popover';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from '../dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
 import { SelectCheckboxSearchable } from '../select-checkbox-searchable';
 import { SelectSearchable } from '../select-searchable';
@@ -33,6 +39,9 @@ export function DataTableFilters({
 	const [filterOptions, setFilterOptions] = React.useState<Record<string, FilterOption[]>>({});
 	const [loadingFilters, setLoadingFilters] = React.useState<Record<string, boolean>>({});
 	const [isOpen, setIsOpen] = React.useState(false);
+	// Notion-style dynamic rows: a filter row exists when it has an applied
+	// value OR the user added it this session (empty row awaiting a value).
+	const [draftIds, setDraftIds] = React.useState<string[]>([]);
 
 	const appliedFilters = tableState?.filters ?? {};
 
@@ -114,6 +123,44 @@ export function DataTableFilters({
 			}
 		});
 	}, [isOpen, filters, filterOptions]);
+
+	const handleRemoveFilter = React.useCallback(
+		(filterId: string) => {
+			const next = { ...appliedFilters };
+			delete next[filterId];
+			setDraftIds(ids => ids.filter(id => id !== filterId));
+			setTableState({
+				...tableState,
+				filters: next,
+				pagination: { ...tableState.pagination, pageIndex: 0 },
+			});
+		},
+		[appliedFilters, setTableState, tableState]
+	);
+
+	const hasValue = React.useCallback(
+		(filterId: string) => {
+			const v = appliedFilters[filterId];
+			if (v === null || v === undefined || v === '') return false;
+			if (Array.isArray(v)) return v.length > 0;
+			return true;
+		},
+		[appliedFilters]
+	);
+
+	/** Rows currently shown: applied values first (filter-def order), then drafts. */
+	const activeRows = React.useMemo(() => {
+		const ids = new Set<string>();
+		filters.forEach(f => {
+			if (hasValue(f.id) || draftIds.includes(f.id)) ids.add(f.id);
+		});
+		return filters.filter(f => ids.has(f.id));
+	}, [filters, draftIds, hasValue]);
+
+	const availableToAdd = React.useMemo(
+		() => filters.filter(f => !hasValue(f.id) && !draftIds.includes(f.id)),
+		[filters, draftIds, hasValue]
+	);
 
 	const renderFilter = React.useCallback(
 		(filter: TableFilter) => {
@@ -305,19 +352,65 @@ export function DataTableFilters({
 					) : null}
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-80 p-4">
-				<div className="space-y-4">
-					{filters.map(filter => (
-						<div key={filter.id}>{renderFilter(filter)}</div>
-					))}
-				</div>
-				{appliedCount > 0 ? (
-					<div className="mt-4 flex justify-start">
-						<Button variant="ghost" size="sm" onClick={handleClearFilters}>
-							Clear filters
-						</Button>
+			<PopoverContent className="w-[420px] p-2">
+				{activeRows.length === 0 ? (
+					<p className="px-2 py-3 text-sm text-ink-light">No filters applied. Add one below.</p>
+				) : (
+					<div className="space-y-1">
+						{activeRows.map(filter => (
+							<div
+								key={filter.id}
+								className="group flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-bg"
+							>
+								<span className="w-24 shrink-0 truncate text-sm text-ink-light">
+									{filter.label}
+								</span>
+								{renderFilter(filter)}
+								<Button
+									variant="ghost"
+									size="sm"
+									className="shrink-0 opacity-40 hover:opacity-100"
+									onClick={() => handleRemoveFilter(filter.id)}
+									aria-label={`Remove ${filter.label} filter`}
+									leftIcon={<X className="size-3.5" aria-hidden />}
+								/>
+							</div>
+						))}
 					</div>
-				) : null}
+				)}
+				<div className="mt-1 flex items-center justify-between border-t border-border-secondary px-1 pt-2">
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button
+								variant="ghost"
+								size="sm"
+								disabled={availableToAdd.length === 0}
+								leftIcon={<Plus className="size-3.5" aria-hidden />}
+							>
+								Add filter
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="start">
+							{availableToAdd.map(f => (
+								<DropdownMenuItem key={f.id} onSelect={() => setDraftIds(ids => [...ids, f.id])}>
+									{f.label}
+								</DropdownMenuItem>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
+					{appliedCount > 0 ? (
+						<Button
+							variant="ghost"
+							size="sm"
+							onClick={() => {
+								setDraftIds([]);
+								handleClearFilters();
+							}}
+						>
+							Clear all
+						</Button>
+					) : null}
+				</div>
 			</PopoverContent>
 		</Popover>
 	);

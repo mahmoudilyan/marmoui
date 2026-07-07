@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { MagnifyingGlass, Columns } from '@phosphor-icons/react';
+import { MagnifyingGlass, SquareSplitHorizontal } from '@phosphor-icons/react';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -109,11 +109,11 @@ export function DataTableColumnsDropdown({
 			<DropdownMenuTrigger asChild>
 				<Button
 					variant="secondary"
-					leftIcon={<Columns />}
+					leftIcon={<SquareSplitHorizontal weight="bold" />}
 					size="sm"
 					className={className}
 				>
-					Columns
+					Manage columns
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="min-w-[250px] max-h-[400px] overflow-hidden p-0">

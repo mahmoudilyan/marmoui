@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { cn } from '../../lib/utils';
-import { DotsThree, List, BookOpen } from '@phosphor-icons/react';
+import { DotsThree, List } from '@phosphor-icons/react';
 
 import { Button } from '../button';
 import { IconButton } from '../icon-button';
@@ -236,7 +236,7 @@ function PageSectionTitleBlock({
 							variant="ghost"
 							size="sm"
 							aria-label="Open sidebar"
-					icon={isMobile ? <List /> : <BookOpen />}
+					icon={<List />}
 					onClick={toggleSecondary}
 				/>
 			</Tooltip>
@@ -346,7 +346,7 @@ function PageSectionSidebarToggle({
 				variant="ghost"
 				size="sm"
 				aria-label={label}
-		icon={isMobile ? <List /> : <BookOpen />}
+		icon={<List />}
 		onClick={toggleSecondary}
 	/>
 </Tooltip>
