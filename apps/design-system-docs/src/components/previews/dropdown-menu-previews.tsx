@@ -315,16 +315,8 @@ function ProfileDropdownMenuPanel({
 	embedded?: boolean;
 }) {
 	return (
-		<div
-			className={cn(
-				'w-full overflow-hidden py-1.5',
-				!embedded && 'rounded border border-secondary bg-panel shadow-md',
-				className
-			)}
-		>
-			<DropdownMenuItem
-				className={cn('flex items-center gap-2 bg-bg px-4 py-3 -mt-1.5', embedded && '-mx-1')}
-			>
+		<>
+			<DropdownMenuItem className={cn('flex items-center gap-2 bg-bg px-4 py-3 -my-1.5')}>
 				<Avatar size="md" variant="blue">
 					<AvatarFallback>VF</AvatarFallback>
 				</Avatar>
@@ -333,8 +325,7 @@ function ProfileDropdownMenuPanel({
 					<span className="text-xs font-normal text-ink-light">Psychology Legend</span>
 				</div>
 			</DropdownMenuItem>
-
-			<DropdownMenuSeparator className={cn('my-0', embedded && '-mx-1')} />
+			<DropdownMenuSeparator />
 
 			<DropdownMenuSub>
 				<DropdownMenuSubTrigger className="justify-between gap-3 px-4 py-3">
@@ -352,8 +343,7 @@ function ProfileDropdownMenuPanel({
 					<DropdownMenuItem variant="destructive">Disconnect</DropdownMenuItem>
 				</DropdownMenuSubContent>
 			</DropdownMenuSub>
-
-			<DropdownMenuSeparator className={cn('my-0', embedded && '-mx-1')} />
+			<DropdownMenuSeparator />
 
 			{profileMenuItems.map(({ icon: Icon, label }) => (
 				<DropdownMenuItem key={label}>
@@ -368,7 +358,7 @@ function ProfileDropdownMenuPanel({
 				<SignOut className={iconClass} aria-hidden />
 				Log out
 			</DropdownMenuItem>
-		</div>
+		</>
 	);
 }
 
@@ -384,7 +374,7 @@ export function ProfileDropdownMenuPreview({ className }: { className?: string }
 					<CaretRight className="ml-1 size-4 rotate-90" aria-hidden />
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="start" className="w-[329px] p-0">
+			<DropdownMenuContent align="start" className="w-[329px]">
 				<ProfileDropdownMenuPanel embedded />
 			</DropdownMenuContent>
 		</DropdownMenu>

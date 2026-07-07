@@ -158,7 +158,7 @@ export function PageSectionWizard({
 	return (
 		<div
 			className={cn(
-				'flex items-center justify-between px-space-2xl py-space-xl bg-panel z-10 sticky top-0 overflow-hidden transition-all duration-300 ease-in-out',
+				'flex h-[60px] items-center justify-between px-space-2xl bg-panel z-10 sticky top-0 overflow-hidden transition-all duration-300 ease-in-out',
 				className
 			)}
 			{...props}
