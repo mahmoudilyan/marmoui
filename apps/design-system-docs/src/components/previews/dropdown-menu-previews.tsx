@@ -381,7 +381,56 @@ export function ProfileDropdownMenuPreview({ className }: { className?: string }
 	);
 }
 
-/** Static (always-open) version for hero floating display. */
+/**
+ * Static (always-open) version for hero floating display — purely decorative
+ * (rendered `aria-hidden` in the hero collage), so it mirrors
+ * ProfileDropdownMenuPanel's visuals with plain markup instead of real
+ * DropdownMenuItem/DropdownMenuSub, which require a `<DropdownMenu>` root
+ * context that a standalone decorative render can't provide.
+ */
+const staticRowClass = 'flex items-center gap-2 px-4 py-2 body-sm text-ink';
+
 export function ProfileDropdownMenuStaticPreview({ className }: { className?: string }) {
-	return <ProfileDropdownMenuPanel className={className} />;
+	return (
+		<div className={cn('w-full overflow-hidden rounded border border-secondary bg-panel shadow-md py-1.5', className)}>
+			<div className="flex items-center gap-2 bg-bg px-4 py-3 -mt-1.5">
+				<Avatar size="md" variant="blue">
+					<AvatarFallback>VF</AvatarFallback>
+				</Avatar>
+				<div className="min-w-0 flex flex-col gap-0.5">
+					<span className="text-sm font-medium leading-tight text-ink-dark">Viktor Frankl</span>
+					<span className="text-xs font-normal text-ink-light">Psychology Legend</span>
+				</div>
+			</div>
+
+			<div className="bg-border-secondary h-px" role="separator" />
+
+			<div className="flex items-center justify-between gap-3 px-4 py-3">
+				<span className="flex min-w-0 items-center gap-3">
+					<GitHub className="size-5 shrink-0" aria-hidden />
+					<span className="flex min-w-0 flex-col">
+						<span className="body-sm font-normal text-ink-dark">Github</span>
+						<span className="text-xs text-ink-light">Active</span>
+					</span>
+				</span>
+				<CaretRight className="size-4 shrink-0 text-icon" aria-hidden />
+			</div>
+
+			<div className="bg-border-secondary h-px" role="separator" />
+
+			{profileMenuItems.map(({ icon: Icon, label }) => (
+				<div key={label} className={staticRowClass}>
+					<Icon className={iconClass} aria-hidden />
+					{label}
+				</div>
+			))}
+
+			<div className="bg-border-secondary my-1.5 h-px" role="separator" />
+
+			<div className={cn(staticRowClass, 'text-ink-destructive')}>
+				<SignOut className={iconClass} aria-hidden />
+				Log out
+			</div>
+		</div>
+	);
 }
