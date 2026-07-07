@@ -12,7 +12,7 @@
  * repo isn't present (contributors without access just don't see patterns).
  */
 
-import { cpSync, existsSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 const appDir = resolve(new URL('..', import.meta.url).pathname);
@@ -33,4 +33,17 @@ writeFileSync(
 	join(dest, '.gitignore'),
 	'# Synced from marmo-platform for local dev — never commit (ADR-0004).\n*\n'
 );
+
+// Restore the sidebar nav entry for the dev session (root content/meta.json
+// intentionally omits "patterns" in the public repo — ADR-0004 — so it never
+// leaks the nav item on marmoui.com; this backs it out on the way in and the
+// way out so `git status` never shows it dirty).
+const rootMetaPath = join(appDir, 'content/meta.json');
+const rootMeta = JSON.parse(readFileSync(rootMetaPath, 'utf8'));
+if (!rootMeta.pages.includes('patterns')) {
+	rootMeta.pages.splice(2, 0, 'patterns'); // after "foundation", before "components"
+	writeFileSync(rootMetaPath, JSON.stringify(rootMeta, null, 2) + '\n');
+}
+
 console.log(`[dev-sync-patterns] synced ${src} → content/patterns (dev only).`);
+console.log('[dev-sync-patterns] added "patterns" to the sidebar nav for this dev session.');
