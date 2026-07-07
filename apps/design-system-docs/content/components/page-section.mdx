@@ -254,7 +254,7 @@ PageSectionWizard is designed for multi-step form flows with editable titles and
 | `primaryAction` | <TypeInfo>PageSectionActionItem</TypeInfo> | - | Primary CTA button configuration |
 | `secondaryActions` | <TypeInfo>PageSectionSecondaryActionItem[]</TypeInfo> | - | Secondary action buttons |
 | `otherActions` | <TypeInfo>PageSectionActionItem[]</TypeInfo> | - | Overflow menu actions |
-| `showSidebarToggle` | `boolean` | `true` | Show sidebar toggle when sidebar is collapsed |
+| `showSidebarToggle` | `boolean` | `false` | Opt-in sidebar toggle in the header (the default affordance lives in the SidebarPanel rail) |
 | `globalNavItems` | <TypeInfo>PageSectionGlobalNavItem[]</TypeInfo> | - | Horizontal nav links (`variant="global"`); items with `hasMenu` open a mega menu populated from `menu` groups |
 | `logoInToggle` | `boolean` | `false` | Render the brand logo inside the sidebar toggle button (Layout 2); hides the standalone brand |
 | `searchPlaceholder` | `string` | `'Search'` | Search input placeholder (`default` / `workspace`) |
@@ -274,7 +274,7 @@ PageSectionWizard is designed for multi-step form flows with editable titles and
 | `totalSteps` | `number` | - | Total number of steps |
 | `steps` | <TypeInfo>WizardStepItem[]</TypeInfo> | - | Array of step definitions |
 | `onStepClick` | `(stepIndex: number) => void` | - | Called when a step is clicked |
-| `showSidebarToggle` | `boolean` | `true` | Show sidebar toggle when sidebar is collapsed |
+| `showSidebarToggle` | `boolean` | `false` | Opt-in sidebar toggle in the header (the default affordance lives in the SidebarPanel rail) |
 | `stepsContent` | <TypeInfo>ReactNode</TypeInfo> | - | Custom content for steps area |
 
 ## Accessibility

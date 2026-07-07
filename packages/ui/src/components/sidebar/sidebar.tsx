@@ -479,14 +479,14 @@ export interface SidebarPanelProps {
 	appearance?: 'light' | 'dark';
 	/**
 	 * Desktop collapse behaviour.
-	 * - `'hide'` (default) — collapses to zero width (fully hidden).
-	 * - `'rail'` — minimizes to a narrow icon rail (Layout 1). Requires `logo`
-	 *   to render the brand mark in the rail.
+	 * - `'rail'` (default) — minimizes to a narrow 52px rail; hovering swaps
+	 *   the brand mark for a SidebarSimple expand affordance (ChatGPT-style).
+	 * - `'hide'` — collapses to zero width (fully hidden).
 	 */
 	collapseMode?: 'hide' | 'rail';
-	/** Brand mark node rendered at the top of the collapsed icon rail (`collapseMode="rail"`). */
+	/** Brand mark shown at the top of the collapsed rail. Falls back to the expand icon. */
 	logo?: React.ReactNode;
-	/** Width of the collapsed icon rail (`collapseMode="rail"`). Default: 64px. */
+	/** Width of the collapsed icon rail. Default: 52px. */
 	railWidth?: number;
 }
 
@@ -512,9 +512,9 @@ export function SidebarPanel({
 	width = 240,
 	mobileMode = 'sheet',
 	appearance = 'light',
-	collapseMode = 'hide',
+	collapseMode = 'rail',
 	logo,
-	railWidth = 64,
+	railWidth = 52,
 }: SidebarPanelProps) {
 	const { secondaryIsOpen, toggleSecondary, setSecondaryIsOpen, mobileNavOpen, setMobileNavOpen } =
 		useSidebar();
@@ -590,7 +590,11 @@ export function SidebarPanel({
 							className="flex h-[60px] w-full items-center justify-center cursor-e-resize"
 						>
 							<span className="flex items-center justify-center group-hover/rail:hidden">
-								{logo}
+								{logo ?? (
+									<SidebarSimple
+										className={cn('size-5', isDark ? 'text-gray-400' : 'text-ink-light')}
+									/>
+								)}
 							</span>
 							<span
 								className={cn(

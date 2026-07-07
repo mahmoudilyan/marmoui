@@ -7499,19 +7499,19 @@
         "name": "collapseMode",
         "type": "\"hide\" | \"rail\"",
         "required": false,
-        "description": "Desktop collapse behaviour.\n- `'hide'` (default) — collapses to zero width (fully hidden).\n- `'rail'` — minimizes to a narrow icon rail (Layout 1). Requires `logo`\n  to render the brand mark in the rail."
+        "description": "Desktop collapse behaviour.\n- `'rail'` (default) — minimizes to a narrow 52px rail; hovering swaps\n  the brand mark for a SidebarSimple expand affordance (ChatGPT-style).\n- `'hide'` — collapses to zero width (fully hidden)."
       },
       {
         "name": "logo",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Brand mark node rendered at the top of the collapsed icon rail (`collapseMode=\"rail\"`)."
+        "description": "Brand mark shown at the top of the collapsed rail. Falls back to the expand icon."
       },
       {
         "name": "railWidth",
         "type": "number",
         "required": false,
-        "description": "Width of the collapsed icon rail (`collapseMode=\"rail\"`). Default: 64px."
+        "description": "Width of the collapsed icon rail. Default: 52px."
       }
     ]
   },
