@@ -230,36 +230,43 @@ export function SidebarItem({
 	const isDark = appearance === 'dark';
 	const collapsed = useSidebarCollapsed();
 
-	// Collapsed rail: icon-only with the label as a tooltip.
+	// Collapsed rail: identical to the expanded item (padding, radius, bg,
+	// hover, filled-icon-on-hover) — just square, without the text.
 	if (collapsed) {
-		const CollapsedIcon =
-			typeof iconOutlined === 'string' || !iconOutlined ? null : (iconOutlined as React.ElementType);
+		const collapsedShowFilled = (isActive || isHovered) && iconFilled;
+		const collapsedIcon = collapsedShowFilled ? iconFilled : iconOutlined;
+		const collapsedIsImage = typeof collapsedIcon === 'string';
+		const CollapsedIcon = !collapsedIsImage ? (collapsedIcon as React.ElementType | undefined) : null;
 		return (
 			<Tooltip content={label} side="right" delayDuration={200}>
 				<button
 					type="button"
 					onClick={onClick}
+					onMouseEnter={() => setIsHovered(true)}
+					onMouseLeave={() => setIsHovered(false)}
 					aria-label={label}
 					data-active={isActive || undefined}
 					className={cn(
-						'flex size-9 items-center justify-center rounded-radius-md transition-colors cursor-pointer',
+						'flex items-center justify-center p-2 rounded-md transition-all duration-150 cursor-pointer',
 						isDark
 							? isActive
-								? 'bg-white/15 text-white'
-								: 'text-gray-300 hover:bg-white/10'
+								? 'bg-primary-600/20 text-primary-200'
+								: 'bg-transparent text-gray-300 hover:bg-white/5 hover:text-white'
 							: isActive
-								? 'bg-primary-muted text-ink-primary'
-								: 'text-ink hover:bg-secondary',
+								? 'bg-primary-muted'
+								: 'bg-transparent hover:bg-panel',
 						className
 					)}
 				>
-					{typeof iconOutlined === 'string' ? (
-						<img src={iconOutlined} alt="" className="size-5" />
-					) : CollapsedIcon ? (
-						<CollapsedIcon className="size-5" />
-					) : (
-						<span className="text-sm font-semibold">{label.charAt(0)}</span>
-					)}
+					<span className="w-4 h-4 flex items-center justify-center">
+						{collapsedIsImage ? (
+							<img src={collapsedIcon as string} alt="" className="w-5 h-5 object-contain" />
+						) : CollapsedIcon ? (
+							<CollapsedIcon className="w-4 h-4" />
+						) : (
+							<span className="text-sm font-semibold">{label.charAt(0)}</span>
+						)}
+					</span>
 				</button>
 			</Tooltip>
 		);
@@ -647,6 +654,10 @@ export function SidebarPanel({
 					surfaceClass
 				)}
 				style={{ width: `${railWidth}px` }}
+				onClick={e => {
+					// Empty rail space expands; clicks on nav buttons/links don't.
+					if (!(e.target as HTMLElement).closest('button, a, [role="menuitem"]')) onToggle();
+				}}
 			>
 				<SidebarAppearanceProvider appearance={appearance}>
 					{/* ChatGPT-style: brand mark at rest, expand affordance on hover. */}
