@@ -8,7 +8,7 @@ import {
 	ChartBar,
 	ChatTeardropText,
 	Copy,
-	DotsThree,
+	DotsThreeOutline,
 	DownloadSimple,
 	GearSix,
 	PencilSimple,
@@ -66,7 +66,7 @@ export function DropdownWithIconsPreview() {
 				<IconButton
 					variant="ghost"
 					size="sm"
-					icon={<DotsThree className={iconClass} />}
+					icon={<DotsThreeOutline className={iconClass} weight="fill" />}
 					aria-label="Row actions"
 				/>
 			</DropdownMenuTrigger>
@@ -189,7 +189,7 @@ export function DropdownRowActionsPreview() {
 				<IconButton
 					variant="ghost"
 					size="sm"
-					icon={<DotsThree className={iconClass} />}
+					icon={<DotsThreeOutline className={iconClass} weight="fill" />}
 					aria-label="Row actions"
 				/>
 			</DropdownMenuTrigger>
@@ -304,7 +304,9 @@ const profileMenuItems = [
 	{ icon: ChatTeardropText, label: 'Send Feedback' },
 ] as const;
 
-/** Figma Profile Dropdown (`7469:54750`) — open menu panel. */
+/** Figma Profile Dropdown (`7469:54750`) — built from real DropdownMenu
+ * primitives so hover, the Github submenu, and the destructive Log out
+ * treatment all actually work (this used to be static, unstyled divs). */
 function ProfileDropdownMenuPanel({
 	className,
 	embedded = false,
@@ -320,7 +322,7 @@ function ProfileDropdownMenuPanel({
 				className
 			)}
 		>
-			<div
+			<DropdownMenuItem
 				className={cn('flex items-center gap-2 bg-bg px-4 py-3 -mt-1.5', embedded && '-mx-1')}
 			>
 				<Avatar size="md" variant="blue">
@@ -330,36 +332,42 @@ function ProfileDropdownMenuPanel({
 					<span className="text-sm font-medium leading-tight text-ink-dark">Viktor Frankl</span>
 					<span className="text-xs font-normal text-ink-light">Psychology Legend</span>
 				</div>
-			</div>
+			</DropdownMenuItem>
 
-			<div className={cn('bg-border-secondary h-px', embedded && '-mx-1')} role="separator" />
+			<DropdownMenuSeparator className={cn('my-0', embedded && '-mx-1')} />
 
-			<div className="flex items-center justify-between gap-3 px-4 py-3">
-				<span className="flex min-w-0 items-center gap-3">
-					<GitHub className="size-5 shrink-0" aria-hidden />
-					<span className="flex min-w-0 flex-col">
-						<span className="body-sm font-normal text-ink-dark">Github</span>
-						<span className="text-xs text-ink-light">Active</span>
+			<DropdownMenuSub>
+				<DropdownMenuSubTrigger className="justify-between gap-3 px-4 py-3">
+					<span className="flex min-w-0 items-center gap-3">
+						<GitHub className="size-5 shrink-0" aria-hidden />
+						<span className="flex min-w-0 flex-col">
+							<span className="body-sm font-normal text-ink-dark">Github</span>
+							<span className="text-xs text-ink-light">Active</span>
+						</span>
 					</span>
-				</span>
-				<CaretRight className="size-4 shrink-0 text-icon" aria-hidden />
-			</div>
+				</DropdownMenuSubTrigger>
+				<DropdownMenuSubContent>
+					<DropdownMenuItem>Switch account</DropdownMenuItem>
+					<DropdownMenuItem>Manage connection</DropdownMenuItem>
+					<DropdownMenuItem variant="destructive">Disconnect</DropdownMenuItem>
+				</DropdownMenuSubContent>
+			</DropdownMenuSub>
 
-			<div className={cn('bg-border-secondary h-px', embedded && '-mx-1')} role="separator" />
+			<DropdownMenuSeparator className={cn('my-0', embedded && '-mx-1')} />
 
 			{profileMenuItems.map(({ icon: Icon, label }) => (
-				<div key={label} className="flex items-center gap-2 px-4 py-2 body-sm text-ink">
+				<DropdownMenuItem key={label}>
 					<Icon className={iconClass} aria-hidden />
 					{label}
-				</div>
+				</DropdownMenuItem>
 			))}
 
-			<div className={cn('bg-border-secondary my-1.5 h-px', embedded && '-mx-1')} role="separator" />
+			<DropdownMenuSeparator className={cn('my-1.5', embedded && '-mx-1')} />
 
-			<div className="flex items-center gap-2 px-4 py-2 body-sm text-ink-destructive">
+			<DropdownMenuItem variant="destructive">
 				<SignOut className={iconClass} aria-hidden />
 				Log out
-			</div>
+			</DropdownMenuItem>
 		</div>
 	);
 }

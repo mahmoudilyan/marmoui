@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '../button';
-import { DotsThree } from '@phosphor-icons/react';
+import { DotsThreeOutline } from '@phosphor-icons/react';
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
@@ -78,7 +78,7 @@ export function DataNav({ breadcrumbs, actions, primaryAction }: DataNavProps) {
 												<DropdownMenu>
 													<DropdownMenuTrigger asChild>
 														<Button variant="ghost" size="sm" aria-label="More options">
-															<DotsThree className="w-4 h-4" />
+															<DotsThreeOutline className="w-4 h-4" weight="fill" />
 														</Button>
 													</DropdownMenuTrigger>
 													<DropdownMenuContent align="end">
@@ -110,7 +110,7 @@ export function DataNav({ breadcrumbs, actions, primaryAction }: DataNavProps) {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="secondary" aria-label="More options">
-								<DotsThree className="w-4 h-4" />
+								<DotsThreeOutline className="w-4 h-4" weight="fill" />
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">

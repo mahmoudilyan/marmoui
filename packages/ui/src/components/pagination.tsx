@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CaretLeft, CaretRight, DotsThree } from '@phosphor-icons/react';
+import { CaretLeft, CaretRight, DotsThreeOutline } from '@phosphor-icons/react';
 
 import { cn } from '../lib/utils';
 import { Button } from './button';
@@ -104,7 +104,7 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'
 			className={cn('flex size-9 items-center justify-center', className)}
 			{...props}
 		>
-			<DotsThree size={16} />
+			<DotsThreeOutline size={16} weight="fill" />
 			<span className="sr-only">More pages</span>
 		</span>
 	);

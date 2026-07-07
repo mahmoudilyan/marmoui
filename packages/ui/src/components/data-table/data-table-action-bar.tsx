@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { DotsThree, DownloadSimple } from '@phosphor-icons/react';
+import { DotsThreeOutline, DownloadSimple } from '@phosphor-icons/react';
 import { Button } from '../button';
 import { ButtonGroup } from '../button-group';
 import { IconButton } from '../icon-button';
@@ -53,7 +53,7 @@ export function DataTableActionBar<T>({
 				<Button variant="secondary" size="sm" leftIcon={<DownloadSimple />}>
 					Export
 				</Button>
-				<IconButton variant="secondary" size="sm" icon={<DotsThree />} />
+				<IconButton variant="secondary" size="sm" icon={<DotsThreeOutline weight="fill" />} />
 				</ButtonGroup>
 			) : null}
 		</ActionBarContent>

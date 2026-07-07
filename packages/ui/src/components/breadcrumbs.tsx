@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DotsThree } from '@phosphor-icons/react';
+import { DotsThreeOutline } from '@phosphor-icons/react';
 import { Slot } from '@radix-ui/react-slot';
 import { TbSlash as Slash } from 'react-icons/tb';
 import { cn } from '../lib/utils';
@@ -81,7 +81,7 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<'span'
 			className={cn('flex size-9 items-center justify-center', className)}
 			{...props}
 		>
-			<DotsThree className="size-4" />
+			<DotsThreeOutline className="size-4" weight="fill" />
 			<span className="sr-only">More</span>
 		</span>
 	);

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { cn } from '../../lib/utils';
-import { DotsThree, List } from '@phosphor-icons/react';
+import { DotsThreeOutline, List } from '@phosphor-icons/react';
 
 import { Button } from '../button';
 import { IconButton } from '../icon-button';
@@ -189,7 +189,7 @@ function PageSectionActions({
 						<IconButton
 							aria-label="More options"
 						variant="secondary"
-						icon={<DotsThree className="size-4" />}
+						icon={<DotsThreeOutline className="size-4" weight="fill" />}
 					/>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end" className="min-w-48">
@@ -253,7 +253,7 @@ function PageSectionTitleBlock({
 																	aria-label="More options"
 																	variant="ghost"
 																	size="xs"
-																icon={<DotsThree className="size-4" />}
+																icon={<DotsThreeOutline className="size-4" weight="fill" />}
 															/>
 															</DropdownMenuTrigger>
 															<DropdownMenuContent align="start" className="min-w-48">
