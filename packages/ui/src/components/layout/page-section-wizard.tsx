@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { cn } from '../../lib/utils';
-import { BookOpen, Pencil } from '@phosphor-icons/react';
+import { Pencil } from '@phosphor-icons/react';
 import { IconButton } from '../icon-button';
 import { Tooltip } from '../tooltip';
 import { useSidebar } from '../sidebar/sidebar-provider';
@@ -163,21 +163,8 @@ export function PageSectionWizard({
 			)}
 			{...props}
 		>
-			{/* Left section: Sidebar toggle + Title */}
+			{/* Sidebar toggle removed — the affordance lives in the SidebarPanel rail. */}
 			<div className="flex items-center gap-space-sm">
-				{showSidebarToggle && !secondaryIsOpen && (
-					<div className="-mx-1.5">
-						<Tooltip content="Open sidebar" side="bottom">
-							<IconButton
-								variant="ghost"
-								size="xs"
-								aria-label="Open sidebar"
-								icon={<BookOpen />}
-								onClick={toggleSecondary}
-							/>
-						</Tooltip>
-					</div>
-				)}
 
 				<div className="flex items-center gap-space-xs">
 					{isEditing ? (

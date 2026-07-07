@@ -35,7 +35,9 @@ export function SidebarFullLayoutPreview() {
 			<div className="flex h-[400px] w-full border border-secondary overflow-hidden">
 				<SidebarPanel>
 					<SidebarPanelHeader>
-						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+						<SidebarPanelTitle>
+							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
+						</SidebarPanelTitle>
 					</SidebarPanelHeader>
 					<SidebarPanelContent>
 						<SidebarItem
@@ -75,7 +77,9 @@ export function SidebarBreadcrumbLayoutPreview() {
 			<div className="flex h-[400px] w-full border border-secondary overflow-hidden">
 				<SidebarPanel>
 					<SidebarPanelHeader>
-						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+						<SidebarPanelTitle>
+							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
+						</SidebarPanelTitle>
 					</SidebarPanelHeader>
 					<SidebarPanelContent>
 						<SidebarItem
@@ -120,7 +124,9 @@ export function SidebarCollapsedLayoutPreview() {
 			<div className="flex h-[300px] w-full border border-secondary overflow-hidden">
 				<SidebarPanel>
 					<SidebarPanelHeader>
-						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+						<SidebarPanelTitle>
+							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
+						</SidebarPanelTitle>
 					</SidebarPanelHeader>
 					<SidebarPanelContent>
 						<SidebarItem
@@ -152,7 +158,9 @@ export function SidebarWizardLayoutPreview() {
 			<div className="flex h-[400px] w-full border border-secondary overflow-hidden">
 				<SidebarPanel>
 					<SidebarPanelHeader>
-						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+						<SidebarPanelTitle>
+							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
+						</SidebarPanelTitle>
 					</SidebarPanelHeader>
 					<SidebarPanelContent>
 						<SidebarItem
@@ -206,7 +214,9 @@ export function SidebarPanelOnlyLayoutPreview() {
 			<div className="flex h-[360px] w-full bg-bg border border-border rounded-lg overflow-hidden">
 				<SidebarPanel>
 					<SidebarPanelHeader>
-						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+						<SidebarPanelTitle>
+							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
+						</SidebarPanelTitle>
 					</SidebarPanelHeader>
 					<SidebarPanelContent>
 						<SidebarItem
@@ -249,7 +259,9 @@ export function UseSidebarHookPreview() {
 			<div className="flex h-[360px] bg-bg border border-border rounded-lg overflow-hidden">
 				<SidebarPanel>
 					<SidebarPanelHeader>
-						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+						<SidebarPanelTitle>
+							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
+						</SidebarPanelTitle>
 					</SidebarPanelHeader>
 					<SidebarPanelContent>
 						<SidebarItem

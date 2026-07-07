@@ -56,7 +56,9 @@ export function SidebarWithIconsPreview() {
 			<div className="flex h-[300px] w-full border border-secondary overflow-hidden">
 				<SidebarPanel>
 					<SidebarPanelHeader>
-						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+						<SidebarPanelTitle>
+							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
+						</SidebarPanelTitle>
 					</SidebarPanelHeader>
 					<SidebarPanelContent>
 						<SidebarItem
@@ -198,7 +200,9 @@ export function SidebarDashboardPreview() {
 			<div className="w-64 border border-border rounded-lg overflow-hidden bg-panel">
 				<SidebarPanel isOpen={true}>
 					<SidebarPanelHeader>
-						<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+						<SidebarPanelTitle>
+							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
+						</SidebarPanelTitle>
 					</SidebarPanelHeader>
 					<SidebarPanelContent>
 						<SidebarItem

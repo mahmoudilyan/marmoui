@@ -389,7 +389,9 @@ function PatternSidebar({
 	return (
 		<SidebarPanel>
 			<SidebarPanelHeader>
-				<SidebarPanelTitle>Navigation</SidebarPanelTitle>
+				<SidebarPanelTitle>
+							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
+						</SidebarPanelTitle>
 			</SidebarPanelHeader>
 
 			<SidebarPanelContent>
