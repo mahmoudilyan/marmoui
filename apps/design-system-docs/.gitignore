@@ -45,3 +45,6 @@ storybook-static
 *.db-journal
 *.db-wal
 *.db-shm
+
+# Private patterns synced locally for dev (ADR-0004) — never commit
+content/patterns/

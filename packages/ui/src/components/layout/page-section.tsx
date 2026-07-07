@@ -361,7 +361,9 @@ export default function PageSection({
 	primaryAction,
 	secondaryActions,
 	otherActions,
-	showSidebarToggle = true,
+	// The expand/collapse affordance now lives in the SidebarPanel itself
+	// (ChatGPT-style rail); opt back in per-page when a design needs it here.
+	showSidebarToggle = false,
 	showBrand = true,
 	brandLabel = 'Marmo',
 	logoInToggle = false,

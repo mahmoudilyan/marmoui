@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import type { ElementType } from 'react';
 import { useSidebar } from './sidebar-provider';
 import type { NavigationItem, SecondaryNavigationItem, SubNavigationItem } from './types';
-import { Bell, GearSix, Question, List } from '@phosphor-icons/react';
+import { Bell, GearSix, Question, List, SidebarSimple } from '@phosphor-icons/react';
 
 import { SidebarAppearanceProvider, useSidebarAppearance } from './sidebar-appearance';
 import { SidebarBrand } from './sidebar-brand';
@@ -427,7 +427,7 @@ export function SidebarPanelTitle({
 	return (
 		<div
 			data-slot="sidebar-panel-title"
-			className={cn('flex items-center justify-between pl-[10px] py-1.5 w-full', className)}
+			className={cn('flex h-[60px] items-center justify-between pl-[10px] w-full shrink-0', className)}
 		>
 			<h2 className={cn('text-xl font-medium', isDark ? 'text-white' : 'text-ink-dark')}>{children}</h2>
 			{!hideToggle && (
@@ -435,7 +435,7 @@ export function SidebarPanelTitle({
 					<IconButton
 						variant="ghost-body"
 						size="sm"
-						icon={<List />}
+						icon={<SidebarSimple />}
 						onClick={toggleSecondary}
 						aria-label={secondaryIsOpen ? 'Collapse sidebar' : 'Expand sidebar'}
 					/>
@@ -575,21 +575,32 @@ export function SidebarPanel({
 		collapseMode === 'rail' && !isOpen ? (
 			<div
 				className={cn(
-					'hidden md:flex flex-col items-center gap-space-sm py-space-md px-space-xs shrink-0 h-full overflow-hidden',
+					'group/rail hidden md:flex flex-col items-center gap-space-sm px-space-xs shrink-0 h-full overflow-hidden cursor-e-resize',
 					surfaceClass
 				)}
 				style={{ width: `${railWidth}px` }}
 			>
 				<SidebarAppearanceProvider appearance={appearance}>
-					<div className="flex items-center justify-center">{logo}</div>
+					{/* ChatGPT-style: brand mark at rest, expand affordance on hover. */}
 					<Tooltip content="Expand sidebar" side="right" delayDuration={200}>
-						<IconButton
-							variant="ghost-body"
-							size="sm"
+						<button
+							type="button"
+							onClick={onToggle}
 							aria-label="Expand sidebar"
-						icon={<List className="size-5" />}
-						onClick={onToggle}
-						/>
+							className="flex h-[60px] w-full items-center justify-center cursor-e-resize"
+						>
+							<span className="flex items-center justify-center group-hover/rail:hidden">
+								{logo}
+							</span>
+							<span
+								className={cn(
+									'hidden items-center justify-center rounded-radius-md p-space-xs group-hover/rail:flex',
+									isDark ? 'text-gray-200 hover:bg-white/10' : 'text-ink-dark hover:bg-secondary'
+								)}
+							>
+								<SidebarSimple className="size-5" />
+							</span>
+						</button>
 					</Tooltip>
 				</SidebarAppearanceProvider>
 			</div>
@@ -617,7 +628,7 @@ export function SidebarPanel({
 		>
 			<div
 				className={cn(
-					'flex flex-col h-full overflow-hidden transition-opacity w-full px-4 py-5',
+					'flex flex-col h-full overflow-hidden transition-opacity w-full px-4 pb-5',
 					isOpen ? 'opacity-100' : 'opacity-0'
 				)}
 				style={{ transitionDuration: `${animationDuration}ms` }}

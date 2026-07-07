@@ -70,7 +70,8 @@ export function PageSectionWizard({
 	totalSteps: totalStepsProp,
 	steps: stepsProp,
 	onStepClick: onStepClickProp,
-	showSidebarToggle = true,
+	// Toggle moved into SidebarPanel (ChatGPT-style rail).
+	showSidebarToggle = false,
 	stepsContent,
 	className,
 	...props

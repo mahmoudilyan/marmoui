@@ -20,7 +20,9 @@
     "type-check": "tsc --noEmit",
     "lint": "next lint",
     "clean": "rm -rf .next storybook-static node_modules .source",
-    "chromatic": "pnpm dlx chromatic"
+    "chromatic": "pnpm dlx chromatic",
+    "predev": "node scripts/dev-sync-patterns.mjs",
+    "sync:patterns": "node scripts/dev-sync-patterns.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
