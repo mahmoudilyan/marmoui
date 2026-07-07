@@ -262,19 +262,17 @@ export const SelectSearchable: SelectSearchableComponent = React.forwardRef(
 					onKeyDown={handleKeyDown}
 				>
 					<div className="p-2 border-b border-border-secondary">
-						<div className="relative">
-							<MagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-icon" />
-							<Input
-								ref={inputRef}
-								placeholder={searchPlaceholder}
-								value={searchQuery}
-								onChange={e => {
-									setSearchQuery(e.target.value);
-									setHighlightedIndex(0);
-								}}
-								className="pl-8 h-8 border-none shadow-none focus-visible:ring-0"
-							/>
-						</div>
+						<Input
+							ref={inputRef}
+							placeholder={searchPlaceholder}
+							value={searchQuery}
+							onChange={e => {
+								setSearchQuery(e.target.value);
+								setHighlightedIndex(0);
+							}}
+							startAdornment={<MagnifyingGlass className="size-4 text-icon" />}
+							className="h-8 border-none shadow-none focus-visible:ring-0"
+						/>
 					</div>
 					{atMax && (
 						<div className="px-3 py-1.5 text-xs text-ink-muted border-b border-border-secondary">

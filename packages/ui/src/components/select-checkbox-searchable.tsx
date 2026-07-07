@@ -97,15 +97,13 @@ export const SelectCheckboxSearchable: SelectCheckboxSearchableComponent = React
 				</PopoverTrigger>
 				<PopoverContent className="p-0 w-full">
 					<div className="p-1 border-b border-border-secondary">
-						<div className="relative">
-							<MagnifyingGlass className="absolute left-2 top-2.5 h-4 w-4 text-ink-light" />
-							<Input
-								placeholder={searchPlaceholder}
-								value={searchQuery}
-								onChange={e => setSearchQuery(e.target.value)}
-								className="pl-8 focus-visible:ring-0 border-none"
-							/>
-						</div>
+						<Input
+							placeholder={searchPlaceholder}
+							value={searchQuery}
+							onChange={e => setSearchQuery(e.target.value)}
+							startAdornment={<MagnifyingGlass className="size-4 text-ink-light" />}
+							className="focus-visible:ring-0 border-none"
+						/>
 					</div>
 					<div className="max-h-60 overflow-auto">
 						{filteredItems.map(item => {
