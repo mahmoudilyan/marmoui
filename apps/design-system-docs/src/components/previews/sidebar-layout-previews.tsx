@@ -33,7 +33,7 @@ export function SidebarFullLayoutPreview() {
 	return (
 		<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: true }}>
 			<div className="flex h-[400px] w-full border border-secondary overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>
 							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
@@ -75,7 +75,7 @@ export function SidebarBreadcrumbLayoutPreview() {
 	return (
 		<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: true }}>
 			<div className="flex h-[400px] w-full border border-secondary overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>
 							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
@@ -122,7 +122,7 @@ export function SidebarCollapsedLayoutPreview() {
 	return (
 		<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: false }}>
 			<div className="flex h-[300px] w-full border border-secondary overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>
 							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
@@ -156,7 +156,7 @@ export function SidebarWizardLayoutPreview() {
 	return (
 		<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: true }}>
 			<div className="flex h-[400px] w-full border border-secondary overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>
 							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
@@ -212,7 +212,7 @@ export function SidebarPanelOnlyLayoutPreview() {
 	return (
 		<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: true }}>
 			<div className="flex h-[360px] w-full bg-bg border border-border rounded-lg overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>
 							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
@@ -257,7 +257,7 @@ export function UseSidebarHookPreview() {
 	return (
 		<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: true }}>
 			<div className="flex h-[360px] bg-bg border border-border rounded-lg overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>
 							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />

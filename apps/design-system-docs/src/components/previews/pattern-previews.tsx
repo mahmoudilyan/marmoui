@@ -387,7 +387,7 @@ function PatternSidebar({
 	navigate: (href: string) => void;
 }) {
 	return (
-		<SidebarPanel>
+		<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 			<SidebarPanelHeader>
 				<SidebarPanelTitle>
 							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />

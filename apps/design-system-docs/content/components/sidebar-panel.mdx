@@ -103,7 +103,7 @@ The standard app shell: `SidebarProvider` wrapping `SideNavigation` + `PageSecti
 	description="SidebarPanel with PageSection and content area"
 	code={`<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: true }}>
 			<div className="flex h-[400px] w-full border border-secondary overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>
 			<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
@@ -147,7 +147,7 @@ The standard app shell: `SidebarProvider` wrapping `SideNavigation` + `PageSecti
 	description="Sidebar with PageSection breadcrumbs and action buttons"
 	code={`<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: true }}>
   <div className="flex h-screen">
-    <SidebarPanel>
+    <SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
       <SidebarPanelHeader>
         <SidebarPanelTitle>
 			<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
@@ -189,7 +189,7 @@ When the secondary panel is collapsed, `PageSection` automatically shows a toggl
 	description="Secondary panel collapsed — toggle visible in PageSection"
 	code={`<SidebarProvider mainNavItems={[]} config={{ defaultSecondaryOpen: false }}>
 			<div className="flex h-[300px] w-full border border-secondary overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>
 			<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />

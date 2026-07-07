@@ -35,7 +35,7 @@ export function SidebarBasicPreview() {
 	return (
 		<PreviewProvider>
 			<div className="w-full border border-secondary overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>Dashboard</SidebarPanelTitle>
 					</SidebarPanelHeader>
@@ -54,7 +54,7 @@ export function SidebarWithIconsPreview() {
 	return (
 		<PreviewProvider>
 			<div className="flex h-[300px] w-full border border-secondary overflow-hidden">
-				<SidebarPanel>
+				<SidebarPanel logo={<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />}>
 					<SidebarPanelHeader>
 						<SidebarPanelTitle>
 							<img src="/marmo-icon.svg" alt="Marmo" className="size-7" />
