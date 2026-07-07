@@ -229,19 +229,7 @@ function PageSectionTitleBlock({
 }) {
 	return (
 		<div className="flex min-w-0 items-center gap-space-sm">
-			{showSidebarToggle && !secondaryIsOpen ? (
-				<div className="-mx-1.5">
-					<Tooltip content="Open sidebar" side="bottom">
-						<IconButton
-							variant="ghost"
-							size="sm"
-							aria-label="Open sidebar"
-					icon={<List />}
-					onClick={toggleSecondary}
-				/>
-			</Tooltip>
-		</div>
-	) : null}
+			{/* Sidebar toggle removed — the affordance lives in the SidebarPanel rail. */}
 	<div className="flex min-w-0 items-center gap-space-xs">
 			{breadcrumbs && breadcrumbs.length > 0 ? (
 					<Breadcrumb>

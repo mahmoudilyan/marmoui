@@ -7,6 +7,11 @@ import { Bell, GearSix, Question, List, SidebarSimple } from '@phosphor-icons/re
 
 import { SidebarAppearanceProvider, useSidebarAppearance } from './sidebar-appearance';
 import { SidebarBrand } from './sidebar-brand';
+import { MarmoIcon } from '../icons';
+import {
+	SidebarCollapsedProvider,
+	useSidebarCollapsed,
+} from './sidebar-appearance';
 import { Avatar, AvatarFallback, AvatarImage } from '../avatar';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover';
 import { Tooltip } from '../tooltip';
@@ -167,6 +172,8 @@ export function SidebarSubItem({
 	showArrow,
 	showVerticalLine,
 }: SidebarSubItemProps) {
+	const __collapsed = useSidebarCollapsed();
+	if (__collapsed) return null;
 	const appearance = useSidebarAppearance();
 	const isDark = appearance === 'dark';
 
@@ -221,6 +228,42 @@ export function SidebarItem({
 	const [isHovered, setIsHovered] = React.useState(false);
 	const appearance = useSidebarAppearance();
 	const isDark = appearance === 'dark';
+	const collapsed = useSidebarCollapsed();
+
+	// Collapsed rail: icon-only with the label as a tooltip.
+	if (collapsed) {
+		const CollapsedIcon =
+			typeof iconOutlined === 'string' || !iconOutlined ? null : (iconOutlined as React.ElementType);
+		return (
+			<Tooltip content={label} side="right" delayDuration={200}>
+				<button
+					type="button"
+					onClick={onClick}
+					aria-label={label}
+					data-active={isActive || undefined}
+					className={cn(
+						'flex size-9 items-center justify-center rounded-radius-md transition-colors cursor-pointer',
+						isDark
+							? isActive
+								? 'bg-white/15 text-white'
+								: 'text-gray-300 hover:bg-white/10'
+							: isActive
+								? 'bg-primary-muted text-ink-primary'
+								: 'text-ink hover:bg-secondary',
+						className
+					)}
+				>
+					{typeof iconOutlined === 'string' ? (
+						<img src={iconOutlined} alt="" className="size-5" />
+					) : CollapsedIcon ? (
+						<CollapsedIcon className="size-5" />
+					) : (
+						<span className="text-sm font-semibold">{label.charAt(0)}</span>
+					)}
+				</button>
+			</Tooltip>
+		);
+	}
 	const hasChildren = React.Children.count(children) > 0;
 
 	// Determine which icon to show
@@ -354,6 +397,8 @@ export interface SidebarPanelHeaderProps extends React.ComponentProps<'div'> {}
 
 /** Non-scrollable header area at the top of the panel. */
 export function SidebarPanelHeader({ className, ...props }: SidebarPanelHeaderProps) {
+	const collapsed = useSidebarCollapsed();
+	if (collapsed) return null;
 	return (
 		<div
 			data-slot="sidebar-panel-header"
@@ -367,6 +412,16 @@ export interface SidebarPanelContentProps extends React.ComponentProps<'nav'> {}
 
 /** Scrollable content area that fills the remaining space. */
 export function SidebarPanelContent({ className, ...props }: SidebarPanelContentProps) {
+	const collapsed = useSidebarCollapsed();
+	if (collapsed) {
+		return (
+			<nav
+				data-slot="sidebar-panel-content"
+				className={cn('flex flex-1 flex-col items-center gap-1 overflow-hidden', className)}
+				{...props}
+			/>
+		);
+	}
 	return (
 		<nav
 			data-slot="sidebar-panel-content"
@@ -385,6 +440,19 @@ export interface SidebarPanelFooterProps extends React.ComponentProps<'div'> {}
 
 /** Non-scrollable footer area pinned to the bottom of the panel. */
 export function SidebarPanelFooter({ className, ...props }: SidebarPanelFooterProps) {
+	const collapsed = useSidebarCollapsed();
+	if (collapsed) {
+		return (
+			<div
+				data-slot="sidebar-panel-footer"
+				className={cn(
+					'mt-auto flex w-full shrink-0 flex-col items-center overflow-hidden pb-space-sm',
+					className
+				)}
+				{...props}
+			/>
+		);
+	}
 	return (
 		<div
 			data-slot="sidebar-panel-footer"
@@ -590,11 +658,7 @@ export function SidebarPanel({
 							className="flex h-[60px] w-full items-center justify-center cursor-e-resize"
 						>
 							<span className="flex items-center justify-center group-hover/rail:hidden">
-								{logo ?? (
-									<SidebarSimple
-										className={cn('size-5', isDark ? 'text-gray-400' : 'text-ink-light')}
-									/>
-								)}
+								{logo ?? <MarmoIcon className="size-6" />}
 							</span>
 							<span
 								className={cn(
@@ -606,6 +670,12 @@ export function SidebarPanel({
 							</span>
 						</button>
 					</Tooltip>
+					{/* Icon-only children: nav items + footer adapt via collapsed context. */}
+					<SidebarCollapsedProvider collapsed>
+						<div className="flex min-h-0 w-full flex-1 flex-col items-center gap-1 overflow-hidden">
+							{children}
+						</div>
+					</SidebarCollapsedProvider>
 				</SidebarAppearanceProvider>
 			</div>
 		) : null;

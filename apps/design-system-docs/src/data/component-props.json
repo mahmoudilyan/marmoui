@@ -18462,6 +18462,20 @@
       }
     ]
   },
+  "SidebarCollapsedProvider": {
+    "props": [
+      {
+        "name": "collapsed",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true
+      }
+    ]
+  },
   "Skeleton": {
     "props": [
       {
