@@ -396,17 +396,21 @@ export default function PageSection({
 	const handleToggleSidebar = isMobile ? toggleMobileNav : toggleSecondary;
 	const sidebarEffectivelyOpen = isMobile ? mobileNavOpen : secondaryIsOpen;
 
-	const shellClass = cn(
+		const shellClass = cn(
 		'sticky top-0 z-10 bg-panel',
-		variant === 'compact' || variant === 'profile'
-			? 'px-space-2xl py-space-xl'
-			: 'px-space-lg py-space-md',
+		// Figma: header band is a fixed 60px row in every layout; the profile
+		// variant is taller by content (avatar) but keeps the same paddings.
+		variant === 'profile'
+			? 'px-space-2xl py-space-md'
+			: variant === 'compact'
+				? 'h-[60px] px-space-2xl'
+				: 'px-space-lg',
 		className
 	);
 
 	if (variant === 'global') {
 		return (
-			<div className={cn(shellClass, 'flex items-center gap-space-lg')} {...props}>
+			<div className={cn(shellClass, 'flex h-[60px] items-center gap-space-lg')} {...props}>
 				<PageSectionHeaderBrand showBrand={showBrand} brandLabel={brandLabel} />
 				{globalNavItems && globalNavItems.length > 0 ? (
 					<PageSectionHeaderGlobalNav items={globalNavItems} />
@@ -432,7 +436,7 @@ export default function PageSection({
 	if (variant === 'default' || variant === 'workspace') {
 		return (
 			<div className={shellClass} {...props}>
-				<div className="flex items-center gap-space-md">
+				<div className="flex h-[60px] items-center gap-space-md">
 					<PageSectionSidebarToggle
 						show={showSidebarToggle}
 						secondaryIsOpen={sidebarEffectivelyOpen}
@@ -463,7 +467,7 @@ export default function PageSection({
 					/>
 				</div>
 				{(breadcrumbs?.length || pageTitle || primaryAction || secondaryActions?.length) && (
-					<div className="mt-space-md flex items-center justify-between gap-space-md border-t border-border-secondary pt-space-md">
+					<div className="flex min-h-[52px] items-center justify-between gap-space-md border-t border-border-secondary py-space-sm">
 						<PageSectionTitleBlock
 							breadcrumbs={breadcrumbs}
 							pageTitle={pageTitle}
