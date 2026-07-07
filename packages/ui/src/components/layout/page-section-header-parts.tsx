@@ -247,7 +247,7 @@ export function PageSectionHeaderGlobalNav({ items, className }: HeaderGlobalNav
 		<nav aria-label="Global navigation" className={cn('flex items-center gap-space-xs', className)}>
 			{items.map(item => {
 				const triggerClass = cn(
-					'inline-flex items-center gap-space-3xs rounded-radius-sm px-space-sm py-space-xs text-body-sm font-medium transition-colors cursor-pointer',
+					'inline-flex items-center gap-space-3xs rounded-radius-sm px-space-sm py-space-xs text-body-sm font-medium transition-colors cursor-pointer data-[state=open]:bg-secondary data-[state=open]:text-ink-dark data-[state=open]:[&_svg]:rotate-180 [&_svg]:transition-transform',
 					item.isActive
 						? 'bg-primary-muted text-ink-primary'
 						: 'text-ink hover:bg-secondary hover:text-ink-dark'

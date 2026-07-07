@@ -92,7 +92,6 @@ export * from './components/splitter';
 export * from './components/pagination';
 export * from './components/widget';
 export * from './components/drag-drop/sortable-grid';
-export * from './components/lead-lifecycle-funnel';
 export * from './components/data-table';
 export * from './components/data-table/table';
 export * from './components/chart';

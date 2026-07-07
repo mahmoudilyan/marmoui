@@ -253,7 +253,7 @@ function PageSectionTitleBlock({
 										<BreadcrumbItem className="min-w-0">
 											{isLast ? (
 												<div className="flex min-w-0 items-center gap-space-xs">
-													<BreadcrumbPage className="truncate text-base font-medium text-foreground">
+													<BreadcrumbPage className="truncate">
 														{item.label}
 													</BreadcrumbPage>
 													{breadcrumbs.length > 1 &&
@@ -331,7 +331,7 @@ function PageSectionSidebarToggle({
 					type="button"
 					onClick={toggleSecondary}
 					aria-label={label}
-					className="flex items-center gap-space-xs rounded-radius-md px-space-xs py-space-xs text-ink-dark hover:bg-secondary transition-colors cursor-pointer"
+					className="flex items-center gap-space-xs rounded-radius-md px-space-sm py-space-xs text-ink-dark hover:bg-secondary transition-colors cursor-pointer"
 				>
 			<MarmoIcon className="size-7" />
 			<List className="size-5" />
@@ -342,15 +342,16 @@ function PageSectionSidebarToggle({
 
 	return (
 		<Tooltip content={label} side="bottom">
-			<IconButton
-				variant="ghost"
-				size="sm"
+			<button
+				type="button"
+				onClick={toggleSecondary}
 				aria-label={label}
-		icon={<List />}
-		onClick={toggleSecondary}
-	/>
-</Tooltip>
-);
+				className="flex items-center rounded-radius-md px-space-sm py-space-xs text-ink-dark hover:bg-secondary transition-colors cursor-pointer"
+			>
+				<List className="size-5" />
+			</button>
+		</Tooltip>
+	);
 }
 
 export default function PageSection({

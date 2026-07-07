@@ -381,7 +381,6 @@ const curatedSections: ComponentSection[] = [
 				preview: <span className="font-semibold text-ink-dark">Aa Bb Cc</span>,
 			},
 			{ name: 'Marketing Cards', slug: 'marketing-cards', preview: <FauxDialog /> },
-			{ name: 'Lifecycle Funnel', slug: 'lead-lifecycle-funnel', preview: <FauxChart /> },
 		],
 	},
 	{
