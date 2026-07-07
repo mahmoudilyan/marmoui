@@ -1,0 +1,26 @@
+name: Notify MCP of public repo update
+
+# Any change to @marmoui/ui or the docs content the MCP indexes as its
+# "public knowledge" should trigger a redeploy of the private MCP server so
+# agents see it — this fires a repository_dispatch that
+# marmo-platform/.github/workflows/deploy-mcp.yml listens for.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/ui/**'
+      - 'apps/design-system-docs/content/**'
+      - 'apps/design-system-docs/src/data/component-props.json'
+
+jobs:
+  notify:
+    name: Dispatch marmo-platform deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger marmo-platform deploy-mcp workflow
+        run: |
+          curl -sf -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: token ${{ secrets.MARMO_PLATFORM_DISPATCH_TOKEN }}" \
+            https://api.github.com/repos/mahmoudilyan/marmo-platform/dispatches \
+            -d '{"event_type":"public-repo-updated"}'
