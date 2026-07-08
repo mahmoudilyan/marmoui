@@ -1,5 +1,25 @@
 # @marmoui/ui
 
+## 2.0.0
+
+### Major Changes
+
+- 45a5eef: Remove LeadLifecycleFunnel. Use the generic ChartFunnel for conversion funnels — it covers the same shapes without the lead-specific quality-flag coupling. Also in this release: breadcrumb current page is 1rem/text-ink, the PageSection sidebar toggle matches Button padding/radius, global-nav dropdown triggers show a visible open state, and SidebarPanel gets the ChatGPT-style collapsed rail: brand mark swaps to a SidebarSimple expand affordance on hover with a resize cursor, the expanded header is a 60px row (logo + SidebarSimple toggle) aligned with PageSection, and the PageSection/SectionWizard sidebar toggles default off since the affordance lives in the panel.
+
+### Minor Changes
+
+- 4b1b13a: DataTable: Notion-style dynamic filters (add/remove rule rows inline, per-row clear, "Add filter" menu) replacing the static filter form — same TableFilter API and state shape. Columns menu is now "Manage columns" with the SquareSplitHorizontal (bold) icon. PageSection sidebar toggle uses the List icon at regular weight on all breakpoints, and the header band is a fixed 60px in every layout variant, matching the Figma spec.
+- 8ae2ec4: Standardize the "more options" affordance on DotsThreeOutline (weight="fill") across Pagination, PageSection, Breadcrumbs, DataNav, and DataTableActionBar — replaces the plain DotsThree glyph everywhere.
+
+  Docs: the Profile Dropdown Menu preview was hand-built with unstyled divs (no hover, fake Github row, plain-text Log out). Rebuilt on the real DropdownMenu primitives — Github is now a working DropdownMenuSub with a real submenu, all rows get proper hover/focus states, and Log out uses the actual destructive variant.
+
+  PageSectionWizard header is now a fixed 60px row, matching PageSection.
+
+### Patch Changes
+
+- a0c7606: Add package README so npmjs.com shows install/usage instead of "no README" warning.
+- 7727fb2: Fix SelectSearchable and SelectCheckboxSearchable: the search-input magnifying-glass icon overlapped the typed text (hand-rolled absolute icon + manual `pl-8` instead of Input's own `startAdornment`, which reserves the correct space). Both now use `startAdornment`.
+
 ## 1.0.2
 
 ### Patch Changes
