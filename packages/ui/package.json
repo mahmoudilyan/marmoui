@@ -1,6 +1,6 @@
 {
   "name": "@marmoui/ui",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Marmo UI — a React 19 + Chakra-based component library for building dashboards fast.",
   "license": "MIT",
   "homepage": "https://marmoui.com",
