@@ -1,10 +1,19 @@
 # @marmoui/ui
 
-## 1.1.0
+## 2.0.1
+
+### Patch Changes
+
+- Version-number correction only — no code or behavior change from 2.0.0.
+
+## 2.0.0
+
+### Major Changes
+
+- 45a5eef: Remove LeadLifecycleFunnel. Use the generic ChartFunnel for conversion funnels — it covers the same shapes without the lead-specific quality-flag coupling. Also in this release: breadcrumb current page is 1rem/text-ink, the PageSection sidebar toggle matches Button padding/radius, global-nav dropdown triggers show a visible open state, and SidebarPanel gets the ChatGPT-style collapsed rail: brand mark swaps to a SidebarSimple expand affordance on hover with a resize cursor, the expanded header is a 60px row (logo + SidebarSimple toggle) aligned with PageSection, and the PageSection/SectionWizard sidebar toggles default off since the affordance lives in the panel.
 
 ### Minor Changes
 
-- 45a5eef: Remove LeadLifecycleFunnel. Use the generic ChartFunnel for conversion funnels — it covers the same shapes without the lead-specific quality-flag coupling. Also in this release: breadcrumb current page is 1rem/text-ink, the PageSection sidebar toggle matches Button padding/radius, global-nav dropdown triggers show a visible open state, and SidebarPanel gets the ChatGPT-style collapsed rail: brand mark swaps to a SidebarSimple expand affordance on hover with a resize cursor, the expanded header is a 60px row (logo + SidebarSimple toggle) aligned with PageSection, and the PageSection/SectionWizard sidebar toggles default off since the affordance lives in the panel.
 - 4b1b13a: DataTable: Notion-style dynamic filters (add/remove rule rows inline, per-row clear, "Add filter" menu) replacing the static filter form — same TableFilter API and state shape. Columns menu is now "Manage columns" with the SquareSplitHorizontal (bold) icon. PageSection sidebar toggle uses the List icon at regular weight on all breakpoints, and the header band is a fixed 60px in every layout variant, matching the Figma spec.
 - 8ae2ec4: Standardize the "more options" affordance on DotsThreeOutline (weight="fill") across Pagination, PageSection, Breadcrumbs, DataNav, and DataTableActionBar — replaces the plain DotsThree glyph everywhere.
 

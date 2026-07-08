@@ -1,6 +1,6 @@
 # @marmoui/ui
 
-**The AI agentic designer.** A React 19 + Chakra-based component library for building dashboards fast — tables, charts, forms, app shells, light + dark from one token set. MIT, free forever.
+**The AI agentic designer.** A React 19 + Tailwind 4 component library for building dashboards fast — tables, charts, forms, app shells, light + dark from one token set. MIT, free forever.
 
 Platform, docs & pricing → [marmoui.com](https://www.marmoui.com)
 
