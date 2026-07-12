@@ -21,7 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { slug } = await params;
 	const post = await getPost(slug);
-	if (!post) return { title: `Updates — ${siteConfig.title}` };
+	if (!post) notFound();
 	return {
 		title: `${post.title} — ${siteConfig.title}`,
 		description: post.excerpt,

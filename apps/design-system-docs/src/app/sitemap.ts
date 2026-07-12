@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { source } from '@/lib/source';
-import { getPosts } from '@/sanity/queries';
+import { getPosts, getArticles } from '@/sanity/queries';
 
 const SITE_URL = 'https://www.marmoui.com';
 
@@ -11,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		{ url: `${SITE_URL}/components`, changeFrequency: 'weekly', priority: 0.8 },
 		{ url: `${SITE_URL}/connect`, changeFrequency: 'monthly', priority: 0.6 },
 		{ url: `${SITE_URL}/updates`, changeFrequency: 'weekly', priority: 0.6 },
+		{ url: `${SITE_URL}/blog`, changeFrequency: 'weekly', priority: 0.7 },
 	];
 
 	const docsPages: MetadataRoute.Sitemap = source.getPages().map(page => ({
@@ -27,5 +28,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		priority: 0.5,
 	}));
 
-	return [...marketingPages, ...docsPages, ...updatePages];
+	const articles = await getArticles();
+	const blogPages: MetadataRoute.Sitemap = articles.map(article => ({
+		url: `${SITE_URL}/blog/${article.slug}`,
+		lastModified: article.publishedAt ? new Date(article.publishedAt) : undefined,
+		changeFrequency: 'monthly',
+		priority: 0.7,
+	}));
+
+	return [...marketingPages, ...docsPages, ...updatePages, ...blogPages];
 }

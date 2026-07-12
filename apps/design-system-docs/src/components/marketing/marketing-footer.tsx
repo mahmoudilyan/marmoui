@@ -12,6 +12,7 @@ const columns = [
 			{ label: 'Roadmap', href: '/docs/introduction/roadmap' },
 			{ label: 'Connect your agent', href: siteConfig.connectUrl },
 			{ label: 'Account', href: '/account' },
+			{ label: 'Blog', href: '/blog' },
 		],
 	},
 	{
