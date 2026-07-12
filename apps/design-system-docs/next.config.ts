@@ -40,6 +40,11 @@ const nextConfig: NextConfig = {
 	async redirects() {
 		return [
 			{
+				source: '/docs',
+				destination: '/docs/introduction/get-started',
+				permanent: true,
+			},
+			{
 				source: '/docs/introduction/install-claude-plugin',
 				destination: '/docs/introduction/install-agent',
 				permanent: true,
