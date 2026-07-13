@@ -12,6 +12,7 @@ const columns = [
 			{ label: 'Roadmap', href: '/docs/introduction/roadmap' },
 			{ label: 'Connect your agent', href: siteConfig.connectUrl },
 			{ label: 'Account', href: '/account' },
+			{ label: 'Blog', href: '/blog' },
 		],
 	},
 	{
@@ -76,9 +77,14 @@ export function MarketingFooter() {
 				<div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 md:px-6">
 					<span className="text-[14px] text-white/55">© {new Date().getFullYear()} Marmo UI</span>
 					<div className="flex items-center gap-5">
-						<Link href="#" className="text-[14px] text-white/55 transition-colors hover:text-white">
+						<a
+							href={`${siteConfig.githubMainUrl}/blob/main/LICENSE`}
+							target="_blank"
+							rel="noreferrer"
+							className="text-[14px] text-white/55 transition-colors hover:text-white"
+						>
 							License
-						</Link>
+						</a>
 						<a
 							href="https://x.com/marmoui"
 							target="_blank"

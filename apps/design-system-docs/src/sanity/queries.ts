@@ -75,3 +75,54 @@ export async function getPost(slug: string): Promise<Post | null> {
 		return null;
 	}
 }
+
+export type Article = {
+	title: string;
+	slug: string;
+	excerpt?: string;
+	seoTitle?: string;
+	seoDescription?: string;
+	publishedAt: string;
+	body?: unknown;
+};
+
+const ARTICLES_QUERY = /* groq */ `
+	*[_type == "article" && defined(slug.current)] | order(publishedAt desc)[0...50]{
+		title,
+		"slug": slug.current,
+		excerpt,
+		publishedAt
+	}
+`;
+
+const ARTICLE_QUERY = /* groq */ `
+	*[_type == "article" && slug.current == $slug][0]{
+		title,
+		"slug": slug.current,
+		excerpt,
+		seoTitle,
+		seoDescription,
+		publishedAt,
+		body
+	}
+`;
+
+export async function getArticles(): Promise<Article[]> {
+	const client = getSanityClient();
+	if (!client) return [];
+	try {
+		return await client.fetch<Article[]>(ARTICLES_QUERY, {}, fetchOptions);
+	} catch {
+		return [];
+	}
+}
+
+export async function getArticle(slug: string): Promise<Article | null> {
+	const client = getSanityClient();
+	if (!client) return null;
+	try {
+		return await client.fetch<Article | null>(ARTICLE_QUERY, { slug }, fetchOptions);
+	} catch {
+		return null;
+	}
+}
