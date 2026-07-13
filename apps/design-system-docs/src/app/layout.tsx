@@ -17,10 +17,48 @@ const inter = Inter({
 	variable: '--font-inter',
 });
 
+const SITE_URL = 'https://www.marmoui.com';
+
 export const metadata: Metadata = {
+	metadataBase: new URL(SITE_URL),
 	title: siteConfig.title,
 	description: siteConfig.description,
 	keywords: siteConfig.keywords,
+	openGraph: {
+		title: siteConfig.title,
+		description: siteConfig.description,
+		url: SITE_URL,
+		siteName: siteConfig.title,
+		images: [{ url: '/marmo-icon.svg', width: 512, height: 512, alt: siteConfig.title }],
+		type: 'website',
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: siteConfig.title,
+		description: siteConfig.description,
+		site: '@marmoui',
+	},
+};
+
+const organizationLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	'@id': `${SITE_URL}/#organization`,
+	name: 'Marmo UI',
+	alternateName: 'Marmo',
+	url: SITE_URL,
+	logo: `${SITE_URL}/marmo-icon.svg`,
+	description: siteConfig.description,
+	sameAs: [siteConfig.githubMainUrl, 'https://x.com/marmoui'],
+};
+
+const websiteLd = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	'@id': `${SITE_URL}/#website`,
+	url: SITE_URL,
+	name: 'Marmo UI',
+	publisher: { '@id': `${SITE_URL}/#organization` },
 };
 
 export default function RootLayout({
@@ -31,6 +69,14 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+				/>
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
+				/>
 				{process.env.NODE_ENV === 'production' && (
 					<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 				)}

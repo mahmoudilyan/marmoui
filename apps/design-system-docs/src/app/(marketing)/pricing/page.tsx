@@ -8,6 +8,38 @@ export const metadata: Metadata = {
 	title: `Pricing — ${siteConfig.title}`,
 	description:
 		'The components and the Core MCP are free forever. Pro unlocks on-brand generation, patterns, and Pro blocks for your AI agent.',
+	alternates: { canonical: '/pricing' },
+};
+
+const SITE_URL = 'https://www.marmoui.com';
+
+const softwareAppLd = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: siteConfig.title,
+	applicationCategory: 'DeveloperApplication',
+	operatingSystem: 'Web',
+	url: SITE_URL,
+	description: siteConfig.description,
+	offers: [
+		{
+			'@type': 'Offer',
+			name: 'Free',
+			price: '0',
+			priceCurrency: 'USD',
+			url: `${SITE_URL}/pricing`,
+			category: 'Free',
+		},
+		{
+			'@type': 'Offer',
+			name: 'Pro',
+			price: '9.99',
+			priceCurrency: 'USD',
+			url: `${SITE_URL}/pricing`,
+			category: 'Subscription',
+			eligibleDuration: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' },
+		},
+	],
 };
 
 const tiers = [
@@ -79,9 +111,27 @@ const pricingFaq = [
 	},
 ];
 
+const pricingFaqLd = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: pricingFaq.map(item => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
 export default function PricingPage() {
 	return (
 		<div className="bg-bg">
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppLd) }}
+			/>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingFaqLd) }}
+			/>
 			<div className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
 				{/* Head */}
 				<div className="mx-auto max-w-2xl text-center">
